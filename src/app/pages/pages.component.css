@@ -1,0 +1,69 @@
+.mat-drawer-inner-container {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .logo {
+    width: 180px;
+    margin: 0;
+  }
+  
+  .logo_mini {
+    width: 26px;
+  }
+  
+  .avatar {
+    border-radius: 50%
+  }
+  
+  .name {
+    font-weight: normal;
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+  
+  .designation {
+    font-size: 0.8rem;
+    margin-bottom: .5em;
+  }
+  
+  .centrado {
+    text-align: center;
+  }
+  
+  .hide-usuario-text {
+    opacity: 0;
+    height: 0px !important;
+  }
+  
+  .menu-item {
+    border-left: 5px solid;
+    border-left-color: rgba(0, 0, 0, 0);
+  }
+  
+  .selected-menu-item {
+    border-left-color: blue;
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  mat-sidenav-content {
+    height: calc(100vh - 0px);
+  }
+  
+  mat-sidenav,
+  mat-sidenav-content {
+    transition: all 500ms ease-in-out;
+  
+  }
+  
+  mat-sidenav {
+    overflow-wrap: break-word;
+  }
+  
+  a > img {
+    margin-right: 18px !important;
+  }
+  
+  .screen {
+    min-height: 100vh;
+  }

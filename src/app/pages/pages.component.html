@@ -1,0 +1,80 @@
+<!-- aqui poner el sidenav -->
+<mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side" opened="!collapsed()" [style.width]="sidenavWidth()">
+      <!-- INICIO - botón de apertura y cierre-->
+      <button class="mx-2" mat-icon-button (click)="isExpanded.set(!isExpanded())">
+        <mat-icon class="">menu</mat-icon>
+      </button>
+
+  
+      <!-- INICIO - Lista de botones-->
+      <mat-nav-list class="p-0 d-flex flex-column">
+        <!-- INICIO - Boton Dahsboard-->
+        <a mat-list-item [routerLink]="['dashboard/global']" routerLinkActive="selected-menu-item"
+          #rlaDashboard="routerLinkActive">
+
+            <i class="icon material-icons" alt="Dashboard" matTooltip="Dashboard" matListItemIcon [class.active]="rlaDashboard.isActive">space_dashboard</i>
+            <span matListItemTitle class="">Dashboard</span>
+        </a>
+  
+        <!-- FIN - Boton Pedidos-->
+        <mat-divider></mat-divider>
+        <!-- INICIO - Boton Clientes-->
+        <a mat-list-item [routerLink]="['clientes/global']" routerLinkActive="selected-menu-item"
+          #rlaClientes="routerLinkActive">
+          <img class="icon"
+            [src]="rlaClientes.isActive ? 'assets/images/iconos/clientes-icon-green.svg' : 'assets/images/iconos/clientes-icon.svg'"
+            alt="Pedidos" matTooltip="Clientes" matListItemIcon [class.active]="rlaClientes.isActive" />
+          <span matListItemTitle class="" *ngIf="isExpanded()">Clientes</span>
+        </a>
+        <!-- Fin - Boton Clientes-->
+  
+        <!-- INICIO - Boton Productos-->
+        <a mat-list-item [routerLink]="['products/global']" routerLinkActive="selected-menu-item"
+          #rlaProducts="routerLinkActive">
+          <img class="icon"
+            [src]="rlaProducts.isActive ? 'assets/images/iconos/productos-icon-green.svg' : 'assets/images/iconos/productos-icon.svg'"
+            alt="Pedidos" matTooltip="Productos" matListItemIcon [class.active]="rlaProducts.isActive" />
+          <span matListItemTitle class="" *ngIf="isExpanded()">Productos</span>
+        </a>
+        <!-- FIN - Boton Productos-->
+  
+        <!-- INICIO - Boton Vendedores-->
+        <a mat-list-item [routerLink]="['agentes/global']" routerLinkActive="selected-menu-item"
+          #rlaAgentes="routerLinkActive">
+          <img class="icon"
+            [src]="rlaAgentes.isActive ? 'assets/images/iconos/vendedores-icon-green.svg' : 'assets/images/iconos/vendedores-icon.svg'"
+            alt="Pedidos" matTooltip="Vendedores" matListItemIcon [class.active]="rlaAgentes.isActive" />
+          <span matListItemTitle class="" *ngIf="isExpanded()">Vendedores</span>
+        </a>
+        <!-- Fin - Boton Agentes-->
+        <mat-divider></mat-divider>
+        <!-- INICIO - Boton Configuración-->
+        <a mat-list-item [routerLink]="['configuration/global']" routerLinkActive="selected-menu-item"
+          #rlaConfiguration="routerLinkActive">
+          <img class="icon"
+            [src]="rlaConfiguration.isActive ? 'assets/images/iconos/configuracion-icon-green.svg' : 'assets/images/iconos/configuracion-icon.svg'"
+            alt="Pedidos" matTooltip="Configracion" matListItemIcon [class.active]="rlaConfiguration.isActive" />
+          <span matListItemTitle class="" *ngIf="isExpanded()">Configuración</span>
+        </a>
+        <!-- Fin - Boton Configuración-->
+  
+        <mat-divider></mat-divider>
+        <!-- INICIO - Boton Salir-->
+        <a mat-list-item>
+          <i class="icon material-icons" alt="Salir" matTooltip="Salir" matListItemIcon >logout</i>
+          <span matListItemTitle class="" *ngIf="isExpanded()">Salir</span>
+        </a>
+        <!-- Fin - Boton Salir-->
+  
+        <!-- Fin - Lista de botones-->
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <!-- Content - rendered Content for the current router path into the <router-outlet>, e.g. /dashboard or /info-->
+    <mat-sidenav-content class="content" [style.margin-left]="sidenavWidth()">
+      <div class="screen">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
