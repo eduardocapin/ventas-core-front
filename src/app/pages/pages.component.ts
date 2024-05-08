@@ -1,7 +1,6 @@
 import {
   ChangeDetectorRef,
   Component,
-  SimpleChanges,
   ViewChild,
   computed,
   signal,
@@ -25,19 +24,16 @@ export class PagesComponent {
     private cd: ChangeDetectorRef
   ) {}
 
-  isExpanded = signal(true);
+  isExpanded = signal(false);
 
-  sidenavWidth = computed(() => (this.isExpanded() ? '250px' : '66px'));
+  sidenavWidth = computed(() => (this.isExpanded() ? '250px' : '70px'));
 
+  // Nueva propiedad para controlar la expansión del menú
+  navExpanded: boolean = false;
 
-  // public img: string | null = '';
-  // public  cargo: string | null = '';
-  // public username: string | null = '';
-
-  ngOnInit(): void {
-    // this.img = localStorage.getItem('img');
-    // this.username = localStorage.getItem('user');
-    // this.cargo = localStorage.getItem('cargo');
+  // Función para verificar si la ruta está activa
+  isActiveRoute(route: string): boolean {
+    return this.router.url.includes(route);
   }
 
 }

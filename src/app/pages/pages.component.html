@@ -1,70 +1,100 @@
-<div class="container-fluid" >
-    <div class="row flex-nowrap">
-        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <span class="fs-5 d-none d-sm-inline">Menu</span>
-                </a>
-                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                            <i class="material-icons">space_dashboard</i> <span class="ms-1 d-none d-sm-inline">Dashboard</span> </a>
-                        <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
-                            <li class="w-100">
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> <i class="material-icons">person</i> </a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 2 </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Orders</span></a>
-                    </li>
-                    <li>
-                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
-                            <i class="fs-4 bi-bootstrap"></i> <span class="ms-1 d-none d-sm-inline">Bootstrap</span></a>
-                        <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
-                            <li class="w-100">
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 1</a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 2</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">Products</span> </a>
-                            <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
-                            <li class="w-100">
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 1</a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 2</a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 3</a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 4</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Customers</span> </a>
-                    </li>
-                </ul>
-                <hr>
+<mat-sidenav-container class="z-50 hidden">
+    <mat-sidenav class="p-2" #sidenav mode="side" opened="!collapsed()" [style.width]="sidenavWidth()">
+      <!-- INICIO - botón de apertura y cierre-->
+      <div class="d-flex align-items-center ms-1 gap-3">
+        <button  mat-icon-button (click)="isExpanded.set(!isExpanded())">
+          <mat-icon class="">menu</mat-icon>
+        </button>
+        <h4 matListItemTitle class="fs-3 mb-0">Mobentis</h4>
+      </div>
+      <!-- FIN - botón de apertura y cierre-->
+      <mat-nav-list class="d-flex flex-column justify-content-between">
+        <!-- INICIO - Lista de botones-->
+        <div class=" d-flex flex-column align-items-center gap-2">
+          <!-- Boton Dahsboard-->
+          <a mat-list-item [routerLink]="['dashboard/global']" routerLinkActive="selected-menu-item"
+            #rlaDashboard="routerLinkActive" [activated]="rlaDashboard.isActive" class="d-flex align-items-center pe-0 ps-1">
+            <span matListItemTitle class="d-flex align-items-center gap-4">
+              <button class="btn  w-6 h-6 text-center">
+                <mat-icon>dashboard</mat-icon>
+              </button>
+              Dashboard
+            </span>
+          </a>
+  
+  
+          
+<!-- 
+  <mat-expansion-panel class="w-100" [class.mat-elevation-z0]="true">
+    <mat-expansion-panel-header routerLink="/rechazos" routerLinkActive="active" class="p-0 pl-3.5 h-[48px] border-b border-b-stone-200 border-b-solid rounded-none hover:rounded-none">
+      <div class="flex items-center pr-0">
+        <mat-icon class="me-5 inline-flex" [ngClass]="{'active-icon': isActiveRoute('/rechazos')}">broken_image</mat-icon>
+        <span class="font-normal text-base flex items-center" [ngClass]="{'active-text': isActiveRoute('/rechazos')}">Rechazos</span>
+      </div>
+    </mat-expansion-panel-header>
 
-            </div>
+    <mat-nav-list [ngClass]="{'w-fit': !navExpanded, 'w-100': navExpanded}" class="pt-1 flex flex-col items-center gap-1">
+      <div class="flex items-center flex-col">
+        <a routerLink="/rechazos/informe" mat-list-item class="px-0 flex items-center justify-center w-full my-2"> 
+          <mat-icon class="" [ngClass]="{'active-icon': isActiveRoute('/rechazos/informe')}">insert_drive_file</mat-icon>
+          <span [ngClass]="{'active-text': isActiveRoute('/rechazos/informe')}">Informe</span>
+        </a>
+        <a routerLink="/rechazos/maps" mat-list-item class="p-0 flex items-center justify-center w-full my-2"> 
+          <mat-icon class="" [ngClass]="{'active-icon': isActiveRoute('/rechazos/maps')}">map</mat-icon>
+          <span [ngClass]="{'active-text': isActiveRoute('/rechazos/maps')}">Maps</span>
+        </a>
+        <a routerLink="/rechazos/cliente" mat-list-item class="p-0 flex items-center justify-center w-full my-2"> 
+          <mat-icon class="" [ngClass]="{'active-icon': isActiveRoute('/rechazos/cliente')}">person</mat-icon>
+          <span [ngClass]="{'active-text': isActiveRoute('/rechazos/cliente')}">Cliente</span>
+        </a>
+        <a routerLink="/rechazos/table" mat-list-item class="p-0 flex items-center justify-center w-full my-2"> 
+          <mat-icon class="" [ngClass]="{'active-icon': isActiveRoute('/rechazos/table')}">person</mat-icon>
+          <span [ngClass]="{'active-text': isActiveRoute('/rechazos/table')}">Cliente</span>
+        </a>
+      </div>
+    </mat-nav-list>
+  </mat-expansion-panel> -->
+  
+  
+  
+  
+  
+  
+          <!-- Config -->
+          <a mat-list-item routerLink="/configuration" routerLinkActive="selected-menu-item"
+            #rlaConfig="routerLinkActive" [activated]="rlaConfig.isActive" class="d-flex align-items-center pe-0 ps-1">
+            <span routerLink="/configuration" matListItemTitle class="d-flex align-items-center gap-4">
+              <button type="button" class="btn w-6 h-6 text-center">
+                <mat-icon [ngClass]="{'active-icon': isActiveRoute('/configuration')}">build</mat-icon>
+              </button>
+              Configuracion
+            </span>
+          </a>
+          <!-- Pon aqui otros list -->
         </div>
-    </div>
-</div>
+        <mat-divider></mat-divider>
+        <!-- Final de Rechazos -->
+        <div class="d-flex flex-column align-items-center">
+          <!-- INICIO - Boton Dahsboard-->
+          <a mat-list-item routerLink="/logout" routerLinkActive="selected-menu-item"
+            #rlaLogout="routerLinkActive" [activated]="rlaLogout.isActive" class="d-flex align-items-center pe-0 ps-1">
+            <span matListItemTitle class="d-flex align-items-center gap-4">
+              <button class="btn w-6 h-6 text-center">
+                <mat-icon [ngClass]="{'active-icon': isActiveRoute('/logout')}">exit_to_app</mat-icon>
+              </button>
+              Log Out
+            </span>
+          </a>
+          <!-- Pon aqui otros list -->
+        </div>
+      </mat-nav-list>
+    </mat-sidenav>
+    
+    <!-- El bonton de salir -->
+    <mat-sidenav-content class="content" [style.margin-left]="sidenavWidth()">
+      <div class="h-screen">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  
