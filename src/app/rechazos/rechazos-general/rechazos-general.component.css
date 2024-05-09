@@ -1,0 +1,57 @@
+table {
+    width: 100%;
+  }
+  
+  .mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  td, th {
+    width: 25%;
+  }
+
+  th {
+    color: #3F51B5;
+  }
+
+  .custom-bold {
+    font-weight: 500;
+}
+
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* Ajusta el índice z según sea necesario para asegurar que esté por encima del contenido desplazable */
+  background-color: #fff; /* Opcional: ajusta el color de fondo según sea necesario */
+}
+
+.table-wrapper {
+  overflow-y: auto;
+  max-height: 700px; /* Establece la altura máxima para el desplazamiento vertical */
+}
+
+.custom-span-1 {
+  background-color: #ffffcc;
+  padding: 5px 10px; /* Espaciado interior para el contenido */
+  border-radius: 10px; /* Borde redondeado */
+}
+
+.custom-span-2 {
+  background-color: #ffcccc; /* Color de fondo para el segundo span */
+  padding: 5px 10px; /* Espaciado interior para el contenido */
+  border-radius: 10px; /* Borde redondeado */
+}
+
+.custom-span-3 {
+  background-color: #e8e8ff; /* Color de fondo para el tercer span */
+  padding: 5px 10px; /* Espaciado interior para el contenido */
+  border-radius: 10px; /* Borde redondeado */
+}
+
+.custom-span-4 {
+  background-color: #ccffcc; /* Color de fondo para el cuarto span */
+  padding: 5px 10px; /* Espaciado interior para el contenido */
+  border-radius: 10px; /* Borde redondeado */
+}
