@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PagesModule } from './pages/pages.module';
+import { HttpClientModule } from '@angular/common/http';
 /* components */
 
 /* angular material api de components */
 @NgModule({
   declarations: [
     AppComponent,
+    
     /* lo unico que se declarara sera los componentes creados en la carpeta componentes paginas no */
 
   ],
@@ -18,7 +20,8 @@ import { PagesModule } from './pages/pages.module';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    PagesModule
+    PagesModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

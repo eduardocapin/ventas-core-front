@@ -8,16 +8,12 @@ import { PagesComponent } from './pages/pages.component';
 const routes: Routes = [
 
   /* ruta de la pagina de inicio */
-  {path:'', redirectTo:'', pathMatch:'full'},
+  {path:'', redirectTo:'/mobentisrechazos/dashboard/global', pathMatch:'full'},
   
-  /* login */
-  {path: 'login', component: AuthComponent},
   
   /* Rutas de todo el proyecto */
   {
-    path: 'rechazos',  
-    component: PagesComponent, 
-    
+    path: 'mobentisrechazos', component: PagesComponent, 
     children:[
       /* ejemplo */
       /* {
@@ -26,6 +22,14 @@ const routes: Routes = [
         canActivate: [authGuard],
         canMatch: [authGuard]
       }, */
+      {
+        path: 'rechazos',
+        loadChildren: () => import('./rechazos/rechazos.module').then(m => m.RechazosModule),
+      },
+      {
+        path: 'dashboard',
+        loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DahsboardModule),
+      }
     ]
   },
 

@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RechazosGeneralComponent } from './rechazos-general/rechazos-general.component';
 
 const routes: Routes = [
-    {path: "rechazos", component: RechazosGeneralComponent},
+    {path: "/", component: RechazosGeneralComponent},
 ];
 
 @NgModule({
