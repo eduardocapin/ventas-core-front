@@ -1,1 +1,83 @@
-<p>rechazos-general works!</p>
+<div class="d-flex align-items-center m-3 gap-2">
+    <mat-icon class="mr-3" style="font-size: 1.5rem;">broken_image</mat-icon>
+    <h1 class="ml-3 mb-0">Rechazos</h1>
+</div>
+
+
+
+<!-- Info Rechazos -->
+<div class="bg-white rounded-xl py-2 px-5 details d-flex justify-content-between align-items-center gap-5">
+    <div class="d-flex gap-3 justify-content-center align-items-center">
+        <div class="text-center">
+            <h3 class="m-0">299</h3>
+            <span class="text-muted custom-bold custom-span-2">Rechazado</span>
+        </div>
+        <div class="text-center">
+            <h3 class="m-0">200000</h3>
+            <span class="text-muted custom-bold custom-span-1">En proceso</span>
+        </div>
+        <div class="text-center">
+            <h3 class="m-0">400120</h3>
+            <span class="text-muted custom-bold custom-span-3">No Aplica</span>
+        </div>
+        <div class="text-center">
+            <h3 class="m-0">140</h3>
+            <span class="text-muted custom-bold custom-span-4">Vendido</span>
+        </div>
+        <button matTooltip="Ver en Mapa" class="btn btn-primary d-flex justify-content-center align-items-center gap-2" *ngIf="selection.selected.length > 0" (click)="verEnMapa()">
+            <mat-icon (click)="verEnMapa()">map</mat-icon>
+        </button>
+    </div>
+    <button class="btn btn-primary">Filtros</button>
+</div>
+
+<!-- END Info Rechazos -->
+<!-- TABLA -->
+<div class="mat-elevation-z2 m-3">
+  <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" matSort>
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select" >
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox color="primary" (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null"
+                          [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+          <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+        </ng-container>
+        <!-- Progress Column -->
+        <ng-container matColumnDef="progress">
+          <th class="" mat-header-cell *matHeaderCellDef mat-sort-header> Progress </th>
+          <td mat-cell *matCellDef="let row"> {{row.progress}}% </td>
+        </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+          <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+        </ng-container>
+        <!-- Fruit Column -->
+        <ng-container matColumnDef="fruit">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fruit </th>
+          <td mat-cell *matCellDef="let row"> {{row.fruit}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+        </tr>
+      </table>
+  </div>
+  <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" aria-label="Select page of users"></mat-paginator>
+</div>
+<!-- END TABLA -->

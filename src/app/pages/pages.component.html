@@ -21,9 +21,9 @@
               Dashboard
             </span>
           </a>
-          
-          <a mat-list-item [routerLink]="['dashboard/global']" routerLinkActive="selected-menu-item"
-            #rlaDashboard="routerLinkActive" [activated]="rlaDashboard.isActive" class="d-flex align-items-center pe-0 ps-1">
+          <!-- INICIO - Boton Rechazos -->
+          <a mat-list-item [routerLink]="['rechazos/global']" routerLinkActive="selected-menu-item"
+            #rlaRechazos="routerLinkActive" [activated]="rlaRechazos.isActive" class="d-flex align-items-center pe-0 ps-1">
             <span matListItemTitle class="d-flex align-items-center gap-4">
               <button class="btn  w-6 h-6 text-center">
                 <mat-icon>broken_image</mat-icon>
@@ -31,7 +31,7 @@
               Rechazos
             </span>
           </a>
-
+          <!-- INICIO - Boton Clientes -->
           <a mat-list-item [routerLink]="['dashboard/global']" routerLinkActive="selected-menu-item"
             #rlaDashboard="routerLinkActive" [activated]="rlaDashboard.isActive" class="d-flex align-items-center pe-0 ps-1">
             <span matListItemTitle class="d-flex align-items-center gap-4">
