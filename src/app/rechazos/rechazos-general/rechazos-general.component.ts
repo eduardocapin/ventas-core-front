@@ -4,7 +4,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { PopupMapComponent } from './popup-map/popup-map.component';
+import { PopupFilterComponent } from './popup-filter/popup-filter.component';
 import { MatDialog } from '@angular/material/dialog';
+
 
 export interface UserData {
   id: string;
@@ -147,8 +149,15 @@ export class RechazosGeneralComponent implements AfterViewInit {
         return ''; // Devuelve una cadena vacía si el estado no coincide con ninguno de los casos anteriores
     }
   }
-  
-  
+
+  verFiltros() {
+    const dialogRef = this.dialog.open(PopupFilterComponent, {
+      width: '1080px',
+      height: 'auto',
+      disableClose: true,
+    });
+  }
+
 }
 
 function createNewUser(id: number): UserData {
