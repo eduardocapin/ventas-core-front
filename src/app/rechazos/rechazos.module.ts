@@ -10,6 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatButtonModule} from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+
 
 
 
@@ -35,7 +37,8 @@ import { RechazosRoutingModule } from './rechazos-routing.module';
         MatIconModule,
         MatDialogModule,
         MatButtonModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatSelectModule
     ]
 })
 export class RechazosModule{}

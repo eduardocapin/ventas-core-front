@@ -29,29 +29,64 @@ table {
 
 .table-wrapper {
   overflow-y: auto;
-  max-height: 700px; /* Establece la altura máxima para el desplazamiento vertical */
+  max-height: 700px;
 }
 
-.custom-span-1 {
-  background-color: #ffffcc;
-  padding: 5px 10px; /* Espaciado interior para el contenido */
-  border-radius: 10px; /* Borde redondeado */
+.custom-rechazado {
+  /* background-color: #ffffcc; */
+  background-color: #ebebeb;
+  padding: 5px 10px;
+  border-radius: 10px;
 }
 
-.custom-span-2 {
-  background-color: #ffcccc; /* Color de fondo para el segundo span */
-  padding: 5px 10px; /* Espaciado interior para el contenido */
-  border-radius: 10px; /* Borde redondeado */
+.custom-enproceso {
+  /* background-color: #ffcccc; */
+  background-color: #ebebeb;
+  padding: 5px 10px;
+  border-radius: 10px;
 }
 
-.custom-span-3 {
-  background-color: #e8e8ff; /* Color de fondo para el tercer span */
-  padding: 5px 10px; /* Espaciado interior para el contenido */
-  border-radius: 10px; /* Borde redondeado */
+.custom-noaplica {
+  /* background-color: #e8e8ff; */
+  background-color: #ebebeb;
+  padding: 5px 10px;
+  border-radius: 10px;
 }
 
-.custom-span-4 {
-  background-color: #ccffcc; /* Color de fondo para el cuarto span */
-  padding: 5px 10px; /* Espaciado interior para el contenido */
-  border-radius: 10px; /* Borde redondeado */
+.custom-vendido {
+  /* background-color: #ccffcc; */
+  background-color: #ebebeb;
+  padding: 5px 10px;
+  border-radius: 10px;
 }
+
+.estado-cell {
+  text-align: center; /* Centra el contenido de la celda */
+  vertical-align: middle; /* Centra verticalmente el contenido */
+}
+
+.estado-select {
+  width: 100%; /* Ajusta el ancho del select al 100% */
+}
+
+.estado-cell {
+  text-align: center; /* Centra el contenido de la celda */
+  vertical-align: middle; /* Centra verticalmente el contenido */
+}
+
+.rechazado {
+  color: red; /* Color para la opción "Rechazado" */
+}
+
+.en-proceso {
+  color: orange; /* Color para la opción "En Proceso" */
+}
+
+.vendido {
+  color: green; /* Color para la opción "Vendido" */
+}
+
+.no-aplica {
+  color: gray; /* Color para la opción "No aplica" */
+}
+
