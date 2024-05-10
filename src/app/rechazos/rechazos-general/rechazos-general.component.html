@@ -3,33 +3,32 @@
     <h1 class="ml-3 mb-0">Rechazos</h1>
 </div>
 
-
-
 <!-- Info Rechazos -->
 <div class="bg-white rounded-xl py-2 px-5 details d-flex justify-content-between align-items-center gap-5">
-    <div class="d-flex gap-3 justify-content-center align-items-center">
-        <div class="text-center">
-            <h3 class="m-0">299</h3>
-            <span class="text-muted custom-bold custom-span-2">Rechazado</span>
-        </div>
-        <div class="text-center">
-            <h3 class="m-0">200000</h3>
-            <span class="text-muted custom-bold custom-span-1">En proceso</span>
-        </div>
-        <div class="text-center">
-            <h3 class="m-0">400120</h3>
-            <span class="text-muted custom-bold custom-span-3">No Aplica</span>
-        </div>
-        <div class="text-center">
-            <h3 class="m-0">140</h3>
-            <span class="text-muted custom-bold custom-span-4">Vendido</span>
-        </div>
-        <button matTooltip="Ver en Mapa" class="btn btn-primary d-flex justify-content-center align-items-center gap-2" *ngIf="selection.selected.length > 0" (click)="verEnMapa()">
-            <mat-icon (click)="verEnMapa()">map</mat-icon>
-        </button>
+  <div class="d-flex gap-3 justify-content-center align-items-center">
+    <div class="text-center">
+      <h3 class="m-0">{{ rechazadosCount }}</h3>
+      <span class="text-muted custom-bold custom-rechazado">Rechazado</span>
     </div>
-    <button class="btn btn-primary">Filtros</button>
+    <div class="text-center">
+      <h3 class="m-0">{{ enProcesoCount }}</h3>
+      <span class="text-muted custom-bold custom-enproceso">En proceso</span>
+    </div>
+    <div class="text-center">
+      <h3 class="m-0">{{ noAplicaCount }}</h3>
+      <span class="text-muted custom-bold custom-noaplica">No Aplica</span>
+    </div>
+    <div class="text-center">
+      <h3 class="m-0">{{ vendidosCount }}</h3>
+      <span class="text-muted custom-bold custom-vendido">Vendido</span>
+    </div>
+    <button matTooltip="Ver en Mapa" class="btn btn-primary d-flex justify-content-center align-items-center gap-2" *ngIf="selection.selected.length > 0" (click)="verEnMapa()">
+      <mat-icon (click)="verEnMapa()">map</mat-icon>
+    </button>
+  </div>
+  <button class="btn btn-primary">Filtros</button>
 </div>
+
 
 <!-- END Info Rechazos -->
 <!-- TABLA -->
@@ -56,6 +55,24 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
           <td mat-cell *matCellDef="let row"> {{row.id}} </td>
         </ng-container>
+        <!-- Estado Column -->
+<!-- Estado Column -->
+<ng-container matColumnDef="estado">
+  <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+  <td mat-cell *matCellDef="let row" class="estado-cell">
+    <mat-form-field appearance="outline">
+      <mat-select [(value)]="row.estado" class="estado-select">
+        <mat-option value="Rechazado" class="rechazado">Rechazado</mat-option>
+        <mat-option value="En Proceso" class="en-proceso">En Proceso</mat-option>
+        <mat-option value="Vendido" class="vendido">Vendido</mat-option>
+        <mat-option value="No aplica" class="no-aplica">No aplica</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </td>
+</ng-container>
+
+        
+
         <!-- Progress Column -->
         <ng-container matColumnDef="progress">
           <th class="" mat-header-cell *matHeaderCellDef mat-sort-header> Progress </th>
