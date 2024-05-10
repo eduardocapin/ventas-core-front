@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, ElementRef } from '@angular/core';
-import { Map, config, Marker } from 'maplibre-gl';
+import { Map, NavigationControl, Marker } from 'maplibre-gl';
 
 @Component({
   selector: 'app-popup-map',
@@ -10,18 +10,17 @@ export class PopupMapComponent implements OnInit, AfterViewInit, OnDestroy {
   map: Map | undefined;
   marker: Marker | undefined
 
-  @ViewChild('mapElement')
-  private mapElement!: ElementRef<HTMLElement>;
+  @ViewChild('map')
+  private mapContainer!: ElementRef<HTMLElement>;
 
   ngOnInit(): void {
-    
   }
   ngAfterViewInit() {
-    if (this.mapElement) {
+    if (this.mapContainer) {
       const initialState = { lng: 139.753, lat: 35.6844};
       // Crea el mapa de MapTiler en el elemento div
       this.map = new Map({
-        container: this.mapElement.nativeElement,
+        container: this.mapContainer.nativeElement,
         style: 'https://api.maptiler.com/maps/basic-v2/style.json?key=36bBxm9qzcAM0x9cGbYq', /* cambia el estilo que quieras usar para el estilo del mapa */
         center: [initialState.lng, initialState.lat],
         zoom: 14

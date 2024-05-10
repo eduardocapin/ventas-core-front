@@ -1,10 +1,14 @@
 <!-- Contenedor de la pagina /rechazos/maps -->
-<div class="pt-5 h-auto">
+<div class="p-3 d-flex flex-column gap-4 ">
     <!-- parter superior -->
     <div class="d-flex align-items-center gap-3">
         <mat-icon>map</mat-icon>
         <h2 class="m-0">Mapa</h2>
     </div>
-    <!-- contenedor el mapa (por alguna razon si se pone dentro de un div deja de funcionar ) -->
-    <div class="w-10 h-10 m-auto mt-6" #mapElement></div>
+    <!-- contenedor el mapa -->
+    <div class="d-flex justify-content-center">
+        <div class="map-wrap">
+            <div class="map" #map></div>
+        </div>
+    </div>
 </div>
