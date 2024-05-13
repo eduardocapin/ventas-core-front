@@ -14,7 +14,7 @@ import { MatButtonModule} from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { RechazosRoutingModule } from './rechazos-routing.module';
 import { ReactiveFormsModule } from '@angular/forms'; // Importa ReactiveFormsModule
-
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -26,13 +26,12 @@ import { FormsModule } from '@angular/forms'; // Importa FormsModule si estás u
 
 /* paginas */
 import { RechazosGeneralComponent } from './rechazos-general/rechazos-general.component';
-import { PopupFilterComponent } from './rechazos-general/popup-filter/popup-filter.component';
+
 import { PopupMapComponent } from './rechazos-general/popup-map/popup-map.component';
 @NgModule({
     declarations: [
         RechazosGeneralComponent,
         PopupMapComponent,
-        PopupFilterComponent
     ],
     imports: [
         CommonModule,
@@ -53,7 +52,8 @@ import { PopupMapComponent } from './rechazos-general/popup-map/popup-map.compon
         MatNativeDateModule,
         MatRadioModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatSidenavModule
     ]
 })
 export class RechazosModule{}

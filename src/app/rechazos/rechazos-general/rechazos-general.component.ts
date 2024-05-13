@@ -4,8 +4,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { PopupMapComponent } from './popup-map/popup-map.component';
-import { PopupFilterComponent } from './popup-filter/popup-filter.component';
 import { MatDialog } from '@angular/material/dialog';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 
 export interface UserData {
@@ -58,6 +59,8 @@ export class RechazosGeneralComponent implements AfterViewInit {
   dataSource: MatTableDataSource<UserData>;
   selection = new SelectionModel<UserData>(true, []);
 
+  form: FormGroup;
+
   rechazadosCount: number = 0;
   enProcesoCount: number = 0;
   vendidosCount: number = 0;
@@ -66,10 +69,29 @@ export class RechazosGeneralComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private formBuilder: FormBuilder) {
     const users = Array.from({ length: 100 }, (_, k) => createNewUser(k + 1));
     this.dataSource = new MatTableDataSource(users);
+
+    this.form = this.formBuilder.group({
+      Agente: [''],
+      Clientes: [''],
+      RutaFilterControl: [''],
+      DateFilterControl: [[]]
+    });  
   }
+  /* Aplicar filtros */
+  // Implementa el método applyFilter() para aplicar filtros
+  applyFilter() {
+    console.log('Filtros aplicados:', this.form.value);
+  }
+  // Implementa el método filtroReset() para restablecer los filtros
+  filtroReset() {
+    this.form.reset();
+    this.form.get('DateFilterControl')?.setValue([]);
+
+  }
+
   ngAfterViewInit() {
     if (this.dataSource && this.paginator) {
       this.dataSource.paginator = this.paginator;
@@ -82,15 +104,6 @@ export class RechazosGeneralComponent implements AfterViewInit {
     }
   }
   
-
-  
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -148,14 +161,6 @@ export class RechazosGeneralComponent implements AfterViewInit {
       default:
         return ''; // Devuelve una cadena vacía si el estado no coincide con ninguno de los casos anteriores
     }
-  }
-
-  verFiltros() {
-    const dialogRef = this.dialog.open(PopupFilterComponent, {
-      width: '1080px',
-      height: 'auto',
-      disableClose: true,
-    });
   }
 
 }
