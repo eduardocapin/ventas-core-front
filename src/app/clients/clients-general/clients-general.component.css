@@ -1,3 +1,96 @@
-.color-dark {
+  .color-dark {
     color: #6D6D6D;
+  }
+  
+  table {
+      width: 100%;
+    }
+    
+    .mat-mdc-form-field {
+      font-size: 14px;
+      width: 100%;
+    }
+    
+  
+    th {
+      color: #3F51B5;
+    }
+  
+    .custom-bold {
+      font-weight: 500;
+  }
+  
+  
+  .sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ajusta el índice z según sea necesario para asegurar que esté por encima del contenido desplazable */
+    background-color: #fff; /* Opcional: ajusta el color de fondo según sea necesario */
+  }
+  
+  .table-wrapper {
+    overflow-y: auto;
+    max-height: 700px;
+  }
+  
+  .custom-rechazado {
+    /* background-color: #ffffcc; */
+    background-color: #ebebeb;
+    padding: 5px 10px;
+    border-radius: 10px;
+  }
+  
+  .custom-enproceso {
+    /* background-color: #ffcccc; */
+    background-color: #ebebeb;
+    padding: 5px 10px;
+    border-radius: 10px;
+  }
+  
+  .custom-noaplica {
+    /* background-color: #e8e8ff; */
+    background-color: #ebebeb;
+    padding: 5px 10px;
+    border-radius: 10px;
+  }
+  
+  .custom-vendido {
+    /* background-color: #ccffcc; */
+    background-color: #ebebeb;
+    padding: 5px 10px;
+    border-radius: 10px;
+  }
+  
+  .estado-cell {
+    text-align: center; /* Centra el contenido de la celda */
+    vertical-align: middle; /* Centra verticalmente el contenido */
+  }
+  
+  .estado-select {
+    width: 100%; /* Ajusta el ancho del select al 100% */
+  }
+  
+  .estado-cell {
+    text-align: center; /* Centra el contenido de la celda */
+    vertical-align: middle; /* Centra verticalmente el contenido */
+  }
+  
+  .rechazado {
+    color: red; /* Color para la opción "Rechazado" */
+  }
+  
+  .en-proceso {
+    color: orange; /* Color para la opción "En Proceso" */
+  }
+  
+  .vendido {
+    color: green; /* Color para la opción "Vendido" */
+  }
+  
+  .no-aplica {
+    color: gray; /* Color para la opción "No aplica" */
+  }
+  
+  .estado-select-container {
+    margin-left: 10px;
   }
