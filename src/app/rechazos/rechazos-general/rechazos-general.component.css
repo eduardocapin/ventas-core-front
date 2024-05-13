@@ -9,6 +9,7 @@ table {
   .mat-mdc-form-field {
     font-size: 14px;
     width: 100%;
+    
   }
   
 
@@ -62,12 +63,14 @@ table {
 }
 
 .estado-cell {
+  
   text-align: center; /* Centra el contenido de la celda */
   vertical-align: middle; /* Centra verticalmente el contenido */
 }
 
 .estado-select {
-  width: 100%; /* Ajusta el ancho del select al 100% */
+  width: 160px;
+  text-align: start; /* Ajusta el ancho del select al 100% */
 }
 
 .estado-cell {
@@ -91,6 +94,11 @@ table {
   color: gray; /* Color para la opción "No aplica" */
 }
 
-.estado-select-container {
-  margin-left: 10px;
+/* sidenav */
+.sidenav{
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  height: auto;
 }
+
