@@ -27,30 +27,96 @@ export interface UserData {
   longitud: number; // Nuevo campo para la longitud
 
 }
+const PROVINCIAS: string[] = [
+  'Álava', 'Albacete', 'Alicante', 'Almería', 'Asturias', 'Ávila', 'Badajoz', 'Barcelona', 'Burgos', 'Cáceres',
+  'Cádiz', 'Cantabria', 'Castellón', 'Ciudad Real', 'Córdoba', 'La Coruña', 'Cuenca', 'Gerona', 'Granada', 'Guadalajara',
+  'Guipúzcoa', 'Huelva', 'Huesca', 'Islas Baleares', 'Jaén', 'León', 'Lérida', 'Lugo', 'Madrid', 'Málaga',
+  'Murcia', 'Navarra', 'Orense', 'Palencia', 'Las Palmas', 'Pontevedra', 'La Rioja', 'Salamanca', 'Segovia', 'Sevilla', 'Soria',
+  'Tarragona', 'Santa Cruz de Tenerife', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza'
+];
+
+const POBLACIONES: string[] = [
+  'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Murcia', 'Palma', 'Las Palmas de Gran Canaria', 'Bilbao',
+  'Alicante', 'Córdoba', 'Valladolid', 'Vigo', 'Gijón', 'Hospitalet de Llobregat', 'Vitoria-Gasteiz', 'La Coruña', 'Granada', 'Elche',
+  'Oviedo', 'Santa Cruz de Tenerife', 'Pamplona', 'Cartagena', 'Sabadell', 'Jerez de la Frontera', 'Móstoles', 'Santander', 'Alcalá de Henares', 'Fuenlabrada',
+  'Legánes', 'San Sebastián', 'Getafe', 'Burgos', 'Albacete', 'Alcorcón', 'Almería', 'Donostia-San Sebastián', 'Castellón de la Plana', 'Logroño', 'Badajoz',
+  'La Laguna', 'Salamanca', 'Huelva', 'Marbella', 'Lérida', 'Tarragona', 'Dos Hermanas', 'Torrejón de Ardoz', 'Parla', 'Mataró'
+];
 
 const NAMES: string[] = [
-  'Maia',
-  'Asher',
-  'Olivia',
-  'Atticus',
-  'Amelia',
-  'Jack',
-  'Charlotte',
-  'Theodore',
-  'Isla',
-  'Oliver',
-  'Isabella',
-  'Jasper',
-  'Cora',
-  'Levi',
-  'Violet',
-  'Arthur',
-  'Mia',
-  'Thomas',
-  'Elizabeth',
+  'Delicias Ibéricas',
+  'Sabores Andaluces',
+  'Quesos Artesanos',
+  'Bebidas Mediterráneas',
+  'Frutas Frescas',
+  'Aceites Gourmet',
+  'Cervezas Artesanales',
+  'Golosinas Españolas',
+  'Sabor Natural',
+  'Vinos Selectos',
+  'Carnes Premium',
+  'Dulces Caseros',
+  'Conservas del Sur',
+  'Sabor Tradicional',
+  'Productos Frescos',
+  'Panadería Artesanal',
+  'Embutidos Ibéricos',
+  'Postres deliciosos',
+  'Frutos Secos',
+  'Especias y Hierbas',
+];
+
+const PRODUCTOS: string[] = [
+  'Cerveza',
+  'Vino',
+  'Aceite de oliva',
+  'Queso',
+  'Embutidos',
+  'Frutas',
+  'Verduras',
+  'Pan',
+  'Bebidas refrescantes',
+  'Helado',
+  'Chocolate',
+  'Café',
+  'Cereales',
+  'Miel',
+  'Frutos secos',
+  'Especias',
+];
+
+const FAMILIAS: string[] = [
+  'Bebidas',
+  'Alimentos frescos',
+  'Lácteos',
+  'Panadería',
+  'Charcutería',
+  'Dulces',
+  'Condimentos',
+];
+
+const SUBFAMILIAS: string[] = [
+  'Bebidas alcohólicas',
+  'Bebidas no alcohólicas',
+  'Frutas frescas',
+  'Verduras frescas',
+  'Quesos',
+  'Embutidos',
+  'Pan blanco',
+  'Pan integral',
+  'Galletas',
+  'Chocolate',
+  'Café molido',
+  'Café en grano',
+  'Cereales de desayuno',
+  'Mermeladas',
+  'Frutos secos tostados',
+  'Especias en polvo',
 ];
 
 const RECHAZOS: string[] = ['Rechazado', 'En Proceso', 'Vendido', 'No aplica'];
+
+
 
 @Component({
   selector: 'app-rechazos-general',
@@ -173,12 +239,12 @@ export class RechazosGeneralComponent implements AfterViewInit {
 }
 
 function createNewUser(id: number): UserData {
-  const poblacion = NAMES[Math.floor(Math.random() * NAMES.length)];
-  const provincia = NAMES[Math.floor(Math.random() * NAMES.length)];
+  const poblacion = POBLACIONES[Math.floor(Math.random() * POBLACIONES.length)];
+  const provincia = PROVINCIAS[Math.floor(Math.random() * PROVINCIAS.length)];
   const cliente = NAMES[Math.floor(Math.random() * NAMES.length)];
-  const producto = NAMES[Math.floor(Math.random() * NAMES.length)];
-  const familia = NAMES[Math.floor(Math.random() * NAMES.length)];
-  const subfamilia = NAMES[Math.floor(Math.random() * NAMES.length)];
+  const producto = PRODUCTOS[Math.floor(Math.random() * PRODUCTOS.length)];
+  const familia = FAMILIAS[Math.floor(Math.random() * FAMILIAS.length)];
+  const subfamilia = SUBFAMILIAS[Math.floor(Math.random() * SUBFAMILIAS.length)];
   const rechazo = RECHAZOS[Math.floor(Math.random() * RECHAZOS.length)];
   const pvp = Math.floor(Math.random() * 100).toString();
   const comp = Math.floor(Math.random() * 100).toString();

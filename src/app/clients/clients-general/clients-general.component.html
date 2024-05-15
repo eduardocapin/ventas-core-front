@@ -1,16 +1,25 @@
 <div class="fondoGris screen">
     <div class="p-3">
-
-        <div class="d-flex align-items-center justify-content-start m-3">
+      <div class="d-flex align-items-center justify-content-between">
+          <!-- titulo de cliente -->
+          <div class="d-flex align-items-center justify-content-start">
             <mat-icon class="color-dark">people</mat-icon>
             <h1 class="mb-0 ps-2 color-dark">Clientes</h1>
           </div>
+          <!-- boton de filtrado -->
+          <div>
+              <button class="btn btn-primary d-flex align-items-center">
+                  <mat-icon class="p-0 m-0">filter_list_alt</mat-icon>
+                  <span class="ms-1">Filtros</span>
+                </button>
+          </div>
+      </div>
 
           <div class="fondoGris screen">
-            <div class="p-3">
+            <div class="pt-4">
 
           <!-- TABLA -->
-          <div class="mat-elevation-z2 m-3">
+          <div class="mat-elevation-z2">
           <div class="table-wrapper">
               <table mat-table [dataSource]="dataSource" matSort>
 
