@@ -1,4 +1,4 @@
-.screen{
+.screen {
   height: 100vh;
   padding: 3px;
 }
@@ -8,30 +8,27 @@
 }
 
 table {
-    width: 100%;
-  }
-  
-  .mat-mdc-form-field {
-    font-size: 14px;
-    width: 100%;
-    
-  }
-  
-
-  th {
-    color: #3F51B5;
-  }
-
-  .custom-bold {
-    font-weight: 500;
+  width: 100%;
 }
 
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+th {
+  color: #3F51B5;
+}
+
+.custom-bold {
+  font-weight: 500;
+}
 
 .sticky-header {
   position: sticky;
   top: 0;
-  z-index: 1000; /* Ajusta el índice z según sea necesario para asegurar que esté por encima del contenido desplazable */
-  background-color: #fff; /* Opcional: ajusta el color de fondo según sea necesario */
+  z-index: 1000;
+  background-color: #fff;
 }
 
 .table-wrapper {
@@ -40,70 +37,101 @@ table {
 }
 
 .custom-rechazado {
-  /* background-color: #ffffcc; */
   background-color: #ebebeb;
   padding: 5px 10px;
   border-radius: 10px;
 }
 
 .custom-enproceso {
-  /* background-color: #ffcccc; */
   background-color: #ebebeb;
   padding: 5px 10px;
   border-radius: 10px;
 }
 
 .custom-noaplica {
-  /* background-color: #e8e8ff; */
   background-color: #ebebeb;
   padding: 5px 10px;
   border-radius: 10px;
 }
 
 .custom-vendido {
-  /* background-color: #ccffcc; */
   background-color: #ebebeb;
   padding: 5px 10px;
   border-radius: 10px;
 }
 
 .estado-cell {
-  
-  text-align: center; /* Centra el contenido de la celda */
-  vertical-align: middle; /* Centra verticalmente el contenido */
+  text-align: center;
+  vertical-align: middle;
 }
 
 .estado-select {
-  width: 160px;
-  text-align: start; /* Ajusta el ancho del select al 100% */
-}
-
-.estado-cell {
-  text-align: center; /* Centra el contenido de la celda */
-  vertical-align: middle; /* Centra verticalmente el contenido */
+  width: 100px;
+  text-align: center;
+  padding: 2px;
+  background-color: transparent;
 }
 
 .rechazado {
-  color: red; /* Color para la opción "Rechazado" */
+  color: #FF5757;
 }
 
 .en-proceso {
-  color: orange; /* Color para la opción "En Proceso" */
+  color: #3F57BC;
 }
 
 .vendido {
-  color: green; /* Color para la opción "Vendido" */
+  color: #10a03b;
 }
 
 .no-aplica {
-  color: gray; /* Color para la opción "No aplica" */
+  color: rgb(175, 175, 175);
 }
 
-/* sidenav */
-.sidenav{
+.color-accioncorrectora {
+  color: #10a03b;
+}
+
+.color-rechazo {
+  color: #FF5757;
+}
+
+.sidenav {
   display: flex;
   flex-direction: column;
   width: fit-content;
   height: auto;
 }
 
+.editable-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editable-input {
+  color: #10a03b;
+  border: none;
+  outline: none;
+  width: 60px;
+  text-align: right;
+  padding-right: 5px;
+}
+
+.symbol-select {
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+.no-border-select {
+  border: none;
+  padding: 0; /* Eliminar padding adicional */
+  font-size: 14px;
+  color: #495057;
+  cursor: pointer;
+}

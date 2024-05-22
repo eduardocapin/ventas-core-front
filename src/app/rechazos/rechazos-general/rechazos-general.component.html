@@ -1,11 +1,10 @@
 <div class="fondoGris">
   <mat-drawer-container class="screen">
-
       <div class="d-flex align-items-center justify-content-start m-3">
           <mat-icon class="color-dark">broken_image</mat-icon>
           <h1 class="mb-0 ps-2 color-dark">Rechazos</h1>
         </div>
-<!-- Info Rechazos -->
+      <!-- Info Rechazos -->
       <div class="mx-3 details d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
         <div class="bg-white text-center rounded-3 d-flex justify-content-evenly align-items-center gap-2 px-3">
           <div class="d-flex flex-column m-1">
@@ -42,213 +41,198 @@
           </button>
         </div>
       </div>
-
-<!-- END Info Rechazos -->
-<!-- TABLA -->
+      <!-- END Info Rechazos -->
+      <!-- TABLA -->
       <div class="mat-elevation-z2 m-3">
         <div class="table-wrapper">
-            <table mat-table [dataSource]="dataSource" matSort>
-              <!-- Checkbox Column -->
-              <ng-container matColumnDef="select" >
-                <th mat-header-cell *matHeaderCellDef>
-                  <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
-                                [checked]="selection.hasValue() && isAllSelected()"
-                                [indeterminate]="selection.hasValue() && !isAllSelected()">
-                  </mat-checkbox>
-                </th>
-                <td mat-cell *matCellDef="let row">
-                  <mat-checkbox color="primary" (click)="$event.stopPropagation()"
-                                (change)="$event ? selection.toggle(row) : null"
-                                [checked]="selection.isSelected(row)">
-                  </mat-checkbox>
-                </td>
-              </ng-container>
-              <!-- ID Column -->
-              <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-                <td mat-cell *matCellDef="let row"> {{row.id}} </td>
-              </ng-container>
-        <!-- Estado Column -->
-        <ng-container matColumnDef="estado">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
-        <td mat-cell *matCellDef="let row" class="estado-cell">
-
-          <div class="d-flex align-items-center justify-content-center gap-4">
-            <img [src]="getOptionImage(row.estado)" alt="Estado Image" class="option-image" style="width: 24px; height: 24px;">
-              <mat-select [(value)]="row.estado" class="estado-select">
-                <mat-option value="Rechazado" class="rechazado">Rechazado</mat-option>
-                <mat-option value="En Proceso" class="en-proceso">En Proceso</mat-option>
-                <mat-option value="Vendido" class="vendido">Vendido</mat-option>
-                <mat-option value="No aplica" class="no-aplica">No aplica</mat-option>
-              </mat-select>
-          </div>
-
-        </td>
-        </ng-container>
-
-        <!-- Poblacion Column -->
-        <ng-container matColumnDef="poblacion">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Población </th>
-        <td mat-cell *matCellDef="let row"> {{ row.poblacion }} </td>
-        </ng-container>
-
-        <!-- Provincia Column -->
-        <ng-container matColumnDef="provincia">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Provincia </th>
-        <td mat-cell *matCellDef="let row"> {{ row.provincia }} </td>
-        </ng-container>
-
-        <!-- Cliente Column -->
-        <ng-container matColumnDef="cliente">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
-        <td mat-cell *matCellDef="let row"> {{ row.cliente }} </td>
-        </ng-container>
-
-        <!-- Producto Column -->
-        <ng-container matColumnDef="producto">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Producto </th>
-        <td mat-cell *matCellDef="let row"> {{ row.producto }} </td>
-        </ng-container>
-
-        <!-- Familia Column -->
-        <ng-container matColumnDef="familia">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Familia </th>
-        <td mat-cell *matCellDef="let row"> {{ row.familia }} </td>
-        </ng-container>
-
-        <!-- Subfamilia Column -->
-        <ng-container matColumnDef="subfamilia">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Subfamilia </th>
-        <td mat-cell *matCellDef="let row"> {{ row.subfamilia }} </td>
-        </ng-container>
-
-        <!-- Rechazo Column -->
-        <ng-container matColumnDef="rechazo">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Rechazo </th>
-        <td class="text-danger" mat-cell *matCellDef="let row"> {{ row.rechazo }} </td>
-        </ng-container>
-
-        <!-- PVP Column -->
-        <ng-container matColumnDef="pvp">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> PVP </th>
-        <td mat-cell *matCellDef="let row"> {{ row.pvp }}€ </td>
-        </ng-container>
-
-        <!-- Comp Column -->
-        <ng-container matColumnDef="comp">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Comp. </th>
-        <td mat-cell *matCellDef="let row"> {{ row.comp }}€ </td>
-        </ng-container>
-
-        <!-- Competidor Column -->
-        <ng-container matColumnDef="competidor">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Competidor </th>
-        <td mat-cell *matCellDef="let row"> {{ row.competidor }} </td>
-        </ng-container>
-
-        <!-- Accion Correctora Column -->
-        <ng-container matColumnDef="accionCorrectora">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Accion Correctora </th>
-        <td class="text-success" mat-cell *matCellDef="let row"> 
-          <span *ngIf="!row.editando" (click)="row.editando =true">{{ row.accionCorrectora }}</span> 
-          <input *ngIf="row.editando" [(ngModel)]="row.accionCorrectora" (blur)="row.editando = false">
-        </td>
-        </ng-container>
-
-        <!-- Propuesta agente Column -->
-        <ng-container matColumnDef="propuestaAgente">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Propuesta Agente </th>
-          <td mat-cell *matCellDef="let row"> {{ row.propuestaAgente}} </td>
-          </ng-container>
-
-
-              
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              <!-- Row shown when there is no matching data. -->
-              <tr class="mat-row" *matNoDataRow>
-              </tr>
-            </table>
-        </div>
-      <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
-
-      </div>
-<!-- END TABLA -->
-        <!-- menu derecho -->
-  <mat-drawer #drawer class="sidenav px-3" mode="over" position="end">
-    <div class="d-flex align-items-center my-4 gap-3">
-      <mat-icon>filter_list_alt</mat-icon>
-      <h2 class="my-0">Filtro de Rechazos</h2>
+          <table mat-table [dataSource]="dataSource" matSort>
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef class="sticky-header">
+                <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
+                              [checked]="selection.hasValue() && isAllSelected()"
+                              [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row">
+                <mat-checkbox color="primary" (click)="$event.stopPropagation()"
+                              (change)="$event ? selection.toggle(row) : null"
+                              [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> ID </th>
+              <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+            </ng-container>
+<!-- Estado Column -->
+<ng-container matColumnDef="estado">
+  <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Estado </th>
+  <td mat-cell *matCellDef="let row" class="estado-cell">
+    <div class="d-flex align-items-center justify-content-center gap-2">
+      <img [src]="getOptionImage(row.estado)" alt="Estado Image" class="option-image" style="width: 24px; height: 24px;">
+      <select [(ngModel)]="row.estado" class="estado-select no-border-select">
+        <option value="Rechazado" class="rechazado">Rechazado</option>
+        <option value="En Proceso" class="en-proceso">En Proceso</option>
+        <option value="Vendido" class="vendido">Vendido</option>
+        <option value="No aplica" class="no-aplica">No aplica</option>
+      </select>
     </div>
-    <form [formGroup]="form" (ngSubmit)="applyFilter()" class="d-flex flex-column gap-3">
-      <div class="d-flex flex-column">
-        <div class="mb-2 d-flex flex-column gap-3">
-          <!-- select -->
-          <mat-form-field subscriptSizing="dynamic" class="">
-            <mat-label>Estado</mat-label>
-            <mat-select formControlName="EstadoFilterControl">
-              <mat-option>- Todos -</mat-option>
-              <mat-option value="option1">Rechazado</mat-option>
-              <mat-option value="option2">En Proceso</mat-option>
-              <mat-option value="option3">Vendido</mat-option>
-              <mat-option value="option4">No aplica</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <!-- Autocompletado -->
-          <mat-form-field subscriptSizing="dynamic" class="">
-            <mat-label>Poblacion</mat-label>
-            <input formControlName="PoblacionFilterControl" matInput>
-          </mat-form-field>
-          <!-- autocompletado -->
-          <mat-form-field subscriptSizing="dynamic" class="">
-            <mat-label>Provincia</mat-label>
-            <input formControlName="ProvinciaFilterControl" matInput>
-          </mat-form-field>
-          <!-- select -->
-          <mat-form-field subscriptSizing="dynamic" class="">
-            <mat-label>Clientes</mat-label>
-            <mat-select formControlName="ClienteFilterControl">
-              <mat-option>- Todos -</mat-option>
-              <mat-option value="option1">Cliente 1</mat-option>
-              <mat-option value="option2">Cliente 2</mat-option>
-              <mat-option value="option3">Cliente 3</mat-option>
-              <mat-option value="option4">Cliente 4</mat-option>
-              <mat-option value="option5">Cliente 5</mat-option>
-              <mat-option value="option6">Cliente 6</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <!-- autocompletado -->
-          <mat-form-field subscriptSizing="dynamic" class="">
-            <mat-label>Producto</mat-label>
-            <input formControlName="ProductoFilterControl" matInput>
-          </mat-form-field>
-          <!-- autocompletado -->
-          <mat-form-field subscriptSizing="dynamic" class="">
-            <mat-label>Familia</mat-label>
-            <input formControlName="FamiliaFilterControl" matInput>
-          </mat-form-field>
-          <!-- autocompletado -->
-          <mat-form-field subscriptSizing="dynamic" class="">
-            <mat-label>Subfamilia</mat-label>
-            <input formControlName="SubFamiliaFilterControl" matInput>
-          </mat-form-field>
-          
+  </td>
+</ng-container>
+            <!-- Poblacion Column -->
+            <ng-container matColumnDef="poblacion">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Población </th>
+              <td mat-cell *matCellDef="let row"> {{ row.poblacion }} </td>
+            </ng-container>
+            <!-- Provincia Column -->
+            <ng-container matColumnDef="provincia">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Provincia </th>
+              <td mat-cell *matCellDef="let row"> {{ row.provincia }} </td>
+            </ng-container>
+            <!-- Cliente Column -->
+            <ng-container matColumnDef="cliente">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Cliente </th>
+              <td mat-cell *matCellDef="let row"> {{ row.cliente }} </td>
+            </ng-container>
+            <!-- Producto Column -->
+            <ng-container matColumnDef="producto">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Producto </th>
+              <td mat-cell *matCellDef="let row"> {{ row.producto }} </td>
+            </ng-container>
+            <!-- Familia Column -->
+            <ng-container matColumnDef="familia">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Familia </th>
+              <td mat-cell *matCellDef="let row"> {{ row.familia }} </td>
+            </ng-container>
+            <!-- Subfamilia Column -->
+            <ng-container matColumnDef="subfamilia">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Subfamilia </th>
+              <td mat-cell *matCellDef="let row"> {{ row.subfamilia }} </td>
+            </ng-container>
+            <!-- Rechazo Column -->
+            <ng-container matColumnDef="rechazo">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Rechazo </th>
+              <td class="color-rechazo" mat-cell *matCellDef="let row"> {{ row.rechazo }} </td>
+            </ng-container>
+            <!-- PVP Column -->
+            <ng-container matColumnDef="pvp">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> PVP </th>
+              <td mat-cell *matCellDef="let row"> {{ row.pvp }}€ </td>
+            </ng-container>
+            <!-- Comp Column -->
+            <ng-container matColumnDef="comp">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Comp. </th>
+              <td mat-cell *matCellDef="let row"> {{ row.comp }}€ </td>
+            </ng-container>
+            <!-- Competidor Column -->
+            <ng-container matColumnDef="competidor">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Competidor </th>
+              <td mat-cell *matCellDef="let row"> {{ row.competidor }} </td>
+            </ng-container>
+            <!-- % - € Column -->
+            <ng-container matColumnDef="accionPrecioPorcentaje">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> </th>
+              <td mat-cell *matCellDef="let row">
+                <div class="editable-cell">
+                  <input [(ngModel)]="row.accionPrecioPorcentaje" (blur)="onSave(row)" class="editable-input" type="number" />
+                  <select [(ngModel)]="row.symbol" (change)="onSymbolChange(row)" class="symbol-select">
+                    <option value="%">%</option>
+                    <option value="€">€</option>
+                  </select>
+                </div>
+              </td>
+            </ng-container>
+            <!-- Accion Correctora Column -->
+            <ng-container matColumnDef="accionCorrectora">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Accion Correctora </th>
+              <td class="color-accioncorrectora" mat-cell *matCellDef="let row">
+                <span *ngIf="!row.editando" (click)="row.editando =true">{{ row.accionCorrectora }}</span>
+                <input *ngIf="row.editando" [(ngModel)]="row.accionCorrectora" (blur)="row.editando = false">
+              </td>
+            </ng-container>
+            <!-- Propuesta agente Column -->
+            <ng-container matColumnDef="propuestaAgente">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Propuesta Agente </th>
+              <td mat-cell *matCellDef="let row"> {{ row.propuestaAgente}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+            </tr>
+          </table>
         </div>
-        
-        <div class="content-end gap-2 d-flex mt-2">
-          <button mat-raised-button type="submit" (click)="drawer.toggle()" class="bg-black text-white" cdkFocusInitial>Filtrar</button>
-          <button mat-raised-button (click)="filtroReset()" class="bg-black text-white" mat-button>Limpiar</button>
-          <button mat-raised-button (click)="drawer.toggle()" class="bg-black text-white" mat-button>Cancelar</button>
-        </div>
+        <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
       </div>
-  
-    </form>
-  </mat-drawer>
-
-</mat-drawer-container>
+      <!-- END TABLA -->
+      <!-- menu derecho -->
+      <mat-drawer #drawer class="sidenav px-3" mode="over" position="end">
+        <div class="d-flex align-items-center my-4 gap-3">
+          <mat-icon>filter_list_alt</mat-icon>
+          <h2 class="my-0">Filtro de Rechazos</h2>
+        </div>
+        <form [formGroup]="form" (ngSubmit)="applyFilter()" class="d-flex flex-column gap-3">
+          <div class="d-flex flex-column">
+            <div class="mb-2 d-flex flex-column gap-3">
+              <!-- select -->
+              <mat-form-field subscriptSizing="dynamic" class="">
+                <mat-label>Estado</mat-label>
+                <mat-select formControlName="EstadoFilterControl">
+                  <mat-option value="">- Todos -</mat-option>
+                  <mat-option value="Rechazado">Rechazado</mat-option>
+                  <mat-option value="En Proceso">En Proceso</mat-option>
+                  <mat-option value="Vendido">Vendido</mat-option>
+                  <mat-option value="No aplica">No aplica</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <!-- Autocompletado -->
+              <mat-form-field subscriptSizing="dynamic" class="">
+                <mat-label>Poblacion</mat-label>
+                <input formControlName="PoblacionFilterControl" matInput>
+              </mat-form-field>
+              <!-- autocompletado -->
+              <mat-form-field subscriptSizing="dynamic" class="">
+                <mat-label>Provincia</mat-label>
+                <input formControlName="ProvinciaFilterControl" matInput>
+              </mat-form-field>
+              <!-- select -->
+              <mat-form-field subscriptSizing="dynamic" class="">
+                <mat-label>Clientes</mat-label>
+                <mat-select formControlName="ClienteFilterControl">
+                  <mat-option value="">- Todos -</mat-option>
+                  <mat-option value="Cliente 1">Cliente 1</mat-option>
+                  <mat-option value="Cliente 2">Cliente 2</mat-option>
+                  <mat-option value="Cliente 3">Cliente 3</mat-option>
+                  <mat-option value="Cliente 4">Cliente 4</mat-option>
+                  <mat-option value="Cliente 5">Cliente 5</mat-option>
+                  <mat-option value="Cliente 6">Cliente 6</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <!-- autocompletado -->
+              <mat-form-field subscriptSizing="dynamic" class="">
+                <mat-label>Producto</mat-label>
+                <input formControlName="ProductoFilterControl" matInput>
+              </mat-form-field>
+              <!-- autocompletado -->
+              <mat-form-field subscriptSizing="dynamic" class="">
+                <mat-label>Familia</mat-label>
+                <input formControlName="FamiliaFilterControl" matInput>
+              </mat-form-field>
+              <!-- autocompletado -->
+              <mat-form-field subscriptSizing="dynamic" class="">
+                <mat-label>Subfamilia</mat-label>
+                <input formControlName="SubFamiliaFilterControl" matInput>
+              </mat-form-field>
+            </div>
+            <div class="content-end gap-2 d-flex mt-2">
+              <!-- <button mat-raised-button type="submit" (click)="drawer.toggle()" class="bg-black text-white" cdkFocusInitial>Filtrar</button> -->
+              <button mat-raised-button (click)="filtroReset()" class="bg-black text-white" mat-button>Limpiar</button>
+              <button mat-raised-button (click)="drawer.toggle()" class="bg-black text-white" mat-button>Cancelar</button>
+            </div>
+          </div>
+        </form>
+      </mat-drawer>
+  </mat-drawer-container>
 </div>
-
-
-
-
