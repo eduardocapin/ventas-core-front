@@ -191,7 +191,7 @@ export class RechazosGeneralComponent implements AfterViewInit {
 
   verEnMapa() {
     const dialogRef = this.dialog.open(PopupMapComponent, {
-      width: '1080px',
+      width: '1550px',
       height: 'auto',
       disableClose: true,
       data:{selectedRows: this.selection.selected}
