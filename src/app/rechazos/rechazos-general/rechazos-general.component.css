@@ -1,3 +1,8 @@
+.screen{
+  height: 100vh;
+  padding: 3px;
+}
+
 .color-dark {
   color: #6D6D6D;
 }

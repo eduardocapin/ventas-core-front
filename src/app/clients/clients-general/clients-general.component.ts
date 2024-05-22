@@ -2,15 +2,24 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
 import { MatDialog } from '@angular/material/dialog';
+import { PopupClientDetailComponent } from './popup-client-detail/popup-client-detail.component';
 
 export interface UserData {
   codigo: string;
+  nombre: string;
   poblacion: string;
   provincia: string;
   cp: string;
 }
+
+const NOMBRE: string[] = [
+  'Juan', 'María', 'José', 'Ana', 'Carlos', 'Laura', 'David', 'Sara', 'Daniel', 'Paula',
+  'Pablo', 'Elena', 'Pedro', 'Lucía', 'Miguel', 'Carmen', 'Manuel', 'Raquel', 'Javier', 'Nerea',
+  'Alejandro', 'Isabel', 'Jorge', 'Sandra', 'Rubén', 'Natalia', 'Sergio', 'Marta', 'Alberto', 'Patricia',
+  'Diego', 'Lorena', 'Rafael', 'Beatriz', 'Fernando', 'Miriam', 'Ignacio', 'Eva', 'Adrián', 'Cristina',
+  'Francisco', 'Teresa', 'Álvaro', 'Luisa', 'Rocío', 'Mario', 'Verónica', 'Gonzalo', 'Silvia', 'Víctor'
+];
 
 const PROVINCIAS: string[] = [
   'Álava', 'Albacete', 'Alicante', 'Almería', 'Asturias', 'Ávila', 'Badajoz', 'Barcelona', 'Burgos', 'Cáceres',
@@ -43,9 +52,8 @@ const POSTAL_CODES: string[] = [
   styleUrls: ['./clients-general.component.css']
 })
 export class ClientsGeneralComponent implements AfterViewInit {
-  displayedColumns: string[] = ['select', 'codigo', 'provincia', 'poblacion', 'cp'];
+  displayedColumns: string[] = ['codigo', "nombre", 'provincia', 'poblacion', 'cp', 'detalles'];
   dataSource: MatTableDataSource<UserData>;
-  selection = new SelectionModel<UserData>(true, []);
 
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
@@ -72,27 +80,28 @@ export class ClientsGeneralComponent implements AfterViewInit {
     }
   }
 
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
+  openDetailsDialog(user: UserData) {
+    // Aquí puedes abrir un diálogo emergente para mostrar los detalles del usuario
+    const dialogRef = this.dialog.open(PopupClientDetailComponent, {
+      width: '550px',
+      height: 'auto',
+      disableClose: true,
+      data: user
+    })
   }
 
-  masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
-  }
 }
 
 function createNewUser(codigo: number): UserData {
   const poblacion = POBLACIONES[Math.floor(Math.random() * POBLACIONES.length)];
   const provincia = PROVINCIAS[Math.floor(Math.random() * PROVINCIAS.length)];
   const cp = POSTAL_CODES[Math.floor(Math.random() * POSTAL_CODES.length)];
-
+  const nombre = NOMBRE[Math.floor(Math.random()*NOMBRE.length)];
 
   return {
+
     codigo: codigo.toString(),
+    nombre: nombre,
     poblacion: poblacion,
     provincia: provincia,
     cp: cp,

@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, ElementRef } from '@angular/core';
-import { Map, NavigationControl, Marker } from 'maplibre-gl';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, ElementRef, Inject } from '@angular/core';
+import { Map, Marker } from 'maplibre-gl';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { UserData } from '../rechazos-general.component';
 
 @Component({
   selector: 'app-popup-map',
@@ -13,7 +14,8 @@ export class PopupMapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<PopupMapComponent>,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ){}
 
   @ViewChild('map')
@@ -22,35 +24,47 @@ export class PopupMapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
   }
 
+  getLatLongFromRow(row: any): { lat: number, lng: number } {
+    if (row && typeof row.latitud === 'number' && typeof row.longitud === 'number') {
+      const lat = parseFloat(row.latitud);
+      const lng = parseFloat(row.longitud);
+      if (!isNaN(lat) && !isNaN(lng)) {
+        return { lat, lng };
+      }
+    }
+    // Si hay un error o los valores no son válidos, devuelve un objeto con valores por defecto
+    return { lat: 0, lng: 0 };
+  }
+
   ngAfterViewInit() {
-    if (this.mapContainer) {
-      const initialState = { lng: -5.8447, lat: 43.3614 }; // Coordenadas iniciales en el centro de Oviedo
+    if (this.mapContainer && this.data && this.data.selectedRows) {
+      
+      /* Coordenadas donde se abrirar el mapa */
+      const initialState = { lng: -3.74922, lat: 40.4637 }; 
 
       // Crea el mapa de MapTiler en el elemento div
       this.map = new Map({
         container: this.mapContainer.nativeElement,
         style: 'https://api.maptiler.com/maps/basic-v2/style.json?key=36bBxm9qzcAM0x9cGbYq', /* cambia el estilo que quieras usar para el estilo del mapa */
         center: [initialState.lng, initialState.lat],
-        zoom: 14
+        zoom: 5
       });
-  
-      // Itera sobre todas las coordenadas de Oviedo y agrega un marcador para cada una
-      const oviedoCoords = [
-        { lng: -5.8447, lat: 43.3614 },
-        { lng: -5.8545, lat: 43.3603 },
-        { lng: -5.8434, lat: 43.3661 },
-        { lng: -5.8457, lat: 43.3608 },
-        { lng: -5.8709, lat: 43.3653 }
-      ];
-
-      oviedoCoords.forEach(coord => {
-        if (this.map) { // Verifica que this.map no sea undefined
+      // Iterar sobre las filas seleccionadas y agregar un marcador para cada una
+      this.data.selectedRows.forEach((row: UserData) => {
+        const { lat, lng } = this.getLatLongFromRow(row); // Obtener latitud y longitud de la fila
+        if (this.map) {
           const marker = new Marker()
-            .setLngLat([coord.lng, coord.lat])
+            .setLngLat([lng, lat])
             .addTo(this.map);
-          this.markers.push(marker); // Agrega el marcador al array
+          this.markers.push(marker); // Agregar el marcador al array
+        } else {
+          console.error('No se pudo crear el marcador. El mapa no está definido.');
         }
       });
+
+  
+
+      
     } else {
       console.error('mapElement is undefined.');
     }

@@ -1,55 +1,63 @@
 <div class="fondoGris screen">
     <div class="p-3">
-
-        <div class="d-flex align-items-center justify-content-start m-3">
+      <div class="d-flex align-items-center justify-content-between">
+          <!-- titulo de cliente -->
+          <div class="d-flex align-items-center justify-content-start">
             <mat-icon class="color-dark">people</mat-icon>
             <h1 class="mb-0 ps-2 color-dark">Clientes</h1>
           </div>
+          <!-- boton de filtrado -->
+          <div>
+              <button class="btn btn-primary d-flex align-items-center">
+                  <mat-icon class="p-0 m-0">filter_list_alt</mat-icon>
+                  <span class="ms-1">Filtros</span>
+                </button>
+          </div>
+      </div>
 
           <div class="fondoGris screen">
-            <div class="p-3">
+            <div class="pt-4">
 
           <!-- TABLA -->
-          <div class="mat-elevation-z2 m-3">
+          <div class="mat-elevation-z2">
           <div class="table-wrapper">
               <table mat-table [dataSource]="dataSource" matSort>
-                <!-- Checkbox Column -->
-                <ng-container matColumnDef="select" >
-                  <th mat-header-cell *matHeaderCellDef>
-                    <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
-                                  [checked]="selection.hasValue() && isAllSelected()"
-                                  [indeterminate]="selection.hasValue() && !isAllSelected()">
-                    </mat-checkbox>
-                  </th>
-                  <td mat-cell *matCellDef="let row">
-                    <mat-checkbox color="primary" (click)="$event.stopPropagation()"
-                                  (change)="$event ? selection.toggle(row) : null"
-                                  [checked]="selection.isSelected(row)">
-                    </mat-checkbox>
-                  </td>
-                </ng-container>
+
                 <!-- Código Column -->
                 <ng-container matColumnDef="codigo">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Código </th>
                   <td mat-cell *matCellDef="let row"> {{row.codigo}} </td>
                 </ng-container>
-          <!-- Poblacion Column -->
-          <ng-container matColumnDef="poblacion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Población </th>
-          <td mat-cell *matCellDef="let row"> {{ row.poblacion }} </td>
-          </ng-container>
-          
-          <!-- Provincia Column -->
-          <ng-container matColumnDef="provincia">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Provincia </th>
-          <td mat-cell *matCellDef="let row"> {{ row.provincia }} </td>
-          </ng-container>
-          
-          <!-- CP Column -->
-          <ng-container matColumnDef="cp">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> C.P. </th>
-          <td mat-cell *matCellDef="let row"> {{ row.cp }} </td>
-          </ng-container>
+                <!-- Nombre column -->
+                <ng-container matColumnDef="nombre">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                  <td mat-cell *matCellDef="let row"> {{ row.nombre }} </td>
+                </ng-container>
+                <!-- Poblacion Column -->
+                <ng-container matColumnDef="poblacion">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Población </th>
+                  <td mat-cell *matCellDef="let row"> {{ row.poblacion }} </td>
+                </ng-container>
+                
+                <!-- Provincia Column -->
+                <ng-container matColumnDef="provincia">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Provincia </th>
+                  <td mat-cell *matCellDef="let row"> {{ row.provincia }} </td>
+                </ng-container>
+                
+                <!-- CP Column -->
+                <ng-container matColumnDef="cp">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> C.P. </th>
+                  <td mat-cell *matCellDef="let row"> {{ row.cp }} </td>
+                </ng-container>
+
+                <!-- Detalles Column -->
+                <ng-container matColumnDef="detalles">
+                  <th mat-header-cell *matHeaderCellDef> Detalles </th>
+                      <td mat-cell *matCellDef="let row">
+                      <button mat-icon-button color="primary" (click)="openDetailsDialog(row)"><mat-icon>visibility</mat-icon></button>
+                  </td>
+                </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -61,17 +69,9 @@
           <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
           
           </div>
-          <!-- END TABLA -->
-          
-          
+          <!-- END TABLA -->         
             </div>
           </div>
-          
-          
-          
-          
-          
-
 
     </div>
   </div>

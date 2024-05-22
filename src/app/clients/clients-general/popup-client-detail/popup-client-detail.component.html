@@ -1,0 +1,48 @@
+<div class="p-3 d-flex flex-column gap-4">
+    <!-- parte superior -->
+    <div class="d-flex align-items-center gap-3">
+        <mat-icon>people</mat-icon>
+        <h2 class="m-0">Detalles de Cliente</h2>
+    </div>
+    
+    <!-- datos del cliente -->
+
+    <mat-dialog-content class="px-0 d-flex flex-column gap-3">
+        <div class="d-flex gap-2">
+                <!-- Codigo Cliente -->
+                <mat-form-field class="w-25" appearance="fill" subscriptSizing="dynamic">
+                    <mat-label>Código Cliente</mat-label>
+                    <input matInput readonly="true" [(ngModel)]="user.codigo" autocomplete="off" placeholder="Código cliente" />
+                </mat-form-field>                
+
+                <!-- Nombre del cliente -->
+                <mat-form-field class="w-75" appearance="fill" subscriptSizing="dynamic">
+                    <mat-label>Nombre Cliente</mat-label>
+                    <input matInput readonly="true" [(ngModel)]="user.nombre" autocomplete="off" placeholder="Nombre cliente" />
+                </mat-form-field>
+        </div>
+        <div class="">
+            <div class="d-flex gap-2">
+                <!-- Codigo Postal -->
+                <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                    <mat-label>Código Postal</mat-label>
+                    <input matInput readonly="true" [(ngModel)]="user.cp" autocomplete="off" placeholder="Código postal" />
+                </mat-form-field>
+                <!-- Poblacion Cliente -->
+                <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                    <mat-label>Población</mat-label>
+                    <input matInput readonly="true" [(ngModel)]="user.poblacion" autocomplete="off" placeholder="Población" />
+                </mat-form-field>
+                <!-- Proviencia Cliente -->
+                <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                    <mat-label>Provincia</mat-label>
+                    <input matInput readonly="true" [(ngModel)]="user.provincia" autocomplete="off" placeholder="Provincia" />
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <!-- Boton de cerrar -->
+    <mat-dialog-actions class="justify-content-end">
+        <button mat-raised-button (click)="close()">Cerrar</button>
+    </mat-dialog-actions>
+</div>

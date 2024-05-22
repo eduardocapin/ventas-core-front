@@ -20,12 +20,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms'; // Importa FormsModule si estás utilizando formularios basados en plantillas
-
+import { PopupClientDetailComponent } from './clients-general/popup-client-detail/popup-client-detail.component';
 
 
 @NgModule({
     declarations:[
-        ClientsGeneralComponent
+        ClientsGeneralComponent,
+        PopupClientDetailComponent
     ],
     imports:[
         CommonModule,

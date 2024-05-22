@@ -7,13 +7,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PagesModule } from './pages/pages.module';
 import { HttpClientModule } from '@angular/common/http';
 
+
 /* components */
 
 /* angular material api de components */
 @NgModule({
   declarations: [
     AppComponent,
-    
+
     /* lo unico que se declarara sera los componentes creados en la carpeta componentes paginas no */
 
   ],
