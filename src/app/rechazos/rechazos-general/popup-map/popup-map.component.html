@@ -6,9 +6,6 @@
             <mat-icon>map</mat-icon>
             <h2 class="m-0">Mapa</h2>
         </div>
-        <mat-dialog-actions>
-            <button mat-icon-button color="primary" (click)="close()"><mat-icon>close</mat-icon></button>
-        </mat-dialog-actions>
     </div>
     <!-- contenedor el mapa -->
     <div class="d-flex justify-content-center">
@@ -16,4 +13,8 @@
             <div class="map" #map></div>
         </div>
     </div>
+    <mat-dialog-actions class="d-flex justify-content-end gap-2">
+        <button mat-raised-button color="light" type="button" (click)="close()" cdkFocusInitial
+          mat-button>Cerrar</button>
+    </mat-dialog-actions>
 </div>

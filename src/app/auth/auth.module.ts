@@ -21,17 +21,17 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     ],
     imports: [
         CommonModule,
-        HttpClientModule,
-        NgIf,
         MatToolbarModule,
         MatIconModule,
         MatSidenavModule,
         MatDividerModule,
         MatButtonModule,
-        FormsModule,
         ReactiveFormsModule,
+        HttpClientModule,
+        NgIf,
         MatInputModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        FormsModule
     ]
 })
 export class AuthModule {}

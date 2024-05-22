@@ -10,7 +10,7 @@ const routes: Routes = [
   /* ruta de la pagina de inicio */
   {path:'', redirectTo:'/mobentisrechazos/dashboard/global', pathMatch:'full'},
   
-  
+  { path: 'login', component: AuthComponent },
   /* Rutas de todo el proyecto */
   {
     path: 'mobentisrechazos', component: PagesComponent, 
