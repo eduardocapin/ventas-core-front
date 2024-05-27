@@ -14,7 +14,14 @@ import { MatButtonModule} from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { RechazosRoutingModule } from './rechazos-routing.module';
 import { ReactiveFormsModule } from '@angular/forms'; // Importa ReactiveFormsModule
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
+
+
+
+import { GoogleMapsModule } from '@angular/google-maps';
+
+
+
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -54,7 +61,8 @@ import { PopupMapComponent } from './rechazos-general/popup-map/popup-map.compon
         FormsModule,
         ReactiveFormsModule,
         MatSidenavModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        GoogleMapsModule
     ]
 })
 export class RechazosModule{}

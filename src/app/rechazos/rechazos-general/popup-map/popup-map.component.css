@@ -1,11 +1,4 @@
-.map-wrap {
-  position: relative;
+google-map {
+  height: 400px;
   width: 1550px;
-  height: calc(80vh - 77px);
-  margin: 0 auto; /* Centra el contenedor horizontalmente */
-}
-
-.map {
-  width: 100%; /* El mapa ocupará todo el ancho del contenedor */
-  height: 100%; /* El mapa ocupará toda la altura del contenedor */
 }
