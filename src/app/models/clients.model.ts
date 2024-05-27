@@ -1,10 +1,12 @@
 export interface IClient{
     id: number;
-    nombre: string;
-    apellido: string;
-    email: string;
+    nombre_empresa: string;
+    nombre_fiscal: string;
     telefono: string;
-    provincia: string;
+    direccion: string;
+    cliente_latitud: number;
+    cliente_longitud: number;
+    /* provincia: string; */
     poblacion: string;
     CP: number;
 }
