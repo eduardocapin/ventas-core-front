@@ -13,21 +13,16 @@ import { MatTooltipModule} from '@angular/material/tooltip';
 import { MatButtonModule} from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { RechazosRoutingModule } from './rechazos-routing.module';
-import { ReactiveFormsModule } from '@angular/forms'; // Importa ReactiveFormsModule
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-
-
 import { GoogleMapsModule } from '@angular/google-maps';
-
-
-
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
-import { FormsModule } from '@angular/forms'; // Importa FormsModule si estás utilizando formularios basados en plantillas
+import { FormsModule } from '@angular/forms';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 

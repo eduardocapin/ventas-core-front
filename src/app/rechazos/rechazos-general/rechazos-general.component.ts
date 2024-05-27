@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -24,9 +24,9 @@ export interface UserData {
   accionCorrectora: string;
   editingAccionCorrectora?: boolean;
   propuestaAgente: string;
-  latitud: number; // Nuevo campo para la latitud
-  longitud: number; // Nuevo campo para la longitud
-  symbol: string; // Nuevo campo para el símbolo
+  latitud: number;
+  longitud: number;
+  symbol: string;
 }
 
 const PROVINCIAS: string[] = [
@@ -65,6 +65,36 @@ const ACCIONCORRECTORA: string[] = [
   'Regalo de cartelería de publicidad',
   'Lanzar promoción 3x2',
 ];
+
+const CLIENTES: string[] = [
+  'Mercadona',
+  'Alimerka',
+  'Eroski',
+  'MasYMas',
+  'Carrefour',
+  'Lidl',
+  'Aldi',
+  'Dia',
+  'Supercor',
+  'Hipercor',
+  'Ahorramás',
+  'BM Supermercados',
+  'Bonpreu',
+  'Caprabo',
+  'Condis',
+  'El Corte Inglés',
+  'Froiz',
+  'Gadis',
+  'La Plaza de DIA',
+  'Lupa',
+  'Simply',
+  'Superdino',
+  'SuperSol',
+  'Ulabox',
+  'Consum',
+  'HiperDino'
+];
+
 
 const NAMES: string[] = [
   'Delicias Ibéricas',
@@ -149,7 +179,7 @@ const RECHAZOS: string[] = ['Rechazado', 'En Proceso', 'Vendido', 'No aplica'];
   templateUrl: './rechazos-general.component.html',
   styleUrls: ['./rechazos-general.component.css'],
 })
-export class RechazosGeneralComponent implements AfterViewInit {
+export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   form: FormGroup;
   displayedColumns: string[] = ['select', 'estado', 'id', 'poblacion', 'provincia', 'cliente', 'producto', 'familia', 'subfamilia', 'rechazo', 'pvp', 'comp', 'competidor', 'accionPrecioPorcentaje', 'accionCorrectora', 'propuestaAgente'];
   dataSource: MatTableDataSource<UserData>;
@@ -180,6 +210,21 @@ export class RechazosGeneralComponent implements AfterViewInit {
     this.form.valueChanges.subscribe(() => {
       this.applyFilter();
     });
+  }
+
+  ngOnInit() {
+    this.loadGoogleMapsScript();
+  }
+
+  private loadGoogleMapsScript() {
+    if (!document.getElementById('google-maps-script')) {
+      const script = document.createElement('script');
+      script.id = 'google-maps-script';
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBcREBnuBayqza1v1W2JbUGJqB0W77mcjI`;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
   }
 
   applyFilter() {
@@ -234,6 +279,7 @@ export class RechazosGeneralComponent implements AfterViewInit {
       data: { selectedRows: this.selection.selected }
     });
   }
+  
 
   actualizarConteos(estado: string, incrementar: boolean) {
     switch (estado) {
@@ -287,7 +333,7 @@ export class RechazosGeneralComponent implements AfterViewInit {
 function createNewUser(id: number): UserData {
   const poblacion = POBLACIONES[Math.floor(Math.random() * POBLACIONES.length)];
   const provincia = PROVINCIAS[Math.floor(Math.random() * PROVINCIAS.length)];
-  const cliente = NAMES[Math.floor(Math.random() * NAMES.length)];
+  const cliente = CLIENTES[Math.floor(Math.random() * CLIENTES.length)];
   const producto = PRODUCTOS[Math.floor(Math.random() * PRODUCTOS.length)];
   const familia = FAMILIAS[Math.floor(Math.random() * FAMILIAS.length)];
   const subfamilia = SUBFAMILIAS[Math.floor(Math.random() * SUBFAMILIAS.length)];
@@ -299,9 +345,25 @@ function createNewUser(id: number): UserData {
   const accionCorrectora = ACCIONCORRECTORA[Math.floor(Math.random() * ACCIONCORRECTORA.length)];
   const propuestaAgente = PROPUESTA[Math.floor(Math.random() * PROPUESTA.length)];
   
-  // Generación de coordenadas aleatorias dentro de Asturias
-  const latitud = Math.random() * (43.5 - 42.5) + 42.5; // Latitud aproximada de Asturias
-  const longitud = Math.random() * (-4.0 - (-6.0)) + (-6.0); // Longitud aproximada de Asturias
+// Definición de áreas terrestres en Asturias y Galicia
+const landAreas = [
+  { latMin: 42.0, latMax: 43.8, lonMin: -9.3, lonMax: -8.0 }, // Galicia parte occidental
+  { latMin: 42.0, latMax: 43.8, lonMin: -8.0, lonMax: -6.0 }, // Galicia parte central
+  { latMin: 42.5, latMax: 43.8, lonMin: -6.0, lonMax: -5.0 }  // Asturias
+];
+
+// Función para generar coordenadas aleatorias en las áreas definidas
+function getRandomCoordinates() {
+  const area = landAreas[Math.floor(Math.random() * landAreas.length)];
+  const latitud = Math.random() * (area.latMax - area.latMin) + area.latMin;
+  const longitud = Math.random() * (area.lonMax - area.lonMin) + area.lonMin;
+  return { latitud, longitud };
+}
+
+const { latitud, longitud } = getRandomCoordinates();
+
+console.log(`Latitud: ${latitud}, Longitud: ${longitud}`);
+
 
   return {
     id: id.toString(),
