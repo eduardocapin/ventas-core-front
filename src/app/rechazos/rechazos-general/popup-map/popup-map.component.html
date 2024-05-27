@@ -1,20 +1,17 @@
 <!-- Contenedor de la pagina /rechazos/maps -->
-<div class="p-3 d-flex flex-column gap-4 ">
-    <!-- parter superior -->
-    <div class="d-flex align-items-center justify-content-between">
-        <div class="d-flex align-items-center gap-3">
-            <mat-icon>map</mat-icon>
-            <h2 class="m-0">Mapa</h2>
-        </div>
+<div class="p-3 d-flex flex-column gap-4">
+  <!-- parter superior -->
+  <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center gap-3">
+      <mat-icon>map</mat-icon>
+      <h2 class="m-0">Mapa</h2>
     </div>
-    <!-- contenedor el mapa -->
-    <div class="d-flex justify-content-center">
-        <div class="map-wrap">
-            <div class="map" #map></div>
-        </div>
-    </div>
-    <mat-dialog-actions class="d-flex justify-content-end gap-2">
-        <button mat-raised-button color="light" type="button" (click)="close()" cdkFocusInitial
-          mat-button>Cerrar</button>
-    </mat-dialog-actions>
+  </div>
+  <!-- contenedor el mapa -->
+  <div class="d-flex justify-content-center">
+    <google-map [center]="center" [zoom]="zoom" [options]="options"></google-map>
+  </div>
+  <mat-dialog-actions class="d-flex justify-content-end gap-2">
+    <button mat-raised-button color="light" type="button" (click)="close()" cdkFocusInitial mat-button>Cerrar</button>
+  </mat-dialog-actions>
 </div>
