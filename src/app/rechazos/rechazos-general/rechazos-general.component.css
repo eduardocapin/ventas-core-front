@@ -8,8 +8,22 @@
 }
 
 table {
+
   width: 100%;
 }
+
+ 
+  .mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+    
+  }
+  
+  .buttons-rechazos {
+    background-color: #3F51B5;
+    color: white;
+  }
+
 
 .mat-mdc-form-field {
   font-size: 14px;

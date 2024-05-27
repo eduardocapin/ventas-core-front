@@ -28,7 +28,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms'; // Importa FormsModule si estás utilizando formularios basados en plantillas
-
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 /* paginas */
@@ -61,6 +61,7 @@ import { PopupMapComponent } from './rechazos-general/popup-map/popup-map.compon
         FormsModule,
         ReactiveFormsModule,
         MatSidenavModule,
+        MatSnackBarModule,
         GoogleMapsModule
     ]
 })
