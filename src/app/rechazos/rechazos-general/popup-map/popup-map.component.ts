@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserData } from '../rechazos-general.component'; // Ajusta la ruta según tu estructura de carpetas
+import { UserData } from '../rechazos-general.component';
 import { GoogleMap } from '@angular/google-maps';
 
 @Component({
@@ -11,8 +11,8 @@ import { GoogleMap } from '@angular/google-maps';
 export class PopupMapComponent implements OnInit, AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
   
-  center: google.maps.LatLngLiteral = { lat: 40.4168, lng: -3.7038 }; // Coordenadas de Madrid
-  zoom = 5; // Nivel de Zoom
+  center: google.maps.LatLngLiteral = { lat: 40.4168, lng: -3.7038 }; // Coordenadas de Madrid, España
+  zoom = 5; // Nivel de Zoom predefinido mapa vacío
   options: google.maps.MapOptions = {
     mapTypeId: 'roadmap',
     scrollwheel: true,
@@ -28,8 +28,8 @@ export class PopupMapComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     if (this.data.selectedRows.length > 0) {
       this.center = { 
-        lat: this.data.selectedRows[0].latitud, 
-        lng: this.data.selectedRows[0].longitud 
+        lat: this.data.selectedRows[0].latitud,
+        lng: this.data.selectedRows[0].longitud
       };
     }
   }
@@ -41,23 +41,25 @@ export class PopupMapComponent implements OnInit, AfterViewInit {
 
   addMarkers() {
     this.markers = this.data.selectedRows.map(row => {
-      const markerColor = this.getMarkerColor(row.estado);
+      const markerIcon = this.getMarkerIcon(row.estado);
       const marker = new google.maps.Marker({
         position: { lat: row.latitud, lng: row.longitud },
         title: row.cliente,
         map: this.map?.googleMap,
         icon: {
-          url: `http://maps.google.com/mapfiles/ms/icons/${markerColor}-dot.png`
+          url: markerIcon,
+          scaledSize: new google.maps.Size(35, 40) // Ajusta el tamaño del marcador
         }
       });
 
+      const estadoColor = this.getEstadoColor(row.estado);
       const infoContent = `
         <div>
-          <h3>${row.cliente}</h3>
-          <p><strong>Producto:</strong> ${row.producto}</p>
-          <p><strong>Estado:</strong> ${row.estado}</p>
-          <p><strong>Población:</strong> ${row.poblacion}</p>
-          <p><strong>Provincia:</strong> ${row.provincia}</p>
+          <h2>${row.cliente}</h2>
+          <p style="color:${estadoColor};"><strong>${row.estado}</strong></p>
+          <p>${row.poblacion}, ${row.provincia}</p>
+          <p><strong>${row.producto}</strong></p>
+          <p><strong>${row.rechazo}</strong></p>
         </div>
       `;
 
@@ -77,7 +79,22 @@ export class PopupMapComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getMarkerColor(estado: string): string {
+  getMarkerIcon(estado: string): string {
+    switch (estado) {
+      case 'Rechazado':
+        return 'assets/icon/rechazado_marker.png';
+      case 'En Proceso':
+        return 'assets/icon/enproceso_marker.png';
+      case 'Vendido':
+        return 'assets/icon/vendido_marker.png';
+      case 'No aplica':
+        return 'assets/icon/noaplica_marker.png';
+      default:
+        return '';
+    }
+  }
+
+  getEstadoColor(estado: string): string {
     switch (estado) {
       case 'Rechazado':
         return 'red';
@@ -88,7 +105,7 @@ export class PopupMapComponent implements OnInit, AfterViewInit {
       case 'No aplica':
         return 'gray';
       default:
-        return 'yellow';
+        return 'black';
     }
   }
 
@@ -96,7 +113,15 @@ export class PopupMapComponent implements OnInit, AfterViewInit {
     if (this.map?.googleMap) {
       const bounds = new google.maps.LatLngBounds();
       this.markers.forEach(marker => bounds.extend(marker.getPosition() as google.maps.LatLng));
-      this.map.googleMap.fitBounds(bounds);
+      
+      if (this.markers.length === 1) {
+        // Si solo hay un marcador, centra el mapa en su posición y aplica un zoom
+        this.map.googleMap.setCenter(bounds.getCenter());
+        this.map.googleMap.setZoom(15); //Nivel de Zoom
+      } else {
+        // Si hay más de un marcador, ajusta el mapa para mostrar todos los marcadores
+        this.map.googleMap.fitBounds(bounds);
+      }
     }
   }
 

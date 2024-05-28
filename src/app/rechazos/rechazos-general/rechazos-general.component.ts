@@ -280,6 +280,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       this.snackBar.open('Debe seleccionar al menos un cliente antes de ver en el mapa.', 'Cerrar', config);
       return;
     }
+
     const dialogRef = this.dialog.open(PopupMapComponent, {
       width: '1550px',
       height: 'auto',
@@ -352,24 +353,25 @@ function createNewUser(id: number): UserData {
   const accionCorrectora = ACCIONCORRECTORA[Math.floor(Math.random() * ACCIONCORRECTORA.length)];
   const propuestaAgente = PROPUESTA[Math.floor(Math.random() * PROPUESTA.length)];
   
-// Definición de áreas terrestres en Asturias y Galicia
-const landAreas = [
-  { latMin: 42.0, latMax: 43.8, lonMin: -9.3, lonMax: -8.0 }, // Galicia parte occidental
-  { latMin: 42.0, latMax: 43.8, lonMin: -8.0, lonMax: -6.0 }, // Galicia parte central
-  { latMin: 42.5, latMax: 43.8, lonMin: -6.0, lonMax: -5.0 }  // Asturias
-];
+// Definición del área de Madrid
+const madridArea = {
+  latMin: 40.312, // Límite sur de Madrid
+  latMax: 40.642, // Límite norte de Madrid
+  lonMin: -3.889, // Límite oeste de Madrid
+  lonMax: -3.517  // Límite este de Madrid
+};
 
-// Función para generar coordenadas aleatorias en las áreas definidas
-function getRandomCoordinates() {
-  const area = landAreas[Math.floor(Math.random() * landAreas.length)];
-  const latitud = Math.random() * (area.latMax - area.latMin) + area.latMin;
-  const longitud = Math.random() * (area.lonMax - area.lonMin) + area.lonMin;
+// Función para generar coordenadas aleatorias dentro del área de Madrid
+function getRandomCoordinatesInMadrid() {
+  const latitud = Math.random() * (madridArea.latMax - madridArea.latMin) + madridArea.latMin;
+  const longitud = Math.random() * (madridArea.lonMax - madridArea.lonMin) + madridArea.lonMin;
   return { latitud, longitud };
 }
 
-const { latitud, longitud } = getRandomCoordinates();
+const { latitud, longitud } = getRandomCoordinatesInMadrid();
 
 console.log(`Latitud: ${latitud}, Longitud: ${longitud}`);
+
 
   return {
     id: id.toString(),
