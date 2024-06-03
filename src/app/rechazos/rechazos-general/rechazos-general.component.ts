@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -194,7 +194,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
 
-  constructor(public dialog: MatDialog, private formBuilder: FormBuilder, private snackBar: MatSnackBar) {
+  constructor(public dialog: MatDialog, private formBuilder: FormBuilder, private snackBar: MatSnackBar, private cdr: ChangeDetectorRef) {
     const users = Array.from({ length: 100 }, (_, k) => createNewUser(k + 1));
     this.dataSource = new MatTableDataSource(users);
 
@@ -254,6 +254,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       this.dataSource.data.forEach(row => {
         this.actualizarConteos(row.estado, true);
       });
+      this.cdr.detectChanges(); // Forzar la detección de cambios después de actualizar los conteos
     }
     if (this.sort) {
       this.dataSource.sort = this.sort;
@@ -306,6 +307,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       default:
         break;
     }
+    this.cdr.detectChanges(); // Forzar la detección de cambios después de actualizar los conteos
   }
 
   getOptionImage(estado: string): string {
@@ -329,12 +331,21 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
   onSave(row: UserData) {
     // Lógica para guardar el valor editado
-    console.log('Valor guardado:', row.accionPrecioPorcentaje);
+    console.log('Valor guardado:', row.accionCorrectora);
+  
+    // Mostrar Snackbar de éxito
+    const config = new MatSnackBarConfig();
+    config.duration = 3000;  // Duración de la snackbar
+    config.verticalPosition = 'top';
+  
+    this.snackBar.open('Acción correctora cambiada correctamente', '', config);
+    this.cdr.detectChanges(); // Forzar la detección de cambios después de guardar
   }
 
   onSymbolChange(row: UserData) {
     // Lógica para manejar el cambio de símbolo
     console.log('Símbolo cambiado a:', row.symbol);
+    this.cdr.detectChanges(); // Forzar la detección de cambios después de cambiar el símbolo
   }
 }
 
@@ -353,25 +364,22 @@ function createNewUser(id: number): UserData {
   const accionCorrectora = ACCIONCORRECTORA[Math.floor(Math.random() * ACCIONCORRECTORA.length)];
   const propuestaAgente = PROPUESTA[Math.floor(Math.random() * PROPUESTA.length)];
   
-// Definición del área de Madrid
-const madridArea = {
-  latMin: 40.312, // Límite sur de Madrid
-  latMax: 40.642, // Límite norte de Madrid
-  lonMin: -3.889, // Límite oeste de Madrid
-  lonMax: -3.517  // Límite este de Madrid
-};
+  // Definición del área de Madrid
+  const madridArea = {
+    latMin: 40.312, // Límite sur de Madrid
+    latMax: 40.642, // Límite norte de Madrid
+    lonMin: -3.889, // Límite oeste de Madrid
+    lonMax: -3.517  // Límite este de Madrid
+  };
 
-// Función para generar coordenadas aleatorias dentro del área de Madrid
-function getRandomCoordinatesInMadrid() {
-  const latitud = Math.random() * (madridArea.latMax - madridArea.latMin) + madridArea.latMin;
-  const longitud = Math.random() * (madridArea.lonMax - madridArea.lonMin) + madridArea.lonMin;
-  return { latitud, longitud };
-}
+  // Función para generar coordenadas aleatorias dentro del área de Madrid
+  function getRandomCoordinatesInMadrid() {
+    const latitud = Math.random() * (madridArea.latMax - madridArea.latMin) + madridArea.latMin;
+    const longitud = Math.random() * (madridArea.lonMax - madridArea.lonMin) + madridArea.lonMin;
+    return { latitud, longitud };
+  }
 
-const { latitud, longitud } = getRandomCoordinatesInMadrid();
-
-console.log(`Latitud: ${latitud}, Longitud: ${longitud}`);
-
+  const { latitud, longitud } = getRandomCoordinatesInMadrid();
 
   return {
     id: id.toString(),

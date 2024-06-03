@@ -21,6 +21,13 @@
     th {
       color: #3F51B5;
     }
+    
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #fff;
+    }
 
     .buttons-clients {
       background-color: #3F51B5;
@@ -41,7 +48,7 @@
   
   .table-wrapper {
     overflow-y: auto;
-    max-height: 700px;
+    max-height: 70vh;
   }
 /*   
   .custom-rechazado {

@@ -71,17 +71,19 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Estado </th>
             <td mat-cell *matCellDef="let row" class="estado-cell">
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <img [src]="getOptionImage(row.estado)" alt="Estado Image" class="option-image"
-                  style="width: 24px; height: 24px;">
-                <select [(ngModel)]="row.estado" class="estado-select no-border-select">
-                  <option value="Rechazado" class="rechazado">Rechazado</option>
-                  <option value="En Proceso" class="en-proceso">En Proceso</option>
-                  <option value="Vendido" class="vendido">Vendido</option>
-                  <option value="No aplica" class="no-aplica">No aplica</option>
-                </select>
+                <img [src]="getOptionImage(row.estado)" alt="Estado Image" class="option-image">
+                <div class="form-group estado-form-group">
+                  <select [(ngModel)]="row.estado" class="form-control estado-select">
+                    <option value="Rechazado" class="rechazado">Rechazado</option>
+                    <option value="En Proceso" class="en-proceso">En Proceso</option>
+                    <option value="Vendido" class="vendido">Vendido</option>
+                    <option value="No aplica" class="no-aplica">No aplica</option>
+                  </select>
+                </div>
               </div>
             </td>
           </ng-container>
+          
           <!-- Poblacion Column -->
           <ng-container matColumnDef="poblacion">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Población </th>
@@ -133,27 +135,29 @@
             <td mat-cell *matCellDef="let row"> {{ row.competidor }} </td>
           </ng-container>
           <!-- % - € Column -->
-          <ng-container matColumnDef="accionPrecioPorcentaje">
+          <ng-container  matColumnDef="accionPrecioPorcentaje">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> </th>
             <td mat-cell *matCellDef="let row">
               <div class="editable-cell">
                 <input [(ngModel)]="row.accionPrecioPorcentaje" (blur)="onSave(row)" class="editable-input"
                   type="number" />
-                <select [(ngModel)]="row.symbol" (change)="onSymbolChange(row)" class="symbol-select">
+                <select [(ngModel)]="row.symbol" (change)="onSymbolChange(row)" class="symbol-select"> 
                   <option value="%">%</option>
                   <option value="€">€</option>
                 </select>
               </div>
             </td>
           </ng-container>
-          <!-- Accion Correctora Column -->
-          <ng-container matColumnDef="accionCorrectora">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Accion Correctora </th>
-            <td class="color-accioncorrectora" mat-cell *matCellDef="let row">
-              <span *ngIf="!row.editando" (click)="row.editando =true">{{ row.accionCorrectora }}</span>
-              <input *ngIf="row.editando" [(ngModel)]="row.accionCorrectora" (blur)="row.editando = false">
-            </td>
-          </ng-container>
+<!-- Accion Correctora Column -->
+<ng-container matColumnDef="accionCorrectora">
+  <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Accion Correctora </th>
+  <td class="color-accioncorrectora" mat-cell *matCellDef="let row">
+    <span *ngIf="!row.editingAccionCorrectora" (click)="row.editingAccionCorrectora = true">{{ row.accionCorrectora }}</span>
+    <input *ngIf="row.editingAccionCorrectora" [(ngModel)]="row.accionCorrectora" (blur)="row.editingAccionCorrectora = false; onSave(row)">
+  </td>
+</ng-container>
+iner>
+
           <!-- Propuesta agente Column -->
           <ng-container matColumnDef="propuestaAgente">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Propuesta Agente </th>

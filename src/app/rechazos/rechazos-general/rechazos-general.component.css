@@ -8,26 +8,17 @@
 }
 
 table {
-
   width: 100%;
 }
-
- 
-  .mat-mdc-form-field {
-    font-size: 14px;
-    width: 100%;
-    
-  }
-  
-  .buttons-rechazos {
-    background-color: #3F51B5;
-    color: white;
-  }
-
 
 .mat-mdc-form-field {
   font-size: 14px;
   width: 100%;
+}
+
+.buttons-rechazos {
+  background-color: #3F51B5;
+  color: white;
 }
 
 th {
@@ -47,27 +38,12 @@ th {
 
 .table-wrapper {
   overflow-y: auto;
-  max-height: 700px;
+  max-height: 70vh;
 }
 
-.custom-rechazado {
-  background-color: #ebebeb;
-  padding: 5px 10px;
-  border-radius: 10px;
-}
-
-.custom-enproceso {
-  background-color: #ebebeb;
-  padding: 5px 10px;
-  border-radius: 10px;
-}
-
-.custom-noaplica {
-  background-color: #ebebeb;
-  padding: 5px 10px;
-  border-radius: 10px;
-}
-
+.custom-rechazado,
+.custom-enproceso,
+.custom-noaplica,
 .custom-vendido {
   background-color: #ebebeb;
   padding: 5px 10px;
@@ -79,11 +55,25 @@ th {
   vertical-align: middle;
 }
 
+.estado-form-group {
+  width: 150px;
+  margin: 0;
+}
+
 .estado-select {
-  width: 100px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
   text-align: center;
-  padding: 2px;
-  background-color: transparent;
+  cursor: pointer;
+}
+
+.option-image {
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
 }
 
 .rechazado {
@@ -104,6 +94,7 @@ th {
 
 .color-accioncorrectora {
   color: #10a03b;
+  cursor: pointer;
 }
 
 .color-rechazo {
@@ -140,6 +131,7 @@ th {
   border: none;
   outline: none;
   background: none;
+  cursor: pointer;
 }
 
 .no-border-select {
