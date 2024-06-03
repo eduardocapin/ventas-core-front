@@ -15,7 +15,7 @@
     <img src="../../assets/icon/defaultprofile.png" alt="Perfil" class="rounded-circle" width="100" height="100">
   </div>
   <div class="profile-info text-center mt-2">
-    <p class="mb-0">Javier García López</p>
+    <p class="mb-0">{{_loginServices.user}}</p>
     <p class="text-muted">EMPLEADO</p>
   </div>
 </div>
@@ -74,11 +74,10 @@
         <!-- Final de Rechazos -->
         <div class="d-flex flex-column align-items-center mt-2">
           <!-- INICIO - Salir-->
-          <a mat-list-item [routerLink]="['logout']" routerLinkActive="selected-menu-item"
-            #rlaLogout="routerLinkActive" [activated]="rlaLogout.isActive" class="d-flex align-items-center pe-0 ps-1">
+          <a mat-list-item (click)="logout()"  class="d-flex align-items-center pe-0 ps-1">
             <span routerLink="/logout" matListItemTitle class="d-flex align-items-center gap-4">
               <button matTooltip="Salir" type="button" class="btn w-6 h-6 text-center icon-custom">
-                <mat-icon  [ngClass]="{'active-icon': isActiveRoute('/logout')}">exit_to_app</mat-icon>
+                <mat-icon >exit_to_app</mat-icon>
               </button>
               Salir
             </span>
