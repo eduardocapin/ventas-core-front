@@ -4,11 +4,11 @@
         <div class="col-4 content border border-terciary justify-content-center">
           <div class="login-fomrs m-5 d-flex flex-column justify-content-center align-items-center">
             <!-- Logo AppInWahts-->
-            <img class="logo mb-3" src="" alt="logo">
+            <!-- <img class="logo mb-3" src="" alt="logo"> -->
   
             <!--formulario Material-->
             <form class="mt-4 login-form d-flex flex-column align-items-center">
-  
+
               <mat-form-field class="full-width">
                 <mat-label>Email</mat-label>
                 <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
@@ -24,7 +24,7 @@
                   El Email introducido no es válido.
                 </mat-error>
               </mat-form-field>
-  
+            
               <mat-form-field class="full-width">
                 <mat-label>Password</mat-label>
                 <input matInput [formControl]="passFormControl" [errorStateMatcher]="matcher"
@@ -33,7 +33,6 @@
                   [attr.aria-pressed]="hide">
                   <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
-                <mat-hint></mat-hint>
                 <mat-error *ngIf="passFormControl.hasError('password') && !passFormControl.hasError('required')">
                   Por favor introduzca la contraseña.
                 </mat-error>
@@ -41,13 +40,15 @@
                   La contraseña es <strong>Obligatorio</strong>
                 </mat-error>
               </mat-form-field>
+            
               <div class="error" *ngIf="errorLogin">
                 {{messageError}}
               </div>
-  
+            
               <button mat-raised-button color="primary" type="submit" (click)="login()" class="full-width mt-3">Iniciar
                 Sesión</button>
             </form>
+            
           </div>
         </div>
       </div>

@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoginRequest } from './login.request';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http'
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import {
   Observable,
   throwError,
@@ -12,6 +7,7 @@ import {
   map,
   of,
 } from 'rxjs';
+import { LoginRequest } from './login.request';
 import { User } from './user';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -19,93 +15,48 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root'
 })
 export class LoginService {
-  /* almacena y emite estado actual del usaruio y si esta logeado */
+
   currentUserLoginOn: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(
     false
   );
+
   currentUserData: BehaviorSubject<User> = new BehaviorSubject<User>({
     id: 0,
     email: '',
   });
 
-  private frontUrl = '';
-  /* almacena los datos en el navegador de forma local */
   user: string | null = localStorage.getItem('user');
-  cargo: string | null = localStorage.getItem('cargo');
-  img: string | null = localStorage.getItem('img');
-  /* inyecta HttpClient para realizar solicitudes HTTP */
-  constructor(private http: HttpClient) { }
 
-  /* realiza un POST  para iniciar sesion y almacenar datos en localStorage */
-  previo_login(email: string): Observable<any> {
-    return this.http
-      .post(`${this.frontUrl}/`, {
-        email: email,
-      })
-      .pipe(
-        map((data: any) => {
-          localStorage.setItem('dir', data['data'][0].dir);
-          localStorage.setItem('email', data['data'][0].email);
-          localStorage.setItem('baseUrl', data['data'][0].ip_publica);
-          localStorage.setItem('schema', data['data'][0].nombre_schema);
-          localStorage.setItem('port', data['data'][0].puerto_acceso);
-          localStorage.setItem('portdb', data['data'][0].puerto_bdd);
-          return data;
-        })
-        //,catchError(this.handleError)
-      );
+  constructor(private http: HttpClient) {
+    this.user = localStorage.getItem('user');
   }
-  /* realiza solicutd POST para realizar   */
-  login(credentials: LoginRequest): Observable<User> {
 
-    let schema = localStorage.getItem('schema');
-    let baseUrl = localStorage.getItem('baseUrl');
-    let port = localStorage.getItem('port');
+  private frontUrl= 'http://localhost:4200';
+
+  login(credential:LoginRequest): Observable<User>{
+    let schema = 'db_rechazos';
+    let baseUrl = 'http://localhost';
+    let port = '3000';
     return this.http
-      .post<User>(`${baseUrl}:${port}/`, {
+      .post<User>(`${baseUrl}:${port}/api/users/login`, {
         schema: schema,
-        email: credentials.email,
-        password: credentials.password,
+        email: credential.email,
+        password: credential.password,
       })
       .pipe(
-        map((data: any) => {
+        map((data:any) =>{
+          localStorage.setItem('dir', 'db_rechazos');
+          localStorage.setItem('email', credential.email);
+          localStorage.setItem('baseUrl', 'http://localhost');
+          localStorage.setItem('schema', 'db_rechazos');
+          localStorage.setItem('port', '3000');
+
           this.setToken(data.token);
           localStorage.setItem('user', data.username);
-          this.user = data.username
-          localStorage.setItem('img', data.img);
-          this.img = data.img
-          localStorage.setItem('cargo', data.cargo);
-          this.cargo = data.cargo
-          // Aquí puedes realizar cualquier transformación necesaria en los datos
+          this.user = data.username;
+          
           return data;
         })
-        //catchError(this.handleError)
-      );
-  }
-
-  getUserInfo() {
-
-    let schema = localStorage.getItem('schema');
-    let baseUrl = localStorage.getItem('baseUrl');
-    let port = localStorage.getItem('port');
-    let options = {
-      headers: new HttpHeaders().set(
-        'Authorization',
-        `Bearer ${this.getToken()}`
-      ),
-    };
-    return this.http
-      .post(`${baseUrl}:${port}/`, {
-        schema: schema,
-        email: localStorage.getItem('email'),
-
-      }, options)
-      .pipe(
-        map((data: any) => {
-
-          return data.fecha_insert;
-        })
-        //catchError(this.handleError)
       );
   }
 
@@ -139,7 +90,6 @@ export class LoginService {
 
     localStorage.setItem('token', tokenString);
   }
-
   // READ the token from localstorage and Deserialize
   getToken(): string | null {
     let token = localStorage.getItem('token');
@@ -151,16 +101,13 @@ export class LoginService {
 
     return token;
   }
-
   deleteToken() {
     localStorage.removeItem('token');
   }
-
   logout() {
     this.deleteToken();
     localStorage.clear();
   }
-
   isAuthenticated(): Observable<boolean> {
     if (!localStorage.getItem('token')) return of(false);
 
@@ -178,6 +125,5 @@ export class LoginService {
 
     return of(false);
   }
-
 
 }

@@ -13,6 +13,8 @@ import {MatButtonModule} from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 
 @NgModule({
@@ -31,7 +33,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
         NgIf,
         MatInputModule,
         MatFormFieldModule,
-        FormsModule
+        FormsModule,
+        MatDialogModule
     ]
 })
 export class AuthModule {}
