@@ -136,8 +136,14 @@ th {
 
 .no-border-select {
   border: none;
-  padding: 0; /* Eliminar padding adicional */
+  padding: 0;
   font-size: 14px;
   color: #495057;
   cursor: pointer;
+}
+
+.large-input {
+  width: 150px;
+  text-align: left;
+  padding: 5px;
 }

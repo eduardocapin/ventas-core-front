@@ -24,6 +24,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSliderModule } from '@angular/material/slider';
+
 /**
     * IMPORTS COMPONENTS
 */
@@ -57,7 +59,8 @@ import { PopupMapComponent } from './rechazos-general/popup-map-rechazos/popup-m
         ReactiveFormsModule,
         MatSidenavModule,
         MatSnackBarModule,
-        GoogleMapsModule
+        GoogleMapsModule,
+        MatSliderModule
     ]
 })
 export class RechazosModule{}

@@ -24,156 +24,13 @@ export interface UserData {
   competidor: string;
   accionPrecioPorcentaje: number;
   accionCorrectora: string;
+  tempAccionCorrectora?: string;
   editingAccionCorrectora?: boolean;
   propuestaAgente: string;
   latitud: number;
   longitud: number;
   symbol: string;
 }
-
-const PROVINCIAS: string[] = [
-  'Álava', 'Albacete', 'Alicante', 'Almería', 'Asturias', 'Ávila', 'Badajoz', 'Barcelona', 'Burgos', 'Cáceres',
-  'Cádiz', 'Cantabria', 'Castellón', 'Ciudad Real', 'Córdoba', 'La Coruña', 'Cuenca', 'Gerona', 'Granada', 'Guadalajara',
-  'Guipúzcoa', 'Huelva', 'Huesca', 'Islas Baleares', 'Jaén', 'León', 'Lérida', 'Lugo', 'Madrid', 'Málaga',
-  'Murcia', 'Navarra', 'Orense', 'Palencia', 'Las Palmas', 'Pontevedra', 'La Rioja', 'Salamanca', 'Segovia', 'Sevilla', 'Soria',
-  'Tarragona', 'Santa Cruz de Tenerife', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza'
-];
-
-const POBLACIONES: string[] = [
-  'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Murcia', 'Palma', 'Las Palmas de Gran Canaria', 'Bilbao',
-  'Alicante', 'Córdoba', 'Valladolid', 'Vigo', 'Gijón', 'Hospitalet de Llobregat', 'Vitoria-Gasteiz', 'La Coruña', 'Granada', 'Elche',
-  'Oviedo', 'Santa Cruz de Tenerife', 'Pamplona', 'Cartagena', 'Sabadell', 'Jerez de la Frontera', 'Móstoles', 'Santander', 'Alcalá de Henares', 'Fuenlabrada',
-  'Legánes', 'San Sebastián', 'Getafe', 'Burgos', 'Albacete', 'Alcorcón', 'Almería', 'Donostia-San Sebastián', 'Castellón de la Plana', 'Logroño', 'Badajoz',
-  'La Laguna', 'Salamanca', 'Huelva', 'Marbella', 'Lérida', 'Tarragona', 'Dos Hermanas', 'Torrejón de Ardoz', 'Parla', 'Mataró'
-];
-
-const RECHAZO: string[] = [
-  'Mal estado',
-  'Mejor precio competencia',
-  'Producto no trabajado',
-  'Mala calidad',
-];
-const COMPETIDOR: string[] = [
-  'Distribuciones Rico',
-  'Cadea 100 Profesional',
-  'Bazar Hogar',
-];
-
-const ACCIONCORRECTORA: string[] = [
-  'Promoción 2x1',
-  'Aplicar campaña trimestral',
-  'Promoción 1+1',
-  'Promoción 3x2',
-  'Regalo de cartelería de publicidad',
-  'Lanzar promoción 3x2',
-];
-
-const CLIENTES: string[] = [
-  'Mercadona',
-  'Alimerka',
-  'Eroski',
-  'MasYMas',
-  'Carrefour',
-  'Lidl',
-  'Aldi',
-  'Dia',
-  'Supercor',
-  'Hipercor',
-  'Ahorramás',
-  'BM Supermercados',
-  'Bonpreu',
-  'Caprabo',
-  'Condis',
-  'El Corte Inglés',
-  'Froiz',
-  'Gadis',
-  'La Plaza de DIA',
-  'Lupa',
-  'Simply',
-  'Superdino',
-  'SuperSol',
-  'Ulabox',
-  'Consum',
-  'HiperDino'
-];
-
-const NAMES: string[] = [
-  'Delicias Ibéricas',
-  'Sabores Andaluces',
-  'Quesos Artesanos',
-  'Bebidas Mediterráneas',
-  'Frutas Frescas',
-  'Aceites Gourmet',
-  'Cervezas Artesanales',
-  'Golosinas Españolas',
-  'Sabor Natural',
-  'Vinos Selectos',
-  'Carnes Premium',
-  'Dulces Caseros',
-  'Conservas del Sur',
-  'Sabor Tradicional',
-  'Productos Frescos',
-  'Panadería Artesanal',
-  'Embutidos Ibéricos',
-  'Postres deliciosos',
-  'Frutos Secos',
-  'Especias y Hierbas',
-];
-
-const PRODUCTOS: string[] = [
-  'Cerveza',
-  'Vino',
-  'Aceite de oliva',
-  'Queso',
-  'Embutidos',
-  'Frutas',
-  'Verduras',
-  'Pan',
-  'Bebidas refrescantes',
-  'Helado',
-  'Chocolate',
-  'Café',
-  'Cereales',
-  'Miel',
-  'Frutos secos',
-  'Especias',
-];
-
-const FAMILIAS: string[] = [
-  'Bebidas',
-  'Alimentos frescos',
-  'Lácteos',
-  'Panadería',
-  'Charcutería',
-  'Dulces',
-  'Condimentos',
-];
-
-const SUBFAMILIAS: string[] = [
-  'Bebidas alcohólicas',
-  'Bebidas no alcohólicas',
-  'Frutas frescas',
-  'Verduras frescas',
-  'Quesos',
-  'Embutidos',
-  'Pan blanco',
-  'Pan integral',
-  'Galletas',
-  'Chocolate',
-  'Café molido',
-  'Café en grano',
-  'Cereales de desayuno',
-  'Mermeladas',
-  'Frutos secos tostados',
-  'Especias en polvo',
-];
-
-const PROPUESTA: string[] = [
-  'Mejorar el descuento',
-  'Mejorar la calidad',
-];
-
-const RECHAZOS: string[] = ['Rechazado', 'En Proceso', 'Vendido', 'No aplica'];
 
 @Component({
   selector: 'app-rechazos-general',
@@ -186,6 +43,60 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   dataSource: MatTableDataSource<UserData>;
   selection = new SelectionModel<UserData>(true, []);
 
+  CLIENTES: string[] = [
+    'Mercadona', 'Alimerka', 'Eroski', 'MasYMas', 'Carrefour', 'Lidl', 'Aldi', 'Dia', 'Supercor', 'Hipercor', 'Ahorramás',
+    'BM Supermercados', 'Bonpreu', 'Caprabo', 'Condis', 'El Corte Inglés', 'Froiz', 'Gadis', 'La Plaza de DIA', 'Lupa',
+    'Simply', 'Superdino', 'SuperSol', 'Ulabox', 'Consum', 'HiperDino'
+  ];
+
+  POBLACIONES: string[] = [
+    'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Murcia', 'Palma', 'Las Palmas de Gran Canaria', 'Bilbao',
+    'Alicante', 'Córdoba', 'Valladolid', 'Vigo', 'Gijón', 'Hospitalet de Llobregat', 'Vitoria-Gasteiz', 'La Coruña', 'Granada', 'Elche',
+    'Oviedo', 'Santa Cruz de Tenerife', 'Pamplona', 'Cartagena', 'Sabadell', 'Jerez de la Frontera', 'Móstoles', 'Santander', 'Alcalá de Henares', 'Fuenlabrada',
+    'Legánes', 'San Sebastián', 'Getafe', 'Burgos', 'Albacete', 'Alcorcón', 'Almería', 'Donostia-San Sebastián', 'Castellón de la Plana', 'Logroño', 'Badajoz',
+    'La Laguna', 'Salamanca', 'Huelva', 'Marbella', 'Lérida', 'Tarragona', 'Dos Hermanas', 'Torrejón de Ardoz', 'Parla', 'Mataró'
+  ];
+
+  PROVINCIAS: string[] = [
+    'Álava', 'Albacete', 'Alicante', 'Almería', 'Asturias', 'Ávila', 'Badajoz', 'Barcelona', 'Burgos', 'Cáceres',
+    'Cádiz', 'Cantabria', 'Castellón', 'Ciudad Real', 'Córdoba', 'La Coruña', 'Cuenca', 'Gerona', 'Granada', 'Guadalajara',
+    'Guipúzcoa', 'Huelva', 'Huesca', 'Islas Baleares', 'Jaén', 'León', 'Lérida', 'Lugo', 'Madrid', 'Málaga',
+    'Murcia', 'Navarra', 'Orense', 'Palencia', 'Las Palmas', 'Pontevedra', 'La Rioja', 'Salamanca', 'Segovia', 'Sevilla', 'Soria',
+    'Tarragona', 'Santa Cruz de Tenerife', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza'
+  ];
+
+  PRODUCTOS: string[] = [
+    'Cerveza', 'Vino', 'Aceite de oliva', 'Queso', 'Embutidos', 'Frutas', 'Verduras', 'Pan', 'Bebidas refrescantes', 'Helado',
+    'Chocolate', 'Café', 'Cereales', 'Miel', 'Frutos secos', 'Especias'
+  ];
+
+  FAMILIAS: string[] = [
+    'Bebidas', 'Alimentos frescos', 'Lácteos', 'Panadería', 'Charcutería', 'Dulces', 'Condimentos'
+  ];
+
+  SUBFAMILIAS: string[] = [
+    'Bebidas alcohólicas', 'Bebidas no alcohólicas', 'Frutas frescas', 'Verduras frescas', 'Quesos', 'Embutidos', 'Pan blanco',
+    'Pan integral', 'Galletas', 'Chocolate', 'Café molido', 'Café en grano', 'Cereales de desayuno', 'Mermeladas', 'Frutos secos tostados', 'Especias en polvo'
+  ];
+
+  RECHAZO: string[] = [
+    'Mal estado', 'Mejor precio competencia', 'Producto no trabajado', 'Mala calidad'
+  ];
+
+  COMPETIDOR: string[] = [
+    'Distribuciones Rico', 'Cadea 100 Profesional', 'Bazar Hogar'
+  ];
+
+  ACCIONCORRECTORA: string[] = [
+    'Promoción 2x1', 'Aplicar campaña trimestral', 'Promoción 1+1', 'Promoción 3x2', 'Regalo de cartelería de publicidad', 'Lanzar promoción 3x2'
+  ];
+
+  PROPUESTA: string[] = [
+    'Mejorar el descuento', 'Mejorar la calidad'
+  ];
+
+  RECHAZOS: string[] = ['Rechazado', 'En Proceso', 'Vendido', 'No aplica'];
+
   rechazadosCount: number = 0;
   enProcesoCount: number = 0;
   vendidosCount: number = 0;
@@ -195,7 +106,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort: MatSort | undefined;
 
   constructor(public dialog: MatDialog, private formBuilder: FormBuilder, private snackBar: MatSnackBar, private cdr: ChangeDetectorRef) {
-    const users = Array.from({ length: 100 }, (_, k) => createNewUser(k + 1));
+    const users = Array.from({ length: 100 }, (_, k) => this.createNewUser(k + 1));
     this.dataSource = new MatTableDataSource(users);
 
     this.form = this.formBuilder.group({
@@ -232,13 +143,15 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     const filterValues = this.form.value;
     this.dataSource.filterPredicate = (data: UserData, filter: string): boolean => {
       const searchTerms = JSON.parse(filter);
-      return (!searchTerms.EstadoFilterControl || data.estado.toLowerCase().indexOf(searchTerms.EstadoFilterControl.toLowerCase()) !== -1) &&
-             (!searchTerms.PoblacionFilterControl || data.poblacion.toLowerCase().indexOf(searchTerms.PoblacionFilterControl.toLowerCase()) !== -1) &&
-             (!searchTerms.ProvinciaFilterControl || data.provincia.toLowerCase().indexOf(searchTerms.ProvinciaFilterControl.toLowerCase()) !== -1) &&
-             (!searchTerms.ClienteFilterControl || data.cliente.toLowerCase().indexOf(searchTerms.ClienteFilterControl.toLowerCase()) !== -1) &&
-             (!searchTerms.ProductoFilterControl || data.producto.toLowerCase().indexOf(searchTerms.ProductoFilterControl.toLowerCase()) !== -1) &&
-             (!searchTerms.FamiliaFilterControl || data.familia.toLowerCase().indexOf(searchTerms.FamiliaFilterControl.toLowerCase()) !== -1) &&
-             (!searchTerms.SubFamiliaFilterControl || data.subfamilia.toLowerCase().indexOf(searchTerms.SubFamiliaFilterControl.toLowerCase()) !== -1);
+      return (
+        (!searchTerms.EstadoFilterControl || data.estado.toLowerCase().indexOf(searchTerms.EstadoFilterControl.toLowerCase()) !== -1) &&
+        (!searchTerms.PoblacionFilterControl || data.poblacion.toLowerCase().indexOf(searchTerms.PoblacionFilterControl.toLowerCase()) !== -1) &&
+        (!searchTerms.ProvinciaFilterControl || data.provincia.toLowerCase().indexOf(searchTerms.ProvinciaFilterControl.toLowerCase()) !== -1) &&
+        (!searchTerms.ClienteFilterControl || data.cliente.toLowerCase().indexOf(searchTerms.ClienteFilterControl.toLowerCase()) !== -1) &&
+        (!searchTerms.ProductoFilterControl || data.producto.toLowerCase().indexOf(searchTerms.ProductoFilterControl.toLowerCase()) !== -1) &&
+        (!searchTerms.FamiliaFilterControl || data.familia.toLowerCase().indexOf(searchTerms.FamiliaFilterControl.toLowerCase()) !== -1) &&
+        (!searchTerms.SubFamiliaFilterControl || data.subfamilia.toLowerCase().indexOf(searchTerms.SubFamiliaFilterControl.toLowerCase()) !== -1)
+      );
     };
     this.dataSource.filter = JSON.stringify(filterValues);
   }
@@ -329,6 +242,21 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     }
   }
 
+  startEditing(row: UserData) {
+    row.editingAccionCorrectora = true;
+    row.tempAccionCorrectora = row.accionCorrectora;
+  }
+
+  confirmEdit(row: UserData) {
+    row.accionCorrectora = row.tempAccionCorrectora || '';
+    row.editingAccionCorrectora = false;
+    this.onSave(row);
+  }
+
+  cancelEdit(row: UserData) {
+    row.editingAccionCorrectora = false;
+  }
+
   onSave(row: UserData) {
     // Lógica para guardar el valor editado
     console.log('Valor guardado:', row.accionCorrectora);
@@ -347,58 +275,58 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     console.log('Símbolo cambiado a:', row.symbol);
     this.cdr.detectChanges(); // Forzar la detección de cambios después de cambiar el símbolo
   }
-}
 
-function createNewUser(id: number): UserData {
-  const poblacion = POBLACIONES[Math.floor(Math.random() * POBLACIONES.length)];
-  const provincia = PROVINCIAS[Math.floor(Math.random() * PROVINCIAS.length)];
-  const cliente = CLIENTES[Math.floor(Math.random() * CLIENTES.length)];
-  const producto = PRODUCTOS[Math.floor(Math.random() * PRODUCTOS.length)];
-  const familia = FAMILIAS[Math.floor(Math.random() * FAMILIAS.length)];
-  const subfamilia = SUBFAMILIAS[Math.floor(Math.random() * SUBFAMILIAS.length)];
-  const rechazo = RECHAZO[Math.floor(Math.random() * RECHAZO.length)];
-  const pvp = Math.floor(Math.random() * 100);
-  const comp = Math.floor(Math.random() * 100);
-  const competidor = COMPETIDOR[Math.floor(Math.random() * COMPETIDOR.length)];
-  const accionPrecioPorcentaje = Math.floor(Math.random() * 100);
-  const accionCorrectora = ACCIONCORRECTORA[Math.floor(Math.random() * ACCIONCORRECTORA.length)];
-  const propuestaAgente = PROPUESTA[Math.floor(Math.random() * PROPUESTA.length)];
-  
-  // Definición del área de Madrid
-  const madridArea = {
-    latMin: 40.312, // Límite sur de Madrid
-    latMax: 40.642, // Límite norte de Madrid
-    lonMin: -3.889, // Límite oeste de Madrid
-    lonMax: -3.517  // Límite este de Madrid
-  };
+  createNewUser(id: number): UserData {
+    const poblacion = this.POBLACIONES[Math.floor(Math.random() * this.POBLACIONES.length)];
+    const provincia = this.PROVINCIAS[Math.floor(Math.random() * this.PROVINCIAS.length)];
+    const cliente = this.CLIENTES[Math.floor(Math.random() * this.CLIENTES.length)];
+    const producto = this.PRODUCTOS[Math.floor(Math.random() * this.PRODUCTOS.length)];
+    const familia = this.FAMILIAS[Math.floor(Math.random() * this.FAMILIAS.length)];
+    const subfamilia = this.SUBFAMILIAS[Math.floor(Math.random() * this.SUBFAMILIAS.length)];
+    const rechazo = this.RECHAZO[Math.floor(Math.random() * this.RECHAZO.length)];
+    const pvp = Math.floor(Math.random() * 100);
+    const comp = Math.floor(Math.random() * 100);
+    const competidor = this.COMPETIDOR[Math.floor(Math.random() * this.COMPETIDOR.length)];
+    const accionPrecioPorcentaje = Math.floor(Math.random() * 100);
+    const accionCorrectora = this.ACCIONCORRECTORA[Math.floor(Math.random() * this.ACCIONCORRECTORA.length)];
+    const propuestaAgente = this.PROPUESTA[Math.floor(Math.random() * this.PROPUESTA.length)];
+    
+    // Definición del área de Madrid
+    const madridArea = {
+      latMin: 40.312, // Límite sur de Madrid
+      latMax: 40.642, // Límite norte de Madrid
+      lonMin: -3.889, // Límite oeste de Madrid
+      lonMax: -3.517  // Límite este de Madrid
+    };
 
-  // Función para generar coordenadas aleatorias dentro del área de Madrid
-  function getRandomCoordinatesInMadrid() {
-    const latitud = Math.random() * (madridArea.latMax - madridArea.latMin) + madridArea.latMin;
-    const longitud = Math.random() * (madridArea.lonMax - madridArea.lonMin) + madridArea.lonMin;
-    return { latitud, longitud };
+    // Función para generar coordenadas aleatorias dentro del área de Madrid
+    function getRandomCoordinatesInMadrid() {
+      const latitud = Math.random() * (madridArea.latMax - madridArea.latMin) + madridArea.latMin;
+      const longitud = Math.random() * (madridArea.lonMax - madridArea.lonMin) + madridArea.lonMin;
+      return { latitud, longitud };
+    }
+
+    const { latitud, longitud } = getRandomCoordinatesInMadrid();
+
+    return {
+      id: id.toString(),
+      estado: this.RECHAZOS[Math.floor(Math.random() * this.RECHAZOS.length)],
+      poblacion: poblacion,
+      provincia: provincia,
+      cliente: cliente,
+      producto: producto,
+      familia: familia,
+      subfamilia: subfamilia,
+      rechazo: rechazo,
+      pvp: pvp,
+      comp: comp,
+      competidor: competidor,
+      accionPrecioPorcentaje: accionPrecioPorcentaje,
+      accionCorrectora: accionCorrectora,
+      latitud: latitud,
+      longitud: longitud,
+      propuestaAgente: propuestaAgente,
+      symbol: '%',
+    };
   }
-
-  const { latitud, longitud } = getRandomCoordinatesInMadrid();
-
-  return {
-    id: id.toString(),
-    estado: RECHAZOS[Math.floor(Math.random() * RECHAZOS.length)],
-    poblacion: poblacion,
-    provincia: provincia,
-    cliente: cliente,
-    producto: producto,
-    familia: familia,
-    subfamilia: subfamilia,
-    rechazo: rechazo,
-    pvp: pvp,
-    comp: comp,
-    competidor: competidor,
-    accionPrecioPorcentaje: accionPrecioPorcentaje,
-    accionCorrectora: accionCorrectora,
-    latitud: latitud,
-    longitud: longitud,
-    propuestaAgente: propuestaAgente,
-    symbol: '%',
-  };
 }
