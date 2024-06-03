@@ -1,7 +1,7 @@
 export interface User {
     id?: number;
-    Username?: string;
-    hashed_pwd? : string;
+    name?: string;
+    lastname?: string;
     email?: string;
-    es_admin?:boolean;
+    hashed_pwd? : string;
 }
