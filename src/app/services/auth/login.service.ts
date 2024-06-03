@@ -52,10 +52,36 @@ export class LoginService {
           localStorage.setItem('port', '3000');
 
           this.setToken(data.token);
-          localStorage.setItem('user', data.username);
-          this.user = data.username;
+          localStorage.setItem('user', data.name);
+          this.user = data.name;
           
           return data;
+        })
+      );
+  }
+
+  getUserInfo(){
+    let schema = localStorage.getItem('schema');
+    let baseUrl = localStorage.getItem('baseUrl');
+    let port = localStorage.getItem('port');
+    let options ={
+      headers: new HttpHeaders().set(
+        'Authorization', 
+        `Bearer ${this.getToken()}`
+      ),
+    };
+    return this.http
+      .post(
+        `${baseUrl}:${port}/api/users/info`,
+        {
+          schema: schema,
+          email: localStorage.getItem('email'),
+        },
+        options
+      )
+      .pipe(
+        map((data: any) =>{
+          return data.fecha_insert;
         })
       );
   }

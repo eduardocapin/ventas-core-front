@@ -16,13 +16,6 @@ const routes: Routes = [
   {
     path: 'mobentisrechazos', component: PagesComponent, 
     children:[
-      /* ejemplo */
-      /* {
-        path: 'clientes',
-        loadChildren: () => import('./clients/clients.module').then(m => m.ClientsModule),
-        canActivate: [authGuard],
-        canMatch: [authGuard]
-      }, */
       {
         path: 'rechazos',
         loadChildren: () => import('./rechazos/rechazos.module').then(m => m.RechazosModule),

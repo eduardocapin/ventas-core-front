@@ -2,7 +2,8 @@ import { ChangeDetectorRef, Component, ViewChild, computed, signal } from '@angu
 import { MatSidenav } from '@angular/material/sidenav';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Router } from '@angular/router';
-
+import { LoginService } from '../services/auth/login.service';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
@@ -13,9 +14,11 @@ export class PagesComponent {
   sidenav!: MatSidenav;
 
   constructor(
+    public _loginServices: LoginService,
     private router: Router,
     private observer: BreakpointObserver,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    public dialog: MatDialog
   ) {}
 
   isExpanded = signal(false);
@@ -35,5 +38,10 @@ export class PagesComponent {
     this.navExpanded = !this.navExpanded;
     // Actualizar el estado del menú
     this.isExpanded.set(!this.isExpanded());
+  }
+
+  logout() {
+    this._loginServices.logout();
+    this.router.navigateByUrl('login');
   }
 }
