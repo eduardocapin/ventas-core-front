@@ -53,77 +53,24 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     { value: 'No aplica', viewValue: 'No aplica' }
   ];
 
-  CLIENTES: string[] = [
-    'Mercadona', 'Alimerka', 'Eroski', 'MasYMas', 'Carrefour', 'Lidl', 'Aldi', 'Dia', 'Supercor', 'Hipercor', 'Ahorramás',
-    'BM Supermercados', 'Bonpreu', 'Caprabo', 'Condis', 'El Corte Inglés', 'Froiz', 'Gadis', 'La Plaza de DIA', 'Lupa',
-    'Simply', 'Superdino', 'SuperSol', 'Ulabox', 'Consum', 'HiperDino'
-  ];
-
-  POBLACIONES: string[] = [
-    'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Murcia', 'Palma', 'Las Palmas de Gran Canaria', 'Bilbao',
-    'Alicante', 'Córdoba', 'Valladolid', 'Vigo', 'Gijón', 'Hospitalet de Llobregat', 'Vitoria-Gasteiz', 'La Coruña', 'Granada', 'Elche',
-    'Oviedo', 'Santa Cruz de Tenerife', 'Pamplona', 'Cartagena', 'Sabadell', 'Jerez de la Frontera', 'Móstoles', 'Santander', 'Alcalá de Henares', 'Fuenlabrada',
-    'Legánes', 'San Sebastián', 'Getafe', 'Burgos', 'Albacete', 'Alcorcón', 'Almería', 'Donostia-San Sebastián', 'Castellón de la Plana', 'Logroño', 'Badajoz',
-    'La Laguna', 'Salamanca', 'Huelva', 'Marbella', 'Lérida', 'Tarragona', 'Dos Hermanas', 'Torrejón de Ardoz', 'Parla', 'Mataró'
-  ];
-
-  PROVINCIAS: string[] = [
-    'Álava', 'Albacete', 'Alicante', 'Almería', 'Asturias', 'Ávila', 'Badajoz', 'Barcelona', 'Burgos', 'Cáceres',
-    'Cádiz', 'Cantabria', 'Castellón', 'Ciudad Real', 'Córdoba', 'La Coruña', 'Cuenca', 'Gerona', 'Granada', 'Guadalajara',
-    'Guipúzcoa', 'Huelva', 'Huesca', 'Islas Baleares', 'Jaén', 'León', 'Lérida', 'Lugo', 'Madrid', 'Málaga',
-    'Murcia', 'Navarra', 'Orense', 'Palencia', 'Las Palmas', 'Pontevedra', 'La Rioja', 'Salamanca', 'Segovia', 'Sevilla', 'Soria',
-    'Tarragona', 'Santa Cruz de Tenerife', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza'
-  ];
-
-  PRODUCTOS: string[] = [
-    'Cerveza', 'Vino', 'Aceite de oliva', 'Queso', 'Embutidos', 'Frutas', 'Verduras', 'Pan', 'Bebidas refrescantes', 'Helado',
-    'Chocolate', 'Café', 'Cereales', 'Miel', 'Frutos secos', 'Especias'
-  ];
-
-  FAMILIAS: string[] = [
-    'Bebidas', 'Alimentos frescos', 'Lácteos', 'Panadería', 'Charcutería', 'Dulces', 'Condimentos'
-  ];
-
-  SUBFAMILIAS: string[] = [
-    'Bebidas alcohólicas', 'Bebidas no alcohólicas', 'Frutas frescas', 'Verduras frescas', 'Quesos', 'Embutidos', 'Pan blanco',
-    'Pan integral', 'Galletas', 'Chocolate', 'Café molido', 'Café en grano', 'Cereales de desayuno', 'Mermeladas', 'Frutos secos tostados', 'Especias en polvo'
-  ];
-
-  RECHAZO: string[] = [
-    'Mal estado', 'Mejor precio competencia', 'Producto no trabajado', 'Mala calidad'
-  ];
-
-  COMPETIDOR: string[] = [
-    'Distribuciones Rico', 'Cadea 100 Profesional', 'Bazar Hogar'
-  ];
-
-  ACCIONCORRECTORA: string[] = [
-    'Promoción 2x1', 'Aplicar campaña trimestral', 'Promoción 1+1', 'Promoción 3x2', 'Regalo de cartelería de publicidad', 'Lanzar promoción 3x2'
-  ];
-
-  PROPUESTA: string[] = [
-    'Mejorar el descuento', 'Mejorar la calidad'
-  ];
-
-  RECHAZOS: string[] = ['Rechazado', 'En Proceso', 'Vendido', 'No aplica'];
-
-  rechazadosCount: number = 0;
-  enProcesoCount: number = 0;
-  vendidosCount: number = 0;
-  noAplicaCount: number = 0;
-
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
 
   constructor(public dialog: MatDialog, private formBuilder: FormBuilder, private snackBar: MatSnackBar, private cdr: ChangeDetectorRef) {
-    const users = Array.from({ length: 100 }, (_, k) => this.createNewUser(k + 1));
+    const users = [
+      this.createUser('1', 'Rechazado', 'Madrid', 'Madrid', 'Mercadona', 'Cerveza', 'Bebidas', 'Bebidas alcohólicas', 'Mal estado', 10, 8, 'Distribuciones Rico', 15, 'Promoción 2x1', 'Mejorar el descuento', 40.416775, -3.703790),
+      this.createUser('2', 'En Proceso', 'Barcelona', 'Barcelona', 'Carrefour', 'Queso', 'Lácteos', 'Quesos', 'Mejor precio competencia', 20, 18, 'Cadea 100 Profesional', 10, 'Aplicar campaña trimestral', 'Mejorar la calidad', 41.385064, 2.173404),
+      this.createUser('3', 'Vendido', 'Valencia', 'Valencia', 'Eroski', 'Aceite de oliva', 'Alimentos frescos', 'Frutas frescas', 'Producto no trabajado', 30, 28, 'Bazar Hogar', 5, 'Promoción 1+1', 'Mejorar el descuento', 39.469907, -0.376288),
+      this.createUser('4', 'No aplica', 'Sevilla', 'Sevilla', 'Lidl', 'Pan', 'Panadería', 'Pan blanco', 'Mala calidad', 40, 38, 'Distribuciones Rico', 25, 'Promoción 3x2', 'Mejorar la calidad', 37.389092, -5.984459),
+      this.createUser('5', 'Rechazado', 'Zaragoza', 'Zaragoza', 'Dia', 'Vino', 'Bebidas', 'Bebidas alcohólicas', 'Mal estado', 50, 48, 'Cadea 100 Profesional', 20, 'Regalo de cartelería de publicidad', 'Mejorar el descuento', 41.648823, -0.889085),
+    ];
+
     this.dataSource = new MatTableDataSource(users);
 
     this.form = this.formBuilder.group({
       EstadoFilterControl: [''],
       PoblacionFilterControl: [''],
       ProvinciaFilterControl: [''],
-      ClienteFilterControl: [''],
       ProductoFilterControl: [''],
       FamiliaFilterControl: [''],
       SubFamiliaFilterControl: ['']
@@ -157,7 +104,6 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
         (!searchTerms.EstadoFilterControl || data.estado.toLowerCase().indexOf(searchTerms.EstadoFilterControl.toLowerCase()) !== -1) &&
         (!searchTerms.PoblacionFilterControl || data.poblacion.toLowerCase().indexOf(searchTerms.PoblacionFilterControl.toLowerCase()) !== -1) &&
         (!searchTerms.ProvinciaFilterControl || data.provincia.toLowerCase().indexOf(searchTerms.ProvinciaFilterControl.toLowerCase()) !== -1) &&
-        (!searchTerms.ClienteFilterControl || data.cliente.toLowerCase().indexOf(searchTerms.ClienteFilterControl.toLowerCase()) !== -1) &&
         (!searchTerms.ProductoFilterControl || data.producto.toLowerCase().indexOf(searchTerms.ProductoFilterControl.toLowerCase()) !== -1) &&
         (!searchTerms.FamiliaFilterControl || data.familia.toLowerCase().indexOf(searchTerms.FamiliaFilterControl.toLowerCase()) !== -1) &&
         (!searchTerms.SubFamiliaFilterControl || data.subfamilia.toLowerCase().indexOf(searchTerms.SubFamiliaFilterControl.toLowerCase()) !== -1)
@@ -174,9 +120,6 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     if (this.dataSource && this.paginator) {
       this.dataSource.paginator = this.paginator;
-      this.dataSource.data.forEach(row => {
-        this.actualizarConteos(row.estado, true);
-      });
       this.cdr.detectChanges(); // Forzar la detección de cambios después de actualizar los conteos
     }
     if (this.sort) {
@@ -211,26 +154,6 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       disableClose: true,
       data: { selectedRows: this.selection.selected }
     });
-  }
-
-  actualizarConteos(estado: string, incrementar: boolean) {
-    switch (estado) {
-      case 'Rechazado':
-        this.rechazadosCount += incrementar ? 1 : -1;
-        break;
-      case 'En Proceso':
-        this.enProcesoCount += incrementar ? 1 : -1;
-        break;
-      case 'Vendido':
-        this.vendidosCount += incrementar ? 1 : -1;
-        break;
-      case 'No aplica':
-        this.noAplicaCount += incrementar ? 1 : -1;
-        break;
-      default:
-        break;
-    }
-    this.cdr.detectChanges(); // Forzar la detección de cambios después de actualizar los conteos
   }
 
   getOptionImage(estado: string): string {
@@ -320,15 +243,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
   onEstadoChange(event: any, row: UserData) {
     const previousEstado = row.previousEstado || row.estado; // Utiliza el estado anterior almacenado o el actual si no hay uno anterior
-
-    // Actualiza los contadores
-    this.actualizarConteos(previousEstado, false); // Disminuir el contador del estado anterior
-    this.actualizarConteos(event.value, true); // Aumentar el contador del nuevo estado
-
-    // Actualiza el estado anterior
     row.previousEstado = event.value;
-
-    // Actualiza el estado actual
     row.estado = event.value;
 
     // Mostrar mensaje de éxito
@@ -338,42 +253,9 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     });
   }
 
-  createNewUser(id: number): UserData {
-    const poblacion = this.POBLACIONES[Math.floor(Math.random() * this.POBLACIONES.length)];
-    const provincia = this.PROVINCIAS[Math.floor(Math.random() * this.PROVINCIAS.length)];
-    const cliente = this.CLIENTES[Math.floor(Math.random() * this.CLIENTES.length)];
-    const producto = this.PRODUCTOS[Math.floor(Math.random() * this.PRODUCTOS.length)];
-    const familia = this.FAMILIAS[Math.floor(Math.random() * this.FAMILIAS.length)];
-    const subfamilia = this.SUBFAMILIAS[Math.floor(Math.random() * this.SUBFAMILIAS.length)];
-    const rechazo = this.RECHAZO[Math.floor(Math.random() * this.RECHAZO.length)];
-    const pvp = Math.floor(Math.random() * 100);
-    const comp = Math.floor(Math.random() * 100);
-    const competidor = this.COMPETIDOR[Math.floor(Math.random() * this.COMPETIDOR.length)];
-    const accionPrecioPorcentaje = Math.floor(Math.random() * 100);
-    const accionCorrectora = this.ACCIONCORRECTORA[Math.floor(Math.random() * this.ACCIONCORRECTORA.length)];
-    const propuestaAgente = this.PROPUESTA[Math.floor(Math.random() * this.PROPUESTA.length)];
-
-    // Definición del área de Madrid
-    const madridArea = {
-      latMin: 40.312, // Límite sur de Madrid
-      latMax: 40.642, // Límite norte de Madrid
-      lonMin: -3.889, // Límite oeste de Madrid
-      lonMax: -3.517  // Límite este de Madrid
-    };
-
-    // Función para generar coordenadas aleatorias dentro del área de Madrid
-    function getRandomCoordinatesInMadrid() {
-      const latitud = Math.random() * (madridArea.latMax - madridArea.latMin) + madridArea.latMin;
-      const longitud = Math.random() * (madridArea.lonMax - madridArea.lonMin) + madridArea.lonMin;
-      return { latitud, longitud };
-    }
-
-    const { latitud, longitud } = getRandomCoordinatesInMadrid();
-
-    const estado = this.RECHAZOS[Math.floor(Math.random() * this.RECHAZOS.length)];
-
+  createUser(id: string, estado: string, poblacion: string, provincia: string, cliente: string, producto: string, familia: string, subfamilia: string, rechazo: string, pvp: number, comp: number, competidor: string, accionPrecioPorcentaje: number, accionCorrectora: string, propuestaAgente: string, latitud: number, longitud: number): UserData {
     return {
-      id: id.toString(),
+      id: id,
       estado: estado,
       previousEstado: estado, // Almacenar el estado inicial como estado anterior
       poblacion: poblacion,
