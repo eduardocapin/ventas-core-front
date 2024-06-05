@@ -23,12 +23,16 @@ export class LoginService {
   currentUserData: BehaviorSubject<User> = new BehaviorSubject<User>({
     id: 0,
     email: '',
+    name: '',
+    lastname: '',
   });
 
   user: string | null = localStorage.getItem('user');
+  lastname: string |null = localStorage.getItem('lastname');
 
   constructor(private http: HttpClient) {
     this.user = localStorage.getItem('user');
+    this.lastname = localStorage.getItem('lastname');
   }
 
   private frontUrl= 'http://localhost:4200';
@@ -53,13 +57,16 @@ export class LoginService {
 
           this.setToken(data.token);
           localStorage.setItem('user', data.name);
+          localStorage.setItem('lastname', data.lastname)
           this.user = data.name;
+          this.lastname = data.lastname;
           
           return data;
         })
       );
   }
 
+  /* Para modificar datos del usuario */
   getUserInfo(){
     let schema = localStorage.getItem('schema');
     let baseUrl = localStorage.getItem('baseUrl');
@@ -85,7 +92,7 @@ export class LoginService {
         })
       );
   }
-
+  /* encargado de mostrar errores */
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       console.error('Se ha producido un error', error.error);
@@ -100,7 +107,7 @@ export class LoginService {
       () => new Error('Algo falló, por favor intentelo de nuevo')
     );
   }
-
+  
   get userData(): Observable<User> {
     return this.currentUserData.asObservable();
   }
