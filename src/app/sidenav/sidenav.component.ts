@@ -4,6 +4,8 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/auth/login.service';
 import { MatDialog } from '@angular/material/dialog';
+import { ProfileEditPopupComponent } from '../configuration/configuration-general/profile-edit-popup/profile-edit-popup.component'; // Asegúrate de que la ruta sea correcta
+
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
@@ -38,6 +40,13 @@ export class PagesComponent {
     this.navExpanded = !this.navExpanded;
     // Actualizar el estado del menú
     this.isExpanded.set(!this.isExpanded());
+  }
+
+  openProfileEditPopup(): void {
+    const dialogRef = this.dialog.open(ProfileEditPopupComponent, {
+      width: '400px',
+      disableClose: true
+    });
   }
 
   logout() {

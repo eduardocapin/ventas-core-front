@@ -10,17 +10,20 @@
     <!-- FIN - botón de apertura y cierre-->
     <!-- Icono de perfil -->
     <div class="d-flex flex-column align-items-center mt-4" *ngIf="navExpanded">
-      <div class="profile-picture">
+      <div class="profile-picture" (click)="openProfileEditPopup()" style="cursor: pointer;">
         <img src="../../assets/icon/defaultprofile.png" alt="Perfil" class="rounded-circle" width="100" height="100">
       </div>
       <div class="profile-info text-center mt-2">
-        <p class="mb-0">{{_loginServices.user}} {{ _loginServices.lastname }}</p>
+        <p class="mb-0 d-flex align-items-center justify-content-center" (click)="openProfileEditPopup()" style="cursor: pointer;">
+          {{_loginServices.user}} {{ _loginServices.lastname }}
+          <!-- <mat-icon class="ms-2" (click)="openProfileEditPopup()" style="cursor: pointer;">settings</mat-icon> ICONO EDITAR PERFIL (OPCIONAL) -->
+        </p>
         <p class="text-muted">EMPLEADO</p>
-        <button mat-button >Editar perfil</button>
+        <!-- <button mat-button (click)="openProfileEditPopup()">Editar perfil</button> BOTON EDITAR PERFIL (OPCIONAL) -->
       </div>
     </div>
     <!-- Boton de perfil más pequeño -->
-    <div class="profile-picture-small d-flex align-items-center justify-content-center mt-4 mb-4" *ngIf="!navExpanded">
+    <div class="profile-picture-small d-flex align-items-center justify-content-center mt-4 mb-4" *ngIf="!navExpanded" (click)="openProfileEditPopup()" style="cursor: pointer;">
       <img src="../../assets/icon/defaultprofile.png" alt="Perfil" class="rounded-circle" width="50" height="50">
     </div>
 

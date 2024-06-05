@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import {MatListModule} from '@angular/material/list';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
         MatListModule,
         MatTooltipModule,
         RouterModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatSnackBarModule
     ],
 })
 export class PagesModule {}
