@@ -46,18 +46,26 @@ export class PopupMapComponent implements OnInit, AfterViewInit {
         position: { lat: row.rechazo_latitud, lng: row.rechazo_longitud },
         title: row.cliente,
         map: this.map?.googleMap,
+        icon: {
+          url: this.getMarkerIcon(row.estado),
+          scaledSize: new google.maps.Size(25, 33), // Ajusta el tamaño según sea necesario
+          size: new google.maps.Size(40, 40), // Tamaño original del icono
+          origin: new google.maps.Point(0, 0), // Origen de la imagen
+          anchor: new google.maps.Point(20, 20) // Punto de anclaje de la imagen
+        }
       });
 
       console.log('Añadiendo marcador:', marker); // Depuración
 
-      const rechazoColor = 'red';
+      const estadoColor = this.getEstadoColor(row.estado);
+
       const infoContent = `
         <div>
           <h2>${row.cliente}</h2>
-          <p><strong>${row.estado}</strong></p>
+          <p><strong style="color:${estadoColor};">${row.estado}</strong></p>
           <p>${row.poblacion}, ${row.provincia}</p>
           <p><strong>${row.producto}</strong></p>
-          <p style="color:${rechazoColor};"><strong>${row.tipo_rechazo}</strong></p>
+          <p style="color:red;"><strong>${row.tipo_rechazo}</strong></p>
         </div>
       `;
 
@@ -75,6 +83,38 @@ export class PopupMapComponent implements OnInit, AfterViewInit {
 
       return marker;
     });
+  }
+
+  getMarkerIcon(estado: string): string {
+    const basePath = 'assets/icon/';
+
+    switch (estado) {
+      case 'Rechazado':
+        return `${basePath}rechazado_marker.png`;
+      case 'En Proceso':
+        return `${basePath}enproceso_marker.png`;
+      case 'Vendido':
+        return `${basePath}vendido_marker.png`;
+      case 'No aplica':
+        return `${basePath}noaplica_marker.png`;
+      default:
+        return ''; // Devuelve una cadena vacía si el estado no coincide con ninguno de los casos anteriores
+    }
+  }
+
+  getEstadoColor(estado: string): string {
+    switch (estado) {
+      case 'Rechazado':
+        return 'red';
+      case 'En Proceso':
+        return 'blue';
+      case 'Vendido':
+        return 'green';
+      case 'No aplica':
+        return 'gray';
+      default:
+        return 'black'; // Color por defecto si el estado no coincide con ninguno de los casos anteriores
+    }
   }
 
   fitBoundsToMarkers() {
