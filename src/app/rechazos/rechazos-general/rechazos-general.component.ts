@@ -23,7 +23,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   form: FormGroup;
   displayedColumns: string[] = ['select', 'estado', 'id', 'poblacion', 'provincia', 'cliente', 'producto', 'familia', 'subfamilia', 'rechazo', 'pvp', 'comp', 'competidor','accionPrecioSymbol', 'accionCorrectora', 'propuestaAgente'];
   dataSource: MatTableDataSource<IRechazo>;
-  rechazoList: IRechazo[]=[];
+  rechazoList: IRechazo[] = [];
   selection = new SelectionModel<IRechazo>(true, []);
   estadosRechazoCount: IEstadosRechazoCount = {
     cantidad_rechazo: 0,
@@ -179,101 +179,54 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     });
   }
 
-  /* getOptionImage(estado: string): string {
-    // Ruta base de las imágenes en la carpeta 'src/assets/icon/'
-    const basePath = 'assets/icon/';
-
-    // Construir la URL de la imagen basada en el estado proporcionado
-    switch (estado) {
-      case 'Rechazado':
-        return basePath + 'rechazado.svg';
-      case 'En Proceso':
-        return basePath + 'en_proceso.svg';
-      case 'Vendido':
-        return basePath + 'vendido.svg';
-      case 'No aplica':
-        return basePath + 'no_aplica.svg';
-      default:
-        return ''; // Devuelve una cadena vacía si el estado no coincide con ninguno de los casos anteriores
+  startEditing(row: IRechazo & { editingAccionCorrectora?: boolean; tempAccionCorrectora?: string; editingPrecioPromocion?: boolean; tempPrecioPromocion?: number; tempSimboloPromocion?: boolean }, field: string) {
+    if (field === 'accionCorrectora') {
+      row.tempAccionCorrectora = row.accion_correcta;
+      row.editingAccionCorrectora = true;
+    } else if (field === 'precioPromocion') {
+      row.tempPrecioPromocion = row.pvp_es_competencia_precio;
+      row.tempSimboloPromocion = row.pvp_es_competencia_symbol;
+      row.editingPrecioPromocion = true;
     }
   }
- */
-  /* startEditing(row: IRechazo, field: string) {
-    if (field === 'accionCorrectora') {
-      row.editingAccionCorrectora = true;
-      row.tempAccionCorrectora = row.accionCorrectora;
-    } else if (field === 'accionPrecioPorcentaje') {
-      row.editingAccionPrecioPorcentaje = true;
-      row.tempAccionPrecioPorcentaje = row.accionPrecioPorcentaje;
-    }
-  } */
 
- /*  updateCharCount(row: IRechazo) {
+  updateCharCount(row: IRechazo & { editingAccionCorrectora?: boolean; tempAccionCorrectora?: string; editingPrecioPromocion?: boolean; tempPrecioPromocion?: number; tempSimboloPromocion?: boolean }) {
     // Este método se llama cada vez que se escribe en el input
-  } */
+  }
 
-  /* confirmEdit(row: IRechazo, field: string) {
+  confirmEdit(row: IRechazo & { editingAccionCorrectora?: boolean; tempAccionCorrectora?: string; editingPrecioPromocion?: boolean; tempPrecioPromocion?: number; tempSimboloPromocion?: boolean }, field: string) {
     if (field === 'accionCorrectora') {
       if (row.tempAccionCorrectora && row.tempAccionCorrectora.length <= 50) {
-        row.accionCorrectora = row.tempAccionCorrectora || '';
+        row.accion_correcta = row.tempAccionCorrectora || '';
         row.editingAccionCorrectora = false;
-        this.onSave(row);
+        // Aquí llamaría a la función de guardado, pero no lo haremos ahora
+        // this.onSave(row);
       } else {
         this.snackBar.open('La acción correctora debe tener entre 1 y 50 caracteres.', '', { duration: 3000, verticalPosition: 'top' });
       }
-    } else if (field === 'accionPrecioPorcentaje') {
-      if (row.tempAccionPrecioPorcentaje !== undefined && row.tempAccionPrecioPorcentaje < 0) {
-        this.snackBar.open('No se pueden introducir valores negativos.', '', { duration: 3000, verticalPosition: 'top' });
-      } else {
-        row.accionPrecioPorcentaje = row.tempAccionPrecioPorcentaje || 0;
-        row.editingAccionPrecioPorcentaje = false;
-        this.onSave(row);
-      }
+    } else if (field === 'precioPromocion') {
+      row.pvp_es_competencia_precio = row.tempPrecioPromocion || 0;
+      row.pvp_es_competencia_symbol = row.tempSimboloPromocion || true;
+      row.editingPrecioPromocion = false;
+      // Aquí llamaría a la función de guardado, pero no lo haremos ahora
+      // this.onSave(row);
     }
-  } */
+  }
 
-  /* cancelEdit(row: IRechazo, field: string) {
+  cancelEdit(row: IRechazo & { editingAccionCorrectora?: boolean; tempAccionCorrectora?: string; editingPrecioPromocion?: boolean; tempPrecioPromocion?: number; tempSimboloPromocion?: boolean }, field: string) {
     if (field === 'accionCorrectora') {
       row.editingAccionCorrectora = false;
-    } else if (field === 'accionPrecioPorcentaje') {
-      row.editingAccionPrecioPorcentaje = false;
+    } else if (field === 'precioPromocion') {
+      row.editingPrecioPromocion = false;
     }
-  } */
+  }
 
-  /* onSave(row: IRechazo) {
-    // Lógica para guardar el valor editado
-    console.log('Valor guardado:', row.accionCorrectora);
-
-    // Mostrar Snackbar de éxito
-    const config = new MatSnackBarConfig();
-    config.duration = 3000;  // Duración de la snackbar
-    config.verticalPosition = 'top';
-
-    this.snackBar.open('ACCIÓN CORRECTORA se ha actualizado correctamente', '', config);
-    this.cdr.detectChanges(); // Forzar la detección de cambios después de guardar
-  } */
-
-  /* onSymbolChange(row: IRechazo) {
-    // Lógica para manejar el cambio de símbolo
-    console.log('Símbolo cambiado a:', row.symbol);
-    const config = new MatSnackBarConfig();
-    config.duration = 3000;  // Duración de la snackbar
-    config.verticalPosition = 'top';
-
-    this.snackBar.open('Símbolo cambiado a ' + '[ ' + row.symbol + ' ]' + ' correctamente', '', config);
-    this.cdr.detectChanges(); // Forzar la detección de cambios después de cambiar el símbolo
-  } */
-
-  /* onEstadoChange(event: any, row: IRechazo) {
-    const previousEstado = row.previousEstado || row.estado; // Utiliza el estado anterior almacenado o el actual si no hay uno anterior
-    row.previousEstado = event.value;
-    row.estado = event.value;
-
-    // Mostrar mensaje de éxito
-    this.snackBar.open('ESTADO se ha actualizado correctamente', '', {
+  onSymbolChange(row: IRechazo & { tempSimboloPromocion?: boolean }) {
+    this.snackBar.open('Símbolo cambiado a ' + (row.tempSimboloPromocion ? '€' : '%'), '', {
       duration: 3000,
       verticalPosition: 'top'
     });
-  } */
+    this.cdr.detectChanges(); // Forzar la detección de cambios después de cambiar el símbolo
+  }
 
 }

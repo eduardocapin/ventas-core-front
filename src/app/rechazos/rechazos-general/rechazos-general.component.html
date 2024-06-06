@@ -57,30 +57,28 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> ID </th>
             <td mat-cell *matCellDef="let row"> {{row.rechazo_id}} </td>
           </ng-container>
-<!-- Estado Column -->
-<ng-container matColumnDef="estado">
-  <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header">Estado</th>
-  <td mat-cell *matCellDef="let row" class="estado-cell">
-    <div class="d-flex align-items-center justify-content-center gap-2">
-      <div class="form-group estado-form-group">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="estado-form-field">
-          <mat-select [(ngModel)]="row.estado" name="estado-{{row.rechazo_id}}" class="small-height-select">
-            <mat-select-trigger>
-              <img [src]="getOptionImage(row.estado)" alt="{{ row.estado }} Image" class="option-image">
-              {{ row.estado }}
-            </mat-select-trigger>
-            <mat-option *ngFor="let estado of estados" [value]="estado.estado">
-              <img [src]="getOptionImage(estado.estado)" alt="{{ estado.estado }} Image" class="option-image">
-              {{ estado.estado }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
-  </td>
-</ng-container>
-
-
+          <!-- Estado Column -->
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header">Estado</th>
+            <td mat-cell *matCellDef="let row" class="estado-cell">
+              <div class="d-flex align-items-center justify-content-center gap-2">
+                <div class="form-group estado-form-group">
+                  <mat-form-field appearance="outline" subscriptSizing="dynamic" class="estado-form-field">
+                    <mat-select [(ngModel)]="row.estado" name="estado-{{row.rechazo_id}}" class="small-height-select">
+                      <mat-select-trigger>
+                        <img [src]="getOptionImage(row.estado)" alt="{{ row.estado }} Image" class="option-image">
+                        {{ row.estado }}
+                      </mat-select-trigger>
+                      <mat-option *ngFor="let estado of estados" [value]="estado.estado">
+                        <img [src]="getOptionImage(estado.estado)" alt="{{ estado.estado }} Image" class="option-image">
+                        {{ estado.estado }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </td>
+          </ng-container>
 
           <!-- Poblacion Column -->
           <ng-container matColumnDef="poblacion">
@@ -135,22 +133,54 @@
           <!-- pvp promocion -->
           <ng-container matColumnDef="accionPrecioSymbol">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> </th>
-            <td class="color-accioncorrectora" mat-cell *matCellDef="let row">
-              <div class="d-flex gap-1 ">
-                <span>{{row.pvp_es_promocion_precio}}</span>
-                <span>
-                  <select [(ngModel)]="row.pvp_es_promocion_symbol">
-                    <option [value]="1">€</option>
-                    <option [value]="0">%</option>
-                  </select>
+            <td mat-cell *matCellDef="let row">
+              <div class="editable-cell">
+                <span class="color-accioncorrectora" *ngIf="!row.editingPrecioPromocion" (click)="startEditing(row, 'precioPromocion')">
+                  {{ row.pvp_es_competencia_precio }}
                 </span>
+                <span class="color-accioncorrectora" *ngIf="!row.editingPrecioPromocion" (click)="startEditing(row, 'precioPromocion')">
+                  {{ row.pvp_es_competencia_symbol ? '€' : '%' }}
+                </span>
+                <div *ngIf="row.editingPrecioPromocion" class="d-flex align-items-center">
+                  <input [(ngModel)]="row.tempPrecioPromocion"
+                         class="form-control me-2 large-input"
+                         required
+                         type="number"
+                         (input)="updateCharCount(row)" />
+                  <select [(ngModel)]="row.tempSimboloPromocion" (change)="onSymbolChange(row)" class="symbol-select me-2">
+                    <option [value]="true">€</option>
+                    <option [value]="false">%</option>
+                  </select>
+                  <button mat-icon-button color="primary" (click)="confirmEdit(row, 'precioPromocion')">
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="cancelEdit(row, 'precioPromocion')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
               </div>
             </td>
           </ng-container>
           <!-- Accion correctora -->
           <ng-container matColumnDef="accionCorrectora">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Acción Correctora </th>
-            <td class="color-accioncorrectora" mat-cell *matCellDef="let row">{{row.accion_correctora}}</td>
+            <td class="color-accioncorrectora" mat-cell *matCellDef="let row">
+              <span *ngIf="!row.editingAccionCorrectora" (click)="startEditing(row, 'accionCorrectora')">{{ row.accion_correctora }}</span>
+              <div *ngIf="row.editingAccionCorrectora" class="d-flex align-items-center">
+                <input [(ngModel)]="row.accion_correctora"
+                       maxlength="50"
+                       class="form-control me-2 large-input"
+                       required
+                       (input)="updateCharCount(row)" />
+                <div class="char-count">{{ row.tempAccionCorrectora?.length || 0 }}/50</div>
+                <button mat-icon-button color="primary" (click)="confirmEdit(row, 'accionCorrectora')">
+                  <mat-icon>check</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="cancelEdit(row, 'accionCorrectora')">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </td>
           </ng-container>
           <!-- Propuesta agente Column -->
           <ng-container matColumnDef="propuestaAgente">

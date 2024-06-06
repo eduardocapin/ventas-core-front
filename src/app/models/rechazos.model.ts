@@ -18,4 +18,10 @@ export interface IRechazo {
     anulado: boolean; // Estado anulado
     rechazo_longitud: number; // Longitud del rechazo
     rechazo_latitud: number; // Latitud del rechazo
+
+    editingAccionCorrectora?: boolean;
+    tempAccionCorrectora?: string;
+    editingPrecioPromocion?: boolean;
+    tempPrecioPromocion?: number;
+    tempSimboloPromocion?: boolean;
 }
