@@ -137,6 +137,24 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     return numSelected === numRows;
   }
 
+  getOptionImage(estado: string): string {
+    const basePath = 'assets/icon/';
+  
+    switch (estado) {
+      case 'Rechazado':
+        return `${basePath}rechazado.svg`;
+      case 'En Proceso':
+        return `${basePath}en_proceso.svg`;
+      case 'Vendido':
+        return `${basePath}vendido.svg`;
+      case 'No aplica':
+        return `${basePath}no_aplica.svg`;
+      default:
+        return ''; // Devuelve una cadena vacía si el estado no coincide con ninguno de los casos anteriores
+    }
+  }
+  
+
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
