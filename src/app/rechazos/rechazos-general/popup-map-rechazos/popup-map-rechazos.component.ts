@@ -10,7 +10,7 @@ import { GoogleMap } from '@angular/google-maps';
 })
 export class PopupMapComponent implements OnInit, AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
-  
+
   center: google.maps.LatLngLiteral = { lat: 40.4168, lng: -3.7038 }; // Coordenadas de Madrid, España
   zoom = 5; // Nivel de Zoom predefinido mapa vacío
   options: google.maps.MapOptions = {
@@ -32,6 +32,7 @@ export class PopupMapComponent implements OnInit, AfterViewInit {
         lng: this.data.selectedRows[0].rechazo_longitud
       };
     }
+    console.log('Centro del mapa:', this.center); // Depuración
   }
 
   ngAfterViewInit(): void {
@@ -41,23 +42,19 @@ export class PopupMapComponent implements OnInit, AfterViewInit {
 
   addMarkers() {
     this.markers = this.data.selectedRows.map(row => {
-      const markerIcon = this.getMarkerIcon(row.estado);
       const marker = new google.maps.Marker({
         position: { lat: row.rechazo_latitud, lng: row.rechazo_longitud },
         title: row.cliente,
         map: this.map?.googleMap,
-        icon: {
-          url: markerIcon,
-          scaledSize: new google.maps.Size(25, 33) // Ajusta el tamaño del marcador (Ancho - Alto)
-        }
       });
 
-      const estadoColor = this.getEstadoColor(row.estado);
+      console.log('Añadiendo marcador:', marker); // Depuración
+
       const rechazoColor = 'red';
       const infoContent = `
         <div>
           <h2>${row.cliente}</h2>
-          <p style="color:${estadoColor};"><strong>${row.estado}</strong></p>
+          <p><strong>${row.estado}</strong></p>
           <p>${row.poblacion}, ${row.provincia}</p>
           <p><strong>${row.producto}</strong></p>
           <p style="color:${rechazoColor};"><strong>${row.tipo_rechazo}</strong></p>
@@ -80,41 +77,15 @@ export class PopupMapComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getMarkerIcon(estado: string): string {
-    switch (estado) {
-      case 'Rechazado':
-        return 'assets/icon/rechazado_marker.png';
-      case 'En Proceso':
-        return 'assets/icon/enproceso_marker.png';
-      case 'Vendido':
-        return 'assets/icon/vendido_marker.png';
-      case 'No aplica':
-        return 'assets/icon/noaplica_marker.png';
-      default:
-        return '';
-    }
-  }
-
-  getEstadoColor(estado: string): string {
-    switch (estado) {
-      case 'Rechazado':
-        return 'red';
-      case 'En Proceso':
-        return 'blue';
-      case 'Vendido':
-        return 'green';
-      case 'No aplica':
-        return 'gray';
-      default:
-        return 'black';
-    }
-  }
-
   fitBoundsToMarkers() {
     if (this.map?.googleMap) {
       const bounds = new google.maps.LatLngBounds();
-      this.markers.forEach(marker => bounds.extend(marker.getPosition() as google.maps.LatLng));
-      
+      this.markers.forEach(marker => {
+        bounds.extend(marker.getPosition() as google.maps.LatLng);
+      });
+
+      console.log('Límites del mapa:', bounds); // Depuración
+
       if (this.markers.length === 1) {
         // Si solo hay un marcador, centra el mapa en su posición y aplica un zoom
         this.map.googleMap.setCenter(bounds.getCenter());
