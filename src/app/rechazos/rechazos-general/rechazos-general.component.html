@@ -60,7 +60,16 @@
           <!-- Estado Column -->
           <ng-container matColumnDef="estado">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Estado </th>
-            <td mat-cell *matCellDef="let row"> {{row.estado}} </td>
+            <td mat-cell *matCellDef="let row">
+              <mat-form-field appearance="fill" class="estado-select">
+                <mat-label>Estado</mat-label>
+                <mat-select [(ngModel)]="row.estado" name="estado-{{row.rechazo_id}}">
+                  <mat-option *ngFor="let estado of estados" [value]="estado.estado">
+                    {{ estado.estado }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
           </ng-container>
           <!-- Poblacion Column -->
           <ng-container matColumnDef="poblacion">

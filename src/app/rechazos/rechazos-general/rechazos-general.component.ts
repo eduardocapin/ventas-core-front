@@ -11,6 +11,8 @@ import { MatSnackBarConfig } from '@angular/material/snack-bar';
 import { IRechazo } from 'src/app/models/rechazos.model';
 import { RechazadosService } from 'src/app/services/rechazados/rechazados.service';
 import { IEstadosRechazoCount } from 'src/app/models/count.model';
+import { FilterService } from 'src/app/services/filter/filter.service';
+import { IEstado } from 'src/app/models/estados.model';
 
 @Component({
   selector: 'app-rechazos-general',
@@ -29,6 +31,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     cantidad_aceptado: 0,
     cantidad_enProceso: 0
   };
+  estados: IEstado[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
@@ -38,7 +41,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     private formBuilder: FormBuilder, 
     private snackBar: MatSnackBar, 
     private cdr: ChangeDetectorRef, 
-    private rechazadosService: RechazadosService
+    private rechazadosService: RechazadosService,
+    private filterService: FilterService
   ) {
     this.dataSource = new MatTableDataSource<IRechazo>([]);
 
@@ -59,6 +63,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   ngOnInit() {
     this.loadRechazos();
     this.loadEstadosRechazos();
+    this.loadEstados();
     this.loadGoogleMapsScript();
   }
 
@@ -75,6 +80,14 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       console.log('Contadores de estados de rechazos:', contadores); // Mostrar los contadores en la consola
     });
   }
+
+  private loadEstados() {
+    this.filterService.getEstados().subscribe((estados: IEstado[]) => {
+      this.estados = estados;
+      console.log('Estados cargados:', estados); // Mostrar los estados en la consola
+    });
+  }
+
   private loadGoogleMapsScript() {
     if (!document.getElementById('google-maps-script')) {
       const script = document.createElement('script');

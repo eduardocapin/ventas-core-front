@@ -66,16 +66,7 @@ export class FilterService {
         `Bearer ${this._loginServices.getToken()}`
       ),
     };
-    return this._http
-     .get<IEstado[]>(
-        `${baseUrl}:${port}/api/filtro/estados`,
-        options
-      )
-     .pipe(
-        map((data: any) => {
-          return data.data;
-        })
-      );
+    return this._http.get<IEstado[]>(`${baseUrl}:${port}/api/filtro/estados`, options)
   }
 
 }
