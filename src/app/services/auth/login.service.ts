@@ -35,11 +35,9 @@ export class LoginService {
     this.lastname = localStorage.getItem('lastname');
   }
 
-  private frontUrl= 'http://localhost:4200';
-
   login(credential:LoginRequest): Observable<User>{
     let schema = 'db_rechazos';
-    let baseUrl = 'http://localhost';
+    let baseUrl = 'http://194.164.164.226';
     let port = '3000';
     return this.http
       .post<User>(`${baseUrl}:${port}/api/users/login`, {
@@ -51,7 +49,7 @@ export class LoginService {
         map((data:any) =>{
           localStorage.setItem('dir', 'db_rechazos');
           localStorage.setItem('email', credential.email);
-          localStorage.setItem('baseUrl', 'http://localhost');
+          localStorage.setItem('baseUrl', 'http://194.164.164.226');
           localStorage.setItem('schema', 'db_rechazos');
           localStorage.setItem('port', '3000');
 
