@@ -22,7 +22,7 @@ import { ISimbolo } from 'src/app/models/simbolos.model';
 })
 export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   form: FormGroup;
-  displayedColumns: string[] = ['select', 'estado', 'id', 'poblacion', 'provincia', 'cliente', 'producto', 'familia', 'subfamilia', 'rechazo', 'pvp', 'comp', 'competidor','accionPrecioSymbol', 'accionCorrectora', 'propuestaAgente'];
+  displayedColumns: string[] = ['select', 'estado', 'rechazo_id', 'poblacion', 'provincia', 'cliente', 'producto', 'nombre_familia', 'nombre_subfamilia', 'tipo_rechazo', 'precio_producto', 'precio_competidor', 'competidor','pvp_es_promocion_precio', 'accion_correctora', 'propuesta_agente'];
   dataSource: MatTableDataSource<IRechazo>;
   rechazoList: IRechazo[] = [];
   selection = new SelectionModel<IRechazo>(true, []);
@@ -142,8 +142,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
         (!searchTerms.PoblacionFilterControl || data.poblacion.toLowerCase().indexOf(searchTerms.PoblacionFilterControl.toLowerCase()) !== -1) &&
         (!searchTerms.ProvinciaFilterControl || data.provincia.toLowerCase().indexOf(searchTerms.ProvinciaFilterControl.toLowerCase()) !== -1) &&
         (!searchTerms.ProductoFilterControl || data.producto.toLowerCase().indexOf(searchTerms.ProductoFilterControl.toLowerCase()) !== -1) &&
-        (!searchTerms.FamiliaFilterControl || data.segmentacion_familia.toLowerCase().indexOf(searchTerms.FamiliaFilterControl.toLowerCase()) !== -1) &&
-        (!searchTerms.SubFamiliaFilterControl || data.segmentacion_subfamilia.toLowerCase().indexOf(searchTerms.SubFamiliaFilterControl.toLowerCase()) !== -1)
+        (!searchTerms.FamiliaFilterControl || data.nombre_familia.toLowerCase().indexOf(searchTerms.FamiliaFilterControl.toLowerCase()) !== -1) &&
+        (!searchTerms.SubFamiliaFilterControl || data.nombre_subfamilia.toLowerCase().indexOf(searchTerms.SubFamiliaFilterControl.toLowerCase()) !== -1)
       );
     };
     this.dataSource.filter = JSON.stringify(filterValues);
@@ -193,6 +193,11 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
+  ///metodo para obtener los simbolos
+  getSimboloName(symbolId: number): string {
+    const symbol = this.simbolos.find(s => s.id === symbolId);
+    return symbol ? symbol.simbolo : '';
+  }
 
   verEnMapa() {
     if (this.selection.selected.length === 0) {
@@ -202,7 +207,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       this.snackBar.open('Debe seleccionar al menos 1 rechazo antes de ver en el mapa.', '', config);
       return;
     }
-
+    
     const dialogRef = this.dialog.open(PopupMapComponent, {
       width: '80%',
       height: '80%',
@@ -210,6 +215,36 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       data: { selectedRows: this.selection.selected }
     });
   }
+
+  ///funcion para axtualizar estado
+  actualizarEstados(row: IRechazo){
+    const estadoSeleccionado = this.estados.find(estado => estado.estado === row.estado);
+
+    if (estadoSeleccionado) {
+      const idEstadoSeleccionado = estadoSeleccionado.id;
+      
+      // Mostrar en consola el rechazo_id y el ID del estado seleccionado
+      console.log('ID de Rechazo seleccionado:', row.rechazo_id);
+      console.log('ID de Estado seleccionado:', idEstadoSeleccionado);
+
+      // Llamar al servicio para actualizar el estado
+      this.rechazadosService.actualizarEstados(row.rechazo_id, idEstadoSeleccionado)
+        .subscribe(
+          (response) => {
+            console.log('Estado actualizado correctamente');
+            location.reload();
+          },
+          (error) => {
+            console.error('Error al actualizar el estado', error);
+          }
+        );
+    } else {
+      console.error('No se encontró el ID del estado seleccionado en el array estados');
+    }
+    
+    
+  }
+
 
   startEditing(row: IRechazo & { editingAccionCorrectora?: boolean; tempAccionCorrectora?: string; editingPrecioPromocion?: boolean; tempPrecioPromocion?: number; tempSimboloPromocion?: number }, field: string) {
     if (field === 'accionCorrectora') {
@@ -222,21 +257,28 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     }
   }
 
+  // Este método se llama cada vez que se escribe en el input
   updateCharCount(row: IRechazo & { editingAccionCorrectora?: boolean; tempAccionCorrectora?: string; editingPrecioPromocion?: boolean; tempPrecioPromocion?: number; tempSimboloPromocion?: number }) {
-    // Este método se llama cada vez que se escribe en el input
   }
 
-  
+  ///metodo para confirmar la edicion
   confirmEdit(row: IRechazo & { editingAccionCorrectora?: boolean; tempAccionCorrectora?: string; editingPrecioPromocion?: boolean; tempPrecioPromocion?: number; tempSimboloPromocion?: number }, field: string) {
     if (field === 'accionCorrectora') {
+      const id_rechazo = row.rechazo_id;
       if (row.tempAccionCorrectora && row.tempAccionCorrectora.length <= 50) {
         row.accion_correctora = row.tempAccionCorrectora || '';
         row.editingAccionCorrectora = false;
+        const accion_correctora = row.tempAccionCorrectora;
+        console.log('Enviando datos a actualizarAccionCorrectora:', {
+          id_rechazo: row.rechazo_id,
+          accion_correctora: accion_correctora,
+        });
         // Aquí podrías llamar a la función de guardado si lo deseas
-        this.rechazadosService.actualizarAccionCorrectora(row.rechazo_id, row.tempAccionCorrectora).subscribe(
+        this.rechazadosService.actualizarAccionCorrectora(id_rechazo, accion_correctora).subscribe(
           (response) => {
             // Actualización exitosa, manejar respuesta si es necesario
             this.snackBar.open('Acción correctora actualizada correctamente.', '', { duration: 3000, verticalPosition: 'top' });
+            row.editingPrecioPromocion = false;
           },
           (error) => {
             // Error al actualizar, mostrar mensaje de error
@@ -252,10 +294,15 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
         // Realizar la actualización solo si el precio y el símbolo de promoción son válidos
         row.pvp_es_promocion_precio = row.tempPrecioPromocion;
         row.id_simbolo = row.tempSimboloPromocion;
-  
-        this.rechazadosService.actualizarPrecioSimboloPromocion(row.rechazo_id, row.tempSimboloPromocion, row.tempPrecioPromocion).subscribe(
+        console.log('Enviando datos a actualizarPrecioSimboloPromocion:', {
+          rechazo_id: row.rechazo_id,
+          tempPrecioPromocion: row.tempPrecioPromocion,
+          tempSimboloPromocion: row.tempSimboloPromocion,
+        });
+        this.rechazadosService.actualizarPrecioSimboloPromocion(row.rechazo_id,  row.tempPrecioPromocion, row.tempSimboloPromocion,).subscribe(
           (response) => {
             // Actualización exitosa, manejar respuesta si es necesario
+            location.reload();
             this.snackBar.open('Precio y símbolo de promoción actualizados correctamente.', '', { duration: 3000, verticalPosition: 'top' });
           },
           (error) => {
@@ -273,15 +320,21 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     }
   }
   
-
+  //metodo para cambiar el simbolo
   onSymbolChange(row: any) {
     console.log("Simbolo seleccionado:", row.pvp_es_promocion_symbol);
   }
-
-  cancelEdit(row: IRechazo & { editingAccionCorrectora?: boolean; tempAccionCorrectora?: string; editingPrecioPromocion?: boolean; tempPrecioPromocion?: number; tempSimboloPromocion?: boolean }, field: string) {
+  
+  cancelEdit(row: IRechazo & { editingAccionCorrectora?: boolean; tempAccionCorrectora?: string; editingPrecioPromocion?: boolean; tempPrecioPromocion?: number; tempSimboloPromocion?: number }, field: string) {
     if (field === 'accionCorrectora') {
       row.editingAccionCorrectora = false;
     } else if (field === 'precioPromocion') {
+      if (row.tempPrecioPromocion != null && !isNaN(row.tempPrecioPromocion)) {
+        row.pvp_es_promocion_precio = row.tempPrecioPromocion;
+      }
+      if (row.tempSimboloPromocion) {
+        row.id_simbolo = row.tempSimboloPromocion;
+      }
       row.editingPrecioPromocion = false;
     }
   }

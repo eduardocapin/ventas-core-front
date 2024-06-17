@@ -53,7 +53,7 @@
             </td>
           </ng-container>
           <!-- ID Column -->
-          <ng-container matColumnDef="id">
+          <ng-container matColumnDef="rechazo_id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> ID </th>
             <td mat-cell *matCellDef="let row"> {{row.rechazo_id}} </td>
           </ng-container>
@@ -64,7 +64,7 @@
               <div class="d-flex align-items-center justify-content-center gap-2">
                 <div class="form-group estado-form-group">
                   <mat-form-field appearance="outline" subscriptSizing="dynamic" class="estado-form-field">
-                    <mat-select [(ngModel)]="row.estado" name="estado-{{row.rechazo_id}}" class="small-height-select">
+                    <mat-select [(ngModel)]="row.estado" name="estado-{{row.rechazo_id}}" class="small-height-select" (selectionChange)="actualizarEstados(row)">
                       <mat-select-trigger>
                         <img [src]="getOptionImage(row.estado)" alt="{{ row.estado }} Image" class="option-image">
                         {{ row.estado }}
@@ -101,27 +101,27 @@
             <td mat-cell *matCellDef="let row"> {{ row.producto }} </td>
           </ng-container>
           <!-- Familia Column -->
-          <ng-container matColumnDef="familia">
+          <ng-container matColumnDef="nombre_familia">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Familia </th>
             <td mat-cell *matCellDef="let row"> {{ row.nombre_familia }} </td>
           </ng-container>
           <!-- Subfamilia Column -->
-          <ng-container matColumnDef="subfamilia">
+          <ng-container matColumnDef="nombre_subfamilia">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Subfamilia </th>
             <td mat-cell *matCellDef="let row"> {{ row.nombre_subfamilia }} </td>
           </ng-container>
           <!-- Rechazo Column -->
-          <ng-container matColumnDef="rechazo">
+          <ng-container matColumnDef="tipo_rechazo">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Rechazo </th>
             <td class="color-rechazo" mat-cell *matCellDef="let row"> {{ row.tipo_rechazo }} </td>
           </ng-container>
           <!-- PVP Column -->
-          <ng-container matColumnDef="pvp">
+          <ng-container matColumnDef="precio_producto">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> PVP </th>
             <td mat-cell *matCellDef="let row"> {{ row.precio_producto}}€ </td>
           </ng-container>
           <!-- Comp Column -->
-          <ng-container matColumnDef="comp">
+          <ng-container matColumnDef="precio_competidor">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Comp. </th>
             <td mat-cell *matCellDef="let row"> {{ row.precio_competidor }}€ </td>
           </ng-container>
@@ -131,24 +131,23 @@
             <td mat-cell *matCellDef="let row"> {{ row.competidor }} </td>
           </ng-container>
           <!-- pvp promocion -->
-          <ng-container matColumnDef="accionPrecioSymbol">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> </th>
+          <ng-container matColumnDef="pvp_es_promocion_precio">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header">Promoción</th>
             <td mat-cell *matCellDef="let row">
               <div class="editable-cell">
+                <!-- Mostrar el precio de promoción -->
                 <span class="color-accioncorrectora" *ngIf="!row.editingPrecioPromocion" (click)="startEditing(row, 'precioPromocion')">
                   {{ row.pvp_es_promocion_precio }}
                 </span>
+                <!-- Mostrar el símbolo de promoción -->
                 <span class="color-accioncorrectora" *ngIf="!row.editingPrecioPromocion" (click)="startEditing(row, 'precioPromocion')">
                   {{ row.pvp_es_promocion_symbol }}
                 </span>
+                <!-- Edición de precio y símbolo de promoción -->
                 <div *ngIf="row.editingPrecioPromocion" class="d-flex align-items-center">
-                  <input [(ngModel)]="row.tempPrecioPromocion"
-                         class="form-control me-2 large-input"
-                         required
-                         type="number"
-                         (input)="updateCharCount(row)" />
-                  <select [(ngModel)]="row.pvp_es_promocion_symbol" (change)="onSymbolChange(row)" class="symbol-select me-2">
-                          <option *ngFor="let simbolo of simbolos" [value]="simbolo.id">{{ simbolo.simbolo }}</option>
+                  <input [(ngModel)]="row.tempPrecioPromocion" class="form-control me-2 large-input" required type="number" (input)="updateCharCount(row)" />
+                  <select [(ngModel)]="row.tempSimboloPromocion" (change)="onSymbolChange(row)" class="symbol-select me-2">
+                    <option *ngFor="let simbolo of simbolos" [value]="simbolo.id">{{ simbolo.simbolo }}</option>
                   </select>
                   <button mat-icon-button color="primary" (click)="confirmEdit(row, 'precioPromocion')">
                     <mat-icon>check</mat-icon>
@@ -161,12 +160,12 @@
             </td>
           </ng-container>
           <!-- Accion correctora -->
-          <ng-container matColumnDef="accionCorrectora">
+          <ng-container matColumnDef="accion_correctora">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Acción Correctora </th>
             <td class="color-accioncorrectora" mat-cell *matCellDef="let row">
               <span *ngIf="!row.editingAccionCorrectora" (click)="startEditing(row, 'accionCorrectora')">{{ row.accion_correctora }}</span>
               <div *ngIf="row.editingAccionCorrectora" class="d-flex align-items-center">
-                <input [(ngModel)]="row.accion_correctora"
+                <input [(ngModel)]="row.tempAccionCorrectora"
                        maxlength="50"
                        class="form-control me-2 large-input"
                        required
@@ -182,7 +181,7 @@
             </td>
           </ng-container>
           <!-- Propuesta agente Column -->
-          <ng-container matColumnDef="propuestaAgente">
+          <ng-container matColumnDef="propuesta_agente">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-header"> Propuesta Agente </th>
             <td mat-cell *matCellDef="let row"> {{ row.propuesta_agente }} </td>
           </ng-container>

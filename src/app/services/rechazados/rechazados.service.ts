@@ -40,7 +40,7 @@ export class RechazadosService {
   }
 
   // Nueva función para actualizar precio y símbolo de promoción
-  actualizarPrecioSimboloPromocion(idRechazo: number, idSimbolo: number, precio: number) {
+  actualizarPrecioSimboloPromocion(id_rechazo: number, pvp_es_promocion_precio: number, id_simbolo: number,) {
     let schema = localStorage.getItem('schema');
     const baseUrl = localStorage.getItem('baseUrl');
     const port = localStorage.getItem('port');
@@ -52,8 +52,9 @@ export class RechazadosService {
     };
     return this._http.post(`${baseUrl}:${port}/api/rechazo/actualizarPrecioSimboloPromocion`, {
       schema: schema,
-      precio: precio,
-      idSimbolo: idSimbolo,
+      id_rechazo: id_rechazo,
+      pvp_es_promocion_precio: pvp_es_promocion_precio,
+      id_simbolo: id_simbolo,
     },
   ).pipe(
     map((data: any) => {
@@ -64,7 +65,7 @@ export class RechazadosService {
 
   ////Nueva funcion para accion correctora
 
-  actualizarAccionCorrectora(rechazo_id: number , accion_correctora:string){
+  actualizarAccionCorrectora(id_rechazo: number , accion_correctora:string){
     let schema = localStorage.getItem('schema');
     const baseUrl = localStorage.getItem('baseUrl');
     const port = localStorage.getItem('port');
@@ -76,10 +77,11 @@ export class RechazadosService {
     };
 
     return this._http
-      .put(
-        `${baseUrl}:${port}/api/rechazo/actualizarAccionCorrectora/${rechazo_id}`,
+      .post(
+        `${baseUrl}:${port}/api/rechazo/actualizarAccionCorrectora`,
         {
           schema: schema,
+          id_rechazo: id_rechazo,
           accion_correctora: accion_correctora,
         }, options
       )
@@ -89,4 +91,31 @@ export class RechazadosService {
         })
       );
   }
+  /* actualizar estados */
+  actualizarEstados(id_rechazo: number, id_estado: number){
+    let schema = localStorage.getItem('schema');
+    const baseUrl = localStorage.getItem('baseUrl');
+    const port = localStorage.getItem('port');
+    const options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    return this._http
+      .post(
+        `${baseUrl}:${port}/api/rechazo/actualizarEstados`,
+        {
+          schema: schema,
+          id_rechazo: id_rechazo,
+          id_estado: id_estado
+        },
+      )
+      .pipe(
+        map((data:any) =>{
+          return data.status;
+        })
+      );
+  }
+
 }
