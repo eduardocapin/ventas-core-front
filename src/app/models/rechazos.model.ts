@@ -5,11 +5,11 @@ export interface IRechazo {
     provincia: string; // Nombre de Provincia
     cliente: string; // Nombre del cliente (empresa)
     producto: string; // Nombre del producto
-    segmentacion_familia: string; // Nombre de la familia
-    segmentacion_subfamilia: string; // Nombre de la subfamilia
+    nombre_familia: string; // Nombre de la familia
+    nombre_subfamilia: string; // Nombre de la subfamilia
     tipo_rechazo: string; // motivo de rechazo
-    pvp: number; // Precio del producto
-    pvp_comp: number; //Precio del competidor
+    precio_producto: number; // Precio del producto
+    precio_competidor: number; //Precio del competidor
     competidor: string; // Nombre del competidor
     pvp_es_promocion_precio: number; // Precio del competidor
     id_simbolo: number;
