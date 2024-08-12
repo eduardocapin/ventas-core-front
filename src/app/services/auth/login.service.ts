@@ -37,11 +37,7 @@ export class LoginService {
 
   login(credential:LoginRequest): Observable<User>{
     let schema = 'db_rechazos';
-<<<<<<< HEAD
-    let baseUrl = 'http://194.164.164.226';
-=======
     let baseUrl = 'https://converter.mobentis.com';
->>>>>>> 42d80fd3c30ee6dfc8a64f9b0bef41326e0d03b6
     let port = '3000';
     return this.http
       .post<User>(`${baseUrl}:${port}/api/users/login`, {
@@ -53,11 +49,7 @@ export class LoginService {
         map((data:any) =>{
           localStorage.setItem('dir', 'db_rechazos');
           localStorage.setItem('email', credential.email);
-<<<<<<< HEAD
-          localStorage.setItem('baseUrl', 'http://194.164.164.226');
-=======
           localStorage.setItem('baseUrl', 'https://converter.mobentis.com');
->>>>>>> 42d80fd3c30ee6dfc8a64f9b0bef41326e0d03b6
           localStorage.setItem('schema', 'db_rechazos');
           localStorage.setItem('port', '3000');
 
