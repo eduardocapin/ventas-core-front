@@ -23,15 +23,11 @@ export class GraficaProductosTopComponent {
     this.chart?.resize();
   }
 
-  pintarGrafica(data: any) {
+  pintarGrafica() {
 
     let nombres: any = []
     let valores: any = []
 
-    data.forEach((dato: { name: string; value: string }) => {
-      nombres.push(dato.name);
-      valores.push(dato.value);
-    })
 
     var chartDom = document.getElementById('productos-top')!;
     var myChart = echarts.init(chartDom);
@@ -72,7 +68,7 @@ export class GraficaProductosTopComponent {
       },
       series: [
         {
-          color: '#93db9d',
+          color: '#87CEFA',
           data: [200, 120, 455, 320, 200, 200, 200, 200, 200, 200],
           type: 'bar',
           label: {

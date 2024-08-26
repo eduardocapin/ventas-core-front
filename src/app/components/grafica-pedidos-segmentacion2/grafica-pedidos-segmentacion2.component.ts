@@ -40,7 +40,7 @@ export class GraficaPedidosSegmentacion2Component {
         bottom: 40
       },
       title: {
-        text: "Pedidos por ",
+        text: "Tipología",
         top: 10,
         left: 'center',
         textStyle: {
@@ -57,7 +57,7 @@ export class GraficaPedidosSegmentacion2Component {
         axisLabel: { show: false },
         axisTick: { show: false },
         splitLine: { show: false },
-        data: ["Tienda Alimentacion Minorista", "Personl Empresa", "OCIO", "Mayoristas", "Bar/Tapas"],
+        data: ["Tienda Alimentacion Minorista", "Personal Empresa", "OCIO", "Mayoristas", "Bar/Tapas"],
       },
       xAxis: {
         type: 'value',
@@ -69,7 +69,7 @@ export class GraficaPedidosSegmentacion2Component {
       },
       series: [
         {
-          color: '#93db9d',
+          color: '#87CEFA',
           data: [145, 200, 83, 370, 139],
           type: 'bar',
           label: {

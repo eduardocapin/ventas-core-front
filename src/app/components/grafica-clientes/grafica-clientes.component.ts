@@ -52,8 +52,9 @@ export class GraficaClientesComponent {
   
     option = {
       color: [
+        '#87CEFA',
         '#dbdbdb',
-        '#3ab284',
+        
       ],
       title: {
         top: 10,
@@ -78,8 +79,9 @@ export class GraficaClientesComponent {
           type: 'pie',
           radius: '50%',
           data: [
-            { value: 570, name: 'Inactivos', },
-            { value: 1324, name: 'Usando AppInWhats' }
+            { value: 1324, name: 'Con rechazos' },
+            { value: 570, name: 'Sin rechazos' }
+           
           ],
           emphasis: {
             itemStyle: {

@@ -54,13 +54,16 @@ export class GraficaPedidosComponent {
 
     option = {
       color: [
-        '#3ab284',
-        '#ff3737',
-        '#dbdbdb',
-      ],
+        '#87CEFA', // Light Sky Blue
+        '#5F9BCC', // Light Steel Blue
+        '#B0E0E6', // Powder Blue
+        '#4682B4', // Steel Blue
+        '#1E90FF', // Dodger Blue
+        '#ADD8E6', // Light Blue
+    ],
       title: {
         top: 10,
-        text: 'Pedidos',
+        text: 'Motivos',
         left: 'center',
         textStyle: {
           fontWeight: 'normal',
@@ -83,9 +86,10 @@ export class GraficaPedidosComponent {
           startAngle: 180,
           endAngle: 360,
           data: [
-            { value: 735, name: 'Confirmados' },
-            { value: 280, name: 'Rechazados' },
-            { value: 300, name: 'Abandonados' }
+            { value: 735, name: 'Mal estado' },
+            { value: 280, name: 'Producto no trabajado' },
+            { value: 280, name: 'Mala calidad' },
+            { value: 280, name: 'Mejor precio competencia' },
           ]
         }
       ]

@@ -85,17 +85,22 @@
 
 table {
   width: 100%;
-  table-layout: fixed;
 }
 
-.mat-column-pedidos {
-  width: 150px;
+.table-container {
+  overflow: auto;
+  max-height: 100%;
+  max-width: 100%;
+}
+.mat-column-nombre {
+  min-width: 400px;
+  padding: 0;
+}
+.mat-column-rechazos {
+  min-width: 180px;
+  padding: 0;
 }
 
-.mat-column-ventas {
-  width: 150px;
-}
-
-.mat-column-atencion_cliente {
-  width: 150px;
+.mdc-data-table__cell{
+  padding: 0;
 }

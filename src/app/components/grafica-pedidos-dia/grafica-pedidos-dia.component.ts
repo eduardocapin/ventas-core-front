@@ -23,34 +23,10 @@ export class GraficaPedidosDiaComponent {
     this.chart?.resize();
   }
   
-  pintarGrafica(data: any) {
+  pintarGrafica() {
     let valores: any = ['0', '0', '0', '0', '0', '0', '0'];
 
-    data.forEach((dato: { name: string; value: string }) => {
-      switch (dato.name) {
-        case 'Lunes':
-          valores[0] = dato.value;
-          break;
-        case 'Martes':
-          valores[1] = dato.value;
-          break;
-        case 'Miércoles':
-          valores[2] = dato.value;
-          break;
-        case 'Jueves':
-          valores[3] = dato.value;
-          break;
-        case 'Viernes':
-          valores[4] = dato.value;
-          break;
-        case 'Sábado':
-          valores[5] = dato.value;
-          break;
-        case 'Domingo':
-          valores[6] = dato.value;
-          break;
-      }
-    });
+    
     var chartDom = document.getElementById('pedidos-dia')!;
     var myChart = echarts.init(chartDom);
     this.chart = myChart;
@@ -61,7 +37,7 @@ export class GraficaPedidosDiaComponent {
         bottom: 40
       },
       title: {
-        text: 'Pedidos por día de la semana',
+        text: 'Por día de la semana',
         top: 10,
         left: 'center',
         textStyle: {
@@ -86,7 +62,7 @@ export class GraficaPedidosDiaComponent {
       },
       series: [
         {
-          color: '#3ab284',
+          color: '#87CEFA',
           data: [120, 200, 150, 80, 70, 110, 130],
           type: 'bar'
         }

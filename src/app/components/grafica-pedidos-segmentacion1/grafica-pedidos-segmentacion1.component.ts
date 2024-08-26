@@ -39,7 +39,7 @@ export class GraficaPedidosSegmentacion1Component {
         bottom: 40
       },
       title: {
-        text: "Pedidos por ",
+        text: "Ponteciabilidad",
         top: 10,
         left: 'center',
         textStyle: {
@@ -68,7 +68,7 @@ export class GraficaPedidosSegmentacion1Component {
       },
       series: [
         {
-          color: '#93db9d',
+          color: '#87CEFA',
           data: [200, 120, 455, 320],
           type: 'bar',
           label: {

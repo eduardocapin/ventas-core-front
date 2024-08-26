@@ -23,12 +23,10 @@ export class GraficaPedidosMesComponent {
     this.chart?.resize();
   }
   
-  pintarGrafica(data: any) {
+  pintarGrafica() {
     let valores: any = ['30','10','20','50','60','40','10','20','30','45','70','90']
 
-    data.forEach((dato: { name: string; value: string; }) => {
-      valores[Number(dato.name)-1] = dato.value;
-    })
+
 
     var chartDom = document.getElementById('pedidos-mes')!;
     var myChart = echarts.init(chartDom);
@@ -40,7 +38,7 @@ export class GraficaPedidosMesComponent {
         bottom: 40
       },
       title: {
-        text: 'Pedidos por mes',
+        text: 'Por mes',
         top: 10,
         left: 'center',
         textStyle: {
@@ -65,7 +63,7 @@ export class GraficaPedidosMesComponent {
       },
       series: [
         {
-          color: '#3ab284',
+          color: '#87CEFA',
           data: [0, 0, 0, 0, 120, 300, 580,],
           type: 'bar'
         }
