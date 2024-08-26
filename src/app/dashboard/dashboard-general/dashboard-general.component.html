@@ -1,6 +1,6 @@
 <div class="p-5 h-100 fondo" (window:resize)="onResize()">
   <div class="d-flex m-4 justify-content-between">
-    <div class=" col-9 container m-0  p-0">
+    <div class=" col-5 container m-0  p-0"> <!-- col-9-->
       <div class="row align-items-center">
         <img class="col-1 icon-title p-0 my-4" src="assets/images/iconos/dashboard-icon-dark.svg" alt="Dashboard"
           matListItemIcon />
@@ -11,6 +11,7 @@
             </div>
             <div class="text-center tituloKPI">Clientes</div>
           </div>
+          <!--
           <div class="border my-2">
           </div>
           <div class="d-flex flex-column m-1">
@@ -19,21 +20,22 @@
             </div>
             <div class="text-center tituloKPI">Att. Cliente</div>
           </div>
+          -->
           <div class="border my-2">
           </div>
           <div class="d-flex flex-column m-1">
             <div class="text-center numeroKPI">
               66.860
             </div>
-            <div class="text-center tituloKPI">Pedidos</div>
+            <div class="text-center tituloKPI">Rechazos</div>
           </div>
           <div class="d-flex flex-column m-1">
             <div class="text-center numeroKPI">
               250
             </div>
-            <div class="text-center tituloKPI">Pedidos/día</div>
+            <div class="text-center tituloKPI">Rechazos/día</div>
           </div>
-          <div class="border my-2">
+          <!--<div class="border my-2">
           </div>
           <div class="d-flex flex-column m-1">
             <div class="text-center numeroKPI">
@@ -47,25 +49,12 @@
             </div>
             <div class="text-center tituloKPI">Ventas</div>
           </div>
+        -->
         </div>
       </div>
     </div>
 
     <div class="col-2 align-self-center d-flex justify-content-end">
-      <div class="me-2">
-        <button *ngIf="isPedidosActive" type="button" class="btn btn-secondary ps-2 verde"
-          (click)="togglePedidosSales()">
-          <div class="d-flex gap-2">
-            <mat-icon class="p-0 m-0 d-flex">autorenew</mat-icon>Pedidos
-          </div>
-        </button>
-        <button *ngIf="!isPedidosActive" type="button" class="btn btn-secondary ps-2 amarillo"
-          (click)="togglePedidosSales()">
-          <div class="d-flex gap-2">
-            <mat-icon class="p-0 m-0 d-flex">autorenew</mat-icon>Importe
-          </div>
-        </button>
-      </div>
       <button type="button" class="btn btn-secondary pb-0" (click)="toggleFiltro()">
         <mat-icon class="p-0 m-0">filter_list_alt</mat-icon>
       </button>
@@ -73,7 +62,7 @@
   </div>
 
   <!-- filtro -->
-  <!-- <div *ngIf="isFiltroActive" class="fondo-blanco">
+  <div *ngIf="isFiltroActive" class="fondo-blanco">
     <form [formGroup]="filtro" (ngSubmit)="applyFilter()" class="col-12 d-flex flex-column p-3">
       <div class="container">
         <div class="row gx-2">
@@ -89,10 +78,10 @@
             </mat-form-field>
           </div>
           <div class="col">
-            <mat-form-field *ngIf="" subscriptSizing="dynamic" class="mb-2 col-12">
-              <mat-label></mat-label>
+            <mat-form-field *ngIf="s1.length>0" subscriptSizing="dynamic" class="mb-2 col-12">
+              <mat-label>{{s1[0].name}}</mat-label>
               <mat-select formControlName="segmentacion1FilterControl" multiple>
-                <mat-option *ngFor="" [value]="s.segmentation_value_id">{{s.segmentation_value}}</mat-option>
+                <mat-option *ngFor="let s of s1" [value]="s.segmentation_value_id">{{s.segmentation_value}}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -167,7 +156,7 @@
       </div>
 
     </form>
-  </div> -->
+  </div>
 
   <div class="container d-grid gap-3 mt-3">
     <div class="row">
@@ -178,7 +167,8 @@
         <div class="contenedor-grafica-s fondo-blanco"><app-grafica-pedidos></app-grafica-pedidos></div>
       </div>
       <div class="col-4">
-        <div class="contenedor-grafica-s fondo-blanco"><app-grafica-atencion-cliente></app-grafica-atencion-cliente>
+        <div class="contenedor-grafica-s fondo-blanco">
+          <app-grafica-pedidos-familias-productos></app-grafica-pedidos-familias-productos>
         </div>
       </div>
     </div>
@@ -196,8 +186,7 @@
       </div>
       <div class="col-4">
         <div class="contenedor-grafica-s fondo-blanco ">
-          <app-grafica-pedidos-segmentacion3
-            class=""></app-grafica-pedidos-segmentacion3>
+          <app-grafica-pedidos-segmentacion3 class=""></app-grafica-pedidos-segmentacion3>
         </div>
       </div>
     </div>
@@ -205,8 +194,7 @@
     <div class="row">
       <div class="col-4">
         <div class="contenedor-grafica-s fondo-blanco">
-          <app-grafica-pedidos-familias-productos
-            class=""></app-grafica-pedidos-familias-productos>
+          <app-grafica-productos-top></app-grafica-productos-top>
         </div>
       </div>
       <div class="col-4">
@@ -217,23 +205,7 @@
       </div>
       <div class="col-4">
         <div class="contenedor-grafica-s fondo-blanco">
-          <app-grafica-pedidos-dia class=""></app-grafica-pedidos-dia>
-
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-4">
-        <div class="contenedor-grafica-s fondo-blanco">
-          <app-grafica-productos-top class=""></app-grafica-productos-top>
-
-        </div>
-      </div>
-
-      <div class="col-8">
-        <div class="contenedor-grafica-s fondo-blanco">
-          <app-grafica-pedidos-hora class=""></app-grafica-pedidos-hora>
+          <app-grafica-pedidos-dia></app-grafica-pedidos-dia>
 
         </div>
       </div>
@@ -241,4 +213,50 @@
 
   </div>
 
+  <div class="fondo-blanco p-3 mt-3">
+    <div>
+      <mat-form-field class="col-3">
+        <mat-label>Mostrar: </mat-label>
+        <mat-select [(value)]="tablaActiva" (selectionChange)="select($event.value)">
+          <mat-option *ngFor="let nombre of nombresTablas" [value]="nombresTablas.indexOf(nombre)">
+            {{nombre}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <div class="table-container">
+          <table mat-table [dataSource]="dataSource">
+            <!-- Columna Dinámica para 'nombre' -->
+            <ng-container matColumnDef="nombre" sticky>
+              <th mat-header-cell *matHeaderCellDef class="mat-column-nombre">{{ nombresTablas[tablaActiva] }}</th>
+              <td mat-cell *matCellDef="let element" matTooltip="{{element.name}}"
+                [matTooltipDisabled]="element.name?.length <= 32">{{ element.nombre }}</td>
+            </ng-container>
+
+            <!-- Columna para 'total' -->
+            <ng-container matColumnDef="total">
+              <th mat-header-cell *matHeaderCellDef class="mat-column-rechazos text-end">Total</th>
+              <td class="text-end" mat-cell *matCellDef="let element">{{ element.total }}</td>
+            </ng-container>
+
+            <!-- Columnas dinámicas de tipos de rechazos -->
+            <ng-container *ngFor="let columna of columnasRechazos" [matColumnDef]="columna">
+              <th class="text-end mat-column-rechazos " mat-header-cell *matHeaderCellDef> {{ columna }} </th>
+              <td class="text-end" mat-cell *matCellDef="let element"> {{ element.rechazos[columna] || 0 }} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnasDinamicas"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasDinamicas;"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">No hay datos que mostrar</td>
+            </tr>
+          </table>
+        </div>
+        <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons
+          MatPaginatorIntl="Select page of users"></mat-paginator>
+      </div>
+
+
+    </div>
+
+  </div>
 </div>

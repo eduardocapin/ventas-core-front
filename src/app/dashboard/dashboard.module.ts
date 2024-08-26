@@ -36,6 +36,8 @@ import { GraficaVentasSegmentacion2Component } from '../components/grafica-venta
 import { GraficaVentasSegmentacion3Component } from '../components/grafica-ventas-segmentacion3/grafica-ventas-segmentacion3.component';
 import { GraficaProductosTopComponent } from '../components/grafica-productos-top/grafica-productos-top.component';
 import { GraficaVentasTopComponent } from '../components/grafica-ventas-top/grafica-ventas-top.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -79,6 +81,8 @@ import { GraficaVentasTopComponent } from '../components/grafica-ventas-top/graf
     FormsModule,
     MatInputModule,
     MatPaginatorModule,
+    MatNativeDateModule,
+    MatTooltipModule,
   ],
   providers: [
     GraficaPedidosDiaComponent,

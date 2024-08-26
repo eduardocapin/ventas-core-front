@@ -39,7 +39,7 @@ export class GraficaPedidosSegmentacion3Component {
         bottom: 40
       },
       title: {
-        text: "Pedidos por " ,
+        text: "Imagen" ,
         top: 10,
         left: 'center',
         textStyle: {
@@ -68,7 +68,7 @@ export class GraficaPedidosSegmentacion3Component {
       },
       series: [
         {
-          color: '#93db9d',
+          color: '#87CEFA',
           data: [230, 185, 159],
           type: 'bar',
           label: {

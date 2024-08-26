@@ -39,7 +39,7 @@ export class GraficaPedidosFamiliasProductosComponent {
         bottom: 40
       },
       title: {
-        text: 'Pedidos por familias de productos',
+        text: 'Familias de productos',
         top: 10,
         left: 'center',
         textStyle: {
@@ -68,7 +68,7 @@ export class GraficaPedidosFamiliasProductosComponent {
       },
       series: [
         {
-          color: '#93db9d',
+          color: '#87CEFA',
           data: [120, 200, 150, 80, 70, 110, 0, 0, 20, 34],
           type: 'bar',
           label: {
