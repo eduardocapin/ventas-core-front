@@ -33,19 +33,23 @@
             <div>
               <div class="pb-3 d-flex flex-column gap-3">
                 <span class="list-group-item">
-                  <span>Importar clientes</span>
-                  <br>
-                  <span class="description">Importar clientes desde Excel o CSV</span>
+                  <a [routerLink]="['/mobentisrechazos/import/global']" class="list-group-item list-group-item-action ">
+                    <span>Importar clientes</span>
+                    <br>
+                    <span class="description">Importar clientes desde Excel o CSV</span></a>
                 </span>
                 <span class="list-group-item">
-                  <span>Importar vendedores</span>
-                  <br>
-                  <span class="description">Importar vendedores desde Excel o CSV</span>
+                  <a [routerLink]="['/mobentisrechazos/import/global']" class="list-group-item list-group-item-action ">
+                    <span>Importar vendedores</span>
+                    <br>
+                    <span class="description">Importar vendedores desde Excel o CSV</span></a>
                 </span>
                 <span class="list-group-item">
-                  <span>Importar rechazos</span>
-                  <br>
-                  <span class="description">Importar rechazos desde Excel o CSV</span>
+                  <a [routerLink]="['/mobentisrechazos/import/global']" class="list-group-item list-group-item-action ">
+                    <span>Importar rechazos</span>
+                    <br>
+                    <span class="description">Importar rechazos desde Excel o CSV</span>
+                  </a>
                 </span>
               </div>
             </div>
@@ -60,9 +64,12 @@
             <div>
               <div class="pb-3">
                 <span class="list-group-item">
-                  <span>Exportar rechazos</span>
-                  <br>
-                  <span class="description">Los pedidos se exportan desde su módulo</span>
+                  <a [routerLink]="['/mobentisrechazos/rechazos/global']"
+                    class="list-group-item list-group-item-action ">
+                    <span>Exportar rechazos</span>
+                    <br>
+                    <span class="description">Los rechazos se exportan desde su módulo</span>
+                  </a>
                 </span>
               </div>
             </div>
