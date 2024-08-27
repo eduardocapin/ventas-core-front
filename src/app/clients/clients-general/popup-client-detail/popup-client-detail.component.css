@@ -24,3 +24,7 @@ h2 {
 .color-dark {
     color: #6D6D6D;
 }
+
+.mat-mdc-progress-spinner {
+    --mdc-circular-progress-active-indicator-color: #3f51b5;
+  }

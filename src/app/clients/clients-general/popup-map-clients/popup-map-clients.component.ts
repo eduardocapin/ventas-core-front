@@ -23,14 +23,15 @@ export class PopupMapClientsComponent implements OnInit, AfterViewInit {
 
   constructor(
     public dialogRef: MatDialogRef<PopupMapClientsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { selectedRows: IClient[] } // Actualizar esta línea
+    @Inject(MAT_DIALOG_DATA) public data: { clients: IClient[] } // Actualizar esta línea
   ) {}
 
   ngOnInit(): void {
-    if (this.data.selectedRows.length > 0) {
+    console.log(this.data)
+    if (this.data.clients.length > 0) {
       this.center = {
-        lat: this.data.selectedRows[0].latitude, // Cambiado de latitud
-        lng: this.data.selectedRows[0].longitude // Cambiado de longitud
+        lat: this.data.clients[0].latitude, // Cambiado de latitud
+        lng: this.data.clients[0].longitude // Cambiado de longitud
       };
     }
   }
@@ -41,7 +42,7 @@ export class PopupMapClientsComponent implements OnInit, AfterViewInit {
   }
 
   addMarkers() {
-    this.markers = this.data.selectedRows.map(row => {
+    this.markers = this.data.clients.map(row => {
       const marker = new google.maps.Marker({
         position: { lat: row.latitude, lng: row.longitude }, // Cambiado de latitud y longitud
         title: row.name, // Cambiado de cliente a nombre_empresa
