@@ -30,7 +30,7 @@ table {
 }
 
 .buttons-rechazos {
-  background-color: #3F51B5;
+  background-color: #6b757d;
   color: white;
 }
 
@@ -235,6 +235,16 @@ th {
 .large-height-field{
   width: 200px;
 }
+
+/* para la altura de los input */
+::ng-deep table .mat-mdc-form-field-infix {
+  padding: 0 !important; /* Elimina el padding */
+   min-height: auto;
+}
+::ng-deep .mat-mdc-row {
+  height: 10px !important;
+}
+
 mat-select .mat-mdc-text-field-wrapper{
   padding: 0 8px;
 }
