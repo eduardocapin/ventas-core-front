@@ -1,126 +1,136 @@
-.screen {
-  min-height: 100vh;
-  padding-top: 60px;
-  background-color: #f3f4f6;
+span {
+  position: relative;
+  top: 5px;
 }
 
-.page-heading{
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  font-weight: 300;
-}
-  
-.color-dark {
-    color: #6D6D6D;
-}
-  
 table {
   width: 100%;
+  table-layout: fixed;
 }
-    
+
 .mat-mdc-form-field {
   font-size: 14px;
   width: 100%;
 }
-    
+
+td,
+th {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.sticky {
+  position: sticky;
+  top: 0px;
+  z-index: 99000;
+}
+
+.bg-blanco {
+  background: white;
+}
+
+.btnEdit,
+.btnContacts {
+  cursor: pointer;
+  color: #3c27c5;
+}
+
+.checkFalse {
+  color: #c52727;
+}
+
+.checkTrue {
+  color: #27c55e;
+}
+
+.filtro-container {
+  width: 25%;
+  position: fixed;
+}
+
+#contactos {
+  margin-left: 0.5em;
+}
+
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: #3ab284;
+}
+
+.screen {
+  min-height: 100vh;
+}
 
 th {
-  color: #3F51B5;
-}
-    
-.sticky-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background-color: #fff;
+  color: #3f51b5;
 }
 
-    .buttons-clients {
-      background-color: #3F51B5;
-      color: white;
-    }
-    
-    .custom-bold {
-      font-weight: 500;
-  }
-  
-  
-  .sticky-header {
-    position: sticky;
-    top: 0;
-    z-index: 1000; /* Ajusta el índice z según sea necesario para asegurar que esté por encima del contenido desplazable */
-    background-color: #fff; /* Opcional: ajusta el color de fondo según sea necesario */
-  }
-  
-  .table-wrapper {
-    overflow-y: auto;
-    max-height: 70vh;
-  }
-/*   
-  .custom-rechazado {
-    background-color: #ffffcc;
-    background-color: #ebebeb;
-    padding: 5px 10px;
-    border-radius: 10px;
-  }
-  
-  .custom-enproceso {
-    background-color: #ffcccc;
-    background-color: #ebebeb;
-    padding: 5px 10px;
-    border-radius: 10px;
-  }
-  
-  .custom-noaplica {
-    background-color: #e8e8ff;
-    background-color: #ebebeb;
-    padding: 5px 10px;
-    border-radius: 10px;
-  }
-  
-  .custom-vendido {
-    background-color: #ccffcc;
-    background-color: #ebebeb;
-    padding: 5px 10px;
-    border-radius: 10px;
-  } */
-  
-  .estado-cell {
-    text-align: center; /* Centra el contenido de la celda */
-    vertical-align: middle; /* Centra verticalmente el contenido */
-  }
-  
-  .estado-select {
-    width: 100%; /* Ajusta el ancho del select al 100% */
-  }
-  
-  .estado-cell {
-    text-align: center; /* Centra el contenido de la celda */
-    vertical-align: middle; /* Centra verticalmente el contenido */
-  }
-  
-  .rechazado {
-    color: red; /* Color para la opción "Rechazado" */
-  }
-  
-  .en-proceso {
-    color: orange; /* Color para la opción "En Proceso" */
-  }
-  
-  .vendido {
-    color: green; /* Color para la opción "Vendido" */
-  }
-  
-  .no-aplica {
-    color: gray; /* Color para la opción "No aplica" */
-  }
-  
-  .estado-select-container {
-    margin-left: 10px;
-  }
+.map-button {
+  background-color: #3f51b5;
+  color: white;
+}
 
-  @media (max-width: 991px) {
-    .screen{
-      padding-top: 45px;
-    }
-  }
+.mat-column-checkbox {
+  width: 40px;
+  padding: 0;
+}
+
+.mat-column-customer_ERP_id {
+  width: 75px;
+  padding: 0;
+}
+
+.mat-column-name {
+  padding: 0;
+}
+
+.mat-column-province {
+  width: 80px;
+  padding: 0;
+}
+
+.mat-column-city {
+  width: 140px;
+  padding: 0;
+}
+
+.mat-column-pc {
+  width: 80px;
+  padding-right: 0;
+}
+
+.mat-column-address {
+  padding: 0;
+}
+
+.mat-column-has_AIW {
+  width: 70px;
+  padding: 0;
+}
+
+.mat-column-acciones {
+  width: 70px;
+  padding: 0;
+}
+
+.grisClaro {
+  background-color: lightgray;
+}
+
+.grisClaro:hover {
+  background-color: rgb(194, 194, 194);
+}
+
+.icon-title {
+  width: 40px;
+  height: 40px;
+}
+
+.color-dark {
+  color: #6d6d6d;
+}
+
+.icon-svg {
+  width: 40px;
+  height: 40px;
+}

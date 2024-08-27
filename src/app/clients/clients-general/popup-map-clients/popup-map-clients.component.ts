@@ -29,8 +29,8 @@ export class PopupMapClientsComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     if (this.data.selectedRows.length > 0) {
       this.center = {
-        lat: this.data.selectedRows[0].cliente_latitud, // Cambiado de latitud
-        lng: this.data.selectedRows[0].cliente_longitud // Cambiado de longitud
+        lat: this.data.selectedRows[0].latitude, // Cambiado de latitud
+        lng: this.data.selectedRows[0].longitude // Cambiado de longitud
       };
     }
   }
@@ -43,16 +43,16 @@ export class PopupMapClientsComponent implements OnInit, AfterViewInit {
   addMarkers() {
     this.markers = this.data.selectedRows.map(row => {
       const marker = new google.maps.Marker({
-        position: { lat: row.cliente_latitud, lng: row.cliente_longitud }, // Cambiado de latitud y longitud
-        title: row.nombre_empresa, // Cambiado de cliente a nombre_empresa
+        position: { lat: row.latitude, lng: row.longitude }, // Cambiado de latitud y longitud
+        title: row.name, // Cambiado de cliente a nombre_empresa
         map: this.map?.googleMap,
       });
 
       const infoContent = `
         <div>
-          <h2>${row.nombre_empresa}</h2> <!-- Cambiado de cliente a nombre_empresa -->
-          <p>${row.nombre_poblacion}, ${row.nombre_provincia}</p>
-          <p>${row.CP}</p> <!-- Cambiado de cp a CP -->
+          <h2>${row.name}</h2> <!-- Cambiado de cliente a nombre_empresa -->
+          <p>${row.city}, ${row.province}</p>
+          <p>${row.pc}</p> <!-- Cambiado de cp a CP -->
         </div>
       `;
 

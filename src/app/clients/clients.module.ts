@@ -30,6 +30,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ClientsGeneralComponent } from './clients-general/clients-general.component';
 import { PopupClientDetailComponent } from './clients-general/popup-client-detail/popup-client-detail.component';
 import { PopupMapClientsComponent } from './clients-general/popup-map-clients/popup-map-clients.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
     declarations:[
@@ -59,7 +60,9 @@ import { PopupMapClientsComponent } from './clients-general/popup-map-clients/po
         FormsModule,
         MatSidenavModule,
         GoogleMapsModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatProgressSpinnerModule,
+
     ],
     providers: [],
     bootstrap: [ClientsGeneralComponent]

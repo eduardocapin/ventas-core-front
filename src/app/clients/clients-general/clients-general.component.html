@@ -1,117 +1,181 @@
-  <mat-drawer-container class="screen">
-    <div class="p-3">
-      <div class="d-flex align-items-center justify-content-between m-3">
-        <!-- titulo de cliente -->
-        <div class="d-flex align-items-center color-dark justify-content-start">
-          <mat-icon>people</mat-icon>
-          <h1 class="mb-0 ps-2 page-heading">Clientes</h1>
-        </div>
-        <!-- boton de filtrado -->
-        <div class="d-flex align-items-center gap-2">
-          <button matTooltip="Ver en Mapa" class="btn buttons-clients d-flex justify-content-center align-items-center" (click)="verEnMapa()">
-            <mat-icon class="p-0 m-0">map</mat-icon>
-            <span class="ms-1">Mapa</span>
-          </button>
-          <button class="btn buttons-clients d-flex align-items-center" title="Ver Filtros" (click)="drawer.toggle()">
-            <i class="bi bi-funnel-fill p-0 m-0"></i>
-            <span class="ms-1">Filtros</span>
-          </button>
-        </div>
+<mat-drawer-container class="screen" autosize>
+  <div class="m-3">
+    <div class="d-flex justify-content-between mb-3">
+      <h1 class="mb-0">
+        <img class="icon-title" src="assets/images/iconos/clientes-icon-dark.svg" alt="Clientes" matListItemIcon />
+        <span class="ps-2 color-dark">Clientes</span>
+      </h1>
+      <div class="boton-filtro d-flex gap-2 align-self-start me-3">
+        <button matTooltip="Ver en Mapa" class="btn map-button d-flex justify-content-center align-items-center gap-2"
+          (click)="verEnMapa()">
+          <mat-icon>map</mat-icon>
+        </button>
+        <button type="button" class="btn btn-secondary pb-0 pl-0" (click)="drawer.toggle()">
+          <mat-icon class="p-0 m-0">filter_list_alt</mat-icon>
+        </button>
       </div>
-      <div class="pt-4">
-        <!-- TABLA -->
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">
-                  <input type="checkbox" (change)="masterToggle()" [checked]="isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()" />
-                </th>
-                <th scope="col" (click)="sort.setSort('codigo')">Código</th>
-                <th scope="col" (click)="sort.setSort('cliente')">Cliente</th>
-                <th scope="col" (click)="sort.setSort('poblacion')">Población</th>
-                <th scope="col" (click)="sort.setSort('provincia')">Provincia</th>
-                <th scope="col" (click)="sort.setSort('cp')">C.P.</th>
-                <th scope="col">Detalles</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let row of dataSource.data">
-                <td>
-                  <input type="checkbox" (click)="$event.stopPropagation()" (change)="selection.toggle(row)" [checked]="selection.isSelected(row)" />
-                </td>
-                <td>{{ row.id }}</td>
-                <td>{{ row.nombre_empresa }}</td>
-                <td>{{ row.nombre_poblacion }}</td>
-                <td>{{ row.nombre_provincia }}</td>
-                <td>{{ row.CP }}</td>
-                <td>
-                  <button type="button" class="btn btn-primary btn-sm" (click)="openDetailsDialog(row)">
-                    Ver
-                  </button>
-                </td>
-              </tr>
-              <tr *ngIf="dataSource.data.length === 0">
-                <td colspan="7" class="text-center">No hay datos disponibles</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!-- Paginador -->
-        <nav aria-label="Page navigation" *ngIf="dataSource.data.length > 0">
-          <ul class="pagination justify-content-center">
-            <li class="page-item" [class.disabled]="paginator.pageIndex === 0">
-              <a class="page-link" href="#" (click)="paginator.firstPage()">Primera</a>
-            </li>
-            <li class="page-item" [class.disabled]="paginator.pageIndex === 0">
-              <a class="page-link" href="#" (click)="paginator.previousPage()">Anterior</a>
-            </li>
-            <li class="page-item" [class.disabled]="!paginator.hasNextPage()">
-              <a class="page-link" href="#" (click)="paginator.nextPage()">Siguiente</a>
-            </li>
-            <li class="page-item" [class.disabled]="!paginator.hasNextPage()">
-              <a class="page-link" href="#" (click)="paginator.lastPage()">Última</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <!-- END TABLA -->
     </div>
-    <!-- menu derecho -->
-    <mat-drawer #drawer class="sidenav px-3" mode="over" position="end">
-      <div class="d-flex align-items-center my-4 gap-3">
-        <mat-icon>filter_list_alt</mat-icon>
-        <h2 class="my-0">Filtro de Clientes</h2>
+
+    <div [class.d-none]="cargando">
+      <table mat-table [dataSource]="dataSource" matSort>
+
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="checkbox">
+          <th class="th-checkbox" mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)" [disabled]="isCheckboxDisabled(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+        <!-- Codigo Column -->
+        <ng-container matColumnDef="customer_ERP_id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Código </th>
+          <td mat-cell *matCellDef="let row"> {{row.customer_ERP_id}} </td>
+        </ng-container>
+
+        <!-- Nombre Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+          <td mat-cell *matCellDef="let row" matTooltip="{{row.name}}" [matTooltipDisabled]="row.name?.length <= 32">
+            {{row.name}} </td>
+        </ng-container>
+
+        <!-- Provincia Column -->
+        <ng-container matColumnDef="province">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Provincia </th>
+          <td mat-cell *matCellDef="let row" matTooltip="{{row.province}}"
+            [matTooltipDisabled]="row.province?.length <= 8"> {{row.province}} </td>
+        </ng-container>
+
+        <!-- Población Column -->
+        <ng-container matColumnDef="city">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Población </th>
+          <td mat-cell *matCellDef="let row" matTooltip="{{row.city}}" [matTooltipDisabled]="row.city?.length <= 16">
+            {{row.city}} </td>
+        </ng-container>
+
+        <!-- CP Column -->
+        <ng-container matColumnDef="pc">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> C.P. </th>
+          <td mat-cell *matCellDef="let row"> {{row.pc != 0 ? row.pc : ""}} </td>
+        </ng-container>
+
+        <!-- Segmentación 1 Column -->
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dirección </th>
+          <td mat-cell *matCellDef="let row" matTooltip="{{row.address}}"
+            [matTooltipDisabled]="row.address?.length <= 34"> {{row.address}} </td>
+        </ng-container>
+        
+        <!-- Acciones Column -->
+        <ng-container matColumnDef="acciones">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>Ficha</th>
+          <td class="text-center" mat-cell *matCellDef="let row">
+            <mat-icon (click)="editClient(row.id)" class="btnEdit" matTooltip="Ficha">visibility</mat-icon>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No hay datos que mostrar</td>
+        </tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[10, 25,50,  100]" showFirstLastButtons
+        aria-label="Select page of users"></mat-paginator>
+    </div>
+
+    <div class="d-flex justify-content-center mt-5" *ngIf="cargando">
+      <mat-spinner color="red"></mat-spinner>
+    </div>
+
+  </div>
+  <mat-drawer #drawer id="drawer" class="p-0 filtro-container d-flex flex-column container" mode="over" position="end">
+    <div class="p-3 pt-0 bg-blanco">
+      <div class="bg-blanco sticky py-3">
+        <div class="d-flex align-items-center mb-3 ">
+          <img src="../../../assets/images/iconos/filtros-icon.svg" alt="" width="32" height="32" alt="filtro"
+            class="me-2 icono-svg">
+          <h2 class="my-0">Filtro de clientes</h2>
+        </div>
+        <div class="col-12 justify-content-end gap-2 d-flex mt-2">
+          <button mat-raised-button color="light" type="submit" (click)="applyComplexFilter()">Filtrar</button>
+          <button mat-raised-button color="light" type="button" (click)="filtroReset()" mat-button>Limpiar</button>
+          <button mat-raised-button color="light" type="button" (click)="drawer.toggle()" mat-button>Cancelar</button>
+        </div>
       </div>
-      <form [formGroup]="form" (ngSubmit)="applyFilter()" class="d-flex flex-column gap-3">
+      <form [formGroup]="form" (ngSubmit)="applyComplexFilter()" class="col-12 d-flex flex-column">
         <div class="d-flex flex-column">
-          <div class="mb-2 d-flex flex-column gap-3">
-            <!-- Autocompletado -->
-            <mat-form-field subscriptSizing="dynamic" class="">
+          <div>
+            <mat-form-field subscriptSizing="dynamic" class="col-12 mb-2">
+              <mat-label>Periodo de ventas</mat-label>
+              <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                <input formControlName="start" matStartDate placeholder="Desde">
+                <input formControlName="end" matEndDate placeholder="Hasta">
+              </mat-date-range-input>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="s1.length>0" subscriptSizing="dynamic" class="mb-2 col-12">
+              <mat-label>{{s1[0].name}}</mat-label>
+              <mat-select formControlName="segmentacion1FilterControl" multiple>
+                <mat-option *ngFor="let s of s1" [value]="s.segmentation_value_id">{{s.segmentation_value}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf="s2.length>0" subscriptSizing="dynamic" class="mb-2 col-12">
+              <mat-label>{{s2[0].name}}</mat-label>
+              <mat-select formControlName="segmentacion2FilterControl" multiple>
+                <mat-option *ngFor="let s of s2" [value]="s.segmentation_value_id">{{s.segmentation_value}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf="s3.length>0" subscriptSizing="dynamic" class="mb-2 col-12">
+              <mat-label>{{s3[0].name}}</mat-label>
+              <mat-select formControlName="segmentacion3FilterControl" multiple>
+                <mat-option *ngFor="let s of s3" [value]="s.segmentation_value_id">{{s.segmentation_value}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field subscriptSizing="dynamic" class="mb-2 col-12" matTooltip="Introduzca el nombre del cliente">
               <mat-label>Cliente</mat-label>
-              <input formControlName="ClienteFilterControl" matInput>
+              <input formControlName="cliente" matInput>
             </mat-form-field>
-            <!-- Autocompletado -->
-            <mat-form-field subscriptSizing="dynamic" class="">
-              <mat-label>Población</mat-label>
-              <input formControlName="PoblacionFilterControl" matInput>
-            </mat-form-field>
-            <!-- autocompletado -->
-            <mat-form-field subscriptSizing="dynamic" class="">
+
+            <mat-form-field subscriptSizing="dynamic" class="mb-2 col-12">
               <mat-label>Provincia</mat-label>
-              <input formControlName="ProvinciaFilterControl" matInput>
+              <mat-select formControlName="provinciaFilterControl" multiple>
+                <mat-option *ngFor="let name of provinciaList" [value]="name">{{name}}</mat-option>
+              </mat-select>
             </mat-form-field>
-            <!-- select -->
-            <mat-form-field subscriptSizing="dynamic" class="">
-              <mat-label>CP</mat-label>
-              <input formControlName="CpFilterControl" matInput>
+
+            <mat-form-field subscriptSizing="dynamic" class="mb-2 col-12">
+              <mat-label>Población</mat-label>
+              <mat-select formControlName="poblacionFilterControl" multiple>
+                <mat-option *ngFor="let name of poblacionList" [value]="name">{{name}}</mat-option>
+              </mat-select>
             </mat-form-field>
-          </div>
-          <div class="content-end gap-2 d-flex mt-2">
-            <button (click)="filtroReset()" class="buttons-clients text-white" mat-button>Limpiar</button>
-            <button (click)="drawer.toggle()" class="buttons-clients text-white" mat-button>Cancelar</button>
+            <mat-form-field subscriptSizing="dynamic" class="mb-2 col-12">
+              <mat-label>Vendedor</mat-label>
+              <mat-select formControlName="agenteFilterControl" multiple>
+                <mat-option *ngFor="let agente of agenteList" [value]="agente.id">{{agente.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field subscriptSizing="dynamic" class="mb-2 col-12">
+              <mat-label>Familia</mat-label>
+              <mat-select formControlName="familiaFilterControl" multiple>
+                <mat-option *ngFor="let familia of familiaList" [value]="familia">{{familia}}</mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
         </div>
       </form>
-    </mat-drawer>
-  </mat-drawer-container>
+    </div>
+  </mat-drawer>
+</mat-drawer-container>

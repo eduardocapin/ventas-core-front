@@ -1,46 +1,153 @@
-<div class="p-3 d-flex flex-column gap-4">
-    <!-- parte superior -->
-    <div class="d-flex align-items-center gap-3">
-        <mat-icon>people</mat-icon>
-        <h2 class="m-0">Detalles de Cliente</h2>
+<div>
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="align-items-center d-flex gap-2 pt-3 ps-4">
+  
+        <h2 class="m-0 ">
+          <img class="icon-title" src="/assets/images/iconos/clientes-icon-dark.svg" alt="Clientes" matListItemIcon />
+          <span class="color-dark">Cliente </span>
+        </h2>
+      </div>
+      <!--añadimos un botón para los contactos-->
+      <button [disabled]="contacts == 0" class="me-3" mat-raised-button color="light" type="button" (click)="editContact()">
+        <mat-icon id="contactos" class="btnContacts me-1">groups</mat-icon>
+        Contactos</button>
+      <!--<mat-icon id="contactos" (click)="editContact()" class="btnContacts me-4" matTooltip="Contactos">groups</mat-icon>-->
     </div>
-    
-    <!-- datos del cliente -->
-    <mat-dialog-content class="px-0 d-flex flex-column gap-3">
-        <div class="d-flex gap-2">
-            <!-- Nombre Empresa -->
-            <mat-form-field class="w-75" appearance="fill" subscriptSizing="dynamic">
-                <mat-label>Nombre Empresa</mat-label>
-                <input matInput readonly="true" [(ngModel)]="client.nombre_empresa" autocomplete="off" placeholder="Nombre Empresa" />
-            </mat-form-field>
-            <!-- Nombre Fiscal -->
-            <mat-form-field class="w-75" appearance="fill" subscriptSizing="dynamic">
-                <mat-label>Nombre Fiscal</mat-label>
-                <input matInput readonly="true" [(ngModel)]="client.nombre_fiscal" autocomplete="off" placeholder="Nombre Fiscal" />
-            </mat-form-field>
-        </div>
-        <div class="">
-            <div class="d-flex gap-2">
-                <!-- Código Postal -->
-                <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                    <mat-label>Código Postal</mat-label>
-                    <input matInput readonly="true" [(ngModel)]="client.CP" autocomplete="off" placeholder="Código postal" />
-                </mat-form-field>
-                <!-- Población Cliente -->
-                <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                    <mat-label>Población</mat-label>
-                    <input matInput readonly="true" [(ngModel)]="client.nombre_poblacion" autocomplete="off" placeholder="Población" />
-                </mat-form-field>
-                <!-- Provincia Cliente -->
-                <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                    <mat-label>Provincia</mat-label>
-                    <input matInput readonly="true" [(ngModel)]="client.nombre_provincia" autocomplete="off" placeholder="Provincia" />
-                </mat-form-field>
+    <form [formGroup]="form" (ngSubmit)="aceptar()">
+      <mat-dialog-content class="container">
+        <div [class.d-none]="cargando">
+          <div class="row gx-2">
+            <div class="col-2">
+              <!--Codigo Cliente-->
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>Código cliente</mat-label>
+                <input readonly="true" formControlName="codigo_Cliente" matInput placeholder="Código cliente"
+                  autocomplete="off" />
+              </mat-form-field>
             </div>
+            <div class="col">
+              <!--Nombre Cliente-->
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>Nombre</mat-label>
+                <input readonly="true" formControlName="nombre" matInput placeholder="Nombre" autocomplete="off" />
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <div class="row gx-2">
+            <div class="col-2">
+              <!--Cif Cliente-->
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>Cif</mat-label>
+                <input readonly="true" formControlName="cif" matInput placeholder="Cif" autocomplete="off" />
+              </mat-form-field>
+            </div>
+  
+            <div class="col">
+              <!--Nombre Fiscal Cliente-->
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>Nombre fiscal cliente</mat-label>
+                <input readonly="true" formControlName="nombre_Fiscal" matInput placeholder="Nombre fiscal cliente"
+                  autocomplete="off" />
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <div class="row">
+            <!--dirección del Cliente-->
+            <div class="col">
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>Dirección</mat-label>
+                <input readonly="true" formControlName="direccion" matInput placeholder="Dirección" autocomplete="off" />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row gx-2">
+            <div class="col-2">
+              <!--CP Cliente-->
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>CP</mat-label>
+                <input readonly="true" formControlName="cp" matInput placeholder="CP" autocomplete="off" />
+              </mat-form-field>
+            </div>
+            <div class="col-5">
+              <!--Localidad Cliente-->
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>Población</mat-label>
+                <input readonly="true" formControlName="localidad" matInput placeholder="Población" autocomplete="off" />
+              </mat-form-field>
+            </div>
+            <div class="col-5">
+              <!--Provincia Cliente-->
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>Provincia</mat-label>
+                <input readonly="true" formControlName="provincia" matInput placeholder="Provincia" autocomplete="off" />
+              </mat-form-field>
+            </div>
+  
+          </div>
+          <div class="row gx-2">
+            <div class="col-2">
+              <!--Teléfono 1 Cliente-->
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>Teléfono 1</mat-label>
+                <input readonly="true" formControlName="telefono_1" matInput placeholder="Teléfono 1"
+                  autocomplete="off" />
+              </mat-form-field>
+            </div>
+  
+            <div class="col-2">
+              <!--Teléfono 2 Cliente-->
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>Teléfono 2</mat-label>
+                <input readonly="true" formControlName="telefono_2" matInput placeholder="Teléfono 2"
+                  autocomplete="off" />
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <!--email Cliente-->
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>Email</mat-label>
+                <input readonly="true" formControlName="email" matInput placeholder="Email" autocomplete="off" />
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <div class="row gx-2">
+            <div *ngIf="cliente?.nsegmentacion_1" class="col">
+              <!--Segmentacion 1 Cliente-->
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>{{cliente?.nsegmentacion_1}}</mat-label>
+                <input readonly="true" formControlName="segmentacion_1" matInput
+                  placeholder="{{cliente?.nsegmentacion_1}}" autocomplete="off" />
+              </mat-form-field>
+            </div>
+            <div *ngIf="cliente?.nsegmentacion_2" class="col">
+              <!--Segmentacion 2 Cliente-->
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>{{cliente?.nsegmentacion_2}}</mat-label>
+                <input readonly="true" formControlName="segmentacion_2" matInput
+                  placeholder="{{cliente?.nsegmentacion_2}}" autocomplete="off" />
+              </mat-form-field>
+            </div>
+            <div *ngIf="cliente?.nsegmentacion_3" class="col">
+              <!--Segmentacion 3 Cliente-->
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>{{ cliente?.nsegmentacion_3}}</mat-label>
+                <input readonly="true" formControlName="segmentacion_3" matInput
+                  placeholder="{{cliente?.nsegmentacion_3}} 3" autocomplete="off" />
+              </mat-form-field>
+            </div>
+          </div>
         </div>
-    </mat-dialog-content>
-    <!-- Botón de cerrar -->
-    <mat-dialog-actions class="justify-content-end">
-        <button mat-raised-button (click)="close()">Cerrar</button>
-    </mat-dialog-actions>
-</div>
+        <div class="d-flex justify-content-center mt-5" *ngIf="cargando">
+          <mat-spinner color="red"></mat-spinner>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions class="d-flex justify-content-end gap-2">
+        <button mat-raised-button color="light" type="submit">Aceptar</button>
+        <button mat-raised-button color="light" type="button" (click)="cancelar()" mat-button
+          cdkFocusInitial>Cancelar</button>
+      </mat-dialog-actions>
+    </form>
+  </div>
