@@ -299,3 +299,50 @@ tr.example-element-row:not(.example-expanded-row):active {
   opacity: 0.5;
 }
 
+.mat-column-producto {
+  min-width: 300px;
+  padding: 0;
+}
+
+.mat-column-cliente {
+  min-width: 300px;
+  padding: 0;
+}
+
+.mat-column-accion_correctora{
+  min-width: 300px;
+  padding: 0;
+}
+
+.mat-column-poblacion {
+  min-width: 140px;
+  padding: 0;
+}
+
+.mat-column-nombre_subfamilia {
+  min-width: 200px;
+  padding: 0;
+}
+.mat-column-propuesta_agente {
+  min-width: 250px;
+}
+.mat-column-promo_propia, .mat-column-promo_competidor{
+  max-width: 24px;
+  padding: 0;
+}
+
+.mat-column-expand{
+  max-width: 48px;
+  padding: 0;
+}
+.promo-icon {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4CAF50;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+ 
+}

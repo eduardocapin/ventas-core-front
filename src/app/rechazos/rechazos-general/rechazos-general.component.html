@@ -80,27 +80,44 @@
         <!-- Poblacion Column -->
         <ng-container matColumnDef="poblacion">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class=""> Población </th>
-          <td mat-cell *matCellDef="let row"> {{ row.poblacion }} </td>
+          <td mat-cell *matCellDef="let row" matTooltip="{{row.poblacion}}"
+            [matTooltipDisabled]="row.poblacion?.length <= 16"> {{ row.poblacion }} </td>
         </ng-container>
         <!-- Producto Column -->
         <ng-container matColumnDef="producto">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class=""> Producto </th>
-          <td mat-cell *matCellDef="let row"> {{ row.producto }} </td>
+          <td mat-cell *matCellDef="let row" matTooltip="{{row.producto}}"
+            [matTooltipDisabled]="row.producto?.length <= 32"> {{ row.producto }} </td>
         </ng-container>
         <!-- Cliente Column -->
         <ng-container matColumnDef="cliente">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class=""> Cliente </th>
-          <td mat-cell *matCellDef="let row"> {{ row.cliente }} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+          <td mat-cell *matCellDef="let row" matTooltip="{{row.cliente}}"
+            [matTooltipDisabled]="row.cliente?.length <= 32"> {{ row.cliente }} </td>
         </ng-container>
         <!-- columna de subfamilia -->
         <ng-container matColumnDef="nombre_subfamilia">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class=""> Subfamilia </th>
-          <td mat-cell *matCellDef="let row"> {{ row.nombre_subfamilia }} </td>
+          <td mat-cell *matCellDef="let row" matTooltip="{{row.nombre_subfamilia}}"
+            [matTooltipDisabled]="row.nombre_subfamilia?.length <= 22"> {{ row.nombre_subfamilia }} </td>
         </ng-container>
         <!-- Rechazo Column -->
         <ng-container matColumnDef="tipo_rechazo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class=""> Rechazo </th>
-          <td class="color-rechazo" mat-cell *matCellDef="let row"> {{ row.tipo_rechazo }} </td>
+          <td class="color-rechazo" mat-cell *matCellDef="let row">
+            <div class="d-flex align-items-center justify-content-center gap-2">
+              <div class="form-group estado-form-group">
+                <mat-form-field appearance="outline" subscriptSizing="dynamic" class="estado-form-field color-rechazo">
+                  <mat-select [(ngModel)]="row.estado" name="estado-{{row.rechazo_id}}" class="small-height-select"
+                    (selectionChange)="actualizarEstados(row)">
+                    <mat-option *ngFor="let estado of estados" [value]="estado.estado">
+                      {{ estado.estado }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </td>
         </ng-container>
         <!-- PVP Column -->
         <ng-container matColumnDef="precio_producto">
@@ -110,7 +127,7 @@
         <!-- promo_propia Column -->
         <ng-container matColumnDef="promo_propia">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class=""> </th>
-          <td mat-cell *matCellDef="let row"> <mat-icon>keyboard_arrow_down</mat-icon> </td>
+          <td mat-cell *matCellDef="let row"> <mat-icon class="promo-icon">P</mat-icon> </td>
         </ng-container>
         <!-- Comp Column -->
         <ng-container matColumnDef="precio_competidor">
@@ -120,16 +137,28 @@
         <!-- promo_propia Column -->
         <ng-container matColumnDef="promo_competidor">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> <mat-icon>keyboard_arrow_down</mat-icon> </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> <mat-icon class="promo-icon">P</mat-icon> </td>
         </ng-container>
         <!-- Competidor Column -->
         <ng-container matColumnDef="competidor">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class=""> Competidor </th>
-          <td mat-cell *matCellDef="let row"> {{ row.competidor }} </td>
+          <td mat-cell *matCellDef="let row">
+            <div class="d-flex align-items-center justify-content-center gap-2">
+              <div class="form-group estado-form-group">
+                <mat-form-field appearance="outline" subscriptSizing="dynamic" class="estado-form-field color-rechazo">
+                  <mat-select [(ngModel)]="row.competidor" name="estado-{{row.rechazo_id}}" class="small-height-select">
+                    <mat-option *ngFor="let competidor of competidores" [value]="competidor.id">
+                      {{ competidor.nombre }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </td>
         </ng-container>
         <!-- Acción Correctora Column -->
         <ng-container matColumnDef="accion_correctora">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="">Acción Correctora</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Acción Correctora</th>
           <td mat-cell *matCellDef="let row" class="color-accioncorrectora">
             <div class="editable-cell d-flex align-items-center">
               <!-- Campo para precio de promoción -->
@@ -157,8 +186,9 @@
         </ng-container>
         <!-- Propuesta agente Column -->
         <ng-container matColumnDef="propuesta_agente">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class=""> Propuesta Agente </th>
-          <td mat-cell *matCellDef="let row"> {{ row.propuesta_agente }} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Propuesta Agente </th>
+          <td mat-cell *matCellDef="let row" matTooltip="{{row.propuesta_agente}}"
+            [matTooltipDisabled]="row.propuesta_agente?.length <= 25"> {{ row.propuesta_agente }} </td>
         </ng-container>
         <!-- Fecha interes -->
         <ng-container matColumnDef="interes">
@@ -167,7 +197,7 @@
         </ng-container>
 
         <ng-container matColumnDef="expand" stickyEnd>
-          <th class="sticky-header" mat-header-cell *matHeaderCellDef aria-label="row actions">Prod.</th>
+          <th class="sticky-header" mat-header-cell *matHeaderCellDef aria-label="row actions"></th>
           <td class="text-center" mat-cell *matCellDef="let element">
             <button mat-icon-button aria-label="expand row"
               (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
@@ -180,11 +210,31 @@
           <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
             <div [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
               <div class="d-flex mb-2">
-                <div class="col-1"></div>
-                <div class="col-9">
-                  <!-- Aquí va el contenido expandido -->
-                  <p>Información expandida</p>
+                <!-- Campo PVP -->
+                <div class="col-3">
+                  <strong>PVP:</strong> <p>{{ element.PVP }}€</p>>
                 </div>
+
+                <!-- Promoción Propia -->
+                <div class="col-3">
+                  <strong>Promoción Propia:</strong> <p>{{ "element.promocion_propia" }}</p>
+                </div>
+
+                <!-- Precio del Competidor -->
+                <div class="col-3">
+                  <strong>Precio Competidor:</strong> <p>{{ element.precio_competidor }}€</p>
+                </div>
+
+                <!-- Promoción del Competidor -->
+                <div class="col-3">
+                  <strong>Promoción Competidor:</strong> {{ "element.promocion_competidor" }}
+                </div>
+              </div>
+
+              <!-- Notas -->
+              <div class="mt-2">
+                <strong>Notas:</strong>
+                <p>{{ "notas" }}</p>
               </div>
             </div>
           </td>

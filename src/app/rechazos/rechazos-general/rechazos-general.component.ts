@@ -21,6 +21,7 @@ import { FilterService } from 'src/app/services/filter/filter.service';
 import { IEstado } from 'src/app/models/estados.model';
 import { ISimbolo } from 'src/app/models/simbolos.model';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { ICompetidor } from 'src/app/models/competidores.model';
 @Component({
   selector: 'app-rechazos-general',
   templateUrl: './rechazos-general.component.html',
@@ -63,6 +64,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     cantidad_enProceso: 0,
   };
   estados: IEstado[] = [];
+  competidores: ICompetidor[] = [];
   simbolos: ISimbolo[] = [];
   expandedElement?: IRechazo | null;
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
@@ -101,6 +103,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     this.loadEstados();
     this.loadSimbolos();
     this.loadGoogleMapsScript();
+    this.loadCompetidores();
   }
 
   /* pagiantor */
@@ -149,6 +152,12 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       this.estados = estados;
       console.log('Estados cargados:', estados); // Mostrar los estados en la consola
     });
+  }
+
+  private loadCompetidores() {
+    
+  this.competidores = [{nombre: 'Distribuciones Rico',  id: 1}, {nombre: 'Cadena 100 Profesional',  id: 2}, {nombre: 'Bazar Hogar',  id: 3}];
+
   }
 
   private loadSimbolos() {
