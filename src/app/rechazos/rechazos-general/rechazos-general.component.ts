@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ViewChild,
+  OnInit,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,15 +20,39 @@ import { IEstadosRechazoCount } from 'src/app/models/count.model';
 import { FilterService } from 'src/app/services/filter/filter.service';
 import { IEstado } from 'src/app/models/estados.model';
 import { ISimbolo } from 'src/app/models/simbolos.model';
-
+import { trigger, state, style, transition, animate } from '@angular/animations';
 @Component({
   selector: 'app-rechazos-general',
   templateUrl: './rechazos-general.component.html',
   styleUrls: ['./rechazos-general.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
+      state('expanded', style({ height: '*', display: 'block' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   form: FormGroup;
-  displayedColumns: string[] = ['select', 'estado', 'rechazo_id', 'poblacion', /* 'provincia', */  'producto'/* , 'nombre_familia' */,'cliente', 'nombre_subfamilia', 'tipo_rechazo', 'precio_producto', 'precio_competidor', 'competidor', 'accion_correctora', 'propuesta_agente'];
+  displayedColumns: string[] = [
+    'select',
+    'estado',
+    'poblacion',
+    /* 'provincia', */ 'producto' /* , 'nombre_familia' */,
+    'cliente',
+    'nombre_subfamilia',
+    'tipo_rechazo',
+    'precio_producto',
+    'promo_propia',
+    'precio_competidor',
+    'promo_competidor',
+    'competidor',
+    'accion_correctora',
+    'propuesta_agente',
+    'interes',
+    'expand',
+  ];
   dataSource: MatTableDataSource<IRechazo>;
   rechazoList: IRechazo[] = [];
   selection = new SelectionModel<IRechazo>(true, []);
@@ -30,40 +60,39 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     cantidad_rechazo: 0,
     cantidad_noAplica: 0,
     cantidad_aceptado: 0,
-    cantidad_enProceso: 0
+    cantidad_enProceso: 0,
   };
   estados: IEstado[] = [];
-  simbolos: ISimbolo[]= [];
-
+  simbolos: ISimbolo[] = [];
+  expandedElement?: IRechazo | null;
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
 
   constructor(
-    public dialog: MatDialog, 
-    private formBuilder: FormBuilder, 
-    private snackBar: MatSnackBar, 
-    private cdr: ChangeDetectorRef, 
+    public dialog: MatDialog,
+    private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef,
     private rechazadosService: RechazadosService,
     private filterService: FilterService,
     private paginatorIntl: MatPaginatorIntl
   ) {
-
     this.configurePaginatorLabels();
-    
+
     this.dataSource = new MatTableDataSource<IRechazo>([]);
-    
+
     this.form = this.formBuilder.group({
       EstadoFilterControl: [''],
       PoblacionFilterControl: [''],
       ProvinciaFilterControl: [''],
       ProductoFilterControl: [''],
       FamiliaFilterControl: [''],
-      SubFamiliaFilterControl: ['']
-      });
-      
-      this.form.valueChanges.subscribe(() => {
-        /* this.applyFilter(); */
-        });
+      SubFamiliaFilterControl: [''],
+    });
+
+    this.form.valueChanges.subscribe(() => {
+      /* this.applyFilter(); */
+    });
   }
 
   ngOnInit() {
@@ -81,12 +110,19 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     this.paginatorIntl.previousPageLabel = 'Página anterior';
     this.paginatorIntl.firstPageLabel = 'Primera página';
     this.paginatorIntl.lastPageLabel = 'Última página';
-    this.paginatorIntl.getRangeLabel = (page: number, pageSize: number, length: number) => {
+    this.paginatorIntl.getRangeLabel = (
+      page: number,
+      pageSize: number,
+      length: number
+    ) => {
       if (length === 0 || pageSize === 0) {
         return `0 de ${length}`;
       }
       const startIndex = page * pageSize;
-      const endIndex = startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
+      const endIndex =
+        startIndex < length
+          ? Math.min(startIndex + pageSize, length)
+          : startIndex + pageSize;
       return `${startIndex + 1} - ${endIndex} de ${length}`;
     };
     this.paginatorIntl.changes.next(); // Esto notifica a Angular Material de los cambios
@@ -94,16 +130,18 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
   private loadRechazos() {
     this.rechazadosService.getRechazos().subscribe((rechazos: IRechazo[]) => {
-        this.rechazoList = rechazos;
-        this.dataSource.data = rechazos;
-        console.log('Rechazos cargados:', rechazos); // Mostrar los resultados en la consola
-      });
+      this.rechazoList = rechazos;
+      this.dataSource.data = rechazos;
+      console.log('Rechazos cargados:', rechazos); // Mostrar los resultados en la consola
+    });
   }
   private loadEstadosRechazos() {
-    this.rechazadosService.countEstadosRechazos().subscribe((contadores: IEstadosRechazoCount[]) => {
-      this.estadosRechazoCount = contadores[0];
-      console.log('Contadores de estados de rechazos:', contadores); // Mostrar los contadores en la consola
-    });
+    this.rechazadosService
+      .countEstadosRechazos()
+      .subscribe((contadores: IEstadosRechazoCount[]) => {
+        this.estadosRechazoCount = contadores[0];
+        console.log('Contadores de estados de rechazos:', contadores); // Mostrar los contadores en la consola
+      });
   }
 
   private loadEstados() {
@@ -113,11 +151,11 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     });
   }
 
-  private loadSimbolos(){
-    this.filterService.getSimbolos().subscribe((simbolos: ISimbolo[]) =>{
-      this.simbolos= simbolos;
+  private loadSimbolos() {
+    this.filterService.getSimbolos().subscribe((simbolos: ISimbolo[]) => {
+      this.simbolos = simbolos;
       console.log('Cargando simbolos: ', simbolos);
-    })
+    });
   }
 
   private loadGoogleMapsScript() {
@@ -130,20 +168,38 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       document.head.appendChild(script);
     }
   }
-  
-
 
   applyFilter() {
     const filterValues = this.form.value;
-    this.dataSource.filterPredicate = (data: IRechazo, filter: string): boolean => {
+    this.dataSource.filterPredicate = (
+      data: IRechazo,
+      filter: string
+    ): boolean => {
       const searchTerms = JSON.parse(filter);
       return (
-        (!searchTerms.EstadoFilterControl || data.estado.toLowerCase().indexOf(searchTerms.EstadoFilterControl.toLowerCase()) !== -1) &&
-        (!searchTerms.PoblacionFilterControl || data.poblacion.toLowerCase().indexOf(searchTerms.PoblacionFilterControl.toLowerCase()) !== -1) &&
-        (!searchTerms.ProvinciaFilterControl || data.provincia.toLowerCase().indexOf(searchTerms.ProvinciaFilterControl.toLowerCase()) !== -1) &&
-        (!searchTerms.ProductoFilterControl || data.producto.toLowerCase().indexOf(searchTerms.ProductoFilterControl.toLowerCase()) !== -1) &&
+        (!searchTerms.EstadoFilterControl ||
+          data.estado
+            .toLowerCase()
+            .indexOf(searchTerms.EstadoFilterControl.toLowerCase()) !== -1) &&
+        (!searchTerms.PoblacionFilterControl ||
+          data.poblacion
+            .toLowerCase()
+            .indexOf(searchTerms.PoblacionFilterControl.toLowerCase()) !==
+            -1) &&
+        (!searchTerms.ProvinciaFilterControl ||
+          data.provincia
+            .toLowerCase()
+            .indexOf(searchTerms.ProvinciaFilterControl.toLowerCase()) !==
+            -1) &&
+        (!searchTerms.ProductoFilterControl ||
+          data.producto
+            .toLowerCase()
+            .indexOf(searchTerms.ProductoFilterControl.toLowerCase()) !== -1) &&
         /* (!searchTerms.FamiliaFilterControl || data.nombre_familia.toLowerCase().indexOf(searchTerms.FamiliaFilterControl.toLowerCase()) !== -1) && */
-        (!searchTerms.SubFamiliaFilterControl || data.nombre_subfamilia.toLowerCase().indexOf(searchTerms.SubFamiliaFilterControl.toLowerCase()) !== -1)
+        (!searchTerms.SubFamiliaFilterControl ||
+          data.nombre_subfamilia
+            .toLowerCase()
+            .indexOf(searchTerms.SubFamiliaFilterControl.toLowerCase()) !== -1)
       );
     };
     this.dataSource.filter = JSON.stringify(filterValues);
@@ -172,7 +228,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
   getOptionImage(estado: string): string {
     const basePath = 'assets/icon/';
-  
+
     switch (estado) {
       case 'Rechazado':
         return `${basePath}rechazado.svg`;
@@ -186,16 +242,15 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
         return ''; // Devuelve una cadena vacía si el estado no coincide con ninguno de los casos anteriores
     }
   }
-  
 
   masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.dataSource.data.forEach((row) => this.selection.select(row));
   }
   ///metodo para obtener los simbolos
   getSimboloName(symbolId: number): string {
-    const symbol = this.simbolos.find(s => s.id === symbolId);
+    const symbol = this.simbolos.find((s) => s.id === symbolId);
     return symbol ? symbol.simbolo : '';
   }
 
@@ -204,31 +259,38 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       const config = new MatSnackBarConfig();
       config.duration = 3000;
       config.verticalPosition = 'top';
-      this.snackBar.open('Debe seleccionar al menos 1 rechazo antes de ver en el mapa.', '', config);
+      this.snackBar.open(
+        'Debe seleccionar al menos 1 rechazo antes de ver en el mapa.',
+        '',
+        config
+      );
       return;
     }
-    
+
     const dialogRef = this.dialog.open(PopupMapComponent, {
       width: '80%',
       height: '80%',
       disableClose: true,
-      data: { selectedRows: this.selection.selected }
+      data: { selectedRows: this.selection.selected },
     });
   }
 
   ///funcion para axtualizar estado
-  actualizarEstados(row: IRechazo){
-    const estadoSeleccionado = this.estados.find(estado => estado.estado === row.estado);
+  actualizarEstados(row: IRechazo) {
+    const estadoSeleccionado = this.estados.find(
+      (estado) => estado.estado === row.estado
+    );
 
     if (estadoSeleccionado) {
       const idEstadoSeleccionado = estadoSeleccionado.id;
-      
+
       // Mostrar en consola el rechazo_id y el ID del estado seleccionado
       console.log('ID de Rechazo seleccionado:', row.rechazo_id);
       console.log('ID de Estado seleccionado:', idEstadoSeleccionado);
 
       // Llamar al servicio para actualizar el estado
-      this.rechazadosService.actualizarEstados(row.rechazo_id, idEstadoSeleccionado)
+      this.rechazadosService
+        .actualizarEstados(row.rechazo_id, idEstadoSeleccionado)
         .subscribe(
           (response) => {
             console.log('Estado actualizado correctamente');
@@ -239,14 +301,22 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
           }
         );
     } else {
-      console.error('No se encontró el ID del estado seleccionado en el array estados');
+      console.error(
+        'No se encontró el ID del estado seleccionado en el array estados'
+      );
     }
-    
-    
   }
 
-
-  startEditing(row: IRechazo & { editingAccionCorrectora?: boolean; tempAccionCorrectora?: string; editingPrecioPromocion?: boolean; tempPrecioPromocion?: number; tempSimboloPromocion?: number }, field: string) {
+  startEditing(
+    row: IRechazo & {
+      editingAccionCorrectora?: boolean;
+      tempAccionCorrectora?: string;
+      editingPrecioPromocion?: boolean;
+      tempPrecioPromocion?: number;
+      tempSimboloPromocion?: number;
+    },
+    field: string
+  ) {
     if (field === 'accionCorrectora') {
       row.tempAccionCorrectora = row.accion_correctora;
       row.editingAccionCorrectora = true;
@@ -258,11 +328,16 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   }
 
   // Este método se llama cada vez que se escribe en el input
-  updateCharCount(row: IRechazo & { editingAccionCorrectora?: boolean; tempAccionCorrectora?: string; editingPrecioPromocion?: boolean; tempPrecioPromocion?: number; tempSimboloPromocion?: number }) {
-  }
+  updateCharCount(
+    row: IRechazo & {
+      editingAccionCorrectora?: boolean;
+      tempAccionCorrectora?: string;
+      editingPrecioPromocion?: boolean;
+      tempPrecioPromocion?: number;
+      tempSimboloPromocion?: number;
+    }
+  ) {}
 
-
-  
   //metodo para cambiar el simbolo
   /* crear una consulta en rechazados.service.ts */
   updateSymbol(row: IRechazo & { tempSimboloPromocion?: number }) {
@@ -272,16 +347,27 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       console.log('Símbolo actualizado:', row.id_simbolo);
 
       // Llamada al servicio para guardar el cambio en el servidor (si es necesario)
-      this.rechazadosService.actualizarPrecioSimboloPromocion(row.rechazo_id, row.tempSimboloPromocion, row.tempSimboloPromocion).subscribe(
-        (response) => {
-          this.snackBar.open('Símbolo actualizado correctamente.', '', { duration: 3000, verticalPosition: 'top' });
-        },
-        (error) => {
-          this.snackBar.open('Error al actualizar el símbolo.', '', { duration: 3000, verticalPosition: 'top' });
-          console.error('Error al actualizar el símbolo:', error);
-        }
-      );
+      this.rechazadosService
+        .actualizarPrecioSimboloPromocion(
+          row.rechazo_id,
+          row.tempSimboloPromocion,
+          row.tempSimboloPromocion
+        )
+        .subscribe(
+          (response) => {
+            this.snackBar.open('Símbolo actualizado correctamente.', '', {
+              duration: 3000,
+              verticalPosition: 'top',
+            });
+          },
+          (error) => {
+            this.snackBar.open('Error al actualizar el símbolo.', '', {
+              duration: 3000,
+              verticalPosition: 'top',
+            });
+            console.error('Error al actualizar el símbolo:', error);
+          }
+        );
     }
   }
-
 }
