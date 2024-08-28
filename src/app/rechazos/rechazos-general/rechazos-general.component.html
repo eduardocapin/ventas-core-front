@@ -29,7 +29,7 @@
     <div class="d-flex align-items-center gap-2">
       <button matTooltip="Ver en Mapa" class="btn btn-secondary d-flex justify-content-center align-items-center"
         (click)="verEnMapa()">
-        <mat-icon class="p-0 m-0">map</mat-icon>
+        <mat-icon class="p-0 m-0">location_on</mat-icon>
       </button>
       <button matTooltip="Ver Filtros" class="btn btn-secondary d-flex align-items-center" (click)="drawer.toggle()">
         <mat-icon class="p-0 m-0">filter_list_alt</mat-icon>
@@ -40,7 +40,7 @@
   <!-- TABLA -->
   <div class="mat-elevation-z2 m-3">
     <div class="table-wrapper">
-      <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+      <table class="converter-table" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select" sticky>
           <th mat-header-cell *matHeaderCellDef class="sticky-header">

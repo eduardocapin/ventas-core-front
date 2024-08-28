@@ -1,0 +1,20 @@
+.disabled {
+    size: 1000px;
+}
+
+.btnEdit,
+.btnDelete {
+    cursor: pointer;
+}
+
+.btnDelete {
+    color: #B0304B;
+}
+
+.btnEdit {
+    color: darkgrey;
+}
+
+th {
+    color: #4e5eba;
+}

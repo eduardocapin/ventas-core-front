@@ -26,6 +26,7 @@ import { FormsModule } from '@angular/forms';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { MatSliderModule } from '@angular/material/slider';
 
+
 /**
     * IMPORTS COMPONENTS
 */
