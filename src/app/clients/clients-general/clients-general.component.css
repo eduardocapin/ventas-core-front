@@ -13,12 +13,20 @@ table {
   width: 100%;
 }
 
+.page-heading{
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  font-weight: 300;
+}
+
+
 td,
 th {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
 
 .sticky {
   position: sticky;

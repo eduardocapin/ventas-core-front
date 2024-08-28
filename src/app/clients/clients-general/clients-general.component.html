@@ -1,9 +1,9 @@
 <mat-drawer-container class="screen" autosize>
-  <div class="m-3">
-    <div class="d-flex justify-content-between mb-3">
+  <div class="">
+    <div class="d-flex justify-content-between m-3 py-3">
       <h1 class="mb-0">
         <img class="icon-title" src="assets/images/iconos/clientes-icon-dark.svg" alt="Clientes" matListItemIcon />
-        <span class="ps-2 color-dark">Clientes</span>
+        <span class=" mb-0 ps-2 color-dark page-heading">Clientes</span>
       </h1>
       <div class="boton-filtro d-flex gap-2 align-self-start me-3">
         <button matTooltip="Ver en Mapa" class="btn map-button d-flex justify-content-center align-items-center gap-2"
@@ -16,18 +16,18 @@
       </div>
     </div>
 
-    <div [class.d-none]="cargando">
+    <div [class.d-none]="cargando" class="m-3">
       <table mat-table [dataSource]="dataSource" matSort>
 
         <!-- Checkbox Column -->
         <ng-container matColumnDef="checkbox">
           <th class="th-checkbox" mat-header-cell *matHeaderCellDef>
-            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+            <mat-checkbox color="primary" (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
               [indeterminate]="selection.hasValue() && !isAllSelected()">
             </mat-checkbox>
           </th>
           <td mat-cell *matCellDef="let row">
-            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+            <mat-checkbox color="primary" (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
               [checked]="selection.isSelected(row)" [disabled]="isCheckboxDisabled(row)">
             </mat-checkbox>
           </td>

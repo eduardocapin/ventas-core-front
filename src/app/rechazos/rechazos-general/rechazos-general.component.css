@@ -237,11 +237,11 @@ th {
 }
 
 /* para la altura de los input */
-::ng-deep table .mat-mdc-form-field-infix {
+::ng-deep table.converter-table .mat-mdc-form-field-infix {
   padding: 0 !important; /* Elimina el padding */
    min-height: auto;
 }
-::ng-deep .mat-mdc-row {
+::ng-deep table.converter-table .mat-mdc-row {
   height: 10px !important;
 }
 
