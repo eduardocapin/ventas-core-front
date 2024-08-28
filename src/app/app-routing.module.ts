@@ -9,13 +9,13 @@ import { NavbarComponent } from './navbar/navbar.component';
 const routes: Routes = [
 
   /* ruta de la pagina de inicio */
-  {path:'', redirectTo:'/mobentisrechazos/dashboard/global', pathMatch:'full'},
+  {path:'', redirectTo:'/mobentis/dashboard/global', pathMatch:'full'},
   
   {path: 'login', component: AuthComponent},
   
   /* Rutas de todo el proyecto */
   {
-    path: 'mobentisrechazos', component: NavbarComponent, 
+    path: 'mobentis', component: NavbarComponent, 
     children:[
       {
         path: 'rechazos',

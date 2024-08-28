@@ -33,7 +33,7 @@ export class NavbarComponent {
 
   menuItems: MenuItem[] = [
     { label: 'Dashboard', route: 'dashboard/global' },
-    { label: 'Rechazos', route: 'rechazos/global' },
+    { label: 'Converter', route: 'rechazos/global' },
     { 
       label: 'Clientes', 
       route: 'clientes/global', 

@@ -251,13 +251,38 @@ th {
   padding: 0 !important; /* Elimina el padding */
    min-height: auto;
 }
-::ng-deep table.converter-table .mat-mdc-row {
-  height: 10px !important;
+
+::ng-deep  .mat-mdc-option{
+  padding-left: 2px !important;
+  padding-right: 3px !important;
+  min-height: 30px !important;
+}
+
+::ng-deep div.mat-mdc-select-panel{
+  padding: 2px 0 !important;
+}
+
+::ng-deep table .mat-mdc-select-value-text{
+  font-size: 14px;
+}
+
+::ng-deep table .mdc-text-field--outlined{
+  padding-right: 2px;
+  padding-left: 2px;
+  width: 100%;
+}
+
+::ng-deep .mat-mdc-option .mdc-list-item__primary-text{
+  font-size: 14px !important;
 }
 
 mat-select .mat-mdc-text-field-wrapper{
   padding: 0 8px;
 }
+
+
+
+/* movil */
 @media (max-width: 991px) {
   .screen{
     padding-top: 48px;

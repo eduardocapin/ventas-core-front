@@ -59,7 +59,7 @@ export class AuthComponent {
       this._loginServices.login(login).subscribe(
         (data) =>{
           console.log(data);
-          this.router.navigateByUrl('mobentisrechazos/dashboard/global');
+          this.router.navigateByUrl('mobentis/dashboard/global');
           this.loginForm.reset;
           this.errorLogin = false;
           this.messageError = '';
