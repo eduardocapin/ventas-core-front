@@ -32,6 +32,19 @@
           <span class="text-muted custom-bold">Vendido</span>
         </div>
       </div>
+    <mat-button-toggle-group class="mt-2 button d-flex align-items-center">
+      <mat-button-toggle class="" (click)="exportar_rechazos()">Exportar</mat-button-toggle>
+      <mat-button-toggle class="" [matMenuTriggerFor]="dropdownMenuOne">
+        {{selectedOption}}<mat-icon>arrow_drop_down</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-menu #dropdownMenuOne="matMenu" xPosition="before">
+      <button mat-menu-item (click)="updateOption('Excel')">Excel</button>
+      <button mat-menu-item (click)="updateOption('CSV')">CSV</button>
+      <button mat-menu-item (click)="updateOption('Json')">Json</button>
+    </mat-menu>
+
     </div>
     <!-- END Info Rechazos -->
     <div class="d-flex align-items-center gap-2">
@@ -91,23 +104,24 @@
           <td mat-cell *matCellDef="let row" matTooltip="{{row.poblacion}}"
             [matTooltipDisabled]="row.poblacion?.length <= 16"> {{ row.poblacion }} </td>
         </ng-container>
-        <!-- Producto Column -->
-        <ng-container matColumnDef="producto">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class=""> Producto </th>
-          <td mat-cell *matCellDef="let row" matTooltip="{{row.producto}}"
-            [matTooltipDisabled]="row.producto?.length <= 32"> {{ row.producto }} </td>
-        </ng-container>
+        
         <!-- Cliente Column -->
         <ng-container matColumnDef="cliente">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
           <td mat-cell *matCellDef="let row" matTooltip="{{row.cliente}}"
-            [matTooltipDisabled]="row.cliente?.length <= 32"> {{ row.cliente }} </td>
+            [matTooltipDisabled]="row.cliente?.length <= 42"> {{ row.cliente }} </td>
         </ng-container>
         <!-- columna de subfamilia -->
         <ng-container matColumnDef="nombre_subfamilia">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class=""> Subfamilia </th>
           <td mat-cell *matCellDef="let row" matTooltip="{{row.nombre_subfamilia}}"
-            [matTooltipDisabled]="row.nombre_subfamilia?.length <= 22"> {{ row.nombre_subfamilia }} </td>
+            [matTooltipDisabled]="row.nombre_subfamilia?.length <= 16"> {{ row.nombre_subfamilia }} </td>
+        </ng-container>
+        <!-- Producto Column -->
+        <ng-container matColumnDef="producto">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class=""> Producto </th>
+          <td mat-cell *matCellDef="let row" matTooltip="{{row.producto}}"
+            [matTooltipDisabled]="row.producto?.length <= 32"> {{ row.producto }} </td>
         </ng-container>
         <!-- Rechazo Column -->
         <ng-container matColumnDef="tipo_rechazo">
@@ -116,9 +130,9 @@
             <div class="d-flex align-items-center justify-content-center gap-2">
               <div class="form-group estado-form-group">
                 <mat-form-field appearance="outline" subscriptSizing="dynamic" class="estado-form-field color-rechazo" >
-                  <mat-select [(ngModel)]="row.tipo_rechazo" name="estado-{{row.tipo_rechazo}}" matTooltip="{{row.tipo}}"
+                  <mat-select [(ngModel)]="row.tipo_rechazo" name="estado-{{row.tipo_rechazo}}" matTooltip="{{row.tipo_rechazo}}"
                     class="small-height-select text-danger" >
-                    <mat-option *ngFor="let rechazo of tipos_rechazo" [value]="row.tipo_rechazo" class="custom-option">
+                    <mat-option *ngFor="let rechazo of tipos_rechazo" [value]="row.tipo_rechazo">
                       {{ rechazo.tipo }}
                     </mat-option>
                   </mat-select>

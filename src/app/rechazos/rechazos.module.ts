@@ -25,7 +25,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { MatSliderModule } from '@angular/material/slider';
-
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatMenuModule } from '@angular/material/menu';
 
 /**
     * IMPORTS COMPONENTS
@@ -61,7 +62,9 @@ import { PopupMapComponent } from './rechazos-general/popup-map-rechazos/popup-m
         MatSidenavModule,
         MatSnackBarModule,
         GoogleMapsModule,
-        MatSliderModule
+        MatSliderModule,
+        MatMenuModule,
+        MatButtonToggleModule,
     ]
 })
 export class RechazosModule{}
