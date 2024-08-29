@@ -86,10 +86,10 @@ export class GraficaPedidosComponent {
           startAngle: 180,
           endAngle: 360,
           data: [
-            { value: 735, name: 'Mal estado' },
-            { value: 280, name: 'Producto no trabajado' },
+            { value: 735, name: 'Caducado' },
             { value: 280, name: 'Mala calidad' },
-            { value: 280, name: 'Mejor precio competencia' },
+            { value: 280, name: 'Precio' },
+            {value: 280, name: 'No aplica'}
           ]
         }
       ]

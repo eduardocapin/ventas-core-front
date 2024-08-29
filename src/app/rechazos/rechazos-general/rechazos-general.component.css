@@ -45,6 +45,13 @@ th {
 .custom-bold {
   font-weight: 500;
 }
+.text-muted{
+  font-size: 12px !important;
+}
+
+.text-rech{
+  color: #87cefa;
+}
 
 .sticky-header {
   position: sticky;
@@ -211,11 +218,12 @@ th {
   padding:0;
 }
 .mat-column-estado{
-  width: 70px;
+  width: 80px;
   padding: 0 8px;
 }
-.estado-form-field{
-  width: 189px;
+.mat-column-tipo_rechazo{
+  width: 90px;
+  padding: 0 8px;
 }
 
 .mat-column-rechazo_id{
@@ -255,6 +263,7 @@ th {
 ::ng-deep table.converter-table .mat-mdc-form-field-infix {
   padding: 0 !important; /* Elimina el padding */
    min-height: auto;
+   width: 100%;
 }
 
 ::ng-deep  .mat-mdc-option{
@@ -274,7 +283,6 @@ th {
 ::ng-deep table .mdc-text-field--outlined{
   padding-right: 2px;
   padding-left: 2px;
-  width: 85%;
 }
 ::ng-deep table .mat-column-competidor .mdc-text-field--outlined{
   padding-right: 2px;
@@ -370,13 +378,9 @@ tr.example-element-row:not(.example-expanded-row):active {
   max-width: 48px;
   padding: 0;
 }
-.mat-column-estado{
-  max-width: 200px;
 
-  
-}
 .promo-icon {
-  font-size: 24px;
+  font-size: 14px;
   font-weight: bold;
   color: #4CAF50;
   display: inline-flex;
@@ -416,4 +420,9 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .text-center {
   text-align: center;
+}
+
+
+::ng-deep .custom-option mat-pseudo-checkbox{
+  display: none !important;
 }

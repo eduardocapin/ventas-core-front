@@ -1,36 +1,39 @@
 <mat-drawer-container class="screen">
-  <div class="d-flex align-items-center justify-content-start py-3 m-3">
-    <mat-icon class="color-dark">broken_image</mat-icon>
-    <h1 class="mb-0 ps-2 color-dark page-heading">Converter</h1>
-  </div>
-  <!-- Info Rechazos -->
-  <div class="mx-3 details d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-    <div class="bg-white text-center rounded-3 d-flex justify-content-evenly align-items-center gap-2 px-3">
-      <div class="d-flex flex-column m-1">
-        <h3 class="m-0 fw-bold">50</h3>
-        <span class="text-muted custom-bold ">Pendiente</span>
-      </div>
-      <div class="border my-2" style="height: 45px;"></div>
-      <div class="d-flex flex-column m-1">
-        <h3 class="m-0 fw-bold">135</h3>
-        <span class="text-muted custom-bold ">Rechazado</span>
-      </div>
-      <div class="border my-2" style="height: 45px;"></div>
-      <div class="d-flex flex-column m-1">
-        <h3 class="m-0 fw-bold">200</h3>
-        <span class="text-muted custom-bold">En proceso</span>
-      </div>
-      <div class="border my-2" style="height: 45px;"></div>
-      <div class="d-flex flex-column m-1">
-        <h3 class="m-0 fw-bold">35</h3>
-        <span class="text-muted custom-bold">No Aplica</span>
-      </div>
-      <div class="border my-2" style="height: 45px;"></div>
-      <div class="d-flex flex-column m-1">
-        <h3 class="m-0 fw-bold">269</h3>
-        <span class="text-muted custom-bold">Vendido</span>
+  <div class="d-flex justify-content-between align-items-center py-3 m-3">
+    <div class="d-flex align-items-center justify-content-start ">
+      <mat-icon class="color-dark">broken_image</mat-icon>
+      <h1 class="mb-0 ps-2 color-dark page-heading">Converter</h1>
+    </div>
+    <!-- Info Rechazos -->
+    <div class="mx-3 details d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <div class="bg-white text-center rounded-3 d-flex justify-content-evenly align-items-center gap-2 px-3">
+        <div class="d-flex flex-column m-1">
+          <h3 class="m-0 fw-bold">50</h3>
+          <span class="text-muted custom-bold ">Pendiente</span>
+        </div>
+        <div class="border my-2" style="height: 45px;"></div>
+        <div class="d-flex flex-column m-1">
+          <h3 class="m-0 fw-bold">135</h3>
+          <span class="text-muted custom-bold ">Rechazado</span>
+        </div>
+        <div class="border my-2" style="height: 45px;"></div>
+        <div class="d-flex flex-column m-1">
+          <h3 class="m-0 fw-bold">200</h3>
+          <span class="text-muted custom-bold">En proceso</span>
+        </div>
+        <div class="border my-2" style="height: 45px;"></div>
+        <div class="d-flex flex-column m-1">
+          <h3 class="m-0 fw-bold">35</h3>
+          <span class="text-muted custom-bold">No Aplica</span>
+        </div>
+        <div class="border my-2" style="height: 45px;"></div>
+        <div class="d-flex flex-column m-1">
+          <h3 class="m-0 fw-bold">269</h3>
+          <span class="text-muted custom-bold">Vendido</span>
+        </div>
       </div>
     </div>
+    <!-- END Info Rechazos -->
     <div class="d-flex align-items-center gap-2">
       <button matTooltip="Ver en Mapa" class="btn btn-secondary d-flex justify-content-center align-items-center"
         (click)="verEnMapa()">
@@ -40,8 +43,8 @@
         <mat-icon class="p-0 m-0">filter_list_alt</mat-icon>
       </button>
     </div>
+    
   </div>
-  <!-- END Info Rechazos -->
   <!-- TABLA -->
   <div class="mat-elevation-z2 m-3">
     <div class="table-wrapper">
@@ -71,7 +74,7 @@
                       <img [src]="getOptionImage(row.estado)" alt="{{ row.estado }} Image" class="option-image">
                       {{ row.estado }}
                     </mat-select-trigger>
-                    <mat-option *ngFor="let estado of estados" [value]="estado.estado">
+                    <mat-option *ngFor="let estado of estados" [value]="estado.estado" class="custom-option">
                       <img [src]="getOptionImage(estado.estado)" alt="{{ estado.estado }} Image" class="option-image">
                       {{ estado.estado }}
                     </mat-option>
@@ -115,7 +118,7 @@
                 <mat-form-field appearance="outline" subscriptSizing="dynamic" class="estado-form-field color-rechazo" >
                   <mat-select [(ngModel)]="row.tipo_rechazo" name="estado-{{row.tipo_rechazo}}" matTooltip="{{row.tipo}}"
                     class="small-height-select text-danger" >
-                    <mat-option *ngFor="let rechazo of tipos_rechazo" [value]="row.tipo_rechazo">
+                    <mat-option *ngFor="let rechazo of tipos_rechazo" [value]="row.tipo_rechazo" class="custom-option">
                       {{ rechazo.tipo }}
                     </mat-option>
                   </mat-select>
@@ -154,7 +157,7 @@
               <div class="form-group estado-form-group">
                 <mat-form-field appearance="outline" subscriptSizing="dynamic" class="estado-form-field color-rechazo">
                   <mat-select [(ngModel)]="row.competidor" name="estado-{{row.competidor}}" class="small-height-select">
-                    <mat-option *ngFor="let competidor of competidores" [value]="competidor.id">
+                    <mat-option *ngFor="let competidor of competidores" [value]="competidor.id" class="custom-option">
                       {{ competidor.nombre }}
                     </mat-option>
                   </mat-select>
@@ -178,7 +181,7 @@
               <mat-form-field appearance="outline" class="width-select-simbolo" subscriptSizing="dynamic">
                 <mat-select [(ngModel)]="row.id_simbolo" class="small-height-select"
                   (selectionChange)="updateSymbol(row)">
-                  <mat-option *ngFor="let simbolo of simbolos" [value]="simbolo.id">
+                  <mat-option *ngFor="let simbolo of simbolos" [value]="simbolo.id" class="custom-option">
                     {{ simbolo.simbolo }}
                   </mat-option>
                 </mat-select>
