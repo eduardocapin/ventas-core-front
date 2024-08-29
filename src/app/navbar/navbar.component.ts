@@ -27,9 +27,6 @@ export class NavbarComponent {
   menuOpen = false;
   profileMenuOpen = false; // Nueva propiedad para manejar el menú de perfil
 
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
-  }
 
   menuItems: MenuItem[] = [
     { label: 'Dashboard', route: 'dashboard/global' },
@@ -52,6 +49,14 @@ export class NavbarComponent {
     private router: Router,
     public dialog: MatDialog
   ) {}
+
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+  closeMenu(){
+    this.menuOpen = false;
+  }
 
   profilePicSize() {
     return '40'; // Tamaño del perfil, puedes ajustar esto si es necesario

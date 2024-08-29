@@ -287,13 +287,18 @@
   </div>
   <!-- END TABLA -->
   <!-- menu derecho -->
-  <mat-drawer #drawer class="sidenav px-3" mode="over" position="end">
-    <div class="d-flex align-items-center my-4 gap-3">
-      <mat-icon>filter_list_alt</mat-icon>
+  <mat-drawer #drawer class="sidenav px-3 py-5" mode="over" position="end">
+    <div class="d-flex align-items-center mt-3 pt-3 gap-3">
+      <mat-icon class="icono-svg">filter_list_alt</mat-icon>
       <h2 class="my-0">Filtro de Rechazos</h2>
     </div>
     <form [formGroup]="form" (ngSubmit)="applyFilter()" class="d-flex flex-column gap-3">
       <div class="d-flex flex-column">
+        <div class="content-end gap-2 d-flex my-3">
+          <button class="buttons-rechazos text-white" mat-button>Filtrar</button>
+          <button (click)="filtroReset()" class="buttons-rechazos text-white" mat-button>Limpiar</button>
+          <button (click)="drawer.toggle()" class="buttons-rechazos text-white" mat-button>Cancelar</button>
+        </div>
         <div class="mb-2 d-flex flex-column gap-3">
 
           <mat-form-field subscriptSizing="dynamic" class="">
@@ -332,11 +337,7 @@
             <input formControlName="SubFamiliaFilterControl" matInput>
           </mat-form-field>
         </div>
-        <div class="content-end gap-2 d-flex mt-2">
-          <button class="buttons-rechazos text-white" mat-button>Filtrar</button>
-          <button (click)="filtroReset()" class="buttons-rechazos text-white" mat-button>Limpiar</button>
-          <button (click)="drawer.toggle()" class="buttons-rechazos text-white" mat-button>Cancelar</button>
-        </div>
+        
       </div>
     </form>
   </mat-drawer>

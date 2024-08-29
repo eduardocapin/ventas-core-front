@@ -1,6 +1,6 @@
 <div class="py-5 px-2 h-100 fondo" (window:resize)="onResize()">
-  <div class="d-flex mx-4 mt-4 mb-0 justify-content-between">
-    <div class=" col-2 container m-0  p-0"> <!-- col-9-->
+  <div class="row d-flex mx-3 mt-4 mb-0 justify-content-between">
+    <div class=" col-12 col-xl-2 container m-0  p-0"> <!-- col-9-->
       <div class="row align-items-center d-flex justify-content-between">
         <div class="d-flex align-items-center gap-3">
           <img class="col-1 icon-title p-0 my-4" src="assets/images/iconos/dashboard-icon-dark.svg" alt="Dashboard"
@@ -11,9 +11,9 @@
           
       </div>
     </div>
-    <div class="col-8 d-flex align-items-center justify-content-center">
+    <div class="col-12 col-xl-8 d-flex align-items-center justify-content-center">
       <div class="d-flex justify-content-evenly kpis gap-3 px-3">
-        <div class="bg-white text-center rounded-3 d-flex justify-content-evenly align-items-center gap-2 text-rech">
+        <div class="bg-white text-center rounded-3 d-flex justify-content-evenly align-items-center gap-2 px-2 text-rech">
           <div class="d-flex flex-column m-1">
             <h3 class="m-0 fw-bold">
               66.860
@@ -21,7 +21,7 @@
             <span class=" font-dashboard custom-bold">Rechazos</span>
           </div>
         </div>
-        <div class="bg-white text-center rounded-3 d-flex justify-content-evenly align-items-center gap-2">
+        <div class="bg-white text-center rounded-3 d-flex justify-content-evenly align-items-center gap-2 px-2">
           <div class="d-flex flex-column m-1">
             <h3 class="m-0 fw-bold">753</h3>
             <span class="font-dashboard custom-bold ">Caducado</span>
@@ -54,7 +54,7 @@
         </div>
         -->
 
-        <div class="bg-white text-center rounded-3 d-flex justify-content-evenly align-items-center gap-2">
+        <div class="bg-white text-center rounded-3 d-flex justify-content-evenly align-items-center gap-2 px-2">
           <div class="d-flex flex-column m-1">
             <h3 class="m-0 fw-bold">50</h3>
             <span class="font-dashboard custom-bold ">Pendiente</span>
@@ -100,7 +100,7 @@
       -->
       </div>
     </div>
-    <div class="col-2 align-self-center d-flex justify-content-end">
+    <div class="col-12 col-xl-2 align-self-center d-flex justify-content-end">
       <button type="button" class="btn btn-secondary pb-0" (click)="toggleFiltro()">
         <mat-icon class="p-0 m-0">filter_list_alt</mat-icon>
       </button>

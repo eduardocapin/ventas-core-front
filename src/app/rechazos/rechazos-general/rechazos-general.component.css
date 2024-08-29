@@ -426,3 +426,8 @@ tr.example-element-row:not(.example-expanded-row):active {
 ::ng-deep .custom-option mat-pseudo-checkbox{
   display: none !important;
 }
+
+
+.icono-svg{
+  color: #5c5c5c;
+}

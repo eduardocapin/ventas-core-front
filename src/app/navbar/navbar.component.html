@@ -11,7 +11,7 @@
             <div class="header-col header-col--menu" [class.open]="menuOpen">
                 <div class="horizontal-navbar" data-intercom-target="horizontal-navbar">
                     <ul class="menu-items">
-                        <li *ngFor="let item of menuItems" class="nav-item">
+                        <li *ngFor="let item of menuItems" class="nav-item" (click)="closeMenu()">
                             <a [routerLink]="item.route">{{ item.label }}</a>
                         </li>
                     </ul>
@@ -42,8 +42,8 @@
                         <!-- Menú desplegable de perfil -->
                         <div class="profile-menu" *ngIf="profileMenuOpen">
                             <ul>
-                                <li (click)="openProfileEditPopup()">Perfil</li>
-                                <li (click)="logout()">Salir</li>
+                                <li (click)="openProfileEditPopup()" (click)="toggleProfileMenu()">Perfil</li>
+                                <li (click)="logout()" (click)="toggleProfileMenu()">Salir</li>
                             </ul>
                         </div>
                     </li>

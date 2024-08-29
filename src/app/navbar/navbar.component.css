@@ -42,6 +42,10 @@ body {
     margin: 0;
 }
 
+a .brand:hover{
+    background-color: #44484981;
+}
+
 .header-col {
     display: flex;
     align-items: center;
@@ -83,7 +87,7 @@ body {
 }
 
 .nav-item a:hover {
-    background-color: #374151;
+    background-color: #44484981;
     color: #fff;
 }
 
@@ -174,7 +178,7 @@ body {
   }
 
 .btn-profile:hover{
-    background-color: #37415180;
+    background-color: #44484981;
 }
 
 
