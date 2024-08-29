@@ -32,22 +32,21 @@
           <span class="text-muted custom-bold">Vendido</span>
         </div>
       </div>
-    <mat-button-toggle-group class="mt-2 button d-flex align-items-center">
-      <mat-button-toggle class="" (click)="exportar_rechazos()">Exportar</mat-button-toggle>
-      <mat-button-toggle class="" [matMenuTriggerFor]="dropdownMenuOne">
-        {{selectedOption}}<mat-icon>arrow_drop_down</mat-icon>
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-
-    <mat-menu #dropdownMenuOne="matMenu" xPosition="before">
-      <button mat-menu-item (click)="updateOption('Excel')">Excel</button>
-      <button mat-menu-item (click)="updateOption('CSV')">CSV</button>
-      <button mat-menu-item (click)="updateOption('Json')">Json</button>
-    </mat-menu>
-
     </div>
     <!-- END Info Rechazos -->
     <div class="d-flex align-items-center gap-2">
+      <mat-button-toggle-group class="button d-flex align-items-center">
+        <mat-button-toggle class="" (click)="exportar_rechazos()">Exportar</mat-button-toggle>
+        <mat-button-toggle class="" [matMenuTriggerFor]="dropdownMenuOne">
+          {{selectedOption}}<mat-icon>arrow_drop_down</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+  
+      <mat-menu #dropdownMenuOne="matMenu" xPosition="before">
+        <button mat-menu-item (click)="updateOption('Excel')">Excel</button>
+        <button mat-menu-item (click)="updateOption('CSV')">CSV</button>
+        <button mat-menu-item (click)="updateOption('Json')">Json</button>
+      </mat-menu>
       <button matTooltip="Ver en Mapa" class="btn btn-secondary d-flex justify-content-center align-items-center"
         (click)="verEnMapa()">
         <mat-icon class="p-0 m-0">location_on</mat-icon>
