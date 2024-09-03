@@ -3,6 +3,7 @@ import * as echarts from 'echarts/core';
 import { GridComponent, GridComponentOption } from 'echarts/components';
 import { BarChart, BarSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
+import { left } from '@popperjs/core';
 
 echarts.use([GridComponent, BarChart, CanvasRenderer]);
 
@@ -34,7 +35,8 @@ export class GraficaPedidosDiaComponent {
 
     option = {
       grid: {
-        bottom: 40
+        bottom: 40,
+        left: 50
       },
       title: {
         text: 'Por día de la semana',
@@ -60,10 +62,11 @@ export class GraficaPedidosDiaComponent {
           }
         },
       },
-      series: [
+      series:[
+        
         {
           color: '#87CEFA',
-          data: [120, 200, 150, 80, 70, 110, 130],
+          data: [12346, 15035, 9120, 6500, 6303, 9350, 8206],
           type: 'bar'
         }
 
