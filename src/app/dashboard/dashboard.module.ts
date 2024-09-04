@@ -28,7 +28,7 @@ import { GraficaPedidosSegmentacion3Component } from '../components/grafica-pedi
 import { GraficaProductosTopComponent } from '../components/grafica-productos-top/grafica-productos-top.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { KPIComponent } from '../components/kpi/kpi.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,6 @@ import { KPIComponent } from '../components/kpi/kpi.component';
     GraficaPedidosSegmentacion2Component,
     GraficaPedidosSegmentacion3Component,
     GraficaProductosTopComponent,
-    KPIComponent,
   ],
   imports: [
     MatButtonModule,
@@ -64,6 +63,8 @@ import { KPIComponent } from '../components/kpi/kpi.component';
     MatPaginatorModule,
     MatNativeDateModule,
     MatTooltipModule,
+
+    SharedModule,
   ],
   providers: [
     GraficaPedidosDiaComponent,
