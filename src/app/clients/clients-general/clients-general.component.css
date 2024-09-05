@@ -143,3 +143,11 @@ th {
   width: 40px;
   height: 40px;
 }
+
+
+/* cosas de bootstrap */
+.table-responsive {
+  max-height: 600px; /* Ajusta según sea necesario */
+  max-width: 100%; /* Asegura que el contenedor no exceda el ancho de su contenedor padre */
+  margin: 0 auto; /* Centra la tabla en el contenedor */
+}
