@@ -44,7 +44,7 @@ import { SharedModule } from '../shared/shared.module';
 @NgModule({
     declarations: [
         RechazosGeneralComponent,
-        PopupMapComponent,
+        PopupMapComponent
         
     ],
     imports: [

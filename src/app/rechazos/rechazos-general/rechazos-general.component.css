@@ -31,11 +31,19 @@ table {
 
 th {
   color: #3F51B5;
+
 }
+.cursor{
+  cursor: pointer;
+}
+
 
 .btn-color{
   background-color: #3F51B5;
   color: white;
+}
+.icon_color{
+  color: #3F51B5;
 }
 
 .custom-bold {
@@ -147,7 +155,7 @@ th {
   color: #5c5c5c;
 }
 .accion_correctora_precio{
-  width: 52px;
+  width: 35px;
 }
 
 .accion_correctora_simbolo{
@@ -160,9 +168,16 @@ table{
 .select_estado{
   min-width: 120px;
 }
+.row_poblacion{
+  min-width: 80px;
+}
 .row_cliente{
   min-width: 160px;
 }
+.row_subfamilia{
+  min-width: 84px;
+}
+
 .row_producto{
   min-width: 160px;
   max-width: 160px;
@@ -174,7 +189,7 @@ table{
   width: 115px;
 }
 .row_precio_producto, .row_precio_competidor{
-  min-width: 60px;
+  min-width: 80px;
 }
 
 .row_select_competidor{
@@ -286,4 +301,17 @@ th:nth-child(13) {
 .fondo_accionCorrectora{
   background-color: #4e62d121;
   color: white;
+}
+
+/* eliminar las flechas de number */
+/* Para navegadores webkit (Chrome, Safari, etc.) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Para Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
 }
