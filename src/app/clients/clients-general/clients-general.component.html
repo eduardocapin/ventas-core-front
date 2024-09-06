@@ -16,86 +16,99 @@
       </div>
     </div>
 
-    <div [class.d-none]="cargando" class="m-3">
-      <table mat-table [dataSource]="dataSource" matSort>
 
-        <!-- Checkbox Column -->
-        <ng-container matColumnDef="checkbox">
-          <th class="th-checkbox" mat-header-cell *matHeaderCellDef>
-            <mat-checkbox color="primary" (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
-              [indeterminate]="selection.hasValue() && !isAllSelected()">
-            </mat-checkbox>
-          </th>
-          <td mat-cell *matCellDef="let row">
-            <mat-checkbox color="primary" (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-              [checked]="selection.isSelected(row)" [disabled]="isCheckboxDisabled(row)">
-            </mat-checkbox>
-          </td>
-        </ng-container>
-        <!-- Codigo Column -->
-        <ng-container matColumnDef="customer_ERP_id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Código </th>
-          <td mat-cell *matCellDef="let row"> {{row.customer_ERP_id}} </td>
-        </ng-container>
-
-        <!-- Nombre Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-          <td mat-cell *matCellDef="let row" matTooltip="{{row.name}}" [matTooltipDisabled]="row.name?.length <= 32">
-            {{row.name}} </td>
-        </ng-container>
-
-        <!-- Provincia Column -->
-        <ng-container matColumnDef="province">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Provincia </th>
-          <td mat-cell *matCellDef="let row" matTooltip="{{row.province}}"
-            [matTooltipDisabled]="row.province?.length <= 8"> {{row.province}} </td>
-        </ng-container>
-
-        <!-- Población Column -->
-        <ng-container matColumnDef="city">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Población </th>
-          <td mat-cell *matCellDef="let row" matTooltip="{{row.city}}" [matTooltipDisabled]="row.city?.length <= 16">
-            {{row.city}} </td>
-        </ng-container>
-
-        <!-- CP Column -->
-        <ng-container matColumnDef="pc">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> C.P. </th>
-          <td mat-cell *matCellDef="let row"> {{row.pc != 0 ? row.pc : ""}} </td>
-        </ng-container>
-
-        <!-- Segmentación 1 Column -->
-        <ng-container matColumnDef="address">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dirección </th>
-          <td mat-cell *matCellDef="let row" matTooltip="{{row.address}}"
-            [matTooltipDisabled]="row.address?.length <= 34"> {{row.address}} </td>
-        </ng-container>
-        
-        <!-- Acciones Column -->
-        <ng-container matColumnDef="acciones">
-          <th class="text-center" mat-header-cell *matHeaderCellDef>Ficha</th>
-          <td class="text-center" mat-cell *matCellDef="let row">
-            <mat-icon (click)="editClient(row.id)" class="btnEdit" matTooltip="Ficha">visibility</mat-icon>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-        <!-- Row shown when there is no matching data. -->
-        <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="4">No hay datos que mostrar</td>
-        </tr>
-      </table>
-
-      <mat-paginator [pageSizeOptions]="[10, 25,50,  100]" showFirstLastButtons
-        aria-label="Select page of users"></mat-paginator>
+    <div class="m-3">
+      <!-- tabla -->
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <!-- Checkbox Column -->
+          <thead>
+            <tr>
+              <th class="th-checkbox text-center">
+                <input type="checkbox" class="form-check-input" (change)="masterToggle()" [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+              </th>
+              <th scope="col">Código</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Provincia</th>
+              <th scope="col">Población</th>
+              <th scope="col">C.P.</th>
+              <th scope="col">Dirección</th>
+              <th scope="col" class="text-center">Ficha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let row of dataSource.data">
+              <tr>
+                <td class="text-center">
+                  <input type="checkbox" class="form-check-input" (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
+                    [checked]="selection.isSelected(row)" [disabled]="isCheckboxDisabled(row)">
+                </td>
+                <td>{{ row.customer_ERP_id }}</td>
+                <td [title]="row.name">
+                  {{ row.name }}
+                </td>
+                <td [title]="row.province">
+                  {{ row.province }}
+                </td>
+                <td [title]="row.city">
+                  {{ row.city }}
+                </td>
+                <td>{{ row.pc != 0 ? row.pc : "" }}</td>
+                <td [title]="row.address">
+                  {{ row.address }}
+                </td>
+                <td class="text-center">
+                  <button class="btn btn-link p-0" (click)="editClient(row.id)" title="Ficha">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </td>
+              </tr>
+  
+            </ng-container>
+          </tbody>
+        </table>
+      
+        <!-- Paginador -->
+      </div>
+      <!-- paginator -->
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <a class="page-link"aria-label="First">
+              <span aria-hidden="true">&laquo;&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <!-- Page numbers here -->
+          <li class="page-item">
+            <a class="page-link">1</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link">2</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link">3</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" aria-label="Last">
+              <span aria-hidden="true">&raquo;&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
 
-    <div class="d-flex justify-content-center mt-5" *ngIf="cargando">
-      <mat-spinner color="red"></mat-spinner>
-    </div>
+
 
   </div>
   <mat-drawer #drawer id="drawer" class="py-5 filtro-container d-flex flex-column container" mode="over" position="end">
