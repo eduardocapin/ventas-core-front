@@ -137,45 +137,45 @@
                <!-- Estado Column -->
                <td class="text-center">
                  <div class="d-flex align-items-center gap-1 justify-content-center">
-                   <img [src]="getOptionImage(row.estado)" alt="{{ row.estado }} Image" class="option-image">
-                   <select class="form-select form-select-sm select_estado" [(ngModel)]="row.estado" (change)="actualizarEstados(row)">
-                     <option *ngFor="let estado of estados" [value]="estado.name">
+                   <img [src]="getOptionImage(row.status_id)" alt="{{ getEstado(row.status_id) }} Image" class="option-image">
+                   <select class="form-select form-select-sm select_estado" [(ngModel)]="row.status_id" (change)="actualizarEstados(row)">
+                     <option *ngFor="let estado of estados" [value]="estado.id">
                        {{ estado.name }}
                      </option>
                    </select>
                  </div>
                </td>
                <!-- Población Column -->
-               <td class="">{{ row.poblacion }}</td>
+               <td class="">{{ row.city }}</td>
                <!-- Cliente Column -->
-               <td class="row_cliente">{{ row.cliente }}</td>
+               <td class="row_cliente">{{ row.customer_name }}</td>
                <!-- Subfamilia Column -->
-               <td class="">{{ row.nombre_subfamilia }}</td>
+               <td class="">{{ row.subfamily }}</td>
                <!-- Producto Column -->
                <td class="row_producto">
-                <span [ngbTooltip]="row.producto?.length > 23 ? 'tooltip' : null" [ngbTooltip]="row.producto?.length > 23 ? row.producto : ''">{{ row.producto }}</span>
+                <span [ngbTooltip]="row.product?.length > 23 ? 'tooltip' : null" [ngbTooltip]="row.product?.length > 23 ? row.product : ''">{{ row.product }}</span>
               </td>
                <!-- Rechazo Column -->
                <td class="text-center">
-                 <select class="form-select form-select-sm text-danger select_rechazo" [(ngModel)]="row.tipo_rechazo" [ngbTooltip]="row.tipo_rechazo">
-                   <option *ngFor="let rechazo of tipos_rechazo" [value]="rechazo.rejection" >{{ rechazo.rejection }}</option>
+                 <select class="form-select form-select-sm text-danger select_rechazo" [(ngModel)]="row.reason_rejection_id" [ngbTooltip]="getMotivoRechazo(row.reason_rejection_id)">
+                   <option *ngFor="let rechazo of tipos_rechazo" [value]="rechazo.id" >{{ rechazo.rejection }}</option>
                  </select>
                </td>
                <!-- Precio Column -->
-               <td class="text-end row_precio_producto centrado_column">{{ row.precio_producto }} €</td>
+               <td class="text-end row_precio_producto centrado_column">{{ row.pvp }} €</td>
                <!-- Promo Propia Column -->
                <td class="text-center centrado_column">
-                 <i *ngIf="row.tiene_promo_propia" class="promo-icon" [ngbTooltip]="row.promo_propia">P</i>
+                 <i *ngIf="row.has_own_promo" class="promo-icon" [ngbTooltip]="row.own_promo">P</i>
                </td>
                <!-- Competidor Column -->
-               <td class="text-end row_precio_competidor centrado_column">{{ row.precio_competidor }} €</td>
+               <td class="text-end row_precio_competidor centrado_column">{{ row.pvp_competitor }} €</td>
                <!-- Promo Competidor Column -->
                <td class="text-center centrado_column">
-                 <i *ngIf="row.tiene_promo_competencia" class="promo-icon" [ngbTooltip]="row.promo_competencia">P</i>
+                 <i *ngIf="row.has_competitor_promo" class="promo-icon" [ngbTooltip]="row.competitor_promo">P</i>
                </td>
                <!-- Competidor Column -->
                <td>
-                 <select class="form-select form-select-sm row_select_competidor" [(ngModel)]="row.competidor" [ngbTooltip]="getCompetidorNombre(row.competidor)">
+                 <select class="form-select form-select-sm row_select_competidor" [(ngModel)]="row.competitor_id" [ngbTooltip]="getCompetidorNombre(row.competitor_id)">
                    <option *ngFor="let competidor of competidores" [value]="competidor.id">{{ competidor.name }}</option>
                  </select>
                </td>
@@ -183,28 +183,28 @@
                <td class="fondo_accionCorrectora">
                  <div class="d-flex align-items-center gap-1">
                    <!-- Campo para precio de promoción -->
-                   <input type="number" class="form-control form-control-sm accion_correctora_precio text-success" [(ngModel)]="row.pvp_es_promocion_precio" placeholder="0" min="0" />
+                   <input type="number" class="form-control form-control-sm accion_correctora_precio text-success" [(ngModel)]="row.corrective_action_value" placeholder="0" min="0" />
        
                    <!-- Campo para símbolo de promoción -->
-                   <select class="form-select form-select-sm accion_correctora_simbolo" [(ngModel)]="row.id_simbolo" (change)="updateSymbol(row)">
+                   <select class="form-select form-select-sm accion_correctora_simbolo" [(ngModel)]="row.corrective_action_symbol_id" (change)="updateSymbol(row)">
                      <option *ngFor="let simbolo of simbolos" [value]="simbolo.id">
                        {{ simbolo.symbol }}
                      </option>
                    </select>
        
                    <!-- Campo para acción correctora -->
-                   <input type="text" class="form-control form-control-sm row_accion_correctora text-success" [(ngModel)]="row.accion_correctora" maxlength="50" placeholder="Acción Correctora" [ngbTooltip]="row.accion_correctora"/>
+                   <input type="text" class="form-control form-control-sm row_accion_correctora text-success" [(ngModel)]="row.corrective_action_text" maxlength="50" placeholder="Promoción" [ngbTooltip]="row.corrective_action_text"/>
                  </div>
                </td>
                <!-- Propuesta Agente Column -->
                <td class="row_propuesta_agente" >
-                <span [ngbTooltip]="row.propuesta_agente?.length > 23 ? 'tooltip' : null" [ngbTooltip]="row.propuesta_agente?.length > 23 ? row.propuesta_agente : ''">{{ row.propuesta_agente }}</span>
+                <span [ngbTooltip]="row.salesman_proposal?.length > 23 ? 'tooltip' : null" [ngbTooltip]="row.salesman_proposal?.length > 23 ? row.salesman_proposal : ''">{{ row.salesman_proposal }}</span>
                </td>
                <!-- Fecha Interés Column -->
-               <td class="text-success centrado_column row_fecha_interes">{{ row.fecha_interes }}</td>
+               <td class="text-success centrado_column row_fecha_interes">{{ row.interest_date }}</td>
                <!-- ficha column -->
                 <td class="text-center ps-3">
-                  <i class="bi bi-eye-fill fs-5 icon_color cursor" (click)="viewRechazo(row.rechazo_id)"></i>
+                  <i class="bi bi-eye-fill fs-5 icon_color cursor" (click)="viewRechazo(row.customer_id)"></i>
                 </td>
                <!-- Expand Column -->
                <td class="text-center">
@@ -221,21 +221,21 @@
                    <div class="p-2">
                      <div class="row mb-2">
                        <div class="col-md-3 col-sm-6">
-                         <strong>PVP:</strong> {{ row.precio_producto }} €
+                         <strong>PVP:</strong> {{ row.pvp }} €
                        </div>
                        <div class="col-md-3 col-sm-6">
-                         <strong>Promoción Propia:</strong> {{ row.promo_propia }}
+                         <strong>Promoción Propia:</strong> {{ row.own_promo }}
                        </div>
                        <div class="col-md-3 col-sm-6">
-                         <strong>Precio Competidor:</strong> {{ row.precio_competidor }} €
+                         <strong>Precio Competidor:</strong> {{ row.pvp_competitor }} €
                        </div>
                        <div class="col-md-3 col-sm-6">
-                         <strong>Promoción Competidor:</strong> {{ row.promo_competencia }}
+                         <strong>Promoción Competidor:</strong> {{ row.competitor_promo }}
                        </div>
                      </div>
                      <div class="row">
                        <div class="col-12">
-                         <strong>Notas:</strong> {{ row.notas }}
+                         <strong>Notas:</strong> {{ row.notes }}
                        </div>
                      </div>
                    </div>

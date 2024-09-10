@@ -28,8 +28,8 @@ export class PopupMapComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     if (this.data.selectedRows.length > 0) {
       this.center = {
-        lat: this.data.selectedRows[0].rechazo_latitud,
-        lng: this.data.selectedRows[0].rechazo_longitud
+        lat: this.data.selectedRows[0].latitude,
+        lng: this.data.selectedRows[0].longitude
       };
     }
     console.log('Centro del mapa:', this.center); // Depuración
@@ -43,11 +43,11 @@ export class PopupMapComponent implements OnInit, AfterViewInit {
   addMarkers() {
     this.markers = this.data.selectedRows.map(row => {
       const marker = new google.maps.Marker({
-        position: { lat: row.rechazo_latitud, lng: row.rechazo_longitud },
-        title: row.cliente,
+        position: { lat: row.latitude, lng: row.longitude },
+        title: row.customer_name,
         map: this.map?.googleMap,
         icon: {
-          url: this.getMarkerIcon(row.estado),
+          url: this.getMarkerIcon(row.status),
           scaledSize: new google.maps.Size(25, 33), // Ajusta el tamaño según sea necesario
           size: new google.maps.Size(40, 40), // Tamaño original del icono
           origin: new google.maps.Point(0, 0), // Origen de la imagen
@@ -57,15 +57,15 @@ export class PopupMapComponent implements OnInit, AfterViewInit {
 
       console.log('Añadiendo marcador:', marker); // Depuración
 
-      const estadoColor = this.getEstadoColor(row.estado);
+      const estadoColor = this.getEstadoColor(row.status);
 
       const infoContent = `
         <div>
-          <h2>${row.cliente}</h2>
-          <p><strong style="color:${estadoColor};">${row.estado}</strong></p>
-          <p>${row.poblacion}, ${row.provincia}</p>
-          <p><strong>${row.producto}</strong></p>
-          <p style="color:red;"><strong>${row.tipo_rechazo}</strong></p>
+          <h2>${row.customer_name}</h2>
+          <p><strong style="color:${estadoColor};">${row.status}</strong></p>
+          <p>${row.city}, ${row.province}</p>
+          <p><strong>${row.product}</strong></p>
+          <p style="color:red;"><strong>${row.reason_rejection}</strong></p>
         </div>
       `;
 

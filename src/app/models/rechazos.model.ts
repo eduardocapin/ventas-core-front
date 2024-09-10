@@ -1,33 +1,36 @@
 export interface IRechazo {
-    rechazo_id: number;
-    estado: string; // Nombre del estado
-    poblacion: string; // Nombre de la población
-    provincia: string; // Nombre de Provincia
-    cliente: string; // Nombre del cliente (empresa)
-    producto: string; // Nombre del producto
-    nombre_familia: string; // Nombre de la familia
-    nombre_subfamilia: string; // Nombre de la subfamilia
-    tipo_rechazo: string; // motivo de rechazo
-    precio_producto: number; // Precio del producto
-    precio_competidor: number; //Precio del competidor
-    competidor: number; // Nombre del competidor
-    pvp_es_promocion_precio: number; // Precio del competidor
-    id_simbolo: number;
-    pvp_es_promocion_symbol: string;
-    accion_correctora: string; // Acción correctora
-    propuesta_agente: string; // Propuesta del agente
-    anulado: boolean; // Estado anulado
-    rechazo_longitud: number; // Longitud del rechazo
-    rechazo_latitud: number; // Latitud del rechazo
-    notas: string
-    tiene_promo_propia: boolean
-    tiene_promo_competencia: boolean
-    promo_propia: string
-    promo_competencia:string
-    fecha_interes:string
-    editingAccionCorrectora?: boolean;
-    tempAccionCorrectora?: string;
-    editingPrecioPromocion?: boolean;
-    tempPrecioPromocion?: number;
-    tempSimboloPromocion?: number;
+    id: number;
+    status_id: number;
+    status: string;
+    city_id: number;
+    city:string;
+    province_id: number;
+    province:string;
+    customer_id: number;
+    customer_name:string;
+    product_id: number;
+    product:string;
+    family:string;
+    subfamily:string;
+    reason_rejection_id: number;
+    reason_rejection:string;
+    pvp:number;
+    has_own_promo: boolean;
+    own_promo: string;
+    pvp_competitor:number;
+    has_competitor_promo:boolean;
+    competitor_promo:string; 
+    competitor_id: number;
+    competitor_name:string;
+    corrective_action_value:string;
+    corrective_action_symbol_id: number;
+    corrective_action_symbol:string; 
+    corrective_action_text:string;
+    salesman_proposal:string;
+    notes:string,
+    rejection_date:string;
+    interest_date:string;
+    latitude: number;
+    longitude: number;
+    deleted:boolean;
 }
