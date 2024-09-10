@@ -139,8 +139,8 @@
                  <div class="d-flex align-items-center gap-1 justify-content-center">
                    <img [src]="getOptionImage(row.estado)" alt="{{ row.estado }} Image" class="option-image">
                    <select class="form-select form-select-sm select_estado" [(ngModel)]="row.estado" (change)="actualizarEstados(row)">
-                     <option *ngFor="let estado of estados" [value]="estado.estado">
-                       {{ estado.estado }}
+                     <option *ngFor="let estado of estados" [value]="estado.name">
+                       {{ estado.name }}
                      </option>
                    </select>
                  </div>
@@ -153,12 +153,12 @@
                <td class="">{{ row.nombre_subfamilia }}</td>
                <!-- Producto Column -->
                <td class="row_producto">
-                <span [ngbTooltip]="row.producto.length > 23 ? 'tooltip' : null" [ngbTooltip]="row.producto.length > 23 ? row.producto : ''">{{ row.producto }}</span>
+                <span [ngbTooltip]="row.producto?.length > 23 ? 'tooltip' : null" [ngbTooltip]="row.producto?.length > 23 ? row.producto : ''">{{ row.producto }}</span>
               </td>
                <!-- Rechazo Column -->
                <td class="text-center">
                  <select class="form-select form-select-sm text-danger select_rechazo" [(ngModel)]="row.tipo_rechazo" [ngbTooltip]="row.tipo_rechazo">
-                   <option *ngFor="let rechazo of tipos_rechazo" [value]="rechazo.tipo" >{{ rechazo.tipo }}</option>
+                   <option *ngFor="let rechazo of tipos_rechazo" [value]="rechazo.rejection" >{{ rechazo.rejection }}</option>
                  </select>
                </td>
                <!-- Precio Column -->
@@ -176,7 +176,7 @@
                <!-- Competidor Column -->
                <td>
                  <select class="form-select form-select-sm row_select_competidor" [(ngModel)]="row.competidor" [ngbTooltip]="getCompetidorNombre(row.competidor)">
-                   <option *ngFor="let competidor of competidores" [value]="competidor.id">{{ competidor.nombre }}</option>
+                   <option *ngFor="let competidor of competidores" [value]="competidor.id">{{ competidor.name }}</option>
                  </select>
                </td>
                <!-- Acción Correctora Column -->
@@ -188,7 +188,7 @@
                    <!-- Campo para símbolo de promoción -->
                    <select class="form-select form-select-sm accion_correctora_simbolo" [(ngModel)]="row.id_simbolo" (change)="updateSymbol(row)">
                      <option *ngFor="let simbolo of simbolos" [value]="simbolo.id">
-                       {{ simbolo.simbolo }}
+                       {{ simbolo.symbol }}
                      </option>
                    </select>
        
@@ -198,7 +198,7 @@
                </td>
                <!-- Propuesta Agente Column -->
                <td class="row_propuesta_agente" >
-                <span [ngbTooltip]="row.propuesta_agente.length > 23 ? 'tooltip' : null" [ngbTooltip]="row.propuesta_agente.length > 23 ? row.propuesta_agente : ''">{{ row.propuesta_agente }}</span>
+                <span [ngbTooltip]="row.propuesta_agente?.length > 23 ? 'tooltip' : null" [ngbTooltip]="row.propuesta_agente?.length > 23 ? row.propuesta_agente : ''">{{ row.propuesta_agente }}</span>
                </td>
                <!-- Fecha Interés Column -->
                <td class="text-success centrado_column row_fecha_interes">{{ row.fecha_interes }}</td>

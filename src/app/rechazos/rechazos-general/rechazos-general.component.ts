@@ -10,16 +10,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { PopupMapComponent } from './popup-map-rechazos/popup-map-rechazos.component';
 import { IRechazo } from 'src/app/models/rechazos.model';
 import { RechazadosService } from 'src/app/services/rechazados/rechazados.service';
-import { IEstadosRechazoCount } from 'src/app/models/count.model';
+
 import { FilterService } from 'src/app/services/filter/filter.service';
 import { IEstado } from 'src/app/models/estados.model';
 import { ISimbolo } from 'src/app/models/simbolos.model';
-import { ICompetidor } from 'src/app/models/competidores.model';
 import { ITipo_Rechazo } from 'src/app/models/tipos_rechazos.model';
 import { ExportService } from 'src/app/services/export/export.service';
 import { ToastrService } from 'ngx-toastr';
 import { SelectionModel } from '@angular/cdk/collections';
 import { PopupClientDetailComponent } from 'src/app/clients/clients-general/popup-client-detail/popup-client-detail.component';
+import { ICompetidor } from 'src/app/models/competidor.model';
+import { IconOptions } from '@angular/material/icon';
+import { IMotivoRechazo } from 'src/app/models/motivoRechazo.model';
 
 @Component({
   selector: 'app-rechazos-general',
@@ -49,15 +51,9 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   dataSource: any[] = []; // Temporarily set to any[]
   rechazoList: IRechazo[] = [];
   selection = new SelectionModel<IRechazo>(true, []);
-  estadosRechazoCount: IEstadosRechazoCount = {
-    cantidad_rechazo: 0,
-    cantidad_noAplica: 0,
-    cantidad_aceptado: 0,
-    cantidad_enProceso: 0,
-  };
   estados: IEstado[] = [];
   competidores: ICompetidor[] = [];
-  tipos_rechazo: ITipo_Rechazo[] = [];
+  tipos_rechazo: IMotivoRechazo[] = [];
   simbolos: ISimbolo[] = [];
   expandedElement?: IRechazo | null;
 
@@ -282,44 +278,37 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
     this.rechazadosService.getRechazos().subscribe((rechazos: IRechazo[]) => {
       console.log('Rechazos cargados:', rechazos);
-      this.dataSource = rechazos;
+      //this.dataSource = rechazos;
     });
   }
 
   private loadEstadosRechazos() {
-    this.rechazadosService.countEstadosRechazos().subscribe((contadores: IEstadosRechazoCount[]) => {
-      this.estadosRechazoCount = contadores[0];
-      console.log('Contadores de estados de rechazos:', contadores);
-    });
+    
   }
 
   private loadEstados() {
     this.filterService.getEstados().subscribe((estados: IEstado[]) => {
       this.estados = estados;
-      console.log('Estados cargados:', estados);
     });
   }
 
   private loadCompetidores() {
-    this.competidores = [
-      { nombre: 'Distribuciones Rico', id: 1 },
-      { nombre: 'Cadena 100 Profesional', id: 2 },
-      { nombre: 'Bazar Hogar', id: 3 },
-    ];
-    console.log('Competidores cargados:', this.competidores);
+    this.filterService.getCompetidores().subscribe((competidores: ICompetidor[]) => {
+      this.competidores = competidores;
+    });
+
   }
 
   private loadTiposRechazo() {
-    this.tipos_rechazo = [
-      { tipo: 'Mal estado', id: 1 },
-      { tipo: 'Mala calidad', id: 2 },
-      { tipo: 'Producto no trabajado', id: 3 },
-      { tipo: 'Mejor precio competencia', id: 4 },
-    ];
+    this.filterService.getMotivosRechazo().subscribe((motivos_rechazo: IMotivoRechazo[]) => {
+      this.tipos_rechazo = motivos_rechazo;
+    });
+    
   }
 
   private loadSimbolos() {
     this.filterService.getSimbolos().subscribe((simbolos: ISimbolo[]) => {
+      console.log(simbolos)
       this.simbolos = simbolos;
     });
   }
@@ -348,7 +337,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
   getCompetidorNombre(id: number): string {
     const competidor = this.competidores.find(c => c.id == id);
-    return competidor ? competidor.nombre : 'No encontrado';
+    return competidor ? competidor.name : 'No encontrado';
   }
 
   filtroReset() {
@@ -392,7 +381,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
   getSimboloName(symbolId: number): string {
     const symbol = this.simbolos.find(s => s.id === symbolId);
-    return symbol ? symbol.simbolo : '';
+    return symbol ? symbol.symbol : '';
   }
 
   verEnMapa() {
@@ -424,7 +413,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
   actualizarEstados(row: IRechazo) {
     const estadoSeleccionado = this.estados.find(
-      (estado) => estado.estado === row.estado
+      (estado) => estado.name === row.estado
     );
 
     if (estadoSeleccionado) {
