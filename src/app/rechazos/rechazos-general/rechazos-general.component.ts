@@ -44,7 +44,6 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     'promo_competidor',
     'competidor',
     'accion_correctora',
-    'accion_correctora_activa',
     'propuesta_agente',
     'interes',
     'expand',
@@ -225,7 +224,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   }
 
   getSimboloName(symbolId: number): string {
-     const symbol = this.simbolos.find((s) => s.id === symbolId);
+    const symbol = this.simbolos.find((s) => s.id === symbolId);
     return symbol ? symbol.symbol : '';
   }
 
