@@ -60,57 +60,68 @@
             <!-- Estado Column -->
             <th scope="col" class="text-center cursor" (click)="sortData('estado')">
               Estado
-              <i *ngIf="currentSortColumn === 'estado'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              <i *ngIf="currentSortColumn === 'estado'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Fecha Column -->
             <th scope="col">Fecha</th>
             <!-- Población Column -->
             <th scope="col" class="row_poblacion cursor" (click)="sortData('poblacion')">
               Población
-              <i *ngIf="currentSortColumn === 'poblacion'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              <i *ngIf="currentSortColumn === 'poblacion'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Cliente Column -->
             <th scope="col" (click)="sortData('cliente')" class="cursor">
               Cliente
-              <i *ngIf="currentSortColumn === 'cliente'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              <i *ngIf="currentSortColumn === 'cliente'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Subfamilia Column -->
             <th scope="col" (click)="sortData('nombre_subfamilia')" class="row_subfamilia cursor">
               Subfamilia
-              <i *ngIf="currentSortColumn === 'subfamilia'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              <i *ngIf="currentSortColumn === 'subfamilia'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Producto Column -->
             <th scope="col" (click)="sortData('producto')" class="cursor">
               Producto
-              <i *ngIf="currentSortColumn === 'producto'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              <i *ngIf="currentSortColumn === 'producto'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Rechazo Column -->
             <th scope="col" (click)="sortData('tipo_rechazo')" class="cursor">
               Rechazo
-              <i *ngIf="currentSortColumn === 'tipo_rechazo'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              <i *ngIf="currentSortColumn === 'tipo_rechazo'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Precio Column -->
             <th scope="col" class="text-end cursor" (click)="sortData('precio_producto')">
               Mi Precio
-              <i *ngIf="currentSortColumn === 'precio_producto'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              <i *ngIf="currentSortColumn === 'precio_producto'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Promo Propia Column -->
             <th scope="col" class="text-center cursor" (click)="sortData('promo_propia')">
-              <i *ngIf="currentSortColumn === 'promo_propia'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
-             </th>
+              <i *ngIf="currentSortColumn === 'promo_propia'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+            </th>
             <!-- Competidor Column -->
             <th scope="col" class="text-end cursor" (click)="sortData('precio_competidor')">
               Su Precio
-              <i *ngIf="currentSortColumn === 'precio_competidor'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              <i *ngIf="currentSortColumn === 'precio_competidor'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Promo Competidor Column -->
             <th scope="col" class="text-center cursor" (click)="sortData('promo_competencia')">
-              <i *ngIf="currentSortColumn === 'promo_competencia'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
-             </th>
+              <i *ngIf="currentSortColumn === 'promo_competencia'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+            </th>
             <!-- Competidor Column -->
             <th scope="col" (click)="sortData('competidor')" class="cursor">
               Competidor
-              <i *ngIf="currentSortColumn === 'competidor'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              <i *ngIf="currentSortColumn === 'competidor'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Acción Correctora Column -->
             <th scope="col" class="text-center fondo_azul">Convertir en oportunidad (% ó € + Promo)</th>
@@ -119,11 +130,13 @@
             <!-- Propuesta Agente Column -->
             <th scope="col" (click)="sortData('propuesta_agente')" class="cursor">
               Propuesta Agente
-              <i *ngIf="currentSortColumn === 'propuesta_agente'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              <i *ngIf="currentSortColumn === 'propuesta_agente'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Fecha Interés Column -->
             <th scope="col" class="text-success text-end cursor" (click)="sortData('fecha_interes')">
-               <i *ngIf="currentSortColumn === 'fecha_interes'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              <i *ngIf="currentSortColumn === 'fecha_interes'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
               Interés
             </th>
             <!-- columna ficha -->
@@ -167,101 +180,6 @@
                 <span [ngbTooltip]="row.producto.length > 23 ? 'tooltip' : null"
                   [ngbTooltip]="row.producto.length > 23 ? row.producto : ''">{{ row.producto }}</span>
               </td>
-               <!-- Rechazo Column -->
-               <td class="text-center">
-                 <select class="form-select form-select-sm text-danger select_rechazo" [(ngModel)]="row.tipo_rechazo" [ngbTooltip]="row.tipo_rechazo">
-                   <option *ngFor="let rechazo of tipos_rechazo" [value]="rechazo.tipo" >{{ rechazo.tipo }}</option>
-                 </select>
-               </td>
-               <!-- Precio Column -->
-               <td class="text-end row_precio_producto centrado_column">{{ row.precio_producto }} €</td>
-               <!-- Promo Propia Column -->
-               <td class="text-center centrado_column">
-                 <i *ngIf="row.tiene_promo_propia" class="promo-icon" [ngbTooltip]="row.promo_propia">P</i>
-               </td>
-               <!-- Competidor Column -->
-               <td class="text-end row_precio_competidor centrado_column">{{ row.precio_competidor }} €</td>
-               <!-- Promo Competidor Column -->
-               <td class="text-center centrado_column">
-                 <i *ngIf="row.tiene_promo_competencia" class="promo-icon" [ngbTooltip]="row.promo_competencia">P</i>
-               </td>
-               <!-- Competidor Column -->
-               <td>
-                 <select class="form-select form-select-sm row_select_competidor" [(ngModel)]="row.competidor" [ngbTooltip]="getCompetidorNombre(row.competidor)">
-                   <option *ngFor="let competidor of competidores" [value]="competidor.id">{{ competidor.nombre }}</option>
-                 </select>
-               </td>
-               <!-- Acción Correctora Column -->
-               <td class="fondo_accionCorrectora">
-                 <div class="d-flex align-items-center gap-1">
-                   <!-- Campo para precio de promoción -->
-                   <input type="number" class="form-control form-control-sm accion_correctora_precio text-success" [(ngModel)]="row.pvp_es_promocion_precio" placeholder="0" min="0" />
-       
-                   <!-- Campo para símbolo de promoción -->
-                   <select class="form-select form-select-sm accion_correctora_simbolo" [(ngModel)]="row.id_simbolo" (change)="updateSymbol(row)">
-                     <option *ngFor="let simbolo of simbolos" [value]="simbolo.id">
-                       {{ simbolo.simbolo }}
-                     </option>
-                   </select>
-       
-                   <!-- Campo para acción correctora -->
-                   <input type="text" class="form-control form-control-sm row_accion_correctora text-success" [(ngModel)]="row.accion_correctora" maxlength="50" placeholder="Acción Correctora" [ngbTooltip]="row.accion_correctora"/>
-                 </div>
-               </td>
-               <!-- Propuesta Agente Column -->
-               <td class="row_propuesta_agente" >
-                <span [ngbTooltip]="row.propuesta_agente.length > 23 ? 'tooltip' : null" [ngbTooltip]="row.propuesta_agente.length > 23 ? row.propuesta_agente : ''">{{ row.propuesta_agente }}</span>
-               </td>
-               <!-- Fecha Interés Column -->
-               <td class="text-success centrado_column row_fecha_interes">{{ row.fecha_interes }}</td>
-               <!-- ficha column -->
-                <td class="text-center ps-3">
-                  <i class="bi bi-eye-fill fs-5 icon_color cursor" (click)="viewRechazo(row.rechazo_id)"></i>
-                </td>
-               <!-- Expand Column -->
-               <td class="text-center">
-                 <button class="btn btn-color py-0 px-1 text-white" (click)="expandedElement = (expandedElement === row ? null : row)">
-                   <i class="bi" [ngClass]="expandedElement === row ? 'bi-x' : 'bi bi-three-dots-vertical'"></i>
-                 </button>
-               </td>
-             </tr>
-     
-             <!-- Row Expanded Detail -->
-             <ng-container *ngIf="expandedElement === row">
-               <tr>
-                 <td [attr.colspan]="displayedColumns.length">
-                   <div class="p-2">
-                     <div class="row mb-2">
-                       <div class="col-md-3 col-sm-6">
-                         <strong>PVP:</strong> {{ row.precio_producto }} €
-                       </div>
-                       <div class="col-md-3 col-sm-6">
-                         <strong>Promoción Propia:</strong> {{ row.promo_propia }}
-                       </div>
-                       <div class="col-md-3 col-sm-6">
-                         <strong>Precio Competidor:</strong> {{ row.precio_competidor }} €
-                       </div>
-                       <div class="col-md-3 col-sm-6">
-                         <strong>Promoción Competidor:</strong> {{ row.promo_competencia }}
-                       </div>
-                     </div>
-                     <div class="row">
-                       <div class="col-12">
-                         <strong>Notas:</strong> {{ row.notas }}
-                       </div>
-                     </div>
-                   </div>
-                 </td>
-               </tr>
-             </ng-container>
-           </ng-container>
-         </tbody>
-       </table>
-     </div>
-     <!-- Paginador -->     
-     
-   </div>
-  
               <!-- Rechazo Column -->
               <td class="text-center">
                 <select class="form-select form-select-sm text-danger select_rechazo" [(ngModel)]="row.tipo_rechazo"
@@ -270,13 +188,13 @@
                 </select>
               </td>
               <!-- Precio Column -->
-              <td class="text-end row_precio_producto centrado_column ">{{ row.precio_producto }} €</td>
+              <td class="text-end row_precio_producto centrado_column">{{ row.precio_producto }} €</td>
               <!-- Promo Propia Column -->
               <td class="text-center centrado_column">
                 <i *ngIf="row.tiene_promo_propia" class="promo-icon" [ngbTooltip]="row.promo_propia">P</i>
               </td>
               <!-- Competidor Column -->
-              <td class="text-end row_precio_competidor centrado_column ">{{ row.precio_competidor }} €</td>
+              <td class="text-end row_precio_competidor centrado_column">{{ row.precio_competidor }} €</td>
               <!-- Promo Competidor Column -->
               <td class="text-center centrado_column">
                 <i *ngIf="row.tiene_promo_competencia" class="promo-icon" [ngbTooltip]="row.promo_competencia">P</i>
@@ -294,7 +212,7 @@
                 <div class="d-flex align-items-center gap-1">
                   <!-- Campo para precio de promoción -->
                   <input type="number" class="form-control form-control-sm accion_correctora_precio text-success"
-                    [(ngModel)]="row.pvp_es_promocion_precio" placeholder="0" />
+                    [(ngModel)]="row.pvp_es_promocion_precio" placeholder="0" min="0" />
 
                   <!-- Campo para símbolo de promoción -->
                   <select class="form-select form-select-sm accion_correctora_simbolo" [(ngModel)]="row.id_simbolo"
@@ -310,13 +228,6 @@
                     [ngbTooltip]="row.accion_correctora" />
                 </div>
               </td>
-              <!-- Acción Correctora Activada Column -->
-              <td class="fondo_accionCorrectora pe-2">
-                <div class="d-flex">
-                  <input type="checkbox" (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
-                    [checked]="selection.isSelected(row)" />
-                </div>
-              </td>
               <!-- Propuesta Agente Column -->
               <td class="row_propuesta_agente">
                 <span [ngbTooltip]="row.propuesta_agente.length > 23 ? 'tooltip' : null"
@@ -325,11 +236,15 @@
               </td>
               <!-- Fecha Interés Column -->
               <td class="text-success centrado_column row_fecha_interes">{{ row.fecha_interes }}</td>
-              <!-- Expand Column -->
+              <!-- ficha column -->
               <td class="text-center ps-3">
+                <!-- <i class="bi bi-eye-fill fs-5 icon_color cursor" (click)="viewRechazo(row.rechazo_id)"></i> -->
+              </td>
+              <!-- Expand Column -->
+              <td class="text-center">
                 <button class="btn btn-color py-0 px-1 text-white"
                   (click)="expandedElement = (expandedElement === row ? null : row)">
-                  <i class="bi" [ngClass]="expandedElement === row ? 'bi-chevron-up' : 'bi-three-dots'"></i>
+                  <i class="bi" [ngClass]="expandedElement === row ? 'bi-x' : 'bi bi-three-dots-vertical'"></i>
                 </button>
               </td>
             </tr>
@@ -339,24 +254,18 @@
               <tr>
                 <td [attr.colspan]="displayedColumns.length">
                   <div class="p-2">
-                    <div class="row mb-2 w-100">
-                      <div class="col">
+                    <div class="row mb-2">
+                      <div class="col-md-3 col-sm-6">
                         <strong>PVP:</strong> {{ row.precio_producto }} €
                       </div>
-                      <div class="col">
-                        <strong>Agente:</strong> {{ row.agente }}
-                      </div>
-                      <div class="col">
+                      <div class="col-md-3 col-sm-6">
                         <strong>Promoción Propia:</strong> {{ row.promo_propia }}
                       </div>
-                      <div class="col">
+                      <div class="col-md-3 col-sm-6">
                         <strong>Precio Competidor:</strong> {{ row.precio_competidor }} €
                       </div>
-                      <div class="col">
+                      <div class="col-md-3 col-sm-6">
                         <strong>Promoción Competidor:</strong> {{ row.promo_competencia }}
-                      </div>
-                      <div class="col">
-                        <strong>Última acción correctora:</strong> {{ row.fecha_ultima_accion }} €
                       </div>
                     </div>
                     <div class="row">
