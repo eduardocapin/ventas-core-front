@@ -5,14 +5,14 @@
         <div class="d-flex align-items-center gap-3">
           <img class="col-1 icon-title p-0 my-4" src="assets/images/iconos/dashboard-icon-dark.svg" alt="Dashboard"
             matListItemIcon />
-            <h1 class="mb-0 color-dark page-heading">Dashboard</h1>
-          </div>
+          <h1 class="mb-0 color-dark page-heading">Dashboard</h1>
+        </div>
       </div>
     </div>
     <div class="col d-flex align-items-center justify-content-center">
       <app-kpi class=""></app-kpi>
     </div>
-    
+
     <div class="col-1 align-self-center d-flex justify-content-end">
       <button type="button" class="btn btn-secondary pb-0" (click)="toggleFiltro()">
         <mat-icon class="p-0 m-0">filter_list_alt</mat-icon>
@@ -169,46 +169,51 @@
 
   <div class="fondo-blanco p-3 mt-3">
     <div>
-      <mat-form-field class="col-3">
-        <mat-label>Mostrar: </mat-label>
-        <mat-select [(value)]="tablaActiva" (selectionChange)="select($event.value)">
-          <mat-option *ngFor="let nombre of nombresTablas" [value]="nombresTablas.indexOf(nombre)">
-            {{nombre}}</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="form-group col-3">
+        
+        <select id="tablaActiva" class="form-select form-select-sm" [(ngModel)]="tablaActiva" (change)="select($event)">
+          <option *ngFor="let nombre of nombresTablas; let i = index" [value]="i">
+            {{ nombre }}
+          </option>
+        </select>
+      </div>
       <div>
-        <div class="table-container">
-          <table mat-table [dataSource]="dataSource">
+        <div class="table-responsive">
+          <table class="table table-hover table-sm my-0">
             <!-- Columna Dinámica para 'nombre' -->
-            <ng-container matColumnDef="nombre" sticky>
-              <th mat-header-cell *matHeaderCellDef class="mat-column-nombre">{{ nombresTablas[tablaActiva] }}</th>
-              <td mat-cell *matCellDef="let element" matTooltip="{{element.name}}"
-                [matTooltipDisabled]="element.name?.length <= 32">{{ element.nombre }}</td>
-            </ng-container>
+            <thead>
+              <tr>
+                <th class="sticky-left">{{ nombresTablas[tablaActiva] }}</th>
+                <th class="text-end sticky-left">Total</th>
 
-            <!-- Columna para 'total' -->
-            <ng-container matColumnDef="total">
-              <th mat-header-cell *matHeaderCellDef class="mat-column-rechazos text-end">Total</th>
-              <td class="text-end" mat-cell *matCellDef="let element">{{ element.total }}</td>
-            </ng-container>
+                <!-- Columnas dinámicas de tipos de rechazos -->
+                <th *ngFor="let columna of columnasRechazos" class="text-end column-rechazos"> {{ columna }} </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let element of data">
+                <td class="sticky-left" [title]="element.nombre"
+                  [attr.data-toggle]="element.nombre.length > 32 ? 'tooltip' : ''">
+                  {{ element.nombre }}
+                </td>
+                <td class="sticky-left text-end">{{ element.total }}</td>
 
-            <!-- Columnas dinámicas de tipos de rechazos -->
-            <ng-container *ngFor="let columna of columnasRechazos" [matColumnDef]="columna">
-              <th class="text-end mat-column-rechazos " mat-header-cell *matHeaderCellDef> {{ columna }} </th>
-              <td class="text-end" mat-cell *matCellDef="let element"> {{ element.rechazos[columna] || 0 }} </td>
-            </ng-container>
+                <!-- Celdas dinámicas de rechazos -->
+                <td class="text-end column-rechazos" *ngFor="let columna of columnasRechazos">
+                  {{ element.rechazos[columna] || 0 }}
+                </td>
+              </tr>
 
-            <tr mat-header-row *matHeaderRowDef="columnasDinamicas"></tr>
-            <tr mat-row *matRowDef="let row; columns: columnasDinamicas;"></tr>
-            <tr class="mat-row" *matNoDataRow>
-              <td class="mat-cell" colspan="4">No hay datos que mostrar</td>
-            </tr>
+              <!-- Fila sin datos -->
+              <tr *ngIf="data.length === 0">
+                <td colspan="4" class="text-center">No hay datos que mostrar</td>
+              </tr>
+            </tbody>
           </table>
         </div>
-        <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons
-          MatPaginatorIntl="Select page of users"></mat-paginator>
+
+
       </div>
     </div>
-  </div>
 
-</div>
+  </div>

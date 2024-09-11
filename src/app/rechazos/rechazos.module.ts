@@ -8,6 +8,9 @@ import { RechazosRoutingModule } from './rechazos-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
+import { DecimalesPipe } from '../pipes/decimales.pipe';
+import { EnterosPipe } from '../pipes/enteros.pipe';
+
 
 /* angular material */
 import { MatTableModule } from '@angular/material/table';
@@ -44,8 +47,9 @@ import { SharedModule } from '../shared/shared.module';
 @NgModule({
     declarations: [
         RechazosGeneralComponent,
-        PopupMapComponent
-        
+        PopupMapComponent,
+        DecimalesPipe,
+        EnterosPipe,
     ],
     imports: [
         CommonModule,

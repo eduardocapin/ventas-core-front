@@ -1,5 +1,6 @@
-<div class="screen">
-  <div class="d-flex flex-column gap-2 flex-xl-row justify-content-between align-items-center py-3 m-3">
+<div class="screen d-flex flex-column">
+  <div class="separador-superior"></div>
+  <div class="d-flex flex-column gap-2 flex-xl-row justify-content-between align-items-center m-3 titulo">
     <!-- titulo y icono -->
     <div class="d-flex align-items-center justify-content-start ">
       <mat-icon class="color-dark">broken_image</mat-icon>
@@ -12,19 +13,20 @@
     <!-- END Info Rechazos -->
   </div>
   <!-- TABLA -->
-  <div class="m-3">
-    <div class="d-flex align-items-center justify-content-between gap-5">
+  <div class="mt-3 mx-3 main">
+    <div class="d-flex align-items-center justify-content-between mb-3">
       <!-- buscado -->
-      <div class="input-group mb-3">
-        <input class="form-control border-end-0 border" type="search" placeholder="Buscar..." id="example-search-input">
-        <span class="input-group-append">
+      <div class="input-group" id="busqueda">
+        <input class="form-control border-end-0 border col-4" type="search" placeholder="Buscar..."
+          id="example-search-input">
+        <span class="">
           <button class="btn btn-outline-secondary bg-white border-start-0 border-bottom-0 border ms-n5" type="button">
             <i class="fa fa-search"></i>
           </button>
         </span>
       </div>
       <!-- botones y filtros -->
-      <div class="d-flex align-items-center gap-2 mb-3">
+      <div class="d-flex align-items-center gap-2">
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-color" (click)="exportar_rechazos()">Exportar</button>
           <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
@@ -51,9 +53,11 @@
         <thead>
           <tr class="">
             <!-- Checkbox Column -->
-            <th scope="col" class="text-center pe-3">
-              <input type="checkbox" (change)="masterToggle()" [checked]="selection.hasValue() && isAllSelected()"
-                [indeterminate]="selection.hasValue() && !isAllSelected()" />
+            <th scope="col" class="text-center p-2">
+              <div class=" d-flex align-items-center justify-self-center">
+                <input type="checkbox" (change)="masterToggle()" [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()" />
+              </div>
             </th>
             <!-- Estado Column -->
             <th scope="col" class="text-center cursor" (click)="sortData('estado')">
@@ -126,7 +130,9 @@
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Acción Correctora Column -->
-            <th scope="col" class="text-center">Convertir en oportunidad (% ó € + Promo)</th>
+            <th scope="col" class="text-center header-correctora">Convertir en oportunidad (% ó € + Promo)</th>
+            <!-- Acción Correctora Enviar Column -->
+            <th scope="col" class="text-center header-correctora"></th>
             <!-- Propuesta Agente Column -->
             <th scope="col" (click)="sortData('propuesta_agente')" class="cursor">
               Propuesta Agente
@@ -149,9 +155,11 @@
           <ng-container *ngFor="let row of dataSource">
             <tr>
               <!-- Checkbox Column -->
-              <td class="text-center pe-3">
-                <input type="checkbox" (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
-                  [checked]="selection.isSelected(row)" />
+              <td class="text-center px-2">
+                <div class=" d-flex align-items-center justify-self-center">
+                  <input type="checkbox" (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
+                    [checked]="selection.isSelected(row)" />
+                </div>
               </td>
               <!-- Estado Column -->
               <td class="text-center">
@@ -159,7 +167,7 @@
                   <img [src]="getOptionImage(row.status_id)" alt="{{ getEstado(row.status_id) }} Image"
                     class="option-image">
                   <select class="form-select form-select-sm select_estado" [(ngModel)]="row.status_id"
-                    (change)="actualizarEstados(row)">
+                    (ngModelChange)="actualizarEstados(row)">
                     <option *ngFor="let estado of estados" [value]="estado.id">
                       {{ estado.name }}
                     </option>
@@ -187,13 +195,13 @@
                 </select>
               </td>
               <!-- Precio Column -->
-              <td class="text-end row_precio_producto centrado_column">{{ row.pvp }} €</td>
+              <td class="text-end row_precio_producto centrado_column">{{ row.pvp | decimales }} €</td>
               <!-- Promo Propia Column -->
               <td class="text-center centrado_column">
                 <i *ngIf="row.has_own_promo" class="promo-icon" [ngbTooltip]="row.own_promo">P</i>
               </td>
               <!-- Competidor Column -->
-              <td class="text-end row_precio_competidor centrado_column">{{ row.pvp_competitor }} €</td>
+              <td class="text-end row_precio_competidor centrado_column">{{ row.pvp_competitor | decimales  }} €</td>
               <!-- Promo Competidor Column -->
               <td class="text-center centrado_column">
                 <i *ngIf="row.has_competitor_promo" class="promo-icon" [ngbTooltip]="row.competitor_promo">P</i>
@@ -224,6 +232,12 @@
                   <input type="text" class="form-control form-control-sm row_accion_correctora text-success"
                     [(ngModel)]="row.corrective_action_text" maxlength="50" placeholder="Promoción"
                     [ngbTooltip]="row.corrective_action_text" />
+                </div>
+              </td>
+              <!-- Acción Correctora Enviar Column -->
+              <td class="pe-2 fondo_accionCorrectora">
+                <div class=" d-flex align-items-center justify-self-center">
+                  <input type="checkbox" (click)="$event.stopPropagation()" [checked]="row.corrective_action_sent" />
                 </div>
               </td>
               <!-- Propuesta Agente Column -->

@@ -32,5 +32,9 @@ export interface IRechazo {
     interest_date:string;
     latitude: number;
     longitude: number;
+    last_rejection_date: Date;
+    corrective_action_status_id: number;
+    corrective_action_status: string;
+    corrective_action_sent: boolean;
     deleted:boolean;
 }

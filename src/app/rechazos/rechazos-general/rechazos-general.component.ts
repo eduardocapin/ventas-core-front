@@ -199,22 +199,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     return numSelected === numRows;
   }
 
-  getOptionImage(id: number): string {
-    const basePath = 'assets/icon/';
-    switch (id) {
-      case 1:
-        return `${basePath}rechazado.svg`;
-      case 2:
-        return `${basePath}no_aplica.svg`;
-      case 3:
-        return `${basePath}vendido.svg`;
-      case 4:
-        return `${basePath}en_proceso.svg`;
-      case 5:
-        return `${basePath}pendiente.svg`;
-      default:
-        return '';
-    }
+  getOptionImage(statusId: number): string {
+    return `assets/icon/estado_${statusId}.svg`;
   }
 
   masterToggle() {
