@@ -48,8 +48,6 @@ import { SharedModule } from '../shared/shared.module';
     declarations: [
         RechazosGeneralComponent,
         PopupMapComponent,
-        DecimalesPipe,
-        EnterosPipe,
     ],
     imports: [
         CommonModule,

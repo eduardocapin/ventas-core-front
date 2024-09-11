@@ -16,8 +16,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
-import { DecimalesPipe } from '../pipes/decimales.pipe';
-import { EnterosPipe } from '../pipes/enteros.pipe';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { GraficaClientesComponent } from '../components/grafica-clientes/grafica-clientes.component';
 import { GraficaMotivosComponent } from '../components/grafica-motivos/grafica-motivos.component';
@@ -38,8 +36,6 @@ import { SharedModule } from '../shared/shared.module';
     GraficaMotivosComponent,
     GraficaPedidosFamiliasProductosComponent,
     GraficaPedidosMesComponent,
-    DecimalesPipe,
-    EnterosPipe,
     GraficaPedidosSegmentacion1Component,
     GraficaPedidosSegmentacion2Component,
     GraficaPedidosSegmentacion3Component,
