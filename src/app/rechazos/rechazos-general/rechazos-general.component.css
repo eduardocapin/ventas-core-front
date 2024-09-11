@@ -1,6 +1,9 @@
-.screen {
+.screen{
   background-color: #f3f4f6;
-  padding-top: 64px;
+}
+
+.separador-superior{
+  height: 64px;
 }
 
 .page-heading {
@@ -9,20 +12,26 @@
   font-weight: 300;
 }
 
+#busqueda {
+  width: 300px;
+}
+
 .color-dark {
   color: #6D6D6D;
 }
-
+.main{
+  height: 50%;
+}
 .table-responsive {
-  margin: 0 auto;
-  max-height: 500px;
+  height: calc(100vh - 227px)
 }
 
 table {
   font-size: 12px;
+  overflow: visible;
 }
 
-td{
+td {
   vertical-align: middle;
 }
 
@@ -41,7 +50,8 @@ th {
   color: #3F51B5;
 
 }
-.cursor{
+
+.cursor {
   cursor: pointer;
 }
 
@@ -50,7 +60,8 @@ th {
   background-color: #3F51B5;
   color: white;
 }
-.icon_color{
+
+.icon_color {
   color: #3F51B5;
 }
 
@@ -174,17 +185,20 @@ th {
 .select_estado {
   min-width: 120px;
 }
-.row_poblacion{
+
+.row_poblacion {
   min-width: 80px;
 }
-.row_cliente{
+
+.row_cliente {
   min-width: 160px;
 }
-.row_subfamilia{
+
+.row_subfamilia {
   min-width: 84px;
 }
 
-.row_producto{
+.row_producto {
   min-width: 160px;
   max-width: 160px;
   white-space: nowrap;
@@ -197,7 +211,9 @@ th {
 .select_rechazo {
   width: 115px;
 }
-.row_precio_producto, .row_precio_competidor{
+
+.row_precio_producto,
+.row_precio_competidor {
   min-width: 80px;
 }
 
@@ -316,7 +332,7 @@ th {
 }
 
 /* color de la columna accion correctora */
-.fondo_azul{
+.fondo_azul {
   background-color: #4e62d1 !important;
   /* Color de fondo */
   color: white;
@@ -331,11 +347,11 @@ th {
 /* Para navegadores webkit (Chrome, Safari, etc.) */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* Para Firefox */
 input[type="number"] {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
