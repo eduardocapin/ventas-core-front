@@ -60,62 +60,62 @@
               </div>
             </th>
             <!-- Estado Column -->
-            <th scope="col" class="text-center cursor" (click)="sortData('estado')">
+            <th scope="col" class="text-center cursor" (click)="sortData('status_id')">
               Estado
-              <i *ngIf="currentSortColumn === 'estado'" class="bi"
+              <i *ngIf="currentSortColumn === 'status_id'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Primer Rechazo Fecha Column -->
-            <th scope="col" class="cursor" (click)="sortData('fecha')">
+            <th scope="col" class="cursor" (click)="sortData('rejection_date')">
               Fecha
-              <i *ngIf="currentSortColumn === 'poblacion'" class="bi"
+              <i *ngIf="currentSortColumn === 'rejection_date'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Población Column -->
-            <th scope="col" class="row_poblacion cursor" (click)="sortData('poblacion')">
+            <th scope="col" class="row_poblacion cursor" (click)="sortData('city')">
               Población
-              <i *ngIf="currentSortColumn === 'poblacion'" class="bi"
+              <i *ngIf="currentSortColumn === 'city'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Cliente Column -->
-            <th scope="col" (click)="sortData('cliente')" class="cursor">
+            <th scope="col" (click)="sortData('customer_name')" class="cursor">
               Cliente
-              <i *ngIf="currentSortColumn === 'cliente'" class="bi"
+              <i *ngIf="currentSortColumn === 'customer_name'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Subfamilia Column -->
-            <th scope="col" (click)="sortData('nombre_subfamilia')" class="row_subfamilia cursor">
+            <th scope="col" (click)="sortData('subfamily')" class="row_subfamilia cursor">
               Subfamilia
-              <i *ngIf="currentSortColumn === 'subfamilia'" class="bi"
+              <i *ngIf="currentSortColumn === 'subfamily'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Producto Column -->
-            <th scope="col" (click)="sortData('producto')" class="cursor">
+            <th scope="col" (click)="sortData('product')" class="cursor">
               Producto
-              <i *ngIf="currentSortColumn === 'producto'" class="bi"
+              <i *ngIf="currentSortColumn === 'product'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Rechazo Column -->
-            <th scope="col" (click)="sortData('tipo_rechazo')" class="cursor">
+            <th scope="col" (click)="sortData('reason_rejection_id')" class="cursor">
               Rechazo
-              <i *ngIf="currentSortColumn === 'tipo_rechazo'" class="bi"
+              <i *ngIf="currentSortColumn === 'reason_rejection_id'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Precio Column -->
-            <th scope="col" class="text-end cursor" (click)="sortData('precio_producto')">
+            <th scope="col" class="text-end cursor" (click)="sortData('pvp')">
               Mi Precio
-              <i *ngIf="currentSortColumn === 'precio_producto'" class="bi"
+              <i *ngIf="currentSortColumn === 'pvp'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Promo Propia Column -->
-            <th scope="col" class="text-center cursor" (click)="sortData('promo_propia')">
-              <i *ngIf="currentSortColumn === 'promo_propia'" class="bi"
+            <th scope="col" class="text-center cursor" (click)="sortData('own_promo')">
+              <i *ngIf="currentSortColumn === 'own_promo'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Competidor Column -->
-            <th scope="col" class="text-end cursor" (click)="sortData('precio_competidor')">
+            <th scope="col" class="text-end cursor" (click)="sortData('pvp_competitor')">
               Su Precio
-              <i *ngIf="currentSortColumn === 'precio_competidor'" class="bi"
+              <i *ngIf="currentSortColumn === 'pvp_competitor'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Promo Competidor Column -->
@@ -124,9 +124,9 @@
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Competidor Column -->
-            <th scope="col" (click)="sortData('competidor')" class="cursor">
+            <th scope="col" (click)="sortData('competitor_id')" class="cursor">
               Competidor
-              <i *ngIf="currentSortColumn === 'competidor'" class="bi"
+              <i *ngIf="currentSortColumn === 'competitor_id'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Acción Correctora Column -->
@@ -134,14 +134,14 @@
             <!-- Acción Correctora Enviar Column -->
             <th scope="col" class="text-center header-correctora"></th>
             <!-- Propuesta Agente Column -->
-            <th scope="col" (click)="sortData('propuesta_agente')" class="cursor">
+            <th scope="col" (click)="sortData('salesman_proposal')" class="cursor">
               Propuesta Agente
-              <i *ngIf="currentSortColumn === 'propuesta_agente'" class="bi"
+              <i *ngIf="currentSortColumn === 'salesman_proposal'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Fecha Interés Column -->
-            <th scope="col" class="text-success text-end cursor" (click)="sortData('fecha_interes')">
-              <i *ngIf="currentSortColumn === 'fecha_interes'" class="bi"
+            <th scope="col" class="text-success text-end cursor" (click)="sortData('interest_date')">
+              <i *ngIf="currentSortColumn === 'interest_date'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
               Interés
             </th>

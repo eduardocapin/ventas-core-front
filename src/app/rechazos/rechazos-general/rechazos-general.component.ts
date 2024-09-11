@@ -320,21 +320,27 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   sortDirection: string = 'asc';
   currentSortColumn: string = '';
   sortData(column: string) {
-    const isAsc =
-      this.currentSortColumn === column && this.sortDirection === 'asc';
-
-    // Ordenar la fuente de datos
-    // this.dataSource.sort((a, b) => {        //Nombres de variables legibles por favor.
-    //   const compareA = a[column];           //Cambiar esto para que funcione la ordenación
-    //   const compareB = b[column];
-
-    //   if (typeof compareA === 'string' && typeof compareB === 'string') {
-    //     return compareA.localeCompare(compareB) * (isAsc ? 1 : -1);
-    //   } else {
-    //     return (compareA - compareB) * (isAsc ? 1 : -1);
-    //   }
-    // });
-
+    const isAsc = this.currentSortColumn === column && this.sortDirection === 'asc';
+  
+    // Ordenar la fuente de datos dependiendo del tipo de dato
+    this.dataSource.sort((a, b) => {
+      const compareA = a[this.currentSortColumn as keyof IRechazo];
+      const compareB = b[this.currentSortColumn as keyof IRechazo];
+  
+      // Verificar si los valores son de tipo cadena (string)
+      if (typeof compareA === 'string' && typeof compareB === 'string') {
+        return compareA.localeCompare(compareB) * (isAsc ? 1 : -1);
+      } 
+      
+      // Si son números, simplemente restar
+      if (typeof compareA === 'number' && typeof compareB === 'number') {
+        return (compareA - compareB) * (isAsc ? 1 : -1);
+      }
+  
+      // Agregar soporte para otras comparaciones según sea necesario
+      return 0;
+    });
+  
     // Actualizar la columna actual y alternar la dirección
     this.currentSortColumn = column;
     this.sortDirection = isAsc ? 'desc' : 'asc';
