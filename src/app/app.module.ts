@@ -40,7 +40,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       timeOut: 3000,
       positionClass: 'toast-top-right', // O ajusta según tus preferencias
       preventDuplicates: true,
-  })
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

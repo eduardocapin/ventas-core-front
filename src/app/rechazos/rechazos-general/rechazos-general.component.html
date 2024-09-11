@@ -195,13 +195,13 @@
                 </select>
               </td>
               <!-- Precio Column -->
-              <td class="text-end row_precio_producto centrado_column">{{ row.pvp }} €</td>
+              <td class="text-end row_precio_producto centrado_column">{{ row.pvp | decimales }} €</td>
               <!-- Promo Propia Column -->
               <td class="text-center centrado_column">
                 <i *ngIf="row.has_own_promo" class="promo-icon" [ngbTooltip]="row.own_promo">P</i>
               </td>
               <!-- Competidor Column -->
-              <td class="text-end row_precio_competidor centrado_column">{{ row.pvp_competitor }} €</td>
+              <td class="text-end row_precio_competidor centrado_column">{{ row.pvp_competitor | decimales  }} €</td>
               <!-- Promo Competidor Column -->
               <td class="text-center centrado_column">
                 <i *ngIf="row.has_competitor_promo" class="promo-icon" [ngbTooltip]="row.competitor_promo">P</i>
