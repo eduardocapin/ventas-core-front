@@ -123,6 +123,11 @@ ng-select {
   width: 40px;
 }
 
+.spinner-border{
+  color: #3c27c5;
+  font-size: large;
+}
+
 .row_column_sm {
   width: 100px;
 }
