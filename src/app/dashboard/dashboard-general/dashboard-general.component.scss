@@ -80,25 +80,52 @@ span.font-dashboard{
 
 //Estilos tabla
 
+.table-responsive {
+  margin: 0 auto;
+  max-height: 500px;
+}
 
 table {
-  width: 100%;
+  font-size: 12px;
 }
 
-.table-container {
-  overflow: auto;
-  max-height: 100%;
-  max-width: 100%;
+td{
+  vertical-align: middle;
 }
-.mat-column-nombre {
-  min-width: 400px;
-  padding: 0;
+
+th {
+  color: #3F51B5;
+
 }
-.mat-column-rechazos {
+
+/* Fijar las columnas a la izquierda */
+.sticky-left {
+  position: sticky;
+  left: 0;
+  background: white;
+  z-index: 1; /* Para que se superpongan correctamente al hacer scroll */
+}
+
+/* Ancho para la columna 'nombre' */
+.sticky-left:first-child {
+  min-width: 400px; 
+
+}
+
+/* Ancho para la columna 'total' */
+.sticky-left:nth-child(2) {
+  min-width: 180px; 
+  left: 400px;
+  padding-right: 10px;
+
+}
+
+
+.column-rechazos {
   min-width: 180px;
-  padding: 0;
 }
 
-.mdc-data-table__cell{
-  padding: 0;
+#tablaActiva{
+  min-width: 200px; 
+  max-width: 300%; 
 }
