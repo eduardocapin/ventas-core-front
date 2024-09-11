@@ -24,6 +24,7 @@
     "@auth0/angular-jwt": "^5.2.0",
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@ng-bootstrap/ng-bootstrap": "^15.1.2",
+    "@ng-select/ng-select": "^11.1.2",
     "@popperjs/core": "^2.11.8",
     "@types/geojson": "^7946.0.14",
     "@types/maplibre-gl": "^1.14.0",

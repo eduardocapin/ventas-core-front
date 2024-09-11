@@ -4,6 +4,14 @@
 import { NgModule } from '@angular/core';
 import { ClientRoutingModule } from './clients-routing.module';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { FormsModule } from '@angular/forms';
+/* bootstrap */
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -15,14 +23,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule} from '@angular/material/tooltip';
 import { MatButtonModule} from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
-import { FormsModule } from '@angular/forms';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { GoogleMapsModule } from '@angular/google-maps';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 /**
     * IMPORT DE COMPONENTES
@@ -66,7 +71,9 @@ import { ClientContactListComponent } from './clients-general/client-contact-lis
         GoogleMapsModule,
         MatSnackBarModule,
         MatProgressSpinnerModule,
-
+        NgbTooltipModule,
+        NgSelectModule,
+        NgbDatepickerModule
     ],
     providers: [],
     bootstrap: [ClientsGeneralComponent]

@@ -1,40 +1,77 @@
-<mat-drawer-container class="screen" autosize>
+<div class="screen">
   <div class="">
     <div class="d-flex justify-content-between m-3 py-3">
       <h1 class="mb-0">
         <img class="icon-title" src="assets/images/iconos/clientes-icon-dark.svg" alt="Clientes" matListItemIcon />
         <span class=" mb-0 ps-2 color-dark page-heading">Clientes</span>
       </h1>
-      <div class="boton-filtro d-flex gap-2 align-self-start me-3">
-        <button matTooltip="Ver en Mapa" class="btn map-button d-flex justify-content-center align-items-center gap-2"
-          (click)="verEnMapa()">
-          <mat-icon>location_on</mat-icon>
-        </button>
-        <button matTooltip="Ver filtros" type="button" class="btn btn-secondary pb-0 pl-0" (click)="drawer.toggle()">
-          <mat-icon class="p-0 m-0">filter_list_alt</mat-icon>
-        </button>
-      </div>
     </div>
-
-
+    
+    
     <div class="m-3">
+      <div class="d-flex align-items-center justify-content-between gap-5">
+        <!-- buscador -->
+        <div class="input-group mb-3">
+          <input class="form-control border-end-0 border" type="search" placeholder="Buscar..." id="example-search-input">
+          <span class="input-group-append">
+            <button class="btn btn-outline-secondary bg-white border-start-0 border-bottom-0 border ms-n5" type="button">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
+        </div>
+        <!-- botones de  filtros y mapa -->
+        <div class="boton-filtro d-flex gap-2 align-self-start me-3">
+          <button ngbTooltip="Ver en Mapa" class="btn btn-color d-flex justify-content-center align-items-center gap-2"
+            (click)="verEnMapa()">
+            <mat-icon>location_on</mat-icon>
+          </button>
+          <button ngbTooltip="Ver filtros" class="btn btn-secondary d-flex align-items-center" data-bs-toggle="modal"
+          data-bs-target="#filtroModal">
+            <mat-icon class="p-0 m-0">filter_list_alt</mat-icon>
+          </button>
+        </div>
+        
+      </div>
       <!-- tabla -->
-      <div class="table-responsive">
+      <div class="table-responsive mb-2">
         <table class="table table-hover">
           <!-- Checkbox Column -->
           <thead>
             <tr>
-              <th class="th-checkbox text-center">
+              <th class="th-checkbox text-center row_column_checkbox">
                 <input type="checkbox" class="form-check-input" (change)="masterToggle()" [checked]="selection.hasValue() && isAllSelected()"
                   [indeterminate]="selection.hasValue() && !isAllSelected()">
               </th>
-              <th scope="col">Código</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Provincia</th>
-              <th scope="col">Población</th>
-              <th scope="col">C.P.</th>
-              <th scope="col">Dirección</th>
-              <th scope="col" class="text-center">Ficha</th>
+              <th scope="col" class="row_column_sm cursor"(click)="sortData('customer_ERP_id')">Código 
+                <i *ngIf="sortColumn === 'customer_ERP_id'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              </th>
+              <th scope="col" class="cursor" (click)="sortData('name')">
+                Nombre
+                <i *ngIf="sortColumn === 'name'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              </th>
+              <th scope="col" class="row_column_md cursor" (click)="sortData('province')">
+                Provincia
+                <i *ngIf="sortColumn === 'province'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              </th>
+              <th scope="col" class="row_column_md cursor" (click)="sortData('city')" >
+                Población
+                <i *ngIf="sortColumn === 'city'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              </th>
+              <th scope="col" class="row_column_sm cursor" (click)="sortData('pc')" >
+                C.P.
+                <i *ngIf="sortColumn === 'pc'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              </th>
+              <th scope="col" class="cursor" (click)="sortData('address')">
+                Dirección
+                <i *ngIf="sortColumn === 'address'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+              </th>
+              <th scope="col" class="text-center row_column_sm">Ficha</th>
             </tr>
           </thead>
           <tbody>
@@ -60,7 +97,7 @@
                 </td>
                 <td class="text-center">
                   <button class="btn btn-link p-0" (click)="editClient(row.id)" title="Ficha">
-                    <i class="bi bi-eye"></i>
+                    <i class="bi bi-eye-fill fs-5 icon_color cursor"></i>
                   </button>
                 </td>
               </tr>
@@ -107,88 +144,131 @@
         </ul>
       </nav>
     </div>
-
-
-
   </div>
-  <mat-drawer #drawer id="drawer" class="py-5 filtro-container d-flex flex-column container" mode="over" position="end">
-    <div class="p-3 pt-0 bg-blanco">
-      <div class="bg-blanco sticky py-3">
-        <div class="d-flex align-items-center my-3 ">
-          <img src="../../../assets/images/iconos/filtros-icon.svg" alt="" width="32" height="32" alt="filtro"
-            class="me-2 icono-svg">
-          <h2 class="my-0">Filtro de clientes</h2>
-        </div>
-        <div class="col-12 justify-content-end gap-2 d-flex mt-2">
-          <button mat-raised-button color="light" type="submit" (click)="applyComplexFilter()">Filtrar</button>
-          <button mat-raised-button color="light" type="button" (click)="filtroReset()" mat-button>Limpiar</button>
-          <button mat-raised-button color="light" type="button" (click)="drawer.toggle()" mat-button>Cancelar</button>
-        </div>
-      </div>
-      <form [formGroup]="form" (ngSubmit)="applyComplexFilter()" class="col-12 d-flex flex-column">
-        <div class="d-flex flex-column">
-          <div>
-            <mat-form-field subscriptSizing="dynamic" class="col-12 mb-2">
-              <mat-label>Periodo de ventas</mat-label>
-              <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                <input formControlName="start" matStartDate placeholder="Desde">
-                <input formControlName="end" matEndDate placeholder="Hasta">
-              </mat-date-range-input>
-              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-date-range-picker #picker></mat-date-range-picker>
-            </mat-form-field>
+  <!-- apartado de filtros -->
+  <div class="modal fade" tabindex="-1" id="filtroModal" aria-labelledby="filtroModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-slide-right">
+      <div class="modal-content">
+        <div class="bg-blanco sticky">
+          <div class="modal-header d-flex align-items-center gap-2 mb-2">
+            <img src="../../../assets/images/iconos/filtros-icon.svg" alt="" width="32" height="32" alt="filtro"
+              class="icono-svg">
+            <h2 class="my-0">Filtro de clientes</h2>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="form" (ngSubmit)="applyComplexFilter()" class="d-flex flex-column gap-3">
+              <div class="d-flex flex-column gap-3">
+                <div class="col-12 justify-content-end gap-2 d-flex mt-2">
+                  <button class="btn btn-color" type="submit" (click)="applyComplexFilter()">Filtrar</button>
+                  <button type="button" class="btn btn-secondary" (click)="filtroReset()">Limpiar</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
+                </div>
+                <div class="mb-2 d-flex flex-column gap-3">
+                  <div class="mb-2">
+                    <label for="start">Periodo de ventas</label>
+                    <div class="input-group">
+                      <input type="date" class="form-control" formControlName="start" id="start" placeholder="Desde">
+                      <input type="date" class="form-control" formControlName="end" id="end" placeholder="Hasta">
+                    </div>
+                  </div>
+                  <div *ngIf="s1.length > 0" class="mb-2">
+                    <label>{{s1[0].name}}</label>
+                    <ng-select 
+                      [items]="s1"
+                      bindLabel="segmentation_value"
+                      bindValue="segmentation_value_id"
+                      formControlName="segmentacion1FilterControl"
+                      [multiple]="true" 
+                      class="form-control p-0"
+                      placeholder="Seleccione una o más opciones">
+                    </ng-select>
+                  </div>
+                  <div *ngIf="s2.length > 0" class="mb-2">
+                    <label>{{s2[0].name}}</label>
+                    <ng-select 
+                      [items]="s2"
+                      bindLabel="segmentation_value"
+                      bindValue="segmentation_value_id"
+                      formControlName="segmentacion2FilterControl"
+                      [multiple]="true" 
+                      class="form-control p-0"
+                      placeholder="Seleccione una o más opciones">
+                    </ng-select>
+                  </div>
+                  
+                  <div *ngIf="s3.length > 0" class="mb-2">
+                    <label>{{s3[0].name}}</label>
+                    <ng-select 
+                      [items]="s3"
+                      bindLabel="segmentation_value"
+                      bindValue="segmentation_value_id"
+                      formControlName="segmentacion3FilterControl"
+                      [multiple]="true" 
+                      class="form-control p-0"
+                      placeholder="Seleccione una o más opciones">
+                    </ng-select>
+                  </div>
+                  
+                  <div class="mb-2">
+                    <label for="cliente">Cliente</label>
+                    <input type="text" class="form-control" formControlName="cliente" placeholder="Introduzca el nombre del cliente">
+                  </div>
+                  
+                  <div class="mb-2">
+                    <label for="provincia">Provincia</label>
+                    <ng-select 
+                      [items]="provinciaList"
+                      bindLabel="name"
+                      [multiple]="true" 
+                      formControlName="provinciaFilterControl"
+                      class="form-control p-0"
+                      placeholder="Seleccione una o más provincias">
+                    </ng-select>
+                  </div>
+                  
+                  <div class="mb-2">
+                    <label for="poblacion">Población</label>
+                    <ng-select 
+                      [items]="poblacionList"
+                      bindLabel="name"
+                      [multiple]="true"
+                      formControlName="poblacionFilterControl"
+                      class="form-control p-0"
+                      placeholder="Seleccione una o más poblaciones">
+                    </ng-select>
+                  </div>
+                  
+                  <div class="mb-2">
+                    <label for="agente">Vendedor</label>
+                    <ng-select 
+                      [items]="agenteList"
+                      bindLabel="name"
+                      bindValue="id"
+                      [multiple]="true"
+                      formControlName="agenteFilterControl"
+                      class="form-control p-0"
+                      placeholder="Seleccione uno o más vendedores">
+                    </ng-select>
+                  </div>
+                  
+                  <div class="mb-2">
+                    <label for="familia">Familia</label>
+                    <ng-select 
+                      [items]="familiaList"
+                      bindLabel="name"  
+                      [multiple]="true"
+                      formControlName="familiaFilterControl"
+                      class="form-control p-0"
+                      placeholder="Seleccione una o más familias">
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </form>
 
-            <mat-form-field *ngIf="s1.length>0" subscriptSizing="dynamic" class="mb-2 col-12">
-              <mat-label>{{s1[0].name}}</mat-label>
-              <mat-select formControlName="segmentacion1FilterControl" multiple>
-                <mat-option *ngFor="let s of s1" [value]="s.segmentation_value_id">{{s.segmentation_value}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="s2.length>0" subscriptSizing="dynamic" class="mb-2 col-12">
-              <mat-label>{{s2[0].name}}</mat-label>
-              <mat-select formControlName="segmentacion2FilterControl" multiple>
-                <mat-option *ngFor="let s of s2" [value]="s.segmentation_value_id">{{s.segmentation_value}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="s3.length>0" subscriptSizing="dynamic" class="mb-2 col-12">
-              <mat-label>{{s3[0].name}}</mat-label>
-              <mat-select formControlName="segmentacion3FilterControl" multiple>
-                <mat-option *ngFor="let s of s3" [value]="s.segmentation_value_id">{{s.segmentation_value}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field subscriptSizing="dynamic" class="mb-2 col-12" matTooltip="Introduzca el nombre del cliente">
-              <mat-label>Cliente</mat-label>
-              <input formControlName="cliente" matInput>
-            </mat-form-field>
-
-            <mat-form-field subscriptSizing="dynamic" class="mb-2 col-12">
-              <mat-label>Provincia</mat-label>
-              <mat-select formControlName="provinciaFilterControl" multiple>
-                <mat-option *ngFor="let name of provinciaList" [value]="name">{{name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field subscriptSizing="dynamic" class="mb-2 col-12">
-              <mat-label>Población</mat-label>
-              <mat-select formControlName="poblacionFilterControl" multiple>
-                <mat-option *ngFor="let name of poblacionList" [value]="name">{{name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field subscriptSizing="dynamic" class="mb-2 col-12">
-              <mat-label>Vendedor</mat-label>
-              <mat-select formControlName="agenteFilterControl" multiple>
-                <mat-option *ngFor="let agente of agenteList" [value]="agente.id">{{agente.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field subscriptSizing="dynamic" class="mb-2 col-12">
-              <mat-label>Familia</mat-label>
-              <mat-select formControlName="familiaFilterControl" multiple>
-                <mat-option *ngFor="let familia of familiaList" [value]="familia">{{familia}}</mat-option>
-              </mat-select>
-            </mat-form-field>
           </div>
         </div>
-      </form>
+      </div>
     </div>
-  </mat-drawer>
-</mat-drawer-container>
+  </div>
+</div>

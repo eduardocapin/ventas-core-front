@@ -1,9 +1,10 @@
 .screen {
+  min-height: 100vh;
   background-color: #f3f4f6;
-  padding-top: 64px;
+  padding-top: 60px;
 }
 
-.page-heading {
+.page-heading{
   text-transform: uppercase;
   letter-spacing: .2em;
   font-weight: 300;
@@ -13,17 +14,9 @@
   color: #6D6D6D;
 }
 
-.table-responsive {
-  margin: 0 auto;
-  max-height: 500px;
-}
-
 table {
+  width: 100%;
   font-size: 12px;
-}
-
-td{
-  vertical-align: middle;
 }
 
 .char-count {
@@ -46,7 +39,7 @@ th {
 }
 
 
-.btn-color {
+.btn-color{
   background-color: #3F51B5;
   color: white;
 }
@@ -57,12 +50,11 @@ th {
 .custom-bold {
   font-weight: 500;
 }
-
-.text-muted {
+.text-muted{
   font-size: 12px !important;
 }
 
-.text-rech {
+.text-rech{
   color: #87cefa;
 }
 
@@ -72,6 +64,10 @@ th {
   background-color: white;
   z-index: 10;
 }
+
+
+
+
 
 .sticky-end {
   position: sticky;
@@ -93,11 +89,9 @@ th {
 
 
 .option-image {
-  width: 20px;
-  /* Ajusta según el tamaño deseado */
+  width: 20px; /* Ajusta según el tamaño deseado */
   height: auto;
-  vertical-align: middle;
-  /* Alinea verticalmente con el texto */
+  vertical-align: middle; /* Alinea verticalmente con el texto */
 
 }
 
@@ -130,7 +124,7 @@ th {
 
 /* movil */
 @media (max-width: 991px) {
-  .screen {
+  .screen{
     padding-top: 48px;
   }
 }
@@ -145,7 +139,7 @@ th {
   justify-content: center;
   width: 24px;
   height: 24px;
-
+ 
 }
 
 
@@ -153,25 +147,26 @@ th {
 .ms-n5 {
   margin-left: -40px;
 }
-
 /* fin de barra de busqueda */
 .text-center {
   text-align: center;
 }
 
-.icono-svg {
+.icono-svg{
   color: #5c5c5c;
 }
-
-.accion_correctora_precio {
-  width: 52px;
+.accion_correctora_precio{
+  width: 35px;
 }
 
-.accion_correctora_simbolo {
+.accion_correctora_simbolo{
   width: 65px;
 }
+table{
+  font-size: 12px;
+}
 
-.select_estado {
+.select_estado{
   min-width: 120px;
 }
 .row_poblacion{
@@ -187,53 +182,49 @@ th {
 .row_producto{
   min-width: 160px;
   max-width: 160px;
-  white-space: nowrap;
-  /* Evita el salto de línea */
-  overflow: hidden;
-  /* Oculta el desbordamiento */
+  white-space: nowrap; /* Evita el salto de línea */
+  overflow: hidden; /* Oculta el desbordamiento */
   text-overflow: ellipsis;
 }
-
-.select_rechazo {
+.select_rechazo{
   width: 115px;
 }
 .row_precio_producto, .row_precio_competidor{
   min-width: 80px;
 }
 
-.row_select_competidor {
+.row_select_competidor{
   width: 120px;
 }
 
-.row_accion_correctora {
+.row_accion_correctora{
   min-width: 160px;
 }
-
-.row_propuesta_agente {
+.row_propuesta_agente{
   min-width: 150px;
   max-width: 150px;
-  white-space: nowrap;
-  /* Evita el salto de línea */
-  overflow: hidden;
-  /* Oculta el desbordamiento */
+  white-space: nowrap; /* Evita el salto de línea */
+  overflow: hidden; /* Oculta el desbordamiento */
   text-overflow: ellipsis;
 }
 
-.row_fecha_interes {
+.row_fecha_interes{
   min-width: 85px;
   text-align: end;
 }
 
+.table-responsive {
+  max-height: 600px; /* Ajusta según sea necesario */
+  max-width: 100%; /* Asegura que el contenedor no exceda el ancho de su contenedor padre */
+  margin: 0 auto; /* Centra la tabla en el contenedor */
+}
+
 .table thead th {
-  position: -webkit-sticky;
-  /* Para Safari */
+  position: -webkit-sticky; /* Para Safari */
   position: sticky;
-  top: 0;
-  /* Fija el encabezado en la parte superior */
-  background-color: #fff;
-  /* Asegúrate de que el fondo sea blanco o del color que desees */
-  z-index: 1;
-  /* Asegúrate de que esté sobre el contenido de la tabla */
+  top: 0; /* Fija el encabezado en la parte superior */
+  background-color: #fff; /* Asegúrate de que el fondo sea blanco o del color que desees */
+  z-index: 1; /* Asegúrate de que esté sobre el contenido de la tabla */
 }
 
 /* Estilo para la columna fija de los checkboxes */
@@ -241,10 +232,8 @@ th {
 .table-responsive table tbody td:first-child {
   position: sticky;
   left: 0;
-  z-index: 2;
-  /* Asegura que el encabezado esté sobre el contenido */
-  background-color: white;
-  /* Mantiene el fondo blanco para la columna fija */
+  z-index: 2; /* Asegura que el encabezado esté sobre el contenido */
+  background-color: white; /* Mantiene el fondo blanco para la columna fija */
 }
 
 /* Estilo para la columna fija de expand */
@@ -252,55 +241,44 @@ th {
 .table-responsive table tbody td:last-child {
   position: sticky;
   right: 0;
-  z-index: 2;
-  /* Asegura que el encabezado esté sobre el contenido */
-  background-color: white;
-  /* Mantiene el fondo blanco para la columna fija */
+  z-index: 2; /* Asegura que el encabezado esté sobre el contenido */
+  background-color: white; /* Mantiene el fondo blanco para la columna fija */
 }
 
 /* Ajustes adicionales para las celdas de datos */
 .table-responsive table tbody td:first-child {
-  z-index: 1;
-  /* Asegura que el contenido esté debajo del encabezado */
+  z-index: 1; /* Asegura que el contenido esté debajo del encabezado */
 }
 
 .table-responsive table thead th:first-child {
-  z-index: 3;
-  /* Asegura que el encabezado esté encima del contenido */
+  z-index: 3; /* Asegura que el encabezado esté encima del contenido */
 }
 
 .table-responsive table tbody td:last-child {
-  z-index: 0;
-  /* Asegura que el contenido esté debajo del encabezado */
+  z-index: 0; /* Asegura que el contenido esté debajo del encabezado */
 }
 
 .table-responsive table thead th:last-child {
-  z-index: 3;
-  /* Asegura que el encabezado esté encima del contenido */
+  z-index: 3; /* Asegura que el encabezado esté encima del contenido */
 }
 
-.form-select-sm {
+.form-select-sm{
   font-size: 12px;
 }
-
-.form-control-sm {
+.form-control-sm{
   font-size: 12px;
 }
-
 .modal-header {
   border-bottom: none;
   padding-bottom: 0;
 }
-
-.modal-body {
+.modal-body{
   padding-top: 0;
 }
-
-.modal-content {
+.modal-content{
   height: 100vh;
   padding: 8px;
 }
-
 .modal-dialog-slide-right {
   position: absolute;
   top: 0;
@@ -316,13 +294,12 @@ th {
 }
 
 /* color de la columna accion correctora */
-.fondo_azul{
-  background-color: #4e62d1 !important;
-  /* Color de fondo */
-  color: white;
+th:nth-child(13) {
+  background-color: #4e62d1 !important; /* Color de fondo */
+  color:white;
 }
 
-.fondo_accionCorrectora {
+.fondo_accionCorrectora{
   background-color: #4e62d121;
   color: white;
 }

@@ -11,13 +11,10 @@ import { ISegmentacion } from 'src/app/models/segmentacion.model';
 import { IFiltroAgente } from 'src/app/models/filtroAgente.model';
 import { Observable, timeout } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { FilterService } from 'src/app/services/filter/filter.service';
-import { DateAdapter } from '@angular/material/core';
-import { MatDrawer } from '@angular/material/sidenav';
-import { MatSort } from '@angular/material/sort';
 import { ClientContactListComponent } from './client-contact-list/client-contact-list.component';
-//import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
+import { NgbDate, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-clients-general',
@@ -36,28 +33,23 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     'address',
     'acciones',
   ];
-  dataSource: MatTableDataSource<IClient>;
+  dataSource: { data: IClient[] } = { data: [] };
   clientsList: IClient[] = [];
   cargando: boolean = false;
   selection = new SelectionModel<IClient>(true, []);
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild('drawer') drawer!: MatDrawer;
+  sortColumn: string = '';
+  sortDirection: string = 'asc';
 
   constructor(
-    private dateAdapter: DateAdapter<any>,
+
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private _clientsServices: ClientsService,
-    private _filterServices: FilterService,
     private fb: FormBuilder,
-    private paginatorIntl: MatPaginatorIntl,
-    //private toastr: ToastrService
+    private toastr: ToastrService
   ) {
-    this.configurePaginatorLabels();
     // Assign the data to the data source for the table to render
-    this.dateAdapter.setLocale('es');
     this.dataSource = new MatTableDataSource<IClient>([]);
     this.form = this.fb.group({
       cliente: [''],
@@ -79,7 +71,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   filteredPoblacion?: Observable<string[]>;
   clientesVentasList: IClientSales[] = [];
 
-  familiaList: string[] = ['Aceites', 'Aceitunas / Encurtidos', 'Adhesivos', 'Agua GLP', 'Arroces','Azucar / Chocolate','Bombones','Cafés','Camisas Hombre','Cárnicos','Cereales Desayuno','Conservas Fruta','Conservas Pescado','Conservas Vegetales','Culinarios','Embutidos CF','Ensaladas CF','Ensaladas Salteadas','Espec. Banquetes','Especias','Fiambres / Embutidos','Huevo Derivados','Jamones','Jardín / Hogar','Leche GLP','Legumbres','Miel','Motor','Pantalones Hombre','Pasta','Quesos','Sal','Salsas','Verduras','Vinagres','Zumos / Néctares','Zumos GLP'];
+  familiaList: string[] = [];
   agenteList: IFiltroAgente[] = [{id: 0,name: 'FELIPE GARCILASO RIBERA'}, {id: 1,name: 'GUSTAVO BLANCO MORENO'}, {id: 2,name: 'FMERCEDES MUÑIZ ALONSO'},{id: 4,name: 'MIRIAM ALVAREZ MAS'}];
   poblacionList: string[] = ['ALALPARDO','ALCALA DE HENARES','ALCOBENDAS','ALCORCON','ALDEA SANTILLANA','ALGETE','ARANDA DE DUERO','ARAVACA','ARGANDA DEL REY','ARROYOMOLINOS','AVILA','BELVIS DEL JARAMA','BOADILLA DEL MONTE','BOECILLO','CAMARMA DE ESTERUELAS','CAMBEO','CAMPOREAL','CERCEDA','CIEMPOZUELOS','CIFUENTES','COBEÑA','COBISA','COLLADO VILLALBA','COLMENAR DE OREJA','COLMENAR VIEJO','COMENAR VIEJO','COSLADA','DAGANZO','DON BENITO','EL CASAR','EL MOLAR','EL PLANTIO','EL TIEMBLO','EL VELLON','ESTREMERA','FUENLABRADA','FUENTE EL FRESNO','FUENTE EL SAZ','FUENTE EL SAZ DE JARAMA','FUENTE EL SAZ DEL JARAMA','GALAPAGAR','GETAFE','GUADALAJARA','GUADALIX DE LA SIERRA','GUADARRAMA','ISLA DE LA TOJA','LA CABRERA','LA VALL D´UIXO','LAS ROZAS','LEGANES','LOECHES','LOS HUEROS - VILLALBILLA','LOZOYUELA','MADRID','MAJADAHONDA','MAJADAHONDA','MANGIRON-PUENTES VIEJAS','MANZANARES DEL REAL','MANZANARES EL REAL','MATALPINO','MONDEJAR','MORALZARZAL','NAVACERRADA','NAVAGALAMELLA','NAVALAFUENTE','NULES','OLIAS DEL REY','ONDA','OTERO DE HERREROS','PELAYOS DE LA PRESA','PEZUELA DE LAS TORRES','PIOZ','POZOAMARGO','POZUELO DE ALARCON','RIVAS VACIAMADRID','ROA','S.S.REYES','SAN AGUSTIN DE GUADALIX','SAN FERNANDO DE HENARES','SAN MARTIN DE LA VEGA','SAN RAFAEL','SAN SEBASTIAN  DE LOS REYES','SANTOS DE LA HUMOSA','SESEÑA','SEVILLA LA NUEVA','SIGUENZA','SOTO DEL REAL','TOLEDO','TORREJON DE ARDOZ','TORRELAGUNA','TORREMOCHA DE JARAMA','TRES CANTOS','VALDETORRES DEL JARAMA','VALL DE UXO','VILLANUEVA DE ALCARDETE','VILLENA','ZARAGOZA','ZARZALEJO'];
   provinciaList: string[] = ['ALICANTE','AVILA','BADAJOZ','BURGOS','CANTABRIA','CASTELLON','CUENCA','GUADALAJARA','MADRID','ORENSE','PONTEVEDRA','SEGOVIA','TOLEDO','VALLADOLID','ZARAGOZA'];
@@ -128,8 +120,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    
   }
 
   editClient(id_Cliente?: number) {
@@ -145,6 +136,29 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
         
       }
     });
+  }
+
+  sortData(column: string) {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+
+    this.dataSource.data.sort((a, b) => {
+      const valueA = a[this.sortColumn as keyof IClient];
+      const valueB = b[this.sortColumn as keyof IClient];
+
+      if (valueA < valueB) {
+        return this.sortDirection === 'asc' ? -1 : 1;
+      }
+      if (valueA > valueB) {
+        return this.sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+
   }
 
   editContact(id_Cliente?: number) {
@@ -168,183 +182,69 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     if (this.range.value.start) {
       let inicial = this.range.value.start;
       auxSalesList = this.findClientesVentasFromDate(inicial);
-      let auxListp: IClient[] = [];
-      if (auxSalesList.length > 0) {
-        auxList.filter((cliente) => {
-          if (this.isClientInClientSalesList(cliente, auxSalesList)) {
-            auxListp.push(cliente);
-          }
-        });
-      }
-      auxList = auxListp;
+      auxList = auxList.filter(cliente => this.isClientInClientSalesList(cliente, auxSalesList));
     }
 
     if (this.range.value.end) {
       let final = this.range.value.end;
       auxSalesList = this.findClientesVentasToDate(final);
-      let auxListp: IClient[] = [];
-      if (auxSalesList.length > 0) {
-        auxList.filter((cliente) => {
-          if (this.isClientInClientSalesList(cliente, auxSalesList)) {
-            auxListp.push(cliente);
-          }
-        });
-      }
-      auxList = auxListp;
+      auxList = auxList.filter(cliente => this.isClientInClientSalesList(cliente, auxSalesList));
     }
 
     // Aplicamos el filtro Segmentacion 1
-    if (
-      this.form.value.segmentacion1FilterControl != null &&
-      this.form.value.segmentacion1FilterControl.length > 0
-    ) {
-      let auxListp: IClient[] = [];
-      console.log(this.form.value.segmentacion1FilterControl);
-      auxList.filter((cliente) => {
-        if (
-          this.form.value.segmentacion1FilterControl.indexOf(
-            cliente.segmentation_1
-          ) !== -1
-        ) {
-          auxListp.push(cliente);
-        }
-      });
-      auxList = auxListp;
+    if (this.form.value.segmentacion1FilterControl?.length) {
+      auxList = auxList.filter(cliente => 
+        this.form.value.segmentacion1FilterControl.includes(cliente.segmentation_1)
+      );
     }
     // Aplicamos el filtro Segmentacion 2
-    if (
-      this.form.value.segmentacion2FilterControl != null &&
-      this.form.value.segmentacion2FilterControl.length > 0
-    ) {
-      let auxListp: IClient[] = [];
-      console.log(this.form.value.segmentacion2FilterControl);
-      auxList.filter((cliente) => {
-        if (
-          this.form.value.segmentacion2FilterControl.indexOf(
-            cliente.segmentation_2
-          ) !== -1
-        ) {
-          auxListp.push(cliente);
-        }
-      });
-      auxList = auxListp;
+    if (this.form.value.segmentacion2FilterControl?.length) {
+      auxList = auxList.filter(cliente => 
+        this.form.value.segmentacion2FilterControl.includes(cliente.segmentation_2)
+      );
     }
     // Aplicamos el filtro Segmentacion 3
-    if (
-      this.form.value.segmentacion3FilterControl != null &&
-      this.form.value.segmentacion3FilterControl.length > 0
-    ) {
-      let auxListp: IClient[] = [];
-      console.log(this.form.value.segmentacion3FilterControl);
-      console.log(auxList);
-      auxList.filter((cliente) => {
-        console.log(cliente.segmentation_3);
-        if (
-          this.form.value.segmentacion3FilterControl.indexOf(
-            cliente.segmentation_3
-          ) !== -1
-        ) {
-          auxListp.push(cliente);
-        }
-      });
-      auxList = auxListp;
+    if (this.form.value.segmentacion3FilterControl?.length) {
+      auxList = auxList.filter(cliente => 
+        this.form.value.segmentacion3FilterControl.includes(cliente.segmentation_3)
+      );
     }
     // Aplicamos el filtro nombre cliente
     if (this.form.value.cliente) {
-      let auxListp: IClient[] = [];
-      console.log(this.form.value.cliente);
-      auxList.filter((cliente) => {
-        if (
-          cliente.name
-            ?.toLowerCase()
-            .indexOf(this.form.value.cliente.toLowerCase()) !== -1
-        ) {
-          auxListp.push(cliente);
-        }
-      });
-      auxList = auxListp;
+      auxList = auxList.filter(cliente => 
+        cliente.name?.toLowerCase().includes(this.form.value.cliente.toLowerCase())
+      );
     }
     // Aplicamos el filtro poblacion
-    if (
-      this.form.value.poblacionFilterControl != null &&
-      this.form.value.poblacionFilterControl.length > 0
-    ) {
-      let auxListp: IClient[] = [];
-      console.log(this.form.value.poblacionFilterControl);
-      auxList.filter((cliente) => {
-        if (
-          this.form.value.poblacionFilterControl.indexOf(cliente.city) !== -1
-        ) {
-          auxListp.push(cliente);
-        }
-      });
-      auxList = auxListp;
+    if (this.form.value.poblacionFilterControl?.length) {
+      auxList = auxList.filter(cliente => 
+        this.form.value.poblacionFilterControl.includes(cliente.city)
+      );
     }
     // Aplicamos el filtro provincia
-    if (
-      this.form.value.provinciaFilterControl != null &&
-      this.form.value.provinciaFilterControl.length > 0
-    ) {
-      let auxListp: IClient[] = [];
-      console.log(this.form.value.provinciaFilterControl);
-      auxList.filter((cliente) => {
-        if (
-          this.form.value.provinciaFilterControl.indexOf(cliente.province) !==
-          -1
-        ) {
-          auxListp.push(cliente);
-        }
-      });
-      auxList = auxListp;
+    if (this.form.value.provinciaFilterControl?.length) {
+      auxList = auxList.filter(cliente => 
+        this.form.value.provinciaFilterControl.includes(cliente.province)
+      );
     }
     // Aplicamos el filtro vendedor
-    if (
-      this.form.value.agenteFilterControl != null &&
-      this.form.value.agenteFilterControl.length > 0
-    ) {
+    if (this.form.value.agenteFilterControl?.length) {
       let agentes = this.form.value.agenteFilterControl;
-      console.log(agentes);
       auxSalesList = this.findClientesVentasWithAgents(agentes);
-      let auxListp: IClient[] = [];
-      if (auxSalesList.length > 0) {
-        auxList.filter((cliente) => {
-          if (this.isClientInClientSalesList(cliente, auxSalesList)) {
-            auxListp.push(cliente);
-          }
-        });
-      }
-      auxList = auxListp;
+      auxList = auxList.filter(cliente => this.isClientInClientSalesList(cliente, auxSalesList));
     }
     // Aplicamos el filtro familia
-    if (
-      this.form.value.familiaFilterControl != null &&
-      this.form.value.familiaFilterControl.length > 0
-    ) {
+    if (this.form.value.familiaFilterControl?.length) {
       let familias = this.form.value.familiaFilterControl;
       auxSalesList = this.findClientesVentasWithFamilies(familias);
-      let auxListp: IClient[] = [];
-      if (auxSalesList.length > 0) {
-        auxList.filter((cliente) => {
-          if (this.isClientInClientSalesList(cliente, auxSalesList)) {
-            auxListp.push(cliente);
-          }
-        });
-      }
-      auxList = auxListp;
+      auxList = auxList.filter(cliente => this.isClientInClientSalesList(cliente, auxSalesList));
     }
 
     this.dataSource.data = auxList;
-    this.drawer.toggle();
+
   }
 
   filtroReset() {
-    this.range.reset();
-    this.form.reset();
-    this.applyComplexFilter();
-    this.drawer.toggle();
-  }
-
-  resetFiltros() {
     this.range.reset();
     this.form.reset();
     this.applyComplexFilter();
@@ -466,40 +366,18 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
       });
     } else {
       if (this.selection.selected.length <= 0) {
-        /*this.toastr.info(
+        this.toastr.warning(
           'Por favor, seleccione al menos 1 cliente para ver en el mapa.',
           'Seleccionar cliente',
-        );*/
+        );
       } else if (this.selection.selected.length > 200) {
-        /*this.toastr.error(
+        this.toastr.error(
           'Se han seleccionado ' +
             this.selection.selected.length +
             ' clientes', 'Límite superado (200 clientes)'
-        );*/
+        );
       }
     }
   }
-  private configurePaginatorLabels() {
-    this.paginatorIntl.itemsPerPageLabel = 'Clientes por página';
-    this.paginatorIntl.nextPageLabel = 'Página siguiente';
-    this.paginatorIntl.previousPageLabel = 'Página anterior';
-    this.paginatorIntl.firstPageLabel = 'Primera página';
-    this.paginatorIntl.lastPageLabel = 'Última página';
-    this.paginatorIntl.getRangeLabel = (
-      page: number,
-      pageSize: number,
-      length: number
-    ) => {
-      if (length === 0 || pageSize === 0) {
-        return `0 de ${length}`;
-      }
-      const startIndex = page * pageSize;
-      const endIndex =
-        startIndex < length
-          ? Math.min(startIndex + pageSize, length)
-          : startIndex + pageSize;
-      return `${startIndex + 1} - ${endIndex} de ${length}`;
-    };
-    this.paginatorIntl.changes.next();
-  }
+
 }

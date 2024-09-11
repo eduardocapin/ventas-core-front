@@ -2,6 +2,9 @@ span {
   position: relative;
   top: 5px;
 }
+span.input-group-append{
+  top: 0;
+}
 
 table {
   width: 100%;
@@ -25,7 +28,13 @@ th {
   text-overflow: ellipsis;
   overflow: hidden;
 }
-
+.table thead th {
+  position: -webkit-sticky; /* Para Safari */
+  position: sticky;
+  top: 0; /* Fija el encabezado en la parte superior */
+  background-color: #fff; /* Asegúrate de que el fondo sea blanco o del color que desees */
+  z-index: 1; /* Asegúrate de que esté sobre el contenido de la tabla */
+}
 
 .sticky {
   position: sticky;
@@ -52,12 +61,66 @@ th {
 }
 
 .filtro-container {
-  width: 25%;
   position: fixed;
 }
+/* modal */
+.modal-header {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.modal-dialog-slide-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  height: 100%;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+.modal.fade .modal-dialog-slide-right {
+  transform: translateX(0);
+}
+.modal-content{
+  min-height: 100vh;
+  padding: 8px;
+  width: 500px;
+}
+.modal-body{
+  padding-top: 0;
+}
+/* end modal */
 
-#contactos {
-  margin-left: 0.5em;
+.ng-select .ng-select-container .ng-value {
+  color: #495057; /* Ajusta el color del texto para que coincida con Bootstrap */
+}
+
+/* Ajusta el ancho del ng-select para que coincida con el diseño de Bootstrap */
+ng-select {
+  width: 100%;
+}
+
+/* columnas medidas */
+.row_column_checkbox{
+  width: 40px;
+}
+.row_column_sm{
+  width: 100px;
+}
+.row_column_md{
+  width: 120px;
+}
+
+
+.sort-asc::after {
+  content: '▲';
+  font-size: 0.8em;
+  margin-left: 5px;
+}
+
+.sort-desc::after {
+  content: '▼';
+  font-size: 0.8em;
+  margin-left: 5px;
 }
 
 .mat-mdc-progress-spinner {
@@ -73,7 +136,16 @@ th {
 th {
   color: #3f51b5;
 }
-
+.cursor{
+  cursor: pointer;
+}
+.btn-color{
+  background-color: #3F51B5;
+  color: white;
+}
+.icon_color{
+  color: #3F51B5;
+}
 .map-button {
   background-color: #6b757d;
   color: white;
