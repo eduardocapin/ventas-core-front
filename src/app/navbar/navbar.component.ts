@@ -20,28 +20,17 @@ interface MenuItem {
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent {
-
   menuOpen = false;
   profileMenuOpen = false; // Nueva propiedad para manejar el menú de perfil
-
 
   menuItems: MenuItem[] = [
     { label: 'Dashboard', route: 'dashboard/global' },
     { label: 'Converter', route: 'rechazos/global' },
-    { 
-      label: 'Clientes', 
-      route: 'clientes/global', 
-      hasSubmenu: true, 
-      submenuItems: [
-        { label: 'Cliente 1', route: 'clientes/global/subcliente1' },
-        { label: 'Cliente 2', route: 'clientes/global/subcliente2' }
-      ],
-      showSubmenu: false
-    },
-    { label: 'Configuración', route: 'configuracion/global' }
+    { label: 'Clientes', route: 'clientes/global' },
+    { label: 'Configuración', route: 'configuracion/global' },
   ];
 
   constructor(
@@ -50,11 +39,10 @@ export class NavbarComponent {
     public dialog: MatDialog
   ) {}
 
-
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
-  closeMenu(){
+  closeMenu() {
     this.menuOpen = false;
   }
 
@@ -65,7 +53,7 @@ export class NavbarComponent {
   openProfileEditPopup(): void {
     const dialogRef = this.dialog.open(ProfileEditPopupComponent, {
       width: 'auto',
-      disableClose: true
+      disableClose: true,
     });
   }
 
