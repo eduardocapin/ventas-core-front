@@ -20,7 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SelectionModel } from '@angular/cdk/collections';
 import { PopupClientDetailComponent } from 'src/app/clients/clients-general/popup-client-detail/popup-client-detail.component';
 import { ICompetidor } from 'src/app/models/competidor.model';
-import { IconOptions } from '@angular/material/icon';
+;
 import { IMotivoRechazo } from 'src/app/models/motivoRechazo.model';
 
 @Component({

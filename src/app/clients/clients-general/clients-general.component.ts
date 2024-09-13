@@ -22,6 +22,20 @@ import { NgbDate, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./clients-general.component.css']
 })
 export class ClientsGeneralComponent implements AfterViewInit, OnInit {
+
+
+  filtroSeleccionado: string = '';
+  potenciabilidadList = [
+    { name: 'Alta' },
+    { name: 'Media' },
+    { name: 'Baja' }
+  ];
+
+  onFiltroSeleccionado(filtro: string) {
+    this.filtroSeleccionado = filtro;
+  }
+
+
   form: any;
   displayedColumns: string[] = [
     'checkbox',
@@ -75,9 +89,9 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   agenteList: IFiltroAgente[] = [{id: 0,name: 'FELIPE GARCILASO RIBERA'}, {id: 1,name: 'GUSTAVO BLANCO MORENO'}, {id: 2,name: 'FMERCEDES MUÑIZ ALONSO'},{id: 4,name: 'MIRIAM ALVAREZ MAS'}];
   poblacionList: string[] = ['ALALPARDO','ALCALA DE HENARES','ALCOBENDAS','ALCORCON','ALDEA SANTILLANA','ALGETE','ARANDA DE DUERO','ARAVACA','ARGANDA DEL REY','ARROYOMOLINOS','AVILA','BELVIS DEL JARAMA','BOADILLA DEL MONTE','BOECILLO','CAMARMA DE ESTERUELAS','CAMBEO','CAMPOREAL','CERCEDA','CIEMPOZUELOS','CIFUENTES','COBEÑA','COBISA','COLLADO VILLALBA','COLMENAR DE OREJA','COLMENAR VIEJO','COMENAR VIEJO','COSLADA','DAGANZO','DON BENITO','EL CASAR','EL MOLAR','EL PLANTIO','EL TIEMBLO','EL VELLON','ESTREMERA','FUENLABRADA','FUENTE EL FRESNO','FUENTE EL SAZ','FUENTE EL SAZ DE JARAMA','FUENTE EL SAZ DEL JARAMA','GALAPAGAR','GETAFE','GUADALAJARA','GUADALIX DE LA SIERRA','GUADARRAMA','ISLA DE LA TOJA','LA CABRERA','LA VALL D´UIXO','LAS ROZAS','LEGANES','LOECHES','LOS HUEROS - VILLALBILLA','LOZOYUELA','MADRID','MAJADAHONDA','MAJADAHONDA','MANGIRON-PUENTES VIEJAS','MANZANARES DEL REAL','MANZANARES EL REAL','MATALPINO','MONDEJAR','MORALZARZAL','NAVACERRADA','NAVAGALAMELLA','NAVALAFUENTE','NULES','OLIAS DEL REY','ONDA','OTERO DE HERREROS','PELAYOS DE LA PRESA','PEZUELA DE LAS TORRES','PIOZ','POZOAMARGO','POZUELO DE ALARCON','RIVAS VACIAMADRID','ROA','S.S.REYES','SAN AGUSTIN DE GUADALIX','SAN FERNANDO DE HENARES','SAN MARTIN DE LA VEGA','SAN RAFAEL','SAN SEBASTIAN  DE LOS REYES','SANTOS DE LA HUMOSA','SESEÑA','SEVILLA LA NUEVA','SIGUENZA','SOTO DEL REAL','TOLEDO','TORREJON DE ARDOZ','TORRELAGUNA','TORREMOCHA DE JARAMA','TRES CANTOS','VALDETORRES DEL JARAMA','VALL DE UXO','VILLANUEVA DE ALCARDETE','VILLENA','ZARAGOZA','ZARZALEJO'];
   provinciaList: string[] = ['ALICANTE','AVILA','BADAJOZ','BURGOS','CANTABRIA','CASTELLON','CUENCA','GUADALAJARA','MADRID','ORENSE','PONTEVEDRA','SEGOVIA','TOLEDO','VALLADOLID','ZARAGOZA'];
-  s1: ISegmentacion[] = [{segmentation_value_id: 11,segmentation_value: 'A  (> 5.000 euros/mes)',name: 'Potenciabilidad'},{segmentation_value_id: 12,segmentation_value: 'B  (Entre 2.500 - 4.999 euros/mes)',name: 'Potenciabilidad'},{segmentation_value_id: 12,segmentation_value: 'C  (Entre 1.000 y 2.499 €/mes)',name: 'Potenciabilidad'},{segmentation_value_id: 12,segmentation_value: 'D ( < 1.000 euros) ',name: 'Potenciabilidad'}];
-  s2: ISegmentacion[] = [{segmentation_value_id: 11,segmentation_value: 'Bar/Tapas  (No especializado)',name: 'Tipologia'},{segmentation_value_id: 12,segmentation_value: 'Cerveceria / Cafeteria  (Especializado)',name: 'Tipologia'},{segmentation_value_id: 12,segmentation_value: 'Restaurante Independiente (Incluye catering)',name: 'Tipologia'},{segmentation_value_id: 12,segmentation_value: 'Noche (Disco, Pubs, Bar de copas) ',name: 'Tipologia'},{segmentation_value_id: 12,segmentation_value: 'Restauracion organizada: Franquicias, Tematicos',name: 'Tipologia'},{segmentation_value_id: 12,segmentation_value: 'Hoteles, Hostales, posadas',name: 'Tipologia'},{segmentation_value_id: 12,segmentation_value: 'OCIO (Deporte,Cines,Teatro,Salon Juegos,..)',name: 'Tipologia'},{segmentation_value_id: 12,segmentation_value: 'Colectividades:comedor empresa, Enseñanza,Admin,',name: 'Tipologia'},{segmentation_value_id: 12,segmentation_value: 'Tienda Alimentacion Minorista(Super,China,Panad..)',name: 'Tipologia'},{segmentation_value_id: 12,segmentation_value: 'Tienda Impulso(F Secos,Chuches,Estanco,Vending',name: 'Tipologia'},{segmentation_value_id: 12,segmentation_value: 'Mayoristas (Distribuidores, Cash, por mayor)',name: 'Tipologia'},{segmentation_value_id: 12,segmentation_value: 'Restauracion en Ruta(aeropuerto,E.S. Carreteras)',name: 'Tipologia'},{segmentation_value_id: 12,segmentation_value: 'Personal Empresa / Autoconsumo',name: 'Tipologia'},{segmentation_value_id: 12,segmentation_value: 'Alquiler',name: 'Tipologia'}];
-  s3: ISegmentacion[] = [{segmentation_value_id: 11,segmentation_value: 'Tradicional',name: 'Imagen'},{segmentation_value_id: 12,segmentation_value: 'Moderna',name: 'Imagen'},{segmentation_value_id: 12,segmentation_value: 'Emblemática',name: 'Imagen'}];
+  s1: ISegmentacion[] = [{segmentation_value_id: 11,segmentation_value: 'A  (> 5.000 euros/mes)',name: 'Potenciabilidad'},{segmentation_value_id: 12,segmentation_value: 'B  (Entre 2.500 - 4.999 euros/mes)',name: 'Potenciabilidad'},{segmentation_value_id: 13,segmentation_value: 'C  (Entre 1.000 y 2.499 €/mes)',name: 'Potenciabilidad'},{segmentation_value_id: 24,segmentation_value: 'D ( < 1.000 euros) ',name: 'Potenciabilidad'}];
+  s2: ISegmentacion[] = [{segmentation_value_id: 1,segmentation_value: 'Bar/Tapas  (No especializado)',name: 'Tipologia'},{segmentation_value_id: 2,segmentation_value: 'Cerveceria / Cafeteria  (Especializado)',name: 'Tipologia'},{segmentation_value_id: 21,segmentation_value: 'Restaurante Independiente (Incluye catering)',name: 'Tipologia'},{segmentation_value_id: 3,segmentation_value: 'Noche (Disco, Pubs, Bar de copas) ',name: 'Tipologia'},{segmentation_value_id: 32,segmentation_value: 'Restauracion organizada: Franquicias, Tematicos',name: 'Tipologia'},{segmentation_value_id: 33,segmentation_value: 'Hoteles, Hostales, posadas',name: 'Tipologia'},{segmentation_value_id: 34,segmentation_value: 'OCIO (Deporte,Cines,Teatro,Salon Juegos,..)',name: 'Tipologia'},{segmentation_value_id: 35,segmentation_value: 'Colectividades:comedor empresa, Enseñanza,Admin,',name: 'Tipologia'},{segmentation_value_id: 36,segmentation_value: 'Tienda Alimentacion Minorista(Super,China,Panad..)',name: 'Tipologia'},{segmentation_value_id: 37,segmentation_value: 'Tienda Impulso(F Secos,Chuches,Estanco,Vending',name: 'Tipologia'},{segmentation_value_id: 18,segmentation_value: 'Mayoristas (Distribuidores, Cash, por mayor)',name: 'Tipologia'},{segmentation_value_id: 54,segmentation_value: 'Restauracion en Ruta(aeropuerto,E.S. Carreteras)',name: 'Tipologia'},{segmentation_value_id: 55,segmentation_value: 'Personal Empresa / Autoconsumo',name: 'Tipologia'},{segmentation_value_id: 58,segmentation_value: 'Alquiler',name: 'Tipologia'}];
+  s3: ISegmentacion[] = [{segmentation_value_id: 10,segmentation_value: 'Tradicional',name: 'Imagen'},{segmentation_value_id: 22,segmentation_value: 'Moderna',name: 'Imagen'},{segmentation_value_id: 23,segmentation_value: 'Emblemática',name: 'Imagen'}];
  
   ngOnInit(): void {
     this.cargando = true;
@@ -193,21 +207,31 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
 
     // Aplicamos el filtro Segmentacion 1
     if (this.form.value.segmentacion1FilterControl?.length) {
-      auxList = auxList.filter(cliente => 
-        this.form.value.segmentacion1FilterControl.includes(cliente.segmentation_1)
-      );
+      
+      auxList = auxList.filter(cliente => {
+        const segmentacion1Filters = this.form.value.segmentacion1FilterControl.map(String); // Convertir valores del filtro a cadenas 
+        const isIncluded = segmentacion1Filters.includes(String(cliente.segmentation_1));
+        return isIncluded;
+      });
     }
+
     // Aplicamos el filtro Segmentacion 2
     if (this.form.value.segmentacion2FilterControl?.length) {
-      auxList = auxList.filter(cliente => 
-        this.form.value.segmentacion2FilterControl.includes(cliente.segmentation_2)
-      );
+      
+      auxList = auxList.filter(cliente => {
+        const segmentacion2Filters = this.form.value.segmentacion2FilterControl.map(String); // Convertir valores del filtro a cadenas       
+        const isIncluded = segmentacion2Filters.includes(String(cliente.segmentation_2));  
+        return isIncluded;
+      });
     }
     // Aplicamos el filtro Segmentacion 3
     if (this.form.value.segmentacion3FilterControl?.length) {
-      auxList = auxList.filter(cliente => 
-        this.form.value.segmentacion3FilterControl.includes(cliente.segmentation_3)
-      );
+      
+      auxList = auxList.filter(cliente => {
+        const segmentacion3Filters = this.form.value.segmentacion3FilterControl.map(String); // Convertir valores del filtro a cadenas 
+        const isIncluded = segmentacion3Filters.includes(String(cliente.segmentation_3));
+        return isIncluded;
+      });
     }
     // Aplicamos el filtro nombre cliente
     if (this.form.value.cliente) {
@@ -229,9 +253,9 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     }
     // Aplicamos el filtro vendedor
     if (this.form.value.agenteFilterControl?.length) {
-      let agentes = this.form.value.agenteFilterControl;
-      auxSalesList = this.findClientesVentasWithAgents(agentes);
-      auxList = auxList.filter(cliente => this.isClientInClientSalesList(cliente, auxSalesList));
+      auxList = auxList.filter(cliente =>
+        this.form.value.agenteFilterControl.includes()
+      )
     }
     // Aplicamos el filtro familia
     if (this.form.value.familiaFilterControl?.length) {
