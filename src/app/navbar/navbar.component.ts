@@ -3,19 +3,8 @@ import { Router } from '@angular/router';
 import { LoginService } from '../services/auth/login.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ProfileEditPopupComponent } from '../configuration/configuration-general/profile-edit-popup/profile-edit-popup.component'; // Ajusta la ruta
-
-interface SubMenuItem {
-  label: string;
-  route: string;
-}
-
-interface MenuItem {
-  label: string;
-  route: string;
-  hasSubmenu?: boolean;
-  submenuItems?: SubMenuItem[];
-  showSubmenu?: boolean; // Agregar esta propiedad
-}
+import { MenuService } from '../services/menu/menu.service';
+import { MenuItem }  from 'src/app/models/menuItem.model';
 
 @Component({
   selector: 'app-navbar',
@@ -24,27 +13,51 @@ interface MenuItem {
 })
 export class NavbarComponent {
   menuOpen = false;
-  profileMenuOpen = false; // Nueva propiedad para manejar el menú de perfil
+  profileMenuOpen = false; 
 
-  menuItems: MenuItem[] = [
-    { label: 'Dashboard', route: 'dashboard/global' },
-    { label: 'Converter', route: 'rechazos/global' },
-    { label: 'Clientes', route: 'clientes/global' },
-    { label: 'Configuración', route: 'configuracion/global' },
-  ];
+  menuItems: any[] = [];
 
   constructor(
     public _loginServices: LoginService,
+    public _menuService: MenuService,
     private router: Router,
     public dialog: MatDialog
   ) {}
 
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
+  ngOnInit(): void {
+    this._menuService.getMenuItems(1, 'es').subscribe(
+      (items) => {
+        if (items && Array.isArray(items)) {
+          this.menuItems = this.mapItems(items, null);
+        } else {
+          this.menuItems = [];
+        }
+      },
+      (error) => {
+        this.menuItems = []; 
+      }
+    );
   }
+
+  mapItems(items: any[], parentId: number | null): any[] {
+    const filteredItems = items.filter(item => item.parent_menu_id === parentId);
+  
+    // Recursión para submenús
+    return filteredItems.map(item => ({
+      ...item,
+      isSubmenuOpen: false,
+      submenuItems: this.mapItems(items, item.id)
+    }));
+  }
+
   closeMenu() {
     this.menuOpen = false;
   }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
 
   profilePicSize() {
     return '40'; // Tamaño del perfil, puedes ajustar esto si es necesario
@@ -66,17 +79,7 @@ export class NavbarComponent {
     this.profileMenuOpen = !this.profileMenuOpen;
   }
 
-  toggleDropdown(item: MenuItem) {
-    if (item.hasSubmenu) {
-      item.showSubmenu = true; // Mostrar el submenú
-    }
-  }
-
-  hideDropdown(item: MenuItem) {
-    if (item.hasSubmenu) {
-      item.showSubmenu = false; // Ocultar el submenú
-    }
-  }
+ 
 
   onSearch(query: string) {
     // Implementa la lógica de búsqueda aquí

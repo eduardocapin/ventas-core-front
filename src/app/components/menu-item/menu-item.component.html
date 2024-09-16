@@ -1,0 +1,25 @@
+<li class="nav-item" (mouseover)="item.isSubmenuOpen = true" (mouseout)="item.isSubmenuOpen = false">
+  <a
+    class="nav-link"
+    [routerLink]="item.route ? item.route : null"
+    
+    [attr.aria-expanded]="item.isSubmenuOpen ? 'true' : null"
+    [attr.data-bs-toggle]="item.hasSubmenu ? 'dropdown' : null"
+    [ngClass]="{'disabled-link': !item.route}"
+  >
+    {{ item.label }}
+  </a>
+
+  <!-- Dropdown para submenús -->
+  <ul
+    *ngIf="item.hasSubmenu"
+    class="dropdown-menu"
+    [ngClass]="{'show': item.isSubmenuOpen}"
+  >
+    <app-menu-item
+      *ngFor="let subItem of item.submenuItems"
+      [item]="subItem"
+      [menuOpen]="menuOpen"
+    ></app-menu-item>
+  </ul>
+</li>

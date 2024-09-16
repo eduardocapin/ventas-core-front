@@ -13,10 +13,14 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NavbarComponent } from "./navbar.component";
+import { SharedModule } from "../shared/shared.module";
+import { MenuItemComponent } from "../components/menu-item/menu-item.component";
+import { AppRoutingModule } from "../app-routing.module";
 
 @NgModule({
     declarations: [
-        NavbarComponent
+        NavbarComponent,
+        MenuItemComponent
     ],
     imports: [
         CommonModule,
@@ -29,7 +33,9 @@ import { NavbarComponent } from "./navbar.component";
         MatTooltipModule,
         RouterModule,
         MatExpansionModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        AppRoutingModule, 
+        
     ],
 })
 export class NavbarModule {}
