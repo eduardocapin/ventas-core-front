@@ -166,8 +166,8 @@
                 <div class="d-flex align-items-center gap-1 justify-content-center">
                   <img [src]="getOptionImage(row.status_id)" alt="{{ getEstado(row.status_id) }} Image"
                     class="option-image">
-                  <select class="form-select form-select-sm select_estado" [(ngModel)]="row.status_id"
-                    (ngModelChange)="actualizarEstados(row)">
+                  <select (change)="changeEstado($event, row)" class="form-select form-select-sm select_estado"
+                    [(ngModel)]="row.status_id" (ngModelChange)="actualizarEstados(row)">
                     <option *ngFor="let estado of estados" [value]="estado.id">
                       {{ estado.name }}
                     </option>
@@ -187,11 +187,12 @@
                 <span [ngbTooltip]="row.product.length > 23 ? 'tooltip' : null"
                   [ngbTooltip]="row.product.length > 23 ? row.product : ''">{{ row.product }}</span>
               </td>
-              <!-- Rechazo Column -->
+              <!-- Motivo Column -->
               <td class="text-center">
-                <select class="form-select form-select-sm text-danger select_rechazo"
-                  [(ngModel)]="row.reason_rejection_id" [ngbTooltip]="getMotivoRechazo(row.reason_rejection_id)">
-                  <option *ngFor="let rechazo of tipos_rechazo" [value]="rechazo.id">{{ rechazo.rejection }}</option>
+                <select (change)="changeMotivo($event, row)"
+                  class="form-select form-select-sm text-danger select_rechazo" [(ngModel)]="row.reason_rejection_id"
+                  [ngbTooltip]="row.reason_rejection">
+                  <option *ngFor="let motivo of motivos_rechazo" [value]="motivo.id">{{ motivo.rejection }}</option>
                 </select>
               </td>
               <!-- Precio Column -->
@@ -201,15 +202,15 @@
                 <i *ngIf="row.has_own_promo" class="promo-icon" [ngbTooltip]="row.own_promo">P</i>
               </td>
               <!-- Competidor Column -->
-              <td class="text-end row_precio_competidor centrado_column">{{ row.pvp_competitor | decimales  }} €</td>
+              <td class="text-end row_precio_competidor centrado_column">{{ row.pvp_competitor | decimales }} €</td>
               <!-- Promo Competidor Column -->
               <td class="text-center centrado_column">
                 <i *ngIf="row.has_competitor_promo" class="promo-icon" [ngbTooltip]="row.competitor_promo">P</i>
               </td>
               <!-- Competidor Column -->
               <td>
-                <select class="form-select form-select-sm row_select_competidor" [(ngModel)]="row.competitor_id"
-                  [ngbTooltip]="getCompetidorNombre(row.competitor_id)">
+                <select (change)="changeCompetidor($event, row)" class="form-select form-select-sm row_select_competidor"
+                  [(ngModel)]="row.competitor_id" [ngbTooltip]="row.competitor_name">
                   <option *ngFor="let competidor of competidores" [value]="competidor.id">{{ competidor.name }}</option>
                 </select>
               </td>

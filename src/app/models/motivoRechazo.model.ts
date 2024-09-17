@@ -1,6 +1,6 @@
 export interface IMotivoRechazo {
     id: number;
+    internal_id: number;
     rejection_code: string;
     rejection: string;
-    internal_id: number;
 }
