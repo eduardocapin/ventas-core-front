@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -14,8 +14,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FilterService } from 'src/app/services/filter/filter.service';
 import { ClientContactListComponent } from './client-contact-list/client-contact-list.component';
 import { ToastrService } from 'ngx-toastr';
-import { NgbDate, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
+
+declare var bootstrap: any; 
 @Component({
   selector: 'app-clients-general',
   templateUrl: './clients-general.component.html',
@@ -23,19 +24,7 @@ import { NgbDate, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ClientsGeneralComponent implements AfterViewInit, OnInit {
 
-
-  filtroSeleccionado: string = '';
-  potenciabilidadList = [
-    { name: 'Alta' },
-    { name: 'Media' },
-    { name: 'Baja' }
-  ];
-
-  onFiltroSeleccionado(filtro: string) {
-    this.filtroSeleccionado = filtro;
-  }
-
-
+  
   form: any;
   displayedColumns: string[] = [
     'checkbox',
@@ -51,7 +40,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   clientsList: IClient[] = [];
   cargando: boolean = false;
   selection = new SelectionModel<IClient>(true, []);
-
+  filtrosAplicados: Array<{nombre: string, valor: any}> = [];
   sortColumn: string = '';
   sortDirection: string = 'asc';
 
@@ -136,6 +125,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     
   }
+  
 
   editClient(id_Cliente?: number) {
     const dialogRef = this.dialog.open(PopupClientDetailComponent, {
@@ -190,6 +180,175 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   }
 
   applyComplexFilter() {
+    this.filtrosAplicados = [];
+      // Verificar si cada filtro tiene un valor aplicado y agregarlo a la lista de filtros aplicados
+      if (this.form.get('cliente')?.value) {
+        this.filtrosAplicados.push({ nombre: 'Cliente', valor: this.form.get('cliente')?.value });
+      }
+      
+      // Convertir los valores de segmentación a los valores legibles
+      this.addSegmentacionFilter('segmentacion1FilterControl', 'Potenciabilidad', this.s1);
+      this.addSegmentacionFilter('segmentacion2FilterControl', 'Tipología', this.s2);
+      this.addSegmentacionFilter('segmentacion3FilterControl', 'Imagen', this.s3);
+
+      if (this.range.value.start && this.range.value.end) {
+        this.filtrosAplicados.push({ nombre: 'Periodo de ventas', valor: `${this.range.value.start} - ${this.range.value.end}` });
+      }
+
+      if (this.form.get('poblacionFilterControl')?.value) {
+        this.filtrosAplicados.push({ nombre: 'Población', valor: this.form.get('poblacionFilterControl')?.value });
+      }
+
+      if (this.form.get('provinciaFilterControl')?.value) {
+        this.filtrosAplicados.push({ nombre: 'Provincia', valor: this.form.get('provinciaFilterControl')?.value });
+      }
+
+      if (this.form.get('agenteFilterControl')?.value) {
+        this.filtrosAplicados.push({ nombre: 'Agente', valor: this.form.get('agenteFilterControl')?.value });
+      }
+
+      if (this.form.get('familiaFilterControl')?.value) {
+        this.filtrosAplicados.push({ nombre: 'Familia', valor: this.form.get('familiaFilterControl')?.value });
+      }
+
+      this.applyFilterLogic();
+  }
+  // Método para agregar los filtros de segmentación con los valores convertidos
+private addSegmentacionFilter(controlName: string, filtroNombre: string, segmentacionList: ISegmentacion[]) {
+  const selectedIds = this.form.get(controlName)?.value || [];
+  const selectedValues = segmentacionList
+      .filter(s => selectedIds.includes(s.segmentation_value_id))
+      .map(s => s.segmentation_value);
+  
+  if (selectedValues.length > 0) {
+      this.filtrosAplicados.push({ nombre: filtroNombre, valor: selectedValues.join(', ') });
+  }
+}
+  /* botin para eleiminar solo un filtro */
+  removeFilter(filtro: { nombre: string, valor: any }) {
+      // Eliminar el filtro de la lista de filtros aplicados
+  this.filtrosAplicados = this.filtrosAplicados.filter(f => f !== filtro);
+
+  // Restablecer el filtro en el formulario
+  switch (filtro.nombre) {
+    case 'Cliente':
+      this.form.get('cliente')?.reset();
+      break;
+    case 'Potenciabilidad':
+      this.form.get('segmentacion1FilterControl')?.reset();
+      break;
+    case 'Tipología':
+      this.form.get('segmentacion2FilterControl')?.reset();
+      break;
+    case 'Imagen':
+      this.form.get('segmentacion3FilterControl')?.reset();
+      break;
+    case 'Periodo de ventas':
+      this.range.reset();
+      break;
+    case 'Población':
+      this.form.get('poblacionFilterControl')?.reset();
+      break;
+    case 'Provincia':
+      this.form.get('provinciaFilterControl')?.reset();
+      break;
+    case 'Agente':
+      this.form.get('agenteFilterControl')?.reset();
+      break;
+    case 'Familia':
+      this.form.get('familiaFilterControl')?.reset();
+      break;
+  }
+  // Aplicar la lógica de filtros actualizada
+  this.applyFilterLogic();
+  }
+  /* logica para el filtrado de segmetacion */
+  onFilterSelect(segmentationValueId: number, segmentacionTipo: number) {  
+    let selectedFilter;
+    switch (segmentacionTipo) {
+      case 1:
+        selectedFilter = this.s1.find(s => s.segmentation_value_id === segmentationValueId);
+        if (selectedFilter) {
+          let currentSelection = this.form.get('segmentacion1FilterControl')?.value || [];
+          // Verificar si el valor ya está seleccionado (si es así, lo quitamos)
+          if (currentSelection.includes(segmentationValueId)) {
+            currentSelection = currentSelection.filter((id: number) => id !== segmentationValueId);
+          } else {
+            // Si no está seleccionado, lo agregamos
+            currentSelection.push(segmentationValueId);
+          }
+          this.form.get('segmentacion1FilterControl')?.setValue(currentSelection);
+        }
+        break;
+      case 2:
+        selectedFilter = this.s2.find(s => s.segmentation_value_id === segmentationValueId);
+        if (selectedFilter) {
+          let currentSelection = this.form.get('segmentacion2FilterControl')?.value || [];
+
+          ///verifica si el valor ya esta seleccionad ( si es así, lo quitamos)
+          if(currentSelection.includes(segmentationValueId)){
+            currentSelection = currentSelection.filter((id:number) => id !== segmentationValueId);
+          }else{
+            currentSelection.push(segmentationValueId);
+          }
+          this.form.get('segmentacion2FilterControl')?.setValue(currentSelection);
+        }
+        break;
+      case 3:
+        selectedFilter = this.s3.find(s => s.segmentation_value_id === segmentationValueId);
+        if (selectedFilter) {
+          let currentSelection = this.form.get('segmentacion3FilterControl')?.value || [];
+
+          ///verifica si el valor ya esta seleccionad ( si es así, lo quitamos)
+          if(currentSelection.includes(segmentationValueId)){
+            currentSelection = currentSelection.filter((id:number) => id !== segmentationValueId);
+          }else{
+            currentSelection.push(segmentationValueId);
+          }
+          this.form.get('segmentacion3FilterControl')?.setValue(currentSelection);
+        }
+        break;
+      default:
+        console.warn('Segmentación no válida');
+        return;
+    }
+    if (selectedFilter) {
+      this.applyComplexFilter(); // Aplicar los filtros después de seleccionar
+    }
+  }
+  /* Filtros de poblacion y provincia */
+  onFilterLocationSelect(filterType: string, value: string) {
+    let currentSelection: string[];
+  
+    switch (filterType) {
+      case 'Provincia':
+        currentSelection = this.form.get('provinciaFilterControl')?.value || [];
+        if (currentSelection.includes(value)) {
+          currentSelection = currentSelection.filter(v => v !== value);
+        } else {
+          currentSelection.push(value);
+        }
+        this.form.get('provinciaFilterControl')?.setValue(currentSelection);
+        break;
+      case 'Población':
+        currentSelection = this.form.get('poblacionFilterControl')?.value || [];
+        if (currentSelection.includes(value)) {
+          currentSelection = currentSelection.filter(v => v !== value);
+        } else {
+          currentSelection.push(value);
+        }
+        this.form.get('poblacionFilterControl')?.setValue(currentSelection);
+        break;
+      default:
+        console.warn('Tipo de filtro no válido');
+        return;
+    }
+  
+    this.applyComplexFilter(); // Aplicar los filtros después de seleccionar
+  }
+  
+  /* se pasara la logica para los filtros aqui */
+  applyFilterLogic(){
     let auxList: IClient[] = this.clientsList;
     let auxSalesList: IClientSales[];
     // Aplicamos el filtro de fecha
@@ -265,7 +424,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     }
 
     this.dataSource.data = auxList;
-
+    this.closeDropdown();
   }
 
   filtroReset() {
@@ -403,5 +562,12 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
       }
     }
   }
+  @ViewChild('dropdownWrapper') dropdownWrapper!: ElementRef;
 
+  // Método para cerrar el dropdown
+  closeDropdown() {
+    const dropdownToggle = this.dropdownWrapper.nativeElement.querySelector('.dropdown-toggle');
+    const dropdown = new bootstrap.Dropdown(dropdownToggle);
+    dropdown.hide();  // Cierra el dropdown de Bootstrap
+  }
 }

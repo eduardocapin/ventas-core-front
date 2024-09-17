@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
@@ -73,7 +74,8 @@ import { ClientContactListComponent } from './clients-general/client-contact-lis
         MatProgressSpinnerModule,
         NgbTooltipModule,
         NgSelectModule,
-        NgbDatepickerModule
+        NgbDatepickerModule,
+        NgbDropdown
     ],
     providers: [],
     bootstrap: [ClientsGeneralComponent]
