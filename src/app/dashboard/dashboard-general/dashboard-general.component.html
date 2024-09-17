@@ -170,7 +170,6 @@
   <div class="fondo-blanco p-3 mt-3">
     <div>
       <div class="form-group col-3">
-        
         <select id="tablaActiva" class="form-select form-select-sm" [(ngModel)]="tablaActiva" (change)="select($event)">
           <option *ngFor="let nombre of nombresTablas; let i = index" [value]="i">
             {{ nombre }}
@@ -185,35 +184,39 @@
               <tr>
                 <th class="sticky-left">{{ nombresTablas[tablaActiva] }}</th>
                 <th class="text-end sticky-left">Total</th>
-
+  
                 <!-- Columnas dinámicas de tipos de rechazos -->
                 <th *ngFor="let columna of columnasRechazos" class="text-end column-rechazos"> {{ columna }} </th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let element of data">
-                <td class="sticky-left" [title]="element.nombre"
-                  [attr.data-toggle]="element.nombre.length > 32 ? 'tooltip' : ''">
+              <tr *ngFor="let element of paginadorData">
+                <td class="sticky-left" [title]="element.nombre" [attr.data-toggle]="element.nombre.length > 32 ? 'tooltip' : ''">
                   {{ element.nombre }}
                 </td>
                 <td class="sticky-left text-end">{{ element.total }}</td>
-
+  
                 <!-- Celdas dinámicas de rechazos -->
                 <td class="text-end column-rechazos" *ngFor="let columna of columnasRechazos">
                   {{ element.rechazos[columna] || 0 }}
                 </td>
               </tr>
-
+  
               <!-- Fila sin datos -->
-              <tr *ngIf="data.length === 0">
+              <tr *ngIf="paginadorData.length === 0">
                 <td colspan="4" class="text-center">No hay datos que mostrar</td>
               </tr>
             </tbody>
           </table>
         </div>
-
-
+  
+        <!-- Componente de Paginación -->
+        <app-pagination
+          [totalItems]="data.length"
+          [itemsPerPage]="itemsPerPage"
+          [currentPage]="currentPage"
+          (pageChange)="changePage($event)">
+        </app-pagination>
       </div>
     </div>
-
   </div>
