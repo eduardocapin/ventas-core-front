@@ -588,7 +588,7 @@ export class DashboardGeneralComponent {
   // paginacion
   paginadorData: ITablaDashboard[] = [];
   currentPage: number = 1;
-  itemsPerPage: number = 5;
+  itemsPerPage: number = 10;
   totalPages: number = 0;
   // KPI
   totalClientes: number = 0;
