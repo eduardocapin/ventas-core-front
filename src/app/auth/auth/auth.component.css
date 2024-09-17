@@ -2,11 +2,29 @@
   height: 100vh;
 }
 
+#sideImage{
+  height: 525px;
+}
+
+#titulo{
+  text-transform: capitalize;
+  font-size: xx-large;
+  font-weight: bolder;
+}
+
+#subtitulo{
+  text-transform: capitalize;
+  font-size: large;
+  color: lightgray;
+}
+
+.col{
+  padding: 0;
+}
+
 .content {
   height: auto;
   display: flex;
-  font-size: 2rem;
-  color: lightgray;
   padding: 36px;
 }
 
@@ -32,8 +50,11 @@ a {
   font-weight: 100;
   font-size: medium;
   cursor: pointer;
-  text-decoration: none;
   color: gray;
+}
+
+.decoration-none{
+  text-decoration: none;
 }
 
 .btn-primary {
