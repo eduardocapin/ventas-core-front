@@ -1,28 +1,34 @@
 <div class="d-flex align-items-center justify-content-center contenedor">
-  <div class="col-4 content border border-terciary justify-content-center">
-    <div class="login-fomrs d-flex flex-column justify-content-center align-items-center">
-      <!-- Logo AppInWahts-->
-      <img class="logo mb-3" src="../../../assets/images/mobentisLogo.png" alt="logo">
-      <!--formulario Material-->
-      <form class="mt-4 login-fomrs d-flex flex-column align-items-center">
-        <mat-form-field class="full-width">
-          <mat-label>Email</mat-label>
-          <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+  <div class="row">
+    <div class="col border border-terciary justify-content-center">
+      <img id="sideImage" src="{{selectedImage}}">
+    </div>
+    <div class="col content border border-terciary justify-content-center">
+      <div class="login-fomrs d-flex flex-column justify-content-center align-items-center">
+        <!-- Logo AppInWahts-->
+        <img class="logo mb-3" src="../../../assets/images/mobentisLogo.png" alt="logo">
+        <div id="titulo" class="pb-2">CONVERTER</div>
+        <div id="subtitulo">DE RECHAZO A OPORTUNIDAD</div>
+        <!--formulario Material-->
+        <form class="mt-4 login-fomrs d-flex flex-column align-items-center">
+          <mat-form-field class="full-width">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
               placeholder="Ex.pat@example.com">
-          <mat-hint></mat-hint>
-          <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-                  Por favor introduzca un Email válido.
-          </mat-error>
-          <mat-error *ngIf="emailFormControl.hasError('required')">
-            El Email es <strong>Obligatorio</strong>
-          </mat-error>
-          <mat-error *ngIf="emailFormControl.hasError('pattern')">
-            El Email introducido no es válido.
-          </mat-error>
-        </mat-form-field>
-            
-        <mat-form-field class="full-width">
-          <mat-label>Password</mat-label>
+            <mat-hint></mat-hint>
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+              Por favor introduzca un Email válido.
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+              El Email es <strong>Obligatorio</strong>
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('pattern')">
+              El Email introducido no es válido.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>Password</mat-label>
             <input matInput [formControl]="passFormControl" [errorStateMatcher]="matcher"
               [type]="hide ? 'password' : 'text'">
             <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
@@ -35,15 +41,17 @@
             <mat-error *ngIf="passFormControl.hasError('required')">
               La contraseña es <strong>Obligatorio</strong>
             </mat-error>
-        </mat-form-field>
-            
-        <div class="error" *ngIf="errorLogin">
-          {{messageError}}
-        </div>
-        <a class="align-self-end mt-3">¿Has olvidado la contraseña?</a>
-        <button mat-raised-button color="primary" type="submit" (click)="login()" class="full-width mt-3">Iniciar
-          Sesión</button>
-      </form>    
+          </mat-form-field>
+
+          <div class="error" *ngIf="errorLogin">
+            {{messageError}}
+          </div>
+          <a class="align-self-start decoration-none">¿Has olvidado la contraseña?</a>
+          <button mat-raised-button color="primary" type="submit" (click)="login()" class="full-width mt-3">Iniciar
+            Sesión</button>
+          <a class="align-self-end pt-3" href="https://mobentis.com/">mobentis.com</a>
+        </form>
+      </div>
     </div>
   </div>
 </div>

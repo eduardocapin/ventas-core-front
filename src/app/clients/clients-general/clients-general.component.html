@@ -10,10 +10,10 @@
 
 
     <div class="m-3">
-      <div class="d-flex align-items-center justify-content-between gap-5">
+      <div class="d-flex align-items-center justify-content-between gap-5 mb-3">
         <!-- buscador -->
-        <div class="d-flex gap-3">
-          <div class="input-group mb-3" id="busqueda">
+        <div class="d-flex gap-3 align-items-center">
+          <div class="input-group" id="busqueda">
             <input class="form-control border-end-0 border" type="search" placeholder="Buscar..."
               id="example-search-input">
             <span class="input-group-append">
@@ -23,29 +23,109 @@
               </button>
             </span>
           </div>
-          <!-- filtros -->
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              Filtros
+          <!-- boton de filtos aplicados o limpiar -->
+          <div class="d-flex gap-2 align-items-center">
+              <button class="d-flex m-0 btn btn-outline-danger btn-sm align-items-center" *ngFor="let filtro of filtrosAplicados" (click)="removeFilter(filtro)">
+                <p class="m-0">{{ filtro.nombre }}: {{ filtro.valor }}</p>
+                <i class="ps-2 bi bi-x-circle-fill"></i>
+              </button>
+        
+            <!-- Botón "Limpiar" solo si hay filtros aplicados -->
+            <button *ngIf="filtrosAplicados.length > 0" class="btn btn-outline-danger btn-sm" (click)="filtroReset()">
+              Limpiar
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item" href="#">Periodo de venta</a></li>
-              <li><a class="dropdown-item" href="#">Potenciabilidad</a></li>
-              <li><a class="dropdown-item" href="#">Tipología</a></li>
-              <li><a class="dropdown-item" href="#">Imagen</a></li>
-              <li><a class="dropdown-item" href="#">Cliente</a></li>
-              <li><a class="dropdown-item" href="#">Provincia</a></li>
-              <li><a class="dropdown-item" href="#">Población</a></li>
-            </ul>
           </div>
-          <!-- Formulario de filtros desplegable (se muestra al seleccionar una opción) -->
-          <div *ngIf="filtroSeleccionado === 'Potenciabilidad'" class="mt-3">
-            <label for="potenciabilidad">Seleccione Potenciabilidad</label>
-            <ng-select [items]="potenciabilidadList" bindLabel="name" [multiple]="true"
-              formControlName="potenciabilidadFilterControl" class="form-control p-0"
-              placeholder="Seleccione una o más opciones">
-            </ng-select>
+          <!-- filtros --> 
+          <div   class="btn-group" #dropdownWrapper>
+            <a type="button" class=" dropdown-toggle fw-semibold text-decoration-none color-text" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" id="dropdownMenuButton">
+              + Filtros
+            </a>
+            <ul class="dropdown-menu cursor">
+              <form [formGroup]="form" (ngSubmit)="applyComplexFilter()">
+                <!-- Entre fechas -->
+                <!-- <li class="dropend">
+                  <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Periodo de ventas</a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <div class="mb-2">
+                        <label for="start">Desde</label>
+                        <input type="date" class="form-control" formControlName="start" id="start" placeholder="Desde">
+                      </div>
+                      <div class="mb-2">
+                        <label for="end">Hasta</label>
+                        <input type="date" class="form-control" formControlName="end" id="end" placeholder="Hasta">
+                      </div>
+                      <button class="btn btn-color" type="submit">Filtrar</button>
+                    </li>
+                  </ul>
+                </li> -->
+                <!-- Segmentacion 1 Potenciabilidad -->
+                <li class="dropend">
+                  <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Potenciabilidad</a>
+                  <ul class="dropdown-menu">
+                    <li *ngFor="let item of s1" class="cursor">
+                      <a class="dropdown-item" [ngClass]="{'selected-item': form.get('segmentacion1FilterControl')?.value?.includes(item.segmentation_value_id)}"  (click)="onFilterSelect(item.segmentation_value_id, 1)">
+                        {{ item.segmentation_value }}
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <!-- Segementacion 2 Tipologia -->
+                <li class="dropend">
+                  <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Tipologia</a>
+                  <ul class="dropdown-menu">
+                    <li *ngFor="let item of s2" class="cursor">
+                      <a class="dropdown-item" [ngClass]="{'selected-item': form.get('segmentacion2FilterControl')?.value?.includes(item.segmentation_value_id)}"  (click)="onFilterSelect(item.segmentation_value_id, 2)">
+                        {{ item.segmentation_value }}
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <!-- Segementacion 3 Imagen -->
+                <li class="dropend">
+                  <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Imagen</a>
+                  <ul class="dropdown-menu">
+                    <li *ngFor="let item of s3" class="cursor">
+                      <a class="dropdown-item" [ngClass]="{'selected-item': form.get('segmentacion3FilterControl')?.value?.includes(item.segmentation_value_id)}"  (click)="onFilterSelect(item.segmentation_value_id, 3)">
+                        {{ item.segmentation_value }}
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <!-- Cliente -->
+                <li class="dropend">
+                  <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Cliente</a>
+                  <ul class="dropdown-menu p-2">
+                      <input type="text" class="form-control" formControlName="cliente" placeholder="Introduzca el nombre del cliente">
+                  </ul>
+                </li>
+                <!-- Provincia -->
+                <li class="dropend">
+                  <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Provincia</a>
+                  <ul class="dropdown-menu">
+                    <li *ngFor="let item of provinciaList" class="cursor" >
+                      <a 
+                        class="dropdown-item"
+                        (click)="onFilterLocationSelect('Provincia', item)"
+                      >
+                        {{item}}
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <!-- Población -->
+                <li class="dropend">
+                  <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Población</a>
+                  <ul class="dropdown-menu poblacion">
+                    <li *ngFor="let item of poblacionList" class="cursor">
+                      <a class="dropdown-item" (click)="onFilterLocationSelect('Población', item)">
+                        {{item}}
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </form>
+            </ul>
           </div>
         </div>
 
@@ -55,10 +135,10 @@
             (click)="verEnMapa()">
             <mat-icon>location_on</mat-icon>
           </button>
-          <button ngbTooltip="Ver filtros" class="btn btn-secondary d-flex align-items-center" data-bs-toggle="modal"
+<!--           <button ngbTooltip="Ver filtros" class="btn btn-secondary d-flex align-items-center" data-bs-toggle="modal"
             data-bs-target="#filtroModal">
             <mat-icon class="p-0 m-0">filter_list_alt</mat-icon>
-          </button>
+          </button> -->
         </div>
 
       </div>
@@ -187,7 +267,7 @@
   </div>
 
   <!-- apartado de filtros -->
-  <div class="modal fade" tabindex="-1" id="filtroModal" aria-labelledby="filtroModalLabel" aria-hidden="true">
+  <!-- <div class="modal fade" tabindex="-1" id="filtroModal" aria-labelledby="filtroModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-slide-right">
       <div class="modal-content">
         <div class="bg-blanco sticky">
@@ -258,7 +338,7 @@
                     </ng-select>
                   </div>
 
-                  <!-- <div class="mb-2">
+                  <div class="mb-2">
                     <label for="agente">Vendedor</label>
                     <ng-select [items]="agenteList" bindLabel="name" bindValue="id" [multiple]="true"
                       formControlName="agenteFilterControl" class="form-control p-0"
@@ -272,7 +352,7 @@
                       formControlName="familiaFilterControl" class="form-control p-0"
                       placeholder="Seleccione una o más familias">
                     </ng-select>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </form>
@@ -281,5 +361,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>

@@ -244,3 +244,21 @@ th {
   width: 40px;
   height: 40px;
 }
+
+/* submenu */
+.dropdown-toggle::after{
+  display: none;
+}
+
+.color-text{
+  color: #3F51B5;
+}
+.selected-item {
+  background-color: #3F51B5; /* Fondo azul */
+  color: white; /* Texto blanco */
+}
+.poblacion {
+  overflow: hidden;
+  overflow-y: auto;
+  max-height: calc(100vh - 150px);
+}

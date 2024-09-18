@@ -1,3 +1,7 @@
+a{
+  color: white !important;
+}
+
 /* Estilo para los submenús desplegables */
 .dropdown-menu {
     display: none; /* Ocultar por defecto */
