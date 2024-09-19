@@ -7,12 +7,13 @@
 }
 
 .table-responsive {
-  height: calc(100vh - 220px)
+  /* la tabla ocupa de alto el 100% de la pantalla - el alto de loq ue tiene encima - el alto de lo que tiene por debajo */
+  height: calc(100vh - 220px - 43px)
 }
 
 table {
   width: 100%;
-  font-size: 12px;
+  font-size: small;
   overflow: visible;
 }
 
@@ -123,7 +124,7 @@ ng-select {
   width: 40px;
 }
 
-.spinner-border{
+.spinner-border {
   color: #3c27c5;
   font-size: large;
 }
@@ -246,17 +247,21 @@ th {
 }
 
 /* submenu */
-.dropdown-toggle::after{
+.dropdown-toggle::after {
   display: none;
 }
 
-.color-text{
+.color-text {
   color: #3F51B5;
 }
+
 .selected-item {
-  background-color: #3F51B5; /* Fondo azul */
-  color: white; /* Texto blanco */
+  background-color: #3F51B5;
+  /* Fondo azul */
+  color: white;
+  /* Texto blanco */
 }
+
 .poblacion {
   overflow: hidden;
   overflow-y: auto;

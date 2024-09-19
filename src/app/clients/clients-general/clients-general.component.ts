@@ -450,6 +450,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     }
 
     this.dataSource.data = auxList;
+    this.currentPage = 1
     this.paginate()
     this.closeDropdown();
   }
