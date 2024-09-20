@@ -11,6 +11,7 @@ import { EtiquetaValorComponent } from '../components/etiqueta-valor/etiqueta-va
 import { ClienteDatosGeneralesComponent } from '../components/cliente-datos-generales/cliente-datos-generales.component';
 import { ClienteEconomicosComponent } from '../components/cliente-economicos/cliente-economicos.component';
 import { ClienteMasInfoComponent } from '../components/cliente-mas-info/cliente-mas-info.component';
+import { PopupHeaderComponent } from '../components/popup-header/popup-header.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { ClienteMasInfoComponent } from '../components/cliente-mas-info/cliente-
     ClienteDatosGeneralesComponent,
     ClienteEconomicosComponent,
     ClienteMasInfoComponent,
+    PopupHeaderComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +39,7 @@ import { ClienteMasInfoComponent } from '../components/cliente-mas-info/cliente-
     ClienteDatosGeneralesComponent,
     ClienteEconomicosComponent,
     ClienteMasInfoComponent,
+    PopupHeaderComponent
   ]
 })
 export class SharedModule { }

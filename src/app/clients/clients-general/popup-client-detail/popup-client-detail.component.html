@@ -1,9 +1,6 @@
-<div class="d-flex justify-content-between">
-  <h2 mat-dialog-title class="m-0">
-    <img class="icon-title" src="/assets/images/iconos/clientes-icon-dark.svg" alt="Clientes" />
-    <span class="text-dark">Cliente</span>
-  </h2>
-  <button type="button" class="btn-close" aria-label="Close" (click)="cerrarPopup()"></button>
+<div>
+  <app-popup-header [title]="'Cliente'" [icon]="'/assets/images/iconos/clientes-icon-dark.svg'"
+    (close)="cerrarPopup()"></app-popup-header>
 </div>
 <mat-dialog-content class="container pt-0">
 
@@ -41,7 +38,7 @@
     <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
       <i class="bi bi-currency-exchange me-1"></i> Cobros
     </button>
-    
+
     <button ngbTooltip="Ver en Mapa" class="btn btn-sm btn-outline-secondary me-2 mb-2" (click)="verEnMapa()">
       <i class="bi bi-geo-alt me-1"></i>
     </button>
