@@ -586,7 +586,7 @@ export class DashboardGeneralComponent {
   // paginacion
   paginadorData: ITablaDashboard[] = [];
   currentPage: number = 1;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 5;
   totalPages: number = 0;
   // KPI
   totalClientes: number = 0;
@@ -903,5 +903,11 @@ export class DashboardGeneralComponent {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
     this.paginadorData = this.dataSource.data.slice(start, end);
+  }
+
+  onItemsPerPageChanged(itemsPerPage: number) {
+    this.itemsPerPage = itemsPerPage;
+    this.currentPage = 1;
+    this.loadTableData()
   }
 }

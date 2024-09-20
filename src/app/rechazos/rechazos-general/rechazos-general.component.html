@@ -153,8 +153,8 @@
       <!-- botones y filtros -->
       <div class="d-flex align-items-center gap-2">
         <div class="btn-group" role="group">
-          <button type="button" class="btn btn-color" (click)="exportar_rechazos()">Exportar</button>
-          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+          <button type="button" class="btn btn-azul-claro" (click)="exportar_rechazos()">Exportar</button>
+          <button type="button" class="btn btn-gris-claro dropdown-toggle" data-bs-toggle="dropdown"
             aria-expanded="false">
             {{ selectedOption }}
           </button>
@@ -220,10 +220,16 @@
               <i *ngIf="currentSortColumn === 'product'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
-            <!-- Rechazo Column -->
+            <!-- Motivo Column -->
             <th scope="col" (click)="sortData('reason_rejection_id')" class="cursor">
-              Rechazo
+              Motivo
               <i *ngIf="currentSortColumn === 'reason_rejection_id'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+            </th>
+            <!-- Interés Column -->
+            <th scope="col" (click)="sortData('interest_date')" class="cursor text-center column-interes">
+              <i class="bi bi-calendar-check" [ngbTooltip]="'Interés'"></i>
+              <i *ngIf="currentSortColumn === 'interest_date'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Precio Column -->
@@ -254,24 +260,18 @@
               <i *ngIf="currentSortColumn === 'competitor_id'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
+            <!-- Propuesta Agente Column -->
+            <th scope="col" (click)="sortData('salesman_proposal')" class="cursor">
+              <i class="bi bi-card-text" [ngbTooltip]="'Propuesta Agente'"></i>
+              <i *ngIf="currentSortColumn === 'salesman_proposal'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+            </th>
             <!-- Acción Correctora Column -->
             <th scope="col" class="text-center header-correctora">Convertir en oportunidad (% ó € + Promo)</th>
             <!-- Acción Correctora Enviar Column -->
             <th scope="col" class="text-center header-correctora"></th>
-            <!-- Propuesta Agente Column -->
-            <th scope="col" (click)="sortData('salesman_proposal')" class="cursor">
-              Propuesta Agente
-              <i *ngIf="currentSortColumn === 'salesman_proposal'" class="bi"
-                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
-            </th>
-            <!-- Fecha Interés Column -->
-            <th scope="col" class="text-success text-end cursor" (click)="sortData('interest_date')">
-              <i *ngIf="currentSortColumn === 'interest_date'" class="bi"
-                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
-              Interés
-            </th>
             <!-- columna ficha -->
-            <th scope="col" class="text-center ps-3">Ficha</th>
+            <th scope="col" class="text-center">Ficha</th>
             <!-- Expand Column -->
             <th scope="col" class="text-center"></th>
           </tr>
@@ -320,6 +320,11 @@
                   <option *ngFor="let motivo of motivos_rechazo" [value]="motivo.id">{{ motivo.rejection }}</option>
                 </select>
               </td>
+              <!-- Fecha Interés Column -->
+              <td class="text-success centrado_column row_fecha_interes">
+                <i *ngIf="row.interest_date" class="bi bi-calendar-check promo-icon"
+                  [ngbTooltip]="row.interest_date"></i>
+              </td>
               <!-- Precio Column -->
               <td class="text-end row_precio_producto centrado_column">{{ row.pvp | decimales }} €</td>
               <!-- Promo Propia Column -->
@@ -334,10 +339,15 @@
               </td>
               <!-- Competidor Column -->
               <td>
-                <select (change)="changeCompetidor($event, row)" class="form-select form-select-sm row_select_competidor"
-                  [(ngModel)]="row.competitor_id" [ngbTooltip]="row.competitor_name">
+                <select (change)="changeCompetidor($event, row)"
+                  class="form-select form-select-sm row_select_competidor" [(ngModel)]="row.competitor_id"
+                  [ngbTooltip]="row.competitor_name">
                   <option *ngFor="let competidor of competidores" [value]="competidor.id">{{ competidor.name }}</option>
                 </select>
+              </td>
+              <!-- Propuesta Agente Column -->
+              <td class="row_propuesta_agente">
+                <i *ngIf="row.salesman_proposal" [ngbTooltip]="row.salesman_proposal" class="bi bi-card-text"></i>
               </td>
               <!-- Acción Correctora Column -->
               <td class="fondo_accionCorrectora">
@@ -366,23 +376,15 @@
                   <input type="checkbox" (click)="$event.stopPropagation()" [checked]="row.corrective_action_sent" />
                 </div>
               </td>
-              <!-- Propuesta Agente Column -->
-              <td class="row_propuesta_agente">
-                <span [ngbTooltip]="row.salesman_proposal.length > 23 ? 'tooltip' : null"
-                  [ngbTooltip]="row.salesman_proposal.length > 23 ? row.salesman_proposal : ''">{{
-                  row.salesman_proposal }}</span>
-              </td>
-              <!-- Fecha Interés Column -->
-              <td class="text-success centrado_column row_fecha_interes">{{ row.interest_date }}</td>
               <!-- ficha column -->
-              <td class="text-center ps-3">
+              <td class="text-center">
                 <i class="bi bi-eye-fill fs-5 icon_color cursor" (click)="viewRechazo(row.customer_id)"></i>
               </td>
               <!-- Expand Column -->
               <td class="text-center">
                 <button class="btn btn-color py-0 px-1 text-white"
                   (click)="expandedElement = (expandedElement === row ? null : row)">
-                  <i class="bi" [ngClass]="expandedElement === row ? 'bi-x' : 'bi bi-three-dots-vertical'"></i>
+                  <i class="bi" [ngClass]="expandedElement === row ? 'bi-chevron-up' : 'bi bi-three-dots'"></i>
                 </button>
               </td>
             </tr>

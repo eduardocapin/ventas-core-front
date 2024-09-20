@@ -215,7 +215,8 @@
           [totalItems]="data.length"
           [itemsPerPage]="itemsPerPage"
           [currentPage]="currentPage"
-          (pageChange)="changePage($event)">
+          (pageChange)="changePage($event)"
+          (itemsPerPageChanged)="onItemsPerPageChanged($event)">
         </app-pagination>
       </div>
     </div>

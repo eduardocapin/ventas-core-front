@@ -130,6 +130,12 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     this.paginate();
   }
 
+  onItemsPerPageChanged(itemsPerPage: number) {
+    this.itemsPerPage = itemsPerPage;
+    this.currentPage = 1;
+    this.paginate()
+  }
+
   private loadGoogleMapsScript(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (!document.getElementById('google-maps-script')) {

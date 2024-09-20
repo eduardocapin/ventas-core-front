@@ -1,13 +1,13 @@
-<div class="fondoBlanco p-4 pt-3 col-11 col-xxl-10 shadow-card">
-    <h2 class="titulo">
-      {{ title }}
-    </h2>
+<div class="fondoBlanco mx-3 p-4 pt-3 shadow-card">
+  <h2 class="titulo">
+    {{ title }}
+  </h2>
 
-    <div>
-      <div class="pb-3 d-flex flex-column gap-3">
-        <ng-container *ngFor="let item of items">
-          <app-list-item [listItem]="item"></app-list-item>
-        </ng-container>
-      </div>
+  <div>
+    <div class="pb-3 d-flex flex-column gap-3">
+      <ng-container *ngFor="let item of items">
+        <app-list-item [listItem]="item"></app-list-item>
+      </ng-container>
     </div>
   </div>
+</div>

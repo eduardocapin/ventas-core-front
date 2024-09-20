@@ -4,14 +4,13 @@
       <mat-icon class="color-dark">build</mat-icon>
       <h1 class="mb-0 ps-2 color-dark page-heading">Configuración</h1>
     </div>
-
-
-    <div class="row ">
-      <div class="col-lg-4 col-md-6 col-sm-12 mb-4 align-items-stretch" *ngFor="let container of containers">
-        <app-configuration-list-item-container [title]="container.title"
-          [items]="container.items"></app-configuration-list-item-container>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12 align-items-stretch my-3 px-0" *ngFor="let container of containers">
+          <app-configuration-list-item-container [title]="container.title"
+            [items]="container.items"></app-configuration-list-item-container>
+        </div>
       </div>
     </div>
-
   </div>
 </div>

@@ -6,6 +6,7 @@ import { EnterosPipe } from '../pipes/enteros.pipe';
 import { MenuItemComponent } from '../components/menu-item/menu-item.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { PaginationComponent } from '../components/pagination/pagination.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { PaginationComponent } from '../components/pagination/pagination.compone
   ],
   imports: [
     CommonModule,
+    FormsModule 
 
   ],
   exports: [
