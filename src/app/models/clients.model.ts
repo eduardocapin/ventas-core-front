@@ -1,7 +1,7 @@
 export interface IClient {
     id: number;
     internal_id: string;
-    customer_ERP_id: String;
+    customer_ERP_id: string;
     cif: string;
     name: string;
     tax_name: string;

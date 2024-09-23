@@ -1,153 +1,96 @@
 <div>
-    <div class="d-flex align-items-center justify-content-between">
-      <div class="align-items-center d-flex gap-2 pt-3 ps-4">
-  
-        <h2 class="m-0 ">
-          <img class="icon-title" src="/assets/images/iconos/clientes-icon-dark.svg" alt="Clientes" matListItemIcon />
-          <span class="color-dark">Cliente </span>
-        </h2>
-      </div>
-      <!--añadimos un botón para los contactos-->
-      <button [disabled]="contacts == 0" class="me-3" mat-raised-button color="light" type="button" (click)="editContact()">
-        <mat-icon id="contactos" class="btnContacts me-1">groups</mat-icon>
-        Contactos</button>
-      <!--<mat-icon id="contactos" (click)="editContact()" class="btnContacts me-4" matTooltip="Contactos">groups</mat-icon>-->
-    </div>
-    <form [formGroup]="form" (ngSubmit)="aceptar()">
-      <mat-dialog-content class="container">
-        <div [class.d-none]="cargando">
-          <div class="row gx-2">
-            <div class="col-2">
-              <!--Codigo Cliente-->
-              <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                <mat-label>Código cliente</mat-label>
-                <input readonly="true" formControlName="codigo_Cliente" matInput placeholder="Código cliente"
-                  autocomplete="off" />
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <!--Nombre Cliente-->
-              <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                <mat-label>Nombre</mat-label>
-                <input readonly="true" formControlName="nombre" matInput placeholder="Nombre" autocomplete="off" />
-              </mat-form-field>
-            </div>
-          </div>
-  
-          <div class="row gx-2">
-            <div class="col-2">
-              <!--Cif Cliente-->
-              <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                <mat-label>Cif</mat-label>
-                <input readonly="true" formControlName="cif" matInput placeholder="Cif" autocomplete="off" />
-              </mat-form-field>
-            </div>
-  
-            <div class="col">
-              <!--Nombre Fiscal Cliente-->
-              <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                <mat-label>Nombre fiscal cliente</mat-label>
-                <input readonly="true" formControlName="nombre_Fiscal" matInput placeholder="Nombre fiscal cliente"
-                  autocomplete="off" />
-              </mat-form-field>
-            </div>
-          </div>
-  
-          <div class="row">
-            <!--dirección del Cliente-->
-            <div class="col">
-              <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                <mat-label>Dirección</mat-label>
-                <input readonly="true" formControlName="direccion" matInput placeholder="Dirección" autocomplete="off" />
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row gx-2">
-            <div class="col-2">
-              <!--CP Cliente-->
-              <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                <mat-label>CP</mat-label>
-                <input readonly="true" formControlName="cp" matInput placeholder="CP" autocomplete="off" />
-              </mat-form-field>
-            </div>
-            <div class="col-5">
-              <!--Localidad Cliente-->
-              <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                <mat-label>Población</mat-label>
-                <input readonly="true" formControlName="localidad" matInput placeholder="Población" autocomplete="off" />
-              </mat-form-field>
-            </div>
-            <div class="col-5">
-              <!--Provincia Cliente-->
-              <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                <mat-label>Provincia</mat-label>
-                <input readonly="true" formControlName="provincia" matInput placeholder="Provincia" autocomplete="off" />
-              </mat-form-field>
-            </div>
-  
-          </div>
-          <div class="row gx-2">
-            <div class="col-2">
-              <!--Teléfono 1 Cliente-->
-              <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                <mat-label>Teléfono 1</mat-label>
-                <input readonly="true" formControlName="telefono_1" matInput placeholder="Teléfono 1"
-                  autocomplete="off" />
-              </mat-form-field>
-            </div>
-  
-            <div class="col-2">
-              <!--Teléfono 2 Cliente-->
-              <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                <mat-label>Teléfono 2</mat-label>
-                <input readonly="true" formControlName="telefono_2" matInput placeholder="Teléfono 2"
-                  autocomplete="off" />
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <!--email Cliente-->
-              <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                <mat-label>Email</mat-label>
-                <input readonly="true" formControlName="email" matInput placeholder="Email" autocomplete="off" />
-              </mat-form-field>
-            </div>
-          </div>
-  
-          <div class="row gx-2">
-            <div *ngIf="cliente?.nsegmentacion_1" class="col">
-              <!--Segmentacion 1 Cliente-->
-              <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                <mat-label>{{cliente?.nsegmentacion_1}}</mat-label>
-                <input readonly="true" formControlName="segmentacion_1" matInput
-                  placeholder="{{cliente?.nsegmentacion_1}}" autocomplete="off" />
-              </mat-form-field>
-            </div>
-            <div *ngIf="cliente?.nsegmentacion_2" class="col">
-              <!--Segmentacion 2 Cliente-->
-              <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                <mat-label>{{cliente?.nsegmentacion_2}}</mat-label>
-                <input readonly="true" formControlName="segmentacion_2" matInput
-                  placeholder="{{cliente?.nsegmentacion_2}}" autocomplete="off" />
-              </mat-form-field>
-            </div>
-            <div *ngIf="cliente?.nsegmentacion_3" class="col">
-              <!--Segmentacion 3 Cliente-->
-              <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                <mat-label>{{ cliente?.nsegmentacion_3}}</mat-label>
-                <input readonly="true" formControlName="segmentacion_3" matInput
-                  placeholder="{{cliente?.nsegmentacion_3}} 3" autocomplete="off" />
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-        <div class="d-flex justify-content-center mt-5" *ngIf="cargando">
-          <mat-spinner color="red"></mat-spinner>
-        </div>
-      </mat-dialog-content>
-      <mat-dialog-actions class="d-flex justify-content-end gap-2">
-        <button mat-raised-button color="light" type="submit">Aceptar</button>
-        <button mat-raised-button color="light" type="button" (click)="cancelar()" mat-button
-          cdkFocusInitial>Cancelar</button>
-      </mat-dialog-actions>
-    </form>
+  <app-popup-header [title]="'Cliente'" [icon]="'/assets/images/iconos/clientes-icon-dark.svg'"
+    (close)="cerrarPopup()"></app-popup-header>
+</div>
+<mat-dialog-content class="container pt-0">
+
+
+
+  <div class="d-flex justify-content-start mb-2 flex-wrap">
+    <!-- <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
+      <i class="bi bi-x-circle me-1"></i> Cerrar
+    </button>
+    <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
+      <i class="bi bi-save me-1"></i> Guardar
+    </button> 
+    -->
+    <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
+      <i class="bi bi-bar-chart-line me-1"></i> Estadísticas
+    </button>
+    <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
+      <i class="bi bi-clock-history me-1"></i> Historial de visitas
+    </button>
+    <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
+      <i class="bi bi-exclamation-triangle me-1"></i> Alertas
+    </button>
+    <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
+      <i class="bi bi-geo-alt me-1"></i> Situación
+    </button>
+    <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
+      <i class="bi bi-tools me-1"></i> Actions
+    </button>
+    <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
+      <i class="bi bi-cart3 me-1"></i> Pedidos
+    </button>
+    <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
+      <i class="bi bi-arrow-repeat me-1"></i> Rotación
+    </button>
+    <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
+      <i class="bi bi-currency-exchange me-1"></i> Cobros
+    </button>
+
+    <button ngbTooltip="Ver en Mapa" class="btn btn-sm btn-outline-secondary me-2 mb-2" (click)="verEnMapa()">
+      <i class="bi bi-geo-alt me-1"></i>
+    </button>
+    <button [disabled]="contacts == 0" class="btn btn-sm btn-outline-secondary me-2 mb-2" type="button"
+      (click)="editContact()">
+      <i class="bi bi-people me-1"></i> Contactos
+    </button>
   </div>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs" id="clienteTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="datos-tab" data-bs-toggle="tab" data-bs-target="#datos" type="button"
+        role="tab">Datos</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="horarios-tab" data-bs-toggle="tab" data-bs-target="#horarios" type="button"
+        role="tab">Horarios de Visita</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="contactos-tab" data-bs-toggle="tab" data-bs-target="#contactos" type="button"
+        role="tab">Contactos y Direcciones</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="crm-tab" data-bs-toggle="tab" data-bs-target="#crm" type="button"
+        role="tab">CRM</button>
+    </li>
+  </ul>
+  <!-- Tab content -->
+  <div class="tab-content p-3">
+    <!-- Datos Generales -->
+    <div class="tab-pane fade show active" id="datos" role="tabpanel">
+      <div>
+        <app-cliente-datos-generales [cliente]="this.cliente"></app-cliente-datos-generales>
+      </div>
+      <div>
+        <app-cliente-economicos [cliente]="this.cliente"></app-cliente-economicos>
+      </div>
+      <div>
+        <app-cliente-mas-info [cliente]="this.cliente"></app-cliente-mas-info>
+      </div>
+    </div>
+
+    <!-- Otros tabs (vacíos por ahora) -->
+    <div class="tab-pane fade" id="horarios" role="tabpanel">
+      <p>Contenido de Horarios de Visita</p>
+    </div>
+    <div class="tab-pane fade" id="contactos" role="tabpanel">
+      <p>Contenido de Contactos y Direcciones</p>
+    </div>
+    <div class="tab-pane fade" id="crm" role="tabpanel">
+      <p>Contenido de CRM</p>
+    </div>
+  </div>
+</mat-dialog-content>

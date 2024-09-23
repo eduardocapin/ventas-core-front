@@ -1,0 +1,11 @@
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-etiqueta-valor',
+  templateUrl: './etiqueta-valor.component.html',
+  styleUrls: ['./etiqueta-valor.component.css'],
+})
+export class EtiquetaValorComponent {
+  @Input() etiqueta!: string | null | undefined;
+  @Input() valor!: string | number | null | undefined;
+}

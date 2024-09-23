@@ -18,16 +18,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { AppComponent } from './app.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SharedModule } from './shared/shared.module';
-
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ConfirmDialogComponent,
-    
-
     /* lo unico que se declarara sera los componentes creados en la carpeta componentes paginas no */
 
   ],

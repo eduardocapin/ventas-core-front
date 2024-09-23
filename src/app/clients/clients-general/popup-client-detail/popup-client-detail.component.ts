@@ -12,13 +12,13 @@ import { IClient } from 'src/app/models/clients.model';
 import { ClientsService } from 'src/app/services/clients/clients.service';
 import { ClientsGeneralComponent } from '../clients-general.component';
 import { ClientContactListComponent } from '../client-contact-list/client-contact-list.component';
+import { PopupMapClientsComponent } from '../popup-map-clients/popup-map-clients.component';
 @Component({
   selector: 'app-popup-client-detail',
   templateUrl: './popup-client-detail.component.html',
-  styleUrls: ['./popup-client-detail.component.css']
+  styleUrls: ['./popup-client-detail.component.css'],
 })
 export class PopupClientDetailComponent {
-
   id_cliente: number = 0;
   form: any;
   inactivo: boolean = false;
@@ -63,25 +63,7 @@ export class PopupClientDetailComponent {
         (data: any) => {
           const clientsData: any[] = data;
           this.cliente = clientsData[0];
-          this.form.patchValue({
-            codigo_Cliente: clientsData[0].customer_ERP_id,
-            nombre: clientsData[0].name,
-            cif: clientsData[0].cif,
-            nombre_Fiscal: clientsData[0].tax_name,
-            provincia: clientsData[0].province,
-            localidad: clientsData[0].city,
-            cp: clientsData[0].pc != 0 ? clientsData[0].phone_1: "",
-            telefono_1: clientsData[0].phone_1?.toString().length == 11 ? clientsData[0].phone_1 : "" ,
-            telefono_2: clientsData[0].phone_2?.toString().length == 11 ? clientsData[0].phone_2 : "",
-            email: clientsData[0].email,
-            segmentacion_1: clientsData[0].descripcion_s1,
-            segmentacion_2: clientsData[0].descripcion_s2,
-            segmentacion_3: clientsData[0].descripcion_s3,
-            direccion: clientsData[0].address,
-          });
           this.inactivo = clientsData[0].deleted;
-          this.tieneAppInWhats = clientsData[0].has_AIW;
-          this.pedidoValorado = clientsData[0].has_unvalued_order;
           this.contacts = clientsData[0].contacts;
           this.cargando = false;
         },
@@ -92,7 +74,7 @@ export class PopupClientDetailComponent {
       );
   }
 
-  cancelar() {
+  cerrarPopup() {
     this.dialogRef.close({
       editado: false,
       id: this.id_cliente,
@@ -100,12 +82,10 @@ export class PopupClientDetailComponent {
   }
 
   aceptar() {
-   
-          this.dialogRef.close({
-            editado: true,
-            id: this.id_cliente,
-          });
-
+    this.dialogRef.close({
+      editado: true,
+      id: this.id_cliente,
+    });
   }
 
   editContact() {
@@ -121,6 +101,15 @@ export class PopupClientDetailComponent {
       console.log('The dialog was closed');
     });
   }
+
+  verEnMapa() {
+    const dialogRef = this.dialog.open(PopupMapClientsComponent, {
+      width: '80%',
+      height: '80%',
+      disableClose: true,
+      data: {
+        clients: [this.cliente],
+      },
+    });
+  }
 }
-
-
