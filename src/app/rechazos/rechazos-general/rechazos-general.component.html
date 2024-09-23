@@ -49,11 +49,12 @@
               </button>
             </div>
             <!-- filtros -->
+             <!--
              <div class="btn-group" #dropdownWrapper>
                 <a type="button" class="dropdown-toggle fw-semibold text-decoration-none color-text" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" id="dropdownMenuButton">+ Filtros </a>
                 <ul class="dropdown-menu">
                   <form [formGroup]="form" >
-                    <!-- fecha -->
+                    
                     <li class="dropend">
                       <a class="dropdown-item dropdown-toggle cursor" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Fecha</a>
                       <ul class="dropdown-menu">
@@ -72,7 +73,7 @@
                         
                       </ul>
                     </li>
-                    <!-- estados -->
+                    
                     <li class="dropend cursor">
                       <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Estados</a>
                       <ul class="dropdown-menu">
@@ -81,7 +82,7 @@
                         </li>
                       </ul>
                     </li>
-                    <!-- provincia -->
+                    
                     <li class="dropend cursor">
                       <a class="dropdown-item dropdown-toggle" 
                          data-bs-toggle="dropdown" 
@@ -91,15 +92,15 @@
                         Provincia
                       </a>
                       <ul class="dropdown-menu">
-                        <!-- Input para buscar la provincia -->
+                        
                         <input *ngIf="listasFiltradas.provincias.length >= 20" type="text" class="form-control" placeholder="Introduzca la provincia" (input)="onBuscar($event, 'provincias')">                        
-                        <!-- Lista de provincias filtradas -->
+                        
                         <li  *ngFor="let provincia of listasFiltradas.provincias" class="cursor">
                           <a class="dropdown-item" (click)="onFilter('Provincias', provincia.id)">{{ provincia.name }}</a>
                         </li>
                       </ul>
                     </li>
-                    <!-- poblacion -->
+                    
                     <li class="dropend cursor">
                       <a 
                         class="dropdown-item dropdown-toggle" 
@@ -116,7 +117,7 @@
                         </li>
                       </ul>
                     </li>
-                    <!-- Producto -->
+                    
                     <li class="dropend cursor">
                       <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Producto</a>
                       <ul class="dropdown-menu p-2 w-max">
@@ -127,7 +128,7 @@
                           
                       </ul>
                     </li>
-                    <!-- Familia -->
+                    
                     <li class="dropend cursor">
                       <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Familia</a>
                       <ul class="dropdown-menu p-2">
@@ -139,7 +140,7 @@
                         </li>
                       </ul>
                     </li>
-                    <!-- subfamilia -->
+                    
                     <li class="dropend cursor">
                       <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">SubFamilia</a>
                       <ul class="dropdown-menu p-2">
@@ -151,7 +152,24 @@
                     </li>
                   </form>
                 </ul>
-             </div>
+             </div> -->
+             <div class="btn-group" #dropdownWrapper>
+              <a type="button" class="dropdown-toggle fw-semibold text-decoration-none color-text" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" id="dropdownMenuButton">+ Filtros</a>
+              <ul class="dropdown-menu">
+                <form [formGroup]="form">
+                  <app-date-filter></app-date-filter>
+                  <app-multi-select-filter [title]="'Estado'" [options]="estados" (selectionChange)="onFilter('Estados', $event)"></app-multi-select-filter>
+                  <app-search-filter [title]="'Cliente'" (searchChange)="onFilter('Cliente', $event)"></app-search-filter>
+                  <app-multi-select-filter [title]="'Provincia'" [options]="provincias" (selectionChange)="onFilter('Provincias', $event)"></app-multi-select-filter>
+                  <app-multi-select-filter [title]="'Población'" [options]="poblacion" (selectionChange)="onFilter('Poblaciones', $event)"></app-multi-select-filter>
+                  <app-search-filter [title]="'Producto'" (searchChange)="onFilter('Producto', $event)"></app-search-filter>
+                  <app-multi-select-filter [title]="'Familia'" [options]="familias" (selectionChange)="onFilter('Provincias', $event)"></app-multi-select-filter>
+                  <app-multi-select-filter [title]="'SubFamilia'" [options]="subfamilias" (selectionChange)="onFilter('Poblaciones', $event)"></app-multi-select-filter>
+                  <app-range-filter></app-range-filter>
+                </form>
+              </ul>
+            </div>
+            
          </div>
         </div>
       <!-- botones y filtros -->

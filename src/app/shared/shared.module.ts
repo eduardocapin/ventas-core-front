@@ -6,7 +6,11 @@ import { EnterosPipe } from '../pipes/enteros.pipe';
 import { MenuItemComponent } from '../components/menu-item/menu-item.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { PaginationComponent } from '../components/pagination/pagination.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DateFilterComponent } from '../components/filters/date-filter/date-filter.component';
+import { SearchFilterComponent } from '../components/filters/search-filter/search-filter.component';
+import { MultiSelectFilterComponent } from '../components/filters/multi-select-filter/multi-select-filter.component';
+import { RangeFilterComponent } from '../components/filters/range-filter/range-filter.component';
 
 @NgModule({
   declarations: [
@@ -14,10 +18,15 @@ import { FormsModule } from '@angular/forms';
     DecimalesPipe,
     EnterosPipe,
     PaginationComponent,
+    DateFilterComponent,
+    SearchFilterComponent,
+    MultiSelectFilterComponent,
+    RangeFilterComponent,
   ],
   imports: [
     CommonModule,
-    FormsModule 
+    FormsModule,
+    ReactiveFormsModule  
 
   ],
   exports: [
@@ -25,6 +34,10 @@ import { FormsModule } from '@angular/forms';
     DecimalesPipe,
     EnterosPipe,
     PaginationComponent,
+    DateFilterComponent,
+    SearchFilterComponent,
+    MultiSelectFilterComponent,
+    RangeFilterComponent,
   ]
 })
 export class SharedModule { }

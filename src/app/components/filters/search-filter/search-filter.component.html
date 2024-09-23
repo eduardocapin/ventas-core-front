@@ -1,0 +1,13 @@
+<li class="dropend cursor">
+  <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
+    data-bs-auto-close="outside">{{this.title}}</a>
+  <ul class="dropdown-menu p-2 w-max">
+    <div class="input-group input-group-sm">
+      <input type="text" class="form-control border border-end-0" placeholder="Buscar..."
+        (keydown.enter)="onInputChange()">
+      <button class="btn border border-start-0" type="button" id="button-addon2" (click)="onInputChange()"><i
+          class="bi bi-search"></i></button>
+    </div>
+
+  </ul>
+</li>

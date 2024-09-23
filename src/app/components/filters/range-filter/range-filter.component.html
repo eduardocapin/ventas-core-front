@@ -1,0 +1,10 @@
+<li class="dropend">
+    <a class="dropdown-item dropdown-toggle cursor" data-bs-toggle="dropdown" aria-expanded="false">Rango</a>
+    <ul class="dropdown-menu p-2 w-max">
+        <div class="input-group input-group-sm">
+            <input type="number" class="form-control" [(ngModel)]="min" placeholder="Mínimo">
+            <input type="number" class="form-control" [(ngModel)]="max" placeholder="Máximo">
+            <button class="btn btn-primary btn-sm" (click)="applyRange()">Aplicar</button>
+        </div>
+    </ul>
+</li>
