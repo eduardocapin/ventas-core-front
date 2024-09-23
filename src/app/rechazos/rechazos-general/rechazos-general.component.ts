@@ -110,9 +110,6 @@ toDate: NgbDateStruct | null = null;
       SubFamiliaFilterControl: [''],
     });
 
-    this.form.valueChanges.subscribe(() => {
-      this.applyFilterLogic();
-    });
   }
   
   ngOnInit() {
@@ -242,6 +239,14 @@ toDate: NgbDateStruct | null = null;
       });
     }
 
+    const productoValue = this.form.get('ProductoFilterControl')?.value;
+    if (productoValue && productoValue.length > 0) {
+      this.filtrosAplicados.push({
+        nombre: 'Producto',
+        valor: this.form.get('ProductoFilterControl')?.value
+      });
+    }
+
     const familiaValue = this.form.get('FamiliaFilterControl')?.value;
     if (familiaValue && familiaValue.length > 0){
       this.filtrosAplicados.push({
@@ -257,7 +262,7 @@ toDate: NgbDateStruct | null = null;
         valor: subfamiliaValue.join(', ')
       });
     }
-    this.cdr.detectChanges();
+
     this.applyFilterLogic();
   }
 
@@ -310,6 +315,9 @@ toDate: NgbDateStruct | null = null;
       case 'Poblacion':
         this.form.get('PoblacionFilterControl')?.reset();
         break;
+      case 'Producto':
+        this.form.get('ProductoFilterControl')?.reset();
+        break;
       case 'Familia':
         this.form.get('FamiliaFilterControl')?.reset();
         break;
@@ -346,7 +354,15 @@ toDate: NgbDateStruct | null = null;
         this.form.value.PoblacionFilterControl.includes(rechazo.city_id)
       );
     }
-  
+    
+    // Filtrar por Producto
+    const productoValue = this.form.value.ProductoFilterControl?.toLowerCase();
+    if (productoValue && productoValue.length) {
+      auxList = auxList.filter(rechazo =>
+        rechazo.product?.toLowerCase().includes(productoValue)
+      );
+    }
+
     // Filtrar por Familias (comparación de texto)
     if (this.form.value.FamiliaFilterControl?.length) {
       auxList = auxList.filter(rechazo =>

@@ -52,7 +52,7 @@
              <div class="btn-group" #dropdownWrapper>
                 <a type="button" class="dropdown-toggle fw-semibold text-decoration-none color-text" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" id="dropdownMenuButton">+ Filtros </a>
                 <ul class="dropdown-menu">
-                  <form [formGroup]="form" (ngSubmit)="applyComplexFilter()">
+                  <form [formGroup]="form" >
                     <!-- fecha -->
                     <li class="dropend">
                       <a class="dropdown-item dropdown-toggle cursor" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Fecha</a>
@@ -119,8 +119,12 @@
                     <!-- Producto -->
                     <li class="dropend cursor">
                       <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Producto</a>
-                      <ul class="dropdown-menu p-2">
-                          <input type="text" class="form-control"  placeholder="Introduzca el producto">
+                      <ul class="dropdown-menu p-2 w-max">
+                          <div class="input-group input-group-sm">
+                            <input type="text" class="form-control border border-end-0" formControlName="ProductoFilterControl" placeholder="Introduzca el producto" (keydown.enter)="applyComplexFilter()">
+                            <button class="btn border border-start-0" type="button" id="button-addon2" (click)="applyComplexFilter()"><i class="bi bi-search"></i></button>
+                          </div>
+                          
                       </ul>
                     </li>
                     <!-- Familia -->

@@ -257,41 +257,41 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   }
   /* botin para eleiminar solo un filtro */
   removeFilter(filtro: { nombre: string, valor: any }) {
-      // Eliminar el filtro de la lista de filtros aplicados
-  this.filtrosAplicados = this.filtrosAplicados.filter(f => f !== filtro);
+    // Eliminar el filtro de la lista de filtros aplicados
+    this.filtrosAplicados = this.filtrosAplicados.filter(f => f !== filtro);
 
-  // Restablecer el filtro en el formulario
-  switch (filtro.nombre) {
-    case 'Cliente':
-      this.form.get('cliente')?.reset();
-      break;
-    case 'Potenciabilidad':
-      this.form.get('segmentacion1FilterControl')?.reset();
-      break;
-    case 'Tipología':
-      this.form.get('segmentacion2FilterControl')?.reset();
-      break;
-    case 'Imagen':
-      this.form.get('segmentacion3FilterControl')?.reset();
-      break;
-    case 'Periodo de ventas':
-      this.range.reset();
-      break;
-    case 'Población':
-      this.form.get('poblacionFilterControl')?.reset();
-      break;
-    case 'Provincia':
-      this.form.get('provinciaFilterControl')?.reset();
-      break;
-    case 'Agente':
-      this.form.get('agenteFilterControl')?.reset();
-      break;
-    case 'Familia':
-      this.form.get('familiaFilterControl')?.reset();
-      break;
-  }
-  // Aplicar la lógica de filtros actualizada
-  this.applyFilterLogic();
+    // Restablecer el filtro en el formulario
+    switch (filtro.nombre) {
+      case 'Cliente':
+        this.form.get('cliente')?.reset();
+        break;
+      case 'Potenciabilidad':
+        this.form.get('segmentacion1FilterControl')?.reset();
+        break;
+      case 'Tipología':
+        this.form.get('segmentacion2FilterControl')?.reset();
+        break;
+      case 'Imagen':
+        this.form.get('segmentacion3FilterControl')?.reset();
+        break;
+      case 'Periodo de ventas':
+        this.range.reset();
+        break;
+      case 'Población':
+        this.form.get('poblacionFilterControl')?.reset();
+        break;
+      case 'Provincia':
+        this.form.get('provinciaFilterControl')?.reset();
+        break;
+      case 'Agente':
+        this.form.get('agenteFilterControl')?.reset();
+        break;
+      case 'Familia':
+        this.form.get('familiaFilterControl')?.reset();
+        break;
+    }
+    // Aplicar la lógica de filtros actualizada
+    this.applyFilterLogic();
   }
   /* logica para el filtrado de segmetacion */
   onFilterSelect(segmentationValueId: number, segmentacionTipo: number) {  

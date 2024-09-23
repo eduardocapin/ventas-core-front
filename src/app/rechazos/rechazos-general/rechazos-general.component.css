@@ -357,6 +357,9 @@ th {
   background-color: #4e62d121;
   color: white;
 }
+.w-max{
+  width: max-content;
+}
 
 /* eliminar las flechas de number */
 /* Para navegadores webkit (Chrome, Safari, etc.) */
