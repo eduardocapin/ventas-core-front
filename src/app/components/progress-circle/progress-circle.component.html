@@ -1,6 +1,8 @@
-<div class="progress-circle-container" data-value="7090" data-total="10000" data-color="#007bff" data-text="Earnings">
-    <div class="progress-circle" style="--percent: 70; --color: #007bff; --inner-color: #f3f4f6">
-        <div class="progress-text">70%</div>
-        <div class="progress-value">Earnings</div>
+<div class="progress-circle-container" data-value="7090" data-total="10000" data-color="#007bff" data-text="Earnings"
+    (mouseenter)="setIsHovered(true)" (mouseleave)="setIsHovered(false)">
+    <div class="progress-circle"
+        [ngStyle]="{'--percent': percentage, '--color': color, '--inner-color': backgroundColor}">
+        <div class="progress-text">{{this.isHovered == true ? number : percentage + "%"}}</div>
+        <div class="progress-value">{{text}}</div>
     </div>
 </div>
