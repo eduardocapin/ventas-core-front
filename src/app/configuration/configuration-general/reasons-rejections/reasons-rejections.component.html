@@ -1,54 +1,34 @@
 <div class="d-flex justify-content-between align-items-center py-1">
-    <h3 mat-dialog-title bg-light class="m-0">
-      Motivos de Rechazo
-    </h3>
-  
-    <button class="me-4" [disabled]="this.rejectList.length >= 10" mat-raised-button color="" type="button" mat-button
-      (click)="addEditRechazo()" [matTooltipDisabled]="this.rejectList.length < 10"
-      matTooltip="Máximo de 10 motivos alcanzado. Elimine alguno para añadir nuevos motivos">Agregar</button>
-  </div>
-  
-  <mat-dialog-content class="mat-typography py-0">
+  <h3 mat-dialog-title class="bg-light m-0">Motivos de Rechazo</h3>
+</div>
 
-      <table mat-table [dataSource]="dataSource" matSort>
-  
-        <!-- codigo Column -->
-        <ng-container matColumnDef="codigo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Código</th>
-          <td mat-cell *matCellDef="let row">{{row.rejection_code}}</td>
-        </ng-container>
-  
-        <!-- Nombre Column -->
-        <ng-container matColumnDef="nombre">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-          <td mat-cell *matCellDef="let row">{{row.rejection}}</td>
-        </ng-container>
-        <!-- iconos y botons de acciones -->
-        <ng-container matColumnDef="acciones">
-          <th class="text-center" mat-header-cell *matHeaderCellDef>Acciones</th>
-          <td class="text-center" mat-cell *matCellDef="let row">
-            <mat-icon *ngIf="row.internal_id!=-1" (click)="addEditRechazo(row.id)" class="btnEdit"
-              matTooltip="Editar">edit</mat-icon>
-            <mat-icon *ngIf="row.internal_id!=-1" (click)="deleteRechazo(row.id)" class="btnDelete"
-              matTooltip="Eliminar">delete</mat-icon>
-          </td>
-        </ng-container>
-  
-        <tr mat-header-row *matHeaderRowDef="displayedColumns">
-        </tr>
-        <tr mat-row *matRowDef="let row; columns:displayedColumns;">
-        </tr>
-        <!-- Row shown when there is no matching data. -->
-        <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="4">
-            No se han encontrado datos
-          </td>
-        </tr>
-      </table>
-      <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons
-        aria-label="Select page of users"></mat-paginator>
+<mat-dialog-content class="mat-typography py-0">
+  <table class="table table-striped">
+      <thead>
+          <tr>
+              <th scope="col">Código</th>
+              <th scope="col">Nombre</th>
+              <th scope="col" class="text-center">Acciones</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let row of rejectList">
+              <td>{{row.rejection_code}}</td>
+              <td>{{row.rejection}}</td>
+              <td class="text-center">
+                  <mat-icon *ngIf="row.internal_id!=-1" (click)="addEditRechazo(row.id)" class="btnEdit"
+                            matTooltip="Editar">edit</mat-icon>
+                  <mat-icon *ngIf="row.internal_id!=-1" (click)="deleteRechazo(row.id)" class="btnDelete"
+                            matTooltip="Eliminar">delete</mat-icon>
+              </td>
+          </tr>
+          <tr *ngIf="rejectList.length === 0">
+              <td colspan="3" class="text-center">No se han encontrado datos</td>
+          </tr>
+      </tbody>
+  </table>
+</mat-dialog-content>
 
-  </mat-dialog-content>
-  <mat-dialog-actions class="d-flex justify-content-end gap-2 p-2 pe-4">
-    <button mat-raised-button color="light" mat-button cdkFocusInitial (click)="cancelar()">Cerrar</button>
-  </mat-dialog-actions>
+<mat-dialog-actions class="d-flex justify-content-end gap-2 p-2 pe-4">
+  <button mat-raised-button color="light" mat-button cdkFocusInitial (click)="cancelar()">Cerrar</button>
+</mat-dialog-actions>

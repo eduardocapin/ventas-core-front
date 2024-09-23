@@ -37,7 +37,11 @@ export class ListItemService {
         width: 'auto',
         disableClose: true
       });
+    },
+    openCompetitor: () =>{
+      const dialogRef = this.dialog
     }
+    
   };
 
   executeFunction(functionName: string) {
