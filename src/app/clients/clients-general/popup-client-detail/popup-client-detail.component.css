@@ -1,22 +1,26 @@
  .modal-content {
-  border-color: #007bff;
+  border-color: #3f51b5;
 }
 
 .nav-tabs .nav-link.active {
-  background-color: #007bff;
+  background-color: #3f51b5;
   color: white;
 }
-
+.nav-item button{
+  color: #3f51b5;
+}
 .btn-outline-secondary {
-  border-color: #007bff;
-  color: #007bff;
+  border-color: #3f51b5;
+  color: #3f51b5;
 }
 
 .btn-outline-secondary:hover {
-  background-color: #007bff;
+  background-color: #3f51b5;
   color: white;
 }
 
-
+.nav-link{
+  font-size: 14px;
+}
 
 

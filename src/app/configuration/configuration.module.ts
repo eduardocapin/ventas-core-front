@@ -34,6 +34,7 @@ import { ReasonsRejectionsComponent } from './configuration-general/reasons-reje
 import { AddEditReasonRejectionsComponent } from './configuration-general/reasons-rejections/add-edit-reason-rejections/add-edit-reason-rejections.component';
 import { ListItemComponent } from '../components/list-item/list-item.component';
 import { ConfigurationListItemContainerComponent } from '../components/configuration-list-item-container/configuration-list-item-container.component';
+import { SharedModule } from "../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { ConfigurationListItemContainerComponent } from '../components/configura
     MatSidenavModule,
     MatSelectModule,
     MatAutocompleteModule,
-  ],
+    SharedModule
+],
 })
 export class ConfigurationModule {}

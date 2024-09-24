@@ -17,6 +17,9 @@ export class ReasonsRejectionsComponent {
   rejectList: IMotivoRechazo[] = [];
   cargando: boolean = false;
 
+  newRejectionCode: string = '';
+  newRejectionName: string = '';
+
   constructor(
     private _motivoRechazoService: MotivoRechazoService,
     private router: Router,
@@ -86,7 +89,14 @@ export class ReasonsRejectionsComponent {
   }
 
   /* logica de btn de Cancelar de Motivo de Rechazo */
-  cancelar() {
+  cerrarPopup() {
     this.dialogRef.close();
   }
+
+  /* New row */
+    /* Limpiar los campos del nuevo motivo de rechazo */
+    clearNewRechazo() {
+      this.newRejectionCode = '';
+      this.newRejectionName = '';
+    }
 }

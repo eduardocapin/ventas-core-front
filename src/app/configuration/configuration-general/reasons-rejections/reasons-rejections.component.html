@@ -1,9 +1,9 @@
-<div class="d-flex justify-content-between align-items-center py-1">
-  <h3 mat-dialog-title class="bg-light m-0">Motivos de Rechazo</h3>
+<div>
+    <app-popup-header [title]="'Motivos de Rechazo'" [icon]="'/assets/images/iconos/configuracion-icon-dark.svg'" (close)="cerrarPopup()"></app-popup-header>
 </div>
 
 <mat-dialog-content class="mat-typography py-0">
-  <table class="table table-striped">
+  <table class="table ">
       <thead>
           <tr>
               <th scope="col">Código</th>
@@ -22,13 +22,19 @@
                             matTooltip="Eliminar">delete</mat-icon>
               </td>
           </tr>
+          <tr>
+            <td><input type="text" class="form-control" [(ngModel)]="newRejectionCode" placeholder="Código"></td>
+            <td><input type="text" class="form-control" [(ngModel)]="newRejectionName" placeholder="Nombre"></td>
+            <td class="text-center">
+                <mat-icon  class="btnSave" matTooltip="Guardar">check</mat-icon> <!-- falta la logica para agregar un nuevo motivo de rechazo hacer que la falto -->
+                <mat-icon (click)="clearNewRechazo()" class="btnClear" matTooltip="Limpiar">clear</mat-icon>
+            </td>
+        </tr>
           <tr *ngIf="rejectList.length === 0">
               <td colspan="3" class="text-center">No se han encontrado datos</td>
           </tr>
       </tbody>
   </table>
+  <app-pagination></app-pagination>
 </mat-dialog-content>
 
-<mat-dialog-actions class="d-flex justify-content-end gap-2 p-2 pe-4">
-  <button mat-raised-button color="light" mat-button cdkFocusInitial (click)="cancelar()">Cerrar</button>
-</mat-dialog-actions>
