@@ -19,4 +19,7 @@ export class DateFilterComponent {
   reset(){
     
   }
+  update(filtroAplicado: { id: string; nombre: string; valor: any; tipo: string }){
+    
+  }
 }

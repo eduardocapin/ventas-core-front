@@ -19,12 +19,49 @@
             <button *ngIf="filtrosAplicados.length > 0" class="btn btn-outline-danger btn-sm" (click)="filtroReset()">
                 Limpiar
             </button>
+            <!-- Botón "Guardar" -->
+            <button *ngIf="filtrosAplicados.length > 0" class="btn btn-outline-success btn-sm"
+                (click)="mostrarInputParaGuardar()">
+                <i class="bi bi-save"></i>
+            </button>
+
+            <!-- Modal para el input del nombre del filtro guardado -->
+            <div class="modal fade" id="nombreFiltroModal" tabindex="-1" aria-labelledby="nombreFiltroModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <input [(ngModel)]="nombreFiltroGuardado" class="form-control"
+                                placeholder="Nombre del filtro" />
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary btn-sm" (click)="guardarFiltros()"
+                                data-bs-dismiss="modal">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="btn-group" #dropdownWrapper>
             <a type="button" class="dropdown-toggle fw-semibold text-decoration-none color-text"
                 data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" id="dropdownMenuButton">+
                 Filtros</a>
             <ul class="dropdown-menu">
+                <!-- Selección de filtros guardados -->
+                <div *ngIf="filtrosGuardados.length > 0">
+                    <li class="dropend">
+                        <a class="dropdown-item dropdown-toggle cursor" data-bs-toggle="dropdown" aria-expanded="false">
+                            Filtros guardados
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li *ngFor="let filtroGuardado of filtrosGuardados" class="cursor">
+                                <a class="dropdown-item" (click)="seleccionarFiltrosGuardados(filtroGuardado)">
+                                    {{ filtroGuardado.nombre }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </div>
                 <div *ngFor="let filter of filters">
                     <app-date-filter *ngIf="filter.type === 'date'" [id]="filter.id"
                         (dateSelection)="handleFilterChange(filter.id, $event)"></app-date-filter>

@@ -75,4 +75,7 @@ export class MultiSelectFilterComponent {
     this.searchTerm = '';
     //this.selectionChange.emit(this.selectedOptions);
   }
+  update(filtroAplicado: { id: string; nombre: string; valor: any; tipo: string }){
+    
+  }
 }

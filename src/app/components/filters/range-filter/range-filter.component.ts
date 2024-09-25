@@ -21,4 +21,8 @@ export class RangeFilterComponent {
     this.max = 0
     //this.rangeSelected.emit({ min: this.min, max: this.max });
   }
+
+  update(filtrosAplicados: { id: string; nombre: string; valor: any; tipo: string }){
+    
+  }
 }
