@@ -24,11 +24,9 @@ export class MultiSelectFilterComponent {
   searchTerm: string = '';
 
   constructor(private _filterService: FilterService) {
-    console.log('Endpoint inicial:', this.endpoint);
   }
 
   ngOnInit() {
-    console.log('Endpoint ngonInit:', this.endpoint);
     if (this.endpoint) {
       this.loadOptions(this.endpoint);
     }

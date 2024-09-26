@@ -12,6 +12,8 @@ import { FilterService } from 'src/app/services/filter/filter.service';
 import { SearchFilterComponent } from '../search-filter/search-filter.component';
 import { DateFilterComponent } from '../date-filter/date-filter.component';
 import { RangeFilterComponent } from '../range-filter/range-filter.component';
+import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 declare const bootstrap: any;
 @Component({
   selector: 'app-filter-container',
@@ -19,14 +21,14 @@ declare const bootstrap: any;
   styleUrls: ['./filter-container.component.css'],
 })
 export class FilterContainerComponent implements OnInit {
-  @Input() componentId?: string;
+  @Input() componentId: string = '';
   @Output() filtersChanged = new EventEmitter<{ [key: string]: any }>();
 
   filters: any[] = [];
   selectedFilters: { [key: string]: any } = {};
   filtrosAplicados: { id: string; nombre: string; valor: any; tipo: string }[] =
     [];
-  filtrosGuardados: { nombre: string; filtros: any[] }[] = [];
+  filtrosGuardados: { id: number; nombre: string; filtros: any[] }[] = [];
   mostrarInputNombre: boolean = false;
   nombreFiltroGuardado: string = '';
 
@@ -39,7 +41,7 @@ export class FilterContainerComponent implements OnInit {
   @ViewChildren(RangeFilterComponent)
   rangeComponents?: QueryList<RangeFilterComponent>;
 
-  constructor(private filterService: FilterService) {}
+  constructor(private filterService: FilterService, public dialog: MatDialog) {}
 
   ngOnInit() {
     this.filterService.getFiltersForComponent(this.componentId).subscribe(
@@ -50,6 +52,58 @@ export class FilterContainerComponent implements OnInit {
         console.error('Error al cargar los filtros:', error);
       }
     );
+    this.cargarFiltrosGuardados();
+  }
+
+  cargarFiltrosGuardados() {
+    this.filterService.getSavedFilters(this.componentId).subscribe(
+      (response) => {
+        this.filtrosGuardados = response;
+      },
+      (error) => {
+        console.error('Error al cargar los filtros guardados:', error);
+      }
+    );
+  }
+
+  guardarFiltros() {
+    if (this.nombreFiltroGuardado) {
+      this.filterService
+        .saveFilter(
+          this.componentId,
+          this.nombreFiltroGuardado,
+          this.filtrosAplicados
+        )
+        .subscribe((filtroGuardado) => {
+          console.log(filtroGuardado);
+          if (filtroGuardado.status == 'Success') {
+            this.filtrosGuardados.push({
+              id: filtroGuardado.data.insertId,
+              nombre: this.nombreFiltroGuardado.trim(),
+              filtros: [...this.filtrosAplicados],
+            });
+            this.nombreFiltroGuardado = '';
+          }
+        });
+    }
+  }
+
+  eliminarFiltroGuardado(filtroGuardado: any) {
+    this.dialog
+      .open(ConfirmDialogComponent, {
+        data: `¿Estas seguro de eliminar este filtro?`,
+      })
+      .afterClosed()
+      .subscribe((confirmado: Boolean) => {
+        if (confirmado) {
+          this.filterService.deleteFilter(filtroGuardado.id).subscribe(() => {
+            // Actualiza la lista de filtros guardados después de eliminar
+            this.filtrosGuardados = this.filtrosGuardados.filter(
+              (filtro) => filtro.id !== filtroGuardado.id
+            );
+          });
+        }
+      });
   }
 
   handleFilterChange(filterId: string, value: any) {
@@ -80,24 +134,13 @@ export class FilterContainerComponent implements OnInit {
     modal.show();
   }
 
-  guardarFiltros() {
-    if (this.nombreFiltroGuardado.trim()) {
-      this.filtrosGuardados.push({
-        nombre: this.nombreFiltroGuardado.trim(),
-        filtros: [...this.filtrosAplicados],
-      });
-      this.nombreFiltroGuardado = ''; // Limpia el campo después de guardar
-    } else {
-      console.error('Por favor, introduce un nombre para el filtro.');
-    }
-  }
-
   cancelarGuardado() {
     this.nombreFiltroGuardado = ''; // Limpia el campo de entrada
   }
 
   // Seleccionar filtros guardados
   seleccionarFiltrosGuardados(filtroGuardado: any) {
+    console.log(filtroGuardado);
     if (!filtroGuardado || !Array.isArray(filtroGuardado.filtros)) {
       console.error(
         'El filtro guardado no tiene la estructura esperada:',

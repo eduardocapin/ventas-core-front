@@ -55,9 +55,15 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li *ngFor="let filtroGuardado of filtrosGuardados" class="cursor">
-                                <a class="dropdown-item" (click)="seleccionarFiltrosGuardados(filtroGuardado)">
-                                    {{ filtroGuardado.nombre }}
-                                </a>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <a class="dropdown-item " (click)="seleccionarFiltrosGuardados(filtroGuardado)">
+                                        {{ filtroGuardado.nombre }}
+                                    </a>
+                                    <button class="btn btn-outline-danger btn-sm ms-2"
+                                        (click)="eliminarFiltroGuardado(filtroGuardado)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
                             </li>
                         </ul>
                     </li>

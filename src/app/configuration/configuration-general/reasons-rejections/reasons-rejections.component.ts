@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { AddEditReasonRejectionsComponent } from './add-edit-reason-rejections/add-edit-reason-rejections.component';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { timeout } from 'rxjs';
 import { MotivoRechazoService } from 'src/app/services/reasons_rejection/motivo-rechazo.service';
@@ -53,7 +51,32 @@ export class ReasonsRejectionsComponent {
         }
       );
   }
-
+  /* insertar nuevo motivo de rechazo */
+  insertReason() {
+    if (this.newRejectionCode && this.newRejectionName) {
+      const newReason = {
+        rejection_code: this.newRejectionCode,
+        name: this.newRejectionName
+      };
+  
+      this._motivoRechazoService.insertReason(newReason).subscribe(
+        (status) => {
+          if (status === 'Success') {
+            this.toastr.success('Motivo de rechazo añadido con éxito');
+            this.cargaRechazos();  // Volver a cargar la lista
+            this.clearNewRechazo();  // Limpiar los campos
+          }
+        },
+        (error) => {
+          console.error('Error al añadir el motivo de rechazo', error);
+          this.toastr.error('Error al añadir el motivo de rechazo', 'Error');
+        }
+      );
+    } else {
+      // Aquí mostramos el error
+      this.toastr.error('Por favor complete todos los campos.', 'Error');
+    }
+  }
   /* editar un motivo de rechazo */
   toogleEdit(reasonId: number){
     const reason = this.rejectList.find(r => r.id === reasonId);
@@ -62,10 +85,30 @@ export class ReasonsRejectionsComponent {
       this.editingReasonId = reasonId;
     }
   }
-  saveChanges(reason: IMotivoRechazo){
-    this.editingReasonId = null;
-    this.originalReason = null;
+  saveChanges(reason: IMotivoRechazo) {
+    // Validamos si hay cambios en los campos
+    if (reason.rejection_code && reason.name) {
+      this._motivoRechazoService.updateReason(reason).subscribe(
+        (status) => {
+          if (status === 'Success') {
+            this.toastr.success('Motivo de rechazo actualizado con éxito');
+            this.cargaRechazos();  // Recargar la lista de motivos
+            this.editingReasonId = null;  // Salir del modo de edición
+            this.originalReason = null;  // Limpiar la referencia del original
+          }
+        },
+        (error) => {
+          console.error('Error al actualizar el motivo de rechazo', error);
+          this.toastr.error('Error al actualizar el motivo de rechazo', 'Error');
+          // Restaurar el estado original si hay un error
+          this.cancelEdit();
+        }
+      );
+    } else {
+      this.toastr.error('Por favor complete todos los campos.', 'Error');
+    }
   }
+  
 
   cancelEdit(){
     if (this.originalReason) {
