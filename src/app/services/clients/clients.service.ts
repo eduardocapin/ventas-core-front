@@ -20,7 +20,7 @@ export class ClientsService {
   }
 
   //Obtenemos la lista de clientes
-  getClients(): Observable<IClient[]> {
+  getClients(selectedFilters: { [key: string]: any }): Observable<IClient[]> {
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
@@ -29,7 +29,7 @@ export class ClientsService {
     };
     return this._http
       .post<IClient[]>(`${this.baseUrl}:${this.port}/api/clients/`,
-        {},
+        {selectedFilters},
         options,
       )
       .pipe(

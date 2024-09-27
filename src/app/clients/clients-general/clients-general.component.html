@@ -122,7 +122,7 @@
       </div>
 
       <!-- Componente de paginación externo -->
-      <app-pagination [totalItems]="dataSource.data.length" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
+      <app-pagination class="{{cargando?'d-none':''}}" [totalItems]="dataSource.data.length" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
         (pageChange)="onPageChange($event)" (itemsPerPageChanged)="onItemsPerPageChanged($event)">
       </app-pagination>
 
