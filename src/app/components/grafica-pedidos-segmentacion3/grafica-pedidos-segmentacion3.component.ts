@@ -13,7 +13,7 @@ type EChartsOption = echarts.ComposeOption<
 @Component({
   selector: 'app-grafica-pedidos-segmentacion3',
   templateUrl: './grafica-pedidos-segmentacion3.component.html',
-  styleUrls: ['./grafica-pedidos-segmentacion3.component.css']
+  styleUrls: ['./grafica-pedidos-segmentacion3.component.scss']
 })
 export class GraficaPedidosSegmentacion3Component {
 

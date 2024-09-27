@@ -8,7 +8,7 @@ import { ChangePasswordComponent } from './../change-password/change-password.co
 @Component({
   selector: 'app-profile-edit-popup',
   templateUrl: './profile-edit-popup.component.html',
-  styleUrls: ['./profile-edit-popup.component.css']
+  styleUrls: ['./profile-edit-popup.component.scss']
 })
 export class ProfileEditPopupComponent {
 

@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-add-competitor',
   templateUrl: './add-competitor.component.html',
-  styleUrls: ['./add-competitor.component.css']
+  styleUrls: ['./add-competitor.component.scss']
 })
 export class AddCompetitorComponent {
 

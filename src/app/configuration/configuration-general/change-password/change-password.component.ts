@@ -16,7 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.css'],
+  styleUrls: ['./change-password.component.scss'],
 })
 export class ChangePasswordComponent {
   hide1: boolean = true;

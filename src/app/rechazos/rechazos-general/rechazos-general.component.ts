@@ -39,7 +39,7 @@ declare var bootstrap: any;
   selector: 'app-rechazos-general',
   
   templateUrl: './rechazos-general.component.html',
-  styleUrls: ['./rechazos-general.component.css'],
+  styleUrls: ['./rechazos-general.component.scss'],
 })
 export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 

@@ -9,7 +9,7 @@ import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-excel-import',
   templateUrl: './excel-import.component.html',
-  styleUrls: ['./excel-import.component.css']
+  styleUrls: ['./excel-import.component.scss']
 })
 export class ExcelImportComponent {
   tablaActiva: number;

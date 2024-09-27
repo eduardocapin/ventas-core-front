@@ -1,0 +1,40 @@
+/* You can add global styles to this file, and also import other style files */
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.screen {
+    height: 100vh;
+}
+
+/* componetnes en dasboard  */
+.card.border-left-primary {
+    border-left: 0.25rem solid #4e73df;
+    /* Color primario de Bootstrap */
+}
+
+.card.border-left-success {
+    border-left: 0.25rem solid #1cc88a;
+    /* Color de éxito de Bootstrap */
+}
+
+.card.border-left-info {
+    border-left: 0.25rem solid #36b9cc;
+    /* Color de info de Bootstrap */
+}
+
+.card.border-left-warning {
+    border-left: 0.25rem solid #f6c23e;
+    /* Color de advertencia de Bootstrap */
+}
+
+/* estilo para el funcionamiento de toast */
+@import 'ngx-toastr/toastr';
+@import '~@ng-select/ng-select/themes/default.theme.css';
+@import "~daterangepicker/daterangepicker.css";

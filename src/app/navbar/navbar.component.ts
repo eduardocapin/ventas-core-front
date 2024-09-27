@@ -9,7 +9,7 @@ import { MenuItem }  from 'src/app/models/menuItem.model';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'],
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
   menuOpen = false;

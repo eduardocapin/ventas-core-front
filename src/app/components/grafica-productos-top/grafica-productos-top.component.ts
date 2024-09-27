@@ -13,7 +13,7 @@ type EChartsOption = echarts.ComposeOption<
 @Component({
   selector: 'app-grafica-productos-top',
   templateUrl: './grafica-productos-top.component.html',
-  styleUrls: ['./grafica-productos-top.component.css']
+  styleUrls: ['./grafica-productos-top.component.scss']
 })
 export class GraficaProductosTopComponent {
 

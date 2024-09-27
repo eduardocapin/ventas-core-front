@@ -32,7 +32,7 @@ type EChartsOption = echarts.ComposeOption<
 @Component({
   selector: 'app-grafica-clientes',
   templateUrl: './grafica-clientes.component.html',
-  styleUrls: ['./grafica-clientes.component.css']
+  styleUrls: ['./grafica-clientes.component.scss']
 })
 
 export class GraficaClientesComponent {

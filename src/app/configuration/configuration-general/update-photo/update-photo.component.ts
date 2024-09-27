@@ -7,7 +7,7 @@ import { LoginService } from 'src/app/services/auth/login.service';
 @Component({
   selector: 'app-update-photo',
   templateUrl: './update-photo.component.html',
-  styleUrls: ['./update-photo.component.css']
+  styleUrls: ['./update-photo.component.scss']
 })
 export class UpdatePhotoComponent {
   selectedFiles?: FileList;

@@ -8,7 +8,7 @@ import { ListItemService } from 'src/app/services/listItem/listItem.service';
 @Component({
   selector: 'app-configuration-general',
   templateUrl: './configuration-general.component.html',
-  styleUrls: ['./configuration-general.component.css'],
+  styleUrls: ['./configuration-general.component.scss'],
 })
 export class ConfigurationGeneralComponent {
   constructor(private _listItemService: ListItemService) {}

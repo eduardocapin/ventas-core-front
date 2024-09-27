@@ -18,7 +18,7 @@ declare const bootstrap: any;
 @Component({
   selector: 'app-filter-container',
   templateUrl: './filter-container.component.html',
-  styleUrls: ['./filter-container.component.css'],
+  styleUrls: ['./filter-container.component.scss'],
 })
 export class FilterContainerComponent implements OnInit {
   @Input() componentId: string = '';

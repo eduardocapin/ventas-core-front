@@ -20,7 +20,7 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-clients-general',
   templateUrl: './clients-general.component.html',
-  styleUrls: ['./clients-general.component.css']
+  styleUrls: ['./clients-general.component.scss']
 })
 export class ClientsGeneralComponent implements AfterViewInit, OnInit {
 
