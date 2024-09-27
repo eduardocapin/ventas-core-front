@@ -44,10 +44,6 @@ declare var bootstrap: any;
 })
 export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
-  fromDate: NgbDateStruct | null = null;
-toDate: NgbDateStruct | null = null;
-
-  form: any;
   displayedColumns: string[] = [
     'select',
     'estado',
@@ -78,8 +74,7 @@ toDate: NgbDateStruct | null = null;
   competidores: ICompetidor[] = [];
   motivos_rechazo: IMotivoRechazo[] = [];
   simbolos: ISimbolo[] = [];
-  familias: IFamilia[] =[];
-  subfamilias: ISubFamilia[] =[];
+
   expandedElement?: IRechazo | null;
   selectedOption: string = 'Excel';
   filtrosAplicados: Array<{nombre: string, valor: any}> = [];
@@ -87,43 +82,22 @@ toDate: NgbDateStruct | null = null;
   // Variable para manejar si el texto está truncado
   isTooltipVisible: boolean = false;
   tooltipText: string | null = null; 
-
-  listasFiltradas = {
-    estados: [] as IEstado[],
-    provincias: [] as IProvincia[],
-    poblacion: [] as IPoblacion[],
-    familias: [] as IFamilia[],
-    subfamilias: [] as ISubFamilia[],
-  };
-
   selectedFilters: { [key: string]: any } = {}
   constructor(
     private renderer: Renderer2,
     public dialog: MatDialog,
-    private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef,
     private rechazadosService: RechazadosService,
     private filterService: FilterService,
     private _exportService: ExportService,
     private toastr: ToastrService
   ) {
-    this.form = this.formBuilder.group({
-      EstadoFilterControl: [''],
-      PoblacionFilterControl: [''],
-      ProvinciaFilterControl: [''],
-      ProductoFilterControl: [''],
-      FamiliaFilterControl: [''],
-      SubFamiliaFilterControl: [''],
-    });
+    
 
   }
   
   ngOnInit() {
     this.loadRechazos();
-    this.loadSubFamilias();
-    this.loadEstadosRechazos();
     this.loadEstados();
-    this.loadFamilias();
     this.loadProvincias();
     this.loadSimbolos();
     this.loadGoogleMapsScript();
@@ -154,18 +128,8 @@ toDate: NgbDateStruct | null = null;
       this.provincias = provincias;
     });
   }
-  private loadFamilias(){
-    this.filterService.getFamilias().subscribe((familias: IFamilia[]) =>{
-      this.familias = familias;
-      console.log(familias);
-    });
-  }
-  private loadSubFamilias(){
-    this.filterService.getSubFamilias().subscribe((subfamilias: ISubFamilia[]) =>{
-      this.subfamilias = subfamilias;
-      console.log(subfamilias);
-    });
-  }
+
+  
 
   private loadPoblacion(){
     this.filterService.getPoblaciones().subscribe((poblacion: IPoblacion[]) =>{
@@ -173,7 +137,7 @@ toDate: NgbDateStruct | null = null;
     })
   }
 
-  private loadEstadosRechazos() { }
+
 
   private loadEstados() {
     this.filterService.getEstados().subscribe((estados: IEstado[]) => {
@@ -214,18 +178,10 @@ toDate: NgbDateStruct | null = null;
     }
   }
 
-
-  getMotivoRechazo(id: number): string {
-    const rechazo = this.motivos_rechazo.find((c) => c.id == id);
-    return rechazo ? rechazo.name : 'No encontrado';
-  }
-
   getEstado(id: number): string {
     const estado = this.estados.find((c) => c.id == id);
     return estado ? estado.name : 'No encontrado';
   }
-
-
 
   ngAfterViewInit() {
     // Placeholder for further initialization if needed
@@ -245,11 +201,6 @@ toDate: NgbDateStruct | null = null;
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.forEach((row) => this.selection.select(row));
-  }
-
-  getSimboloName(symbolId: number): string {
-    const symbol = this.simbolos.find((s) => s.id === symbolId);
-    return symbol ? symbol.symbol : '';
   }
 
   verEnMapa() {
@@ -359,26 +310,21 @@ toDate: NgbDateStruct | null = null;
   currentSortColumn: string = '';
   sortData(column: string) {
     const isAsc = this.currentSortColumn === column && this.sortDirection === 'asc';
-
     // Ordenar la fuente de datos dependiendo del tipo de dato
     this.dataSource.sort((a, b) => {
       const compareA = a[this.currentSortColumn as keyof IRechazo];
       const compareB = b[this.currentSortColumn as keyof IRechazo];
-
       // Verificar si los valores son de tipo cadena (string)
       if (typeof compareA === 'string' && typeof compareB === 'string') {
         return compareA.localeCompare(compareB) * (isAsc ? 1 : -1);
       }
-
       // Si son números, simplemente restar
       if (typeof compareA === 'number' && typeof compareB === 'number') {
         return (compareA - compareB) * (isAsc ? 1 : -1);
       }
-
       // Agregar soporte para otras comparaciones según sea necesario
       return 0;
     });
-
     // Actualizar la columna actual y alternar la dirección
     this.currentSortColumn = column;
     this.sortDirection = isAsc ? 'desc' : 'asc';
@@ -392,9 +338,7 @@ toDate: NgbDateStruct | null = null;
     if (selectElement) {
       const newReasonId = Number(selectElement.value);
       const newReasonName = this.motivos_rechazo.find(rechazo => rechazo.id === newReasonId);
-
       const dataSourceIndex = this.dataSource.indexOf(row);
-
       this.dataSource[dataSourceIndex].reason_rejection_id = newReasonId;
       this.dataSource[dataSourceIndex].reason_rejection = newReasonName?.name ?? "No encontrado";
     }
@@ -402,7 +346,6 @@ toDate: NgbDateStruct | null = null;
 
   changeEstado(event: Event, row: IRechazo) {
     const selectElement = event.target as HTMLSelectElement;
-
     if (selectElement) {
       const newStatusId = Number(selectElement.value);
       const newStatusName = this.estados.find(estado => estado.id === newStatusId);
@@ -442,40 +385,8 @@ toDate: NgbDateStruct | null = null;
     this.currentPage = 1;
     this.paginate()
   }
-  /* para la fecha */
-  Fechascapturadas() {
-    
-    // Aquí va la lógica de filtrado
-  }
-  /* para filtrar las opciones de busqueda */
-    // Método genérico para buscar en cualquier lista dinámica
-  onBuscar(event: any, categoria: 'estados' | 'provincias' | 'poblacion') {
-      const valor = event.target.value.toLowerCase();
-  
-      if (valor === '') {
-        // Restaurar la lista original si no hay búsqueda
-        this.listasFiltradas[categoria] = this[categoria];
-      } else {
-        // Filtrar la lista correspondiente
-        this.listasFiltradas[categoria] = this[categoria].filter(item =>
-          item.name.toLowerCase().includes(valor)
-        );
-      }
-    }
-  
-    // Método para restaurar las listas cuando se abre el dropdown
-    onAbrirDropdown(categoria: 'estados' | 'provincias' | 'poblacion') {
-      this.listasFiltradas[categoria] = this[categoria]; 
-    }
-     // Método para cerrar el dropdown
-    @ViewChild('dropdownWrapper') dropdownWrapper!: ElementRef;
-    closeDropdown() {
-      const dropdownToggle = this.dropdownWrapper.nativeElement.querySelector('.dropdown-toggle');
-      const dropdown = new bootstrap.Dropdown(dropdownToggle);
-      dropdown.hide();  // Cierra el dropdown de Bootstrap
-  }
 
-  //Funcion nuevos filtros
+  //Funcion filtros
   onFiltersChanged(selectedFilters: { [key: string]: any }) {
     console.log('Filtros seleccionados:', selectedFilters);
     this.selectedFilters = selectedFilters;
