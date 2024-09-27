@@ -91,6 +91,7 @@ toDate: NgbDateStruct | null = null;
     subfamilias: [] as ISubFamilia[],
   };
 
+  selectedFilters: { [key: string]: any } = {}
   constructor(
     
     public dialog: MatDialog,
@@ -136,7 +137,7 @@ toDate: NgbDateStruct | null = null;
   }
 
   private loadRechazos() {
-    this.rechazadosService.getRechazos().subscribe((rechazos: IRechazo[]) => {
+    this.rechazadosService.getRechazos(this.selectedFilters).subscribe((rechazos: IRechazo[]) => {
       console.log('Rechazos cargados:', rechazos);
       this.dataSource = rechazos;
       this.rechazoList = rechazos;
@@ -208,180 +209,6 @@ toDate: NgbDateStruct | null = null;
     }
   }
 
-  applyComplexFilter(){
-    this.filtrosAplicados = [];
-
-    // Obtener el valor del filtro de Estados
-    const estadoValue = this.form.get('EstadoFilterControl')?.value;
-    if (estadoValue && estadoValue.length > 0) {
-      const estadoNames = estadoValue.map((id: number) => this.getEstado(id)).join(', ');
-      this.filtrosAplicados.push({
-        nombre: 'Estado',
-        valor: estadoNames
-      });
-    }
-
-    const provinciaValue = this.form.get('ProvinciaFilterControl')?.value;
-    if (provinciaValue && provinciaValue.length > 0) {
-      const provinciaNames = provinciaValue.map((id: number) => this.getProvincia(id)).join(', ');
-      this.filtrosAplicados.push({
-        nombre: 'Provincia', 
-        valor: provinciaNames // Aquí se muestra el nombre de la provincia en lugar del ID
-      });
-    }
-
-    const poblacionValue = this.form.get('PoblacionFilterControl')?.value;
-    if(poblacionValue && poblacionValue.length > 0){
-      const poblacionNames = poblacionValue.map((id: number) => this.getPoblacion(id)).join(', ');
-      this.filtrosAplicados.push({
-        nombre: 'Poblacion',
-        valor: poblacionNames // Aquí se muestra el nombre de la población en lugar del ID
-      });
-    }
-
-    const productoValue = this.form.get('ProductoFilterControl')?.value;
-    if (productoValue && productoValue.length > 0) {
-      this.filtrosAplicados.push({
-        nombre: 'Producto',
-        valor: this.form.get('ProductoFilterControl')?.value
-      });
-    }
-
-    const familiaValue = this.form.get('FamiliaFilterControl')?.value;
-    if (familiaValue && familiaValue.length > 0){
-      this.filtrosAplicados.push({
-        nombre: 'Familia',
-        valor: familiaValue.join(', ')
-      });
-    }
-
-    const subfamiliaValue = this.form.get('SubFamiliaFilterControl')?.value;
-    if (subfamiliaValue && subfamiliaValue.length > 0){
-      this.filtrosAplicados.push({
-        nombre: 'SubFamilia',
-        valor: subfamiliaValue.join(', ')
-      });
-    }
-
-    this.applyFilterLogic();
-  }
-
-  onFilter(filterType: string, value: any) {
-    // Obtener el control de formulario dinámicamente basado en el tipo de filtro
-    const filterControlName = this.getFilterControlName(filterType);
-    let currentSelection: any[] = this.form.get(filterControlName)?.value || [];
-  
-    // Comprobar si el valor ya está en la selección y actualizarla
-    if (currentSelection.includes(value)) {
-      currentSelection = currentSelection.filter(v => v !== value);
-    } else {
-      currentSelection.push(value);
-    }
-  
-    // Actualizar el formulario con la nueva selección
-    this.form.get(filterControlName)?.setValue(currentSelection);
-  
-    // Aplicar la lógica del filtro actualizado
-    this.applyComplexFilter();
-  }
-
-  // Método auxiliar para obtener el nombre del control de formulario basado en el tipo de filtro
-  getFilterControlName(filterType: string): string {
-    switch (filterType) {
-      case 'Estados': return 'EstadoFilterControl';
-      case 'Provincias': return 'ProvinciaFilterControl';
-      case 'Poblaciones': return 'PoblacionFilterControl';
-      case 'Familia': return 'FamiliaFilterControl';
-      case 'SubFamilia': return 'SubFamiliaFilterControl';
-      default: 
-        console.warn('Tipo de filtro no válido');
-        return '';
-    }
-  }
-  
-  // Método para eliminar un filtro específico
-  removeFilter(filtro: { nombre: string, valor: any }) {
-    // Elimina el filtro de la lista de filtros aplicados
-    this.filtrosAplicados = this.filtrosAplicados.filter(f => f.nombre !== filtro.nombre || f.valor !== filtro.valor);
-  
-    // Resetea el control del formulario según el filtro que se elimina
-    switch (filtro.nombre) {
-      case 'Estado':
-        this.form.get('EstadoFilterControl')?.reset();
-        break;
-      case 'Provincia':
-        this.form.get('ProvinciaFilterControl')?.reset();
-        break;
-      case 'Poblacion':
-        this.form.get('PoblacionFilterControl')?.reset();
-        break;
-      case 'Producto':
-        this.form.get('ProductoFilterControl')?.reset();
-        break;
-      case 'Familia':
-        this.form.get('FamiliaFilterControl')?.reset();
-        break;
-      case 'SubFamilia':
-        this.form.get('SubFamiliaFilterControl')?.reset();
-        break;
-    }
-  
-    // Actualiza el formulario y los datos
-    this.applyComplexFilter();
-  }
-
-  applyFilterLogic() {
-
-    let auxList: IRechazo[] = this.rechazoList;
-  
-    // Filtrar por Estados (IDs numéricos)
-    if (this.form.value.EstadoFilterControl?.length) {
-      auxList = auxList.filter(rechazo =>
-        this.form.value.EstadoFilterControl.includes(rechazo.status_id)
-      );
-    }
-  
-    // Filtrar por Provincias (IDs numéricos)
-    if (this.form.value.ProvinciaFilterControl?.length) {
-      auxList = auxList.filter(rechazo =>
-        this.form.value.ProvinciaFilterControl.includes(rechazo.province_id)
-      );
-    }
-  
-    // Filtrar por Poblaciones (IDs numéricos)
-    if (this.form.value.PoblacionFilterControl?.length) {
-      auxList = auxList.filter(rechazo =>
-        this.form.value.PoblacionFilterControl.includes(rechazo.city_id)
-      );
-    }
-    
-    // Filtrar por Producto
-    const productoValue = this.form.value.ProductoFilterControl?.toLowerCase();
-    if (productoValue && productoValue.length) {
-      auxList = auxList.filter(rechazo =>
-        rechazo.product?.toLowerCase().includes(productoValue)
-      );
-    }
-
-    // Filtrar por Familias (comparación de texto)
-    if (this.form.value.FamiliaFilterControl?.length) {
-      auxList = auxList.filter(rechazo =>
-        this.form.value.FamiliaFilterControl.includes(rechazo.family)
-      );
-    }
-  
-    // Filtrar por SubFamilias (comparación de texto)
-    if (this.form.value.SubFamiliaFilterControl?.length) {
-      auxList = auxList.filter(rechazo =>
-        this.form.value.SubFamiliaFilterControl.includes(rechazo.subfamily)
-      );
-    }
-    
-    this.dataSource = auxList;
-    this.currentPage = 1;
-    this.paginate();
-    this.closeDropdown();
-  }
 
   getMotivoRechazo(id: number): string {
     const rechazo = this.motivos_rechazo.find((c) => c.id == id);
@@ -393,11 +220,7 @@ toDate: NgbDateStruct | null = null;
     return estado ? estado.name : 'No encontrado';
   }
 
-  filtroReset() {
-    this.filtrosAplicados = [];
-    this.form.reset();
-    this.applyFilterLogic();
-  }
+
 
   ngAfterViewInit() {
     // Placeholder for further initialization if needed
@@ -650,6 +473,7 @@ toDate: NgbDateStruct | null = null;
   //Funcion nuevos filtros
   onFiltersChanged(selectedFilters: { [key: string]: any }) {
     console.log('Filtros seleccionados:', selectedFilters);
-    // Aquí puedes manejar los filtros seleccionados según sea necesario
+    this.selectedFilters = selectedFilters;
+    this.loadRechazos()
   }
 }
