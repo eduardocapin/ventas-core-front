@@ -78,6 +78,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   selectedOption: string = 'Excel';
   filtrosAplicados: Array<{nombre: string, valor: any}> = [];
   selectedFilters: { [key: string]: any } = {}
+  searchTerm: string = '';
+
   constructor(
     public dialog: MatDialog,
     private rechazadosService: RechazadosService,
@@ -110,7 +112,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   }
 
   private loadRechazos() {
-    this.rechazadosService.getRechazos(this.selectedFilters).subscribe((rechazos: IRechazo[]) => {
+    this.rechazadosService.getRechazos(this.selectedFilters,this.searchTerm).subscribe((rechazos: IRechazo[]) => {
       console.log('Rechazos cargados:', rechazos);
       this.dataSource = rechazos;
       this.rechazoList = rechazos;
@@ -385,5 +387,16 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     console.log('Filtros seleccionados:', selectedFilters);
     this.selectedFilters = selectedFilters;
     this.loadRechazos()
+  }
+
+  buscar() {
+    console.log(this.searchTerm)
+    this.loadRechazos();
+  }
+
+  onSearchTermChange() {
+    if (this.searchTerm === '') {
+      this.buscar();
+    }
   }
 }

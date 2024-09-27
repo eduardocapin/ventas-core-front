@@ -20,7 +20,7 @@ export class ClientsService {
   }
 
   //Obtenemos la lista de clientes
-  getClients(selectedFilters: { [key: string]: any }): Observable<IClient[]> {
+  getClients(selectedFilters: { [key: string]: any }, searchTerm: string): Observable<IClient[]> {
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
@@ -29,7 +29,7 @@ export class ClientsService {
     };
     return this._http
       .post<IClient[]>(`${this.baseUrl}:${this.port}/api/clients/`,
-        {selectedFilters},
+        {selectedFilters, searchTerm},
         options,
       )
       .pipe(
@@ -83,18 +83,4 @@ export class ClientsService {
       );
   }
 
-
-  /* obtener la lisat de clientes */
-  /*
-  getClients(): Observable<IClient[]> {
-    let baseUrl = localStorage.getItem('baseUrl');
-    let port = localStorage.getItem('port');
-    let options = {
-      headers: new HttpHeaders().set(
-        'Authorization', 
-        `Bearer ${this._loginServices.getToken()}`
-      ),
-    };
-    return this._http.get<IClient[]>(`${baseUrl}:${port}/api/clients/`, options);
-  }*/
 }

@@ -15,7 +15,7 @@ export class RechazadosService {
     private _loginServices: LoginService
   ) { }
 
-  getRechazos(selectedFilters: { [key: string]: any }): Observable<IRechazo[]>{
+  getRechazos(selectedFilters: { [key: string]: any }, searchTerm: string): Observable<IRechazo[]>{
     let baseUrl = localStorage.getItem('baseUrl');
     let port = localStorage.getItem('port');
     let options = {
@@ -24,7 +24,8 @@ export class RechazadosService {
         `Bearer ${this._loginServices.getToken()}`
       ),
     };
-    return this._http.post<IRechazo[]>(`${baseUrl}:${port}/api/rechazo/`,{selectedFilters}, options).pipe(
+    console.log(searchTerm)
+    return this._http.post<IRechazo[]>(`${baseUrl}:${port}/api/rechazo/`,{selectedFilters,searchTerm}, options).pipe(
       map((data: any) => {
         console.log(data)
         return data;

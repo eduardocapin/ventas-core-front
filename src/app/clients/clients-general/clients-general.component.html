@@ -7,25 +7,24 @@
         <span class=" mb-0 ps-2 color-dark page-heading">Clientes</span>
       </h1>
     </div>
-
-
     <div class="m-3">
       <div class="d-flex align-items-center justify-content-between gap-5 mb-3">
         <!-- buscador -->
         <div class="d-flex gap-3 align-items-center">
           <div class="input-group" id="busqueda">
             <input class="form-control border-end-0 border" type="search" placeholder="Buscar..."
-              id="example-search-input">
+              id="example-search-input" [(ngModel)]="searchTerm" (keyup.enter)="buscar()"
+              (ngModelChange)="onSearchTermChange()">
             <span class="input-group-append">
               <button class="btn btn-outline-secondary bg-white border-start-0 border-bottom-0 border ms-n5"
-                type="button">
+                type="button" (click)="buscar()">
                 <i class="fa fa-search"></i>
               </button>
             </span>
           </div>
           <!-- boton de filtros aplicados o limpiar -->
-        <app-filter-container [componentId]="'clients-general'" (filtersChanged)="onFiltersChanged($event)">
-        </app-filter-container>
+          <app-filter-container [componentId]="'clients-general'" (filtersChanged)="onFiltersChanged($event)">
+          </app-filter-container>
         </div>
 
         <!-- botones de  filtros y mapa -->
@@ -34,7 +33,7 @@
             (click)="verEnMapa()">
             <mat-icon>location_on</mat-icon>
           </button>
-<!--           <button ngbTooltip="Ver filtros" class="btn btn-secondary d-flex align-items-center" data-bs-toggle="modal"
+          <!--           <button ngbTooltip="Ver filtros" class="btn btn-secondary d-flex align-items-center" data-bs-toggle="modal"
             data-bs-target="#filtroModal">
             <mat-icon class="p-0 m-0">filter_list_alt</mat-icon>
           </button> -->
@@ -55,27 +54,33 @@
               </th>
               <th scope="col" class="row_column_sm cursor" (click)="sortData('customer_ERP_id')">
                 Código
-                <i *ngIf="sortColumn === 'customer_ERP_id'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+                <i *ngIf="sortColumn === 'customer_ERP_id'" class="bi"
+                  [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
               </th>
               <th scope="col" class="cursor row_column_lg" (click)="sortData('name')">
                 Nombre
-                <i *ngIf="sortColumn === 'name'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+                <i *ngIf="sortColumn === 'name'" class="bi"
+                  [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
               </th>
               <th scope="col" class="row_column_md cursor" (click)="sortData('province')">
                 Provincia
-                <i *ngIf="sortColumn === 'province'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+                <i *ngIf="sortColumn === 'province'" class="bi"
+                  [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
               </th>
               <th scope="col" class="row_column_md cursor" (click)="sortData('city')">
                 Población
-                <i *ngIf="sortColumn === 'city'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+                <i *ngIf="sortColumn === 'city'" class="bi"
+                  [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
               </th>
               <th scope="col" class="row_column_sm cursor" (click)="sortData('pc')">
                 C.P.
-                <i *ngIf="sortColumn === 'pc'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+                <i *ngIf="sortColumn === 'pc'" class="bi"
+                  [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
               </th>
               <th scope="col" class="cursor row_column_xl" (click)="sortData('address')">
                 Dirección
-                <i *ngIf="sortColumn === 'address'" class="bi" [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+                <i *ngIf="sortColumn === 'address'" class="bi"
+                  [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
               </th>
               <th scope="col" class="text-center row_column_sm">Ficha</th>
             </tr>
@@ -122,8 +127,9 @@
       </div>
 
       <!-- Componente de paginación externo -->
-      <app-pagination class="{{cargando?'d-none':''}}" [totalItems]="dataSource.data.length" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
-        (pageChange)="onPageChange($event)" (itemsPerPageChanged)="onItemsPerPageChanged($event)">
+      <app-pagination class="{{cargando?'d-none':''}}" [totalItems]="dataSource.data.length"
+        [itemsPerPage]="itemsPerPage" [currentPage]="currentPage" (pageChange)="onPageChange($event)"
+        (itemsPerPageChanged)="onItemsPerPageChanged($event)">
       </app-pagination>
 
     </div>

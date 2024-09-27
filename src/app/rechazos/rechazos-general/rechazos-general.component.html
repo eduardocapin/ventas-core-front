@@ -18,11 +18,12 @@
       <div class="d-flex gap-3 align-items-center">
         <!-- buscado -->
         <div class="input-group" id="busqueda">
-          <input class="form-control border-end-0 border col-4" type="search" placeholder="Buscar..."
-            id="example-search-input">
-          <span class="">
-            <button class="btn btn-outline-secondary bg-white border-start-0 border-bottom-0 border ms-n5"
-              type="button">
+          <input class="form-control border-end-0 border" type="search" placeholder="Buscar..."
+            id="example-search-input" [(ngModel)]="searchTerm" (keyup.enter)="buscar()"
+            (ngModelChange)="onSearchTermChange()">
+          <span class="input-group-append">
+            <button class="btn btn-outline-secondary bg-white border-start-0 border-bottom-0 border ms-n5" type="button"
+              (click)="buscar()">
               <i class="fa fa-search"></i>
             </button>
           </span>

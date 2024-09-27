@@ -3,25 +3,17 @@ import {
   AfterViewInit,
   OnInit,
   ChangeDetectorRef,
-  ViewChild,
-  ElementRef,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
 import { IClient } from 'src/app/models/clients.model';
 import { PopupClientDetailComponent } from './popup-client-detail/popup-client-detail.component';
 import { PopupMapClientsComponent } from './popup-map-clients/popup-map-clients.component';
 import { ClientsService } from 'src/app/services/clients/clients.service';
-import { IClientSales } from 'src/app/models/clientSales.model';
-import { ISegmentacion } from 'src/app/models/segmentacion.model';
-import { IFiltroAgente } from 'src/app/models/filtroAgente.model';
-import { Observable, timeout } from 'rxjs';
-import { MatTableDataSource } from '@angular/material/table';
+import { timeout } from 'rxjs';
 import { ClientContactListComponent } from './client-contact-list/client-contact-list.component';
 import { ToastrService } from 'ngx-toastr';
 
-declare var bootstrap: any;
 @Component({
   selector: 'app-clients-general',
   templateUrl: './clients-general.component.html',
@@ -48,6 +40,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   filtrosAplicados: Array<{ nombre: string; valor: any }> = [];
   sortColumn: string = '';
   sortDirection: string = 'asc';
+  searchTerm: string = '';
 
   constructor(
     public dialog: MatDialog,
@@ -68,7 +61,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   private loadData() {
     this.cargando = true;
     this._clientsServices
-      .getClients(this.selectedFilters)
+      .getClients(this.selectedFilters,this.searchTerm)
       .pipe(timeout(20000))
       .subscribe(
         (data: any) => {
@@ -240,5 +233,15 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     console.log('Filtros seleccionados:', selectedFilters);
     this.selectedFilters = selectedFilters;
     this.loadData();
+  }
+
+  buscar() {
+    this.loadData();
+  }
+
+  onSearchTermChange() {
+    if (this.searchTerm === '') {
+      this.buscar();
+    }
   }
 }
