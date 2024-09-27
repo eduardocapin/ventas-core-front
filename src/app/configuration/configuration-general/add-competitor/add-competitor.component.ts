@@ -22,6 +22,11 @@ export class AddCompetitorComponent {
 
   editingCompetitorId: number | null = null;
   originalCompetitor: ICompetidor | null = null;  // variable que se encarga de almacenar la variable original
+  
+  paginatedData: ICompetidor[] =[];
+  currentPage = 1;
+  itemsPerPage = 10;
+  
   constructor(
     private competitorsService: CompetidoresService,
     public dialogRef: MatDialogRef<AddCompetitorComponent>,
@@ -146,6 +151,22 @@ export class AddCompetitorComponent {
     this.toastr.success('Competidor eliminado correctamente', 'Exito',{
       timeOut: 2000,
     });
+  }
+  /* paginator */
+  paginate() {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.paginatedData = this.competitorList.slice(start, end);
+
+  }
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.paginate();
+  }
+  onItemsPerPageChanged(itemsPerPage: number) {
+    this.itemsPerPage = itemsPerPage;
+    this.currentPage = 1;
+    this.paginate()
   }
 
   /* lógica de botón de Cancelar de Motivo de Rechazo */

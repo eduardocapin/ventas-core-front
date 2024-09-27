@@ -57,5 +57,5 @@
             </tr>
         </tbody>
     </table>
-    <app-pagination></app-pagination>
+    <app-pagination [totalItems]="competitorList.length" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage" (pageChange)="onPageChange($event)" (itemsPerPageChanged)="onItemsPerPageChanged($event)"></app-pagination>
 </mat-dialog-content>

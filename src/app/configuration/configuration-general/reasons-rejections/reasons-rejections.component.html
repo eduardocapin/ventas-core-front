@@ -75,6 +75,6 @@
         </tr>
       </tbody>
     </table>
-    <app-pagination></app-pagination>
+    <app-pagination [totalItems]="rejectList.length" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage" (pageChange)="onPageChange($event)" (itemsPerPageChanged)="onItemsPerPageChanged($event)"></app-pagination>
   </mat-dialog-content>
   

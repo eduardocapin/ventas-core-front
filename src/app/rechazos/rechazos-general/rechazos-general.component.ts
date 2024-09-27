@@ -609,6 +609,11 @@ toDate: NgbDateStruct | null = null;
     this.currentPage = page;
     this.paginate();
   }
+  onItemsPerPageChanged(itemsPerPage: number) {
+    this.itemsPerPage = itemsPerPage;
+    this.currentPage = 1;
+    this.paginate()
+  }
   /* para la fecha */
   Fechascapturadas() {
     

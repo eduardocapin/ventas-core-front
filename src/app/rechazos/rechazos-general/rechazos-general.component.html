@@ -304,65 +304,8 @@
     </div>
     <!-- Paginador -->
     <app-pagination [totalItems]="dataSource.length" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
-      (pageChange)="onPageChange($event)">
+      (pageChange)="onPageChange($event)" (itemsPerPageChanged)="onItemsPerPageChanged($event)">
     </app-pagination>
   </div>
-
   <!-- END TABLA -->
-  <!-- menu derecho -->
-  <!-- Filtros (Menú derecho) -->
-  <div class="modal fade" tabindex="-1" id="filtroModal" aria-labelledby="filtroModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-slide-right">
-      <div class="modal-content">
-        <div class="modal-header d-flex align-items-center gap-2">
-          <i class="bi bi-funnel-fill mb-3 fs-4"></i>
-          <h2 id="drawerLabel">Filtro de Rechazos</h2>
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="form" class="d-flex flex-column gap-3">
-            <div class="d-flex flex-column gap-3">
-              <div class="d-flex w-100 gap-3">
-                <button class="btn btn-color" type="submit">Filtrar</button>
-                <button type="button" class="btn btn-secondary" (click)="filtroReset()">Limpiar</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="offcanvas">Cancelar</button>
-              </div>
-              <div class="mb-2 d-flex flex-column gap-3">
-                <div class="form-group">
-                  <label for="estado">Estado</label>
-                  <select id="estado" class="form-select" formControlName="EstadoFilterControl">
-                    <option value="">- Todos -</option>
-                    <option value="Rechazado">Rechazado</option>
-                    <option value="En Proceso">En Proceso</option>
-                    <option value="Vendido">Vendido</option>
-                    <option value="No aplica">No aplica</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="poblacion">Población</label>
-                  <input id="poblacion" class="form-control" formControlName="PoblacionFilterControl" />
-                </div>
-                <div class="form-group">
-                  <label for="provincia">Provincia</label>
-                  <input id="provincia" class="form-control" formControlName="ProvinciaFilterControl" />
-                </div>
-                <div class="form-group">
-                  <label for="producto">Producto</label>
-                  <input id="producto" class="form-control" formControlName="ProductoFilterControl" />
-                </div>
-                <div class="form-group">
-                  <label for="familia">Familia</label>
-                  <input id="familia" class="form-control" formControlName="FamiliaFilterControl" />
-                </div>
-                <div class="form-group">
-                  <label for="subfamilia">Subfamilia</label>
-                  <input id="subfamilia" class="form-control" formControlName="SubFamiliaFilterControl" />
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-  </div>
 </div>

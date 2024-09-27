@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./reasons-rejections.component.css'],
 })
 export class ReasonsRejectionsComponent {
+  
   rejectList: IMotivoRechazo[] = [];
   cargando: boolean = false;
 
@@ -21,6 +22,10 @@ export class ReasonsRejectionsComponent {
 
   newRejectionCode: string = '';
   newRejectionName: string = '';
+
+  paginatedData: IMotivoRechazo[] =[];
+  currentPage = 1;
+  itemsPerPage = 10;
 
   constructor(
     private _motivoRechazoService: MotivoRechazoService,
@@ -149,7 +154,22 @@ export class ReasonsRejectionsComponent {
       timeOut: 2000,
     });
   }
+  /* paginator */
+  paginate() {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.paginatedData = this.rejectList.slice(start, end);
 
+  }
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.paginate();
+  }
+  onItemsPerPageChanged(itemsPerPage: number) {
+    this.itemsPerPage = itemsPerPage;
+    this.currentPage = 1;
+    this.paginate()
+  }
   /* logica de btn de Cancelar de Motivo de Rechazo */
   cerrarPopup() {
     this.dialogRef.close();
