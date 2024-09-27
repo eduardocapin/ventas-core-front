@@ -19,7 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent {
-  imagesArray: string[] = ["assets/images/login/don-t-wait-for-opportunity-2023-11-27-05-34-32-utc.jpg", "assets/images/login/see-rejection-as-a-redirection-life-lessons-life-2023-11-27-04-51-18-utc (1).jpg", "assets/images/login/turn-all-losses-into-profits-financial-support-k-2023-11-27-05-18-16-utc.jpg", "assets/images/login/why-not-take-the-opportunity-corrugated-torn-car-2023-11-27-04-50-26-utc.jpg"]
+  imagesArray: string[] = ["assets/images/login/WhyNot.png"]
   selectedImage: string = '';
   hide = true;
   errorLogin: boolean = false;
