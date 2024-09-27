@@ -15,7 +15,7 @@ import { timeout } from 'rxjs';
 @Component({
   selector: 'app-client-contact-list',
   templateUrl: './client-contact-list.component.html',
-  styleUrls: ['./client-contact-list.component.css'],
+  styleUrls: ['./client-contact-list.component.scss'],
 })
 export class ClientContactListComponent {
   displayedColumns: string[] = [

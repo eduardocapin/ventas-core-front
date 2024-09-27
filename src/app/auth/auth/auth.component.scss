@@ -1,0 +1,30 @@
+#sideImage {
+  height: 505px;
+}
+
+#titulo {
+  text-transform: capitalize;
+  font-size: xx-large;
+  font-weight: bolder;
+}
+
+#subtitulo {
+  text-transform: capitalize;
+  font-size: large;
+  color: gray;
+}
+
+.logo {
+  width: 30%;
+}
+
+a {
+  font-weight: 100;
+  cursor: pointer;
+  color: gray;
+}
+
+.error {
+  color: red;
+  font-size: 15px;
+}

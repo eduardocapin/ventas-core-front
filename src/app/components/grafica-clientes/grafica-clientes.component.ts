@@ -32,29 +32,29 @@ type EChartsOption = echarts.ComposeOption<
 @Component({
   selector: 'app-grafica-clientes',
   templateUrl: './grafica-clientes.component.html',
-  styleUrls: ['./grafica-clientes.component.css']
+  styleUrls: ['./grafica-clientes.component.scss']
 })
 
 export class GraficaClientesComponent {
 
   chart: echarts.ECharts | undefined;
 
-  resize(){
+  resize() {
     this.chart?.resize();
   }
-  
+
   pintarGrafica() {
-  
+
     var chartDom = document.getElementById('main')!;
     var myChart = echarts.init(chartDom);
     this.chart = myChart;
     var option: EChartsOption;
-  
+
     option = {
       color: [
         '#87CEFA',
         '#dbdbdb',
-        
+
       ],
       title: {
         top: 10,
@@ -75,13 +75,13 @@ export class GraficaClientesComponent {
       },
       series: [
         {
-          bottom:-50,
+          bottom: -50,
           type: 'pie',
           radius: '50%',
           data: [
             { value: 1324, name: 'Con rechazos' },
             { value: 570, name: 'Sin rechazos' }
-           
+
           ],
           emphasis: {
             itemStyle: {
@@ -98,10 +98,10 @@ export class GraficaClientesComponent {
       height?: '80%',
       silent?: false,
       animation?: {
-  
+
       }
     }) => echarts;
-  
+
     option && myChart.setOption(option);
   }
 }

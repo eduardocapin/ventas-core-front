@@ -10,7 +10,7 @@ import { FilterService } from 'src/app/services/filter/filter.service';
 @Component({
   selector: 'app-multi-select-filter',
   templateUrl: './multi-select-filter.component.html',
-  styleUrls: ['./multi-select-filter.component.css'],
+  styleUrls: ['./multi-select-filter.component.scss'],
 })
 export class MultiSelectFilterComponent {
   @Input() title: string = 'Seleccionar';

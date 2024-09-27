@@ -1,10 +1,10 @@
-<div class="screen d-flex flex-column">
+<div class="screen background-light-gray d-flex flex-column">
   <div class="separador-superior"></div>
   <div class="d-flex flex-column gap-2 flex-xl-row justify-content-between align-items-center m-3 titulo">
     <!-- titulo y icono -->
     <div class="d-flex align-items-center justify-content-start ">
-      <mat-icon class="color-dark">broken_image</mat-icon>
-      <h1 class="mb-0 ps-2 color-dark page-heading">Rechazos</h1>
+      <mat-icon class="dark-gray">broken_image</mat-icon>
+      <h1 class="mb-0 ps-2 dark-gray page-heading">Rechazos</h1>
     </div>
     <!-- Info Rechazos -->
     <div class="">
@@ -186,13 +186,26 @@
               <!-- Población Column -->
               <td class="">{{ row.city }}</td>
               <!-- Cliente Column -->
-              <td class="row_cliente">{{ row.customer_name }}</td>
+              <td class="row_cliente">
+                <span
+                [ngbTooltip]="tooltipText" 
+                (mouseover)="applyTooltipIfTruncated($event, row.customer_name)" 
+                class="truncate-text"
+                >
+                {{ row.customer_name }}
+                </span>
+              </td>
               <!-- Subfamilia Column -->
               <td class="">{{ row.subfamily }}</td>
               <!-- Producto Column -->
               <td class="row_producto">
-                <span [ngbTooltip]="row.product.length > 23 ? 'tooltip' : null"
-                  [ngbTooltip]="row.product.length > 23 ? row.product : ''">{{ row.product }}</span>
+                <span 
+                [ngbTooltip]="tooltipText" 
+                (mouseover)="applyTooltipIfTruncated($event, row.product)" 
+                class="truncate-text"
+                >
+                  {{ row.product }}
+                </span>
               </td>
               <!-- Motivo Column -->
               <td class="text-center">
@@ -270,6 +283,7 @@
                 </button>
               </td>
             </tr>
+            
 
             <!-- Row Expanded Detail -->
             <ng-container *ngIf="expandedElement === row">
@@ -300,6 +314,11 @@
               </tr>
             </ng-container>
           </ng-container>
+          <tr *ngIf="paginatedData.length === 0" >
+            <td colspan="20" class="text-center">
+              No hay datos
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

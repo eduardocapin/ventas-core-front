@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-range-filter',
   templateUrl: './range-filter.component.html',
-  styleUrls: ['./range-filter.component.css']
+  styleUrls: ['./range-filter.component.scss']
 })
 export class RangeFilterComponent {
   @Input() id: string = '';

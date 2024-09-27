@@ -1,0 +1,11 @@
+.search-style{
+    position: sticky;
+    top: 0;
+    margin-bottom: 5px;
+}
+
+.h-max {
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: calc(95vh - 350px);
+}

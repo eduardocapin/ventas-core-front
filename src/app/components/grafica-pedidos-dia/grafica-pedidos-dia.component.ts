@@ -14,7 +14,7 @@ type EChartsOption = echarts.ComposeOption<
 @Component({
   selector: 'app-grafica-pedidos-dia',
   templateUrl: './grafica-pedidos-dia.component.html',
-  styleUrls: ['./grafica-pedidos-dia.component.css']
+  styleUrls: ['./grafica-pedidos-dia.component.scss']
 })
 export class GraficaPedidosDiaComponent {
 

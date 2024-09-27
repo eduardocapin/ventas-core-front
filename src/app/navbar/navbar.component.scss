@@ -1,0 +1,253 @@
+*{
+    z-index: 5000;
+}
+body {
+    color: #1f2937;
+    font-family: Roboto, sans-serif !important;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: .036em;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-font-feature-settings: "kern" 1;
+    -moz-font-feature-settings: "kern" 1;
+}
+
+
+.header {
+    width: 100%;
+    background-color: #353e40;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: 16px;
+    position: relative; /* Asegúrate de que el contenedor tenga posición relativa */
+}
+
+.header, .header-row {
+    height: 61px;
+}
+
+.brand {
+    border-radius: 6px;
+    padding: 6px;
+    margin: 0;
+}
+
+a .brand:hover{
+    background-color: #44484981;
+}
+
+.header-col {
+    display: flex;
+    align-items: center;
+}
+
+.header-col--logo {
+    text-align: center;
+    flex: 0 0 auto; /* Ocupa el espacio restante para centrar el logo */
+}
+
+.header-logo {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    max-height: 32px;
+}
+
+.menu-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.menu-items li {
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+.nav-item a {
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-item a:hover {
+    background-color: #44484981;
+    color: #fff;
+}
+
+.navbar-toggler {
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.navbar-toggler-icon {
+    display: inline-block;
+    width: 1.5em;
+    height: 1em;
+    vertical-align: middle;
+    background-image: var(--bs-navbar-toggler-icon-bg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+}
+/* Estilo del menú de perfil */
+.profile-menu {
+    position: absolute;
+    top: 100%; /* Ajusta según sea necesario */
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    width: 150px; /* Ajusta según sea necesario */
+    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+  }
+  
+  .profile-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .profile-menu li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .profile-menu li:last-child {
+    border-bottom: none;
+  }
+  
+  .profile-menu li:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .avatar.active {
+    border: 2px solid #007bff; /* Opcional: resaltado cuando el menú está abierto */
+  }
+
+  .name {
+    color: white;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: .2px;
+    padding: 0;
+  }
+  .cargo{
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: .25px;
+    color: white;
+  }
+  .no-padding {
+    margin: 0 !important;
+  }
+  
+
+  .btn-profile{
+    padding-left: 8px;
+    padding-right: 5px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    cursor: pointer;
+  }
+
+.btn-profile:hover{
+    background-color: #44484981;
+}
+
+
+
+@media (max-width: 991.98px) {
+    .header-row {
+        justify-content: space-between;
+    }
+
+    .header-col--logo {
+        order: 2; /* Coloca el logo en el centro */
+        text-align: center; /* Centra el logo dentro del contenedor */
+    }
+
+    .header-col.flex-0 {
+        order: 3; /* Coloca el ícono de usuario en la derecha */
+    }
+
+    .header-col--menu {
+        order: 4;
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        padding: 16px;
+        border-radius: 0 0 10px 10px;
+    }
+
+    .navbar-toggler {
+        display: block;
+        order: 1; /* Coloca el botón de hamburguesa a la izquierda */
+    }
+
+    .menu-items {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .menu-items li {
+        margin-bottom: 8px;
+    }
+
+    .menu-items li:last-child {
+        margin-bottom: 0;
+    }
+
+    .header-col--menu.open {
+        display: flex;
+        align-items: flex-start;
+    }
+}
+
+@media (min-width: 992px) {
+    .header, .header-inner, .header-row {
+        height: 64px;
+    }
+
+    .navbar-toggler {
+        display: none;
+    }
+
+    .header-col--menu {
+        width: auto;
+        flex: 1 1 auto;
+    }
+    .nav-item a{
+        color: #fff;
+    }
+}

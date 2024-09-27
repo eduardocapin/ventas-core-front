@@ -1,0 +1,42 @@
+.btnEdit {
+  cursor: pointer;
+  color: #3c27c5;
+}
+
+.checkFalse {
+  color: #c52727;
+}
+
+.checkTrue {
+  color: #27c55e;
+}
+
+/* Estilos tabla */
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.mat-column-nombre {
+  width: 160px;
+}
+
+.mat-column-telefono_1,
+.mat-column-telefono_2 {
+  padding-right: 0;
+  width: 110px;
+}
+
+
+.mat-column-acciones {
+  padding: 0;
+  width: 40px;
+}
+
+th {
+  color: #3f51b5;
+}
+
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: #3f51b5;
+}

@@ -1,10 +1,10 @@
-<div class="screen">
+<div class="screen background-light-gray">
   <div class="separador-superior"></div>
   <div class="">
     <div class="d-flex justify-content-between m-4">
       <h1 class="mb-0">
         <img class="icon-title" src="assets/images/iconos/clientes-icon-dark.svg" alt="Clientes" matListItemIcon />
-        <span class=" mb-0 ps-2 color-dark page-heading">Clientes</span>
+        <span class=" mb-0 ps-2 dark-gray page-heading">Clientes</span>
       </h1>
     </div>
     <div class="m-3">
@@ -33,19 +33,16 @@
             (click)="verEnMapa()">
             <mat-icon>location_on</mat-icon>
           </button>
-          <!--           <button ngbTooltip="Ver filtros" class="btn btn-secondary d-flex align-items-center" data-bs-toggle="modal"
-            data-bs-target="#filtroModal">
-            <mat-icon class="p-0 m-0">filter_list_alt</mat-icon>
-          </button> -->
         </div>
 
       </div>
       <!-- tabla -->
       <div class="table-responsive {{cargando?'d-none':''}}">
-        <table class="table table-hover table-sm">
+        
+        <table class="table table-hover table-sm w-100">
           <!-- Checkbox Column -->
           <thead>
-            <tr>
+            <tr class="w-100">
               <th class="th-checkbox row_column_checkbox text-center px-2">
                 <div class="d-flex align-items-center">
                   <input type="checkbox" (change)="masterToggle()" [checked]="selection.hasValue() && isAllSelected()"
@@ -85,7 +82,7 @@
               <th scope="col" class="text-center row_column_sm">Ficha</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="w-100">
             <ng-container *ngFor="let row of paginatedData">
               <tr>
                 <td class="text-center px-2">
@@ -95,18 +92,40 @@
                   </div>
                 </td>
                 <td>{{ row.customer_ERP_id }}</td>
-                <td [title]="row.name">
-                  {{ row.name }}
+                <td >
+                  <span 
+                  [ngbTooltip]="tooltipText" 
+                  (mouseover)="applyTooltipIfTruncated($event, row.name)" 
+                  class="truncate-text"
+                  >{{ row.name }}</span>
                 </td>
                 <td [title]="row.province">
-                  {{ row.province }}
+                  <span
+                  [ngbTooltip]="tooltipText" 
+                  (mouseover)="applyTooltipIfTruncated($event, row.province)" 
+                  class="truncate-text"
+                  >
+                    {{ row.province }}
+                  </span>
                 </td>
                 <td [title]="row.city">
-                  {{ row.city }}
+                  <span
+                  [ngbTooltip]="tooltipText" 
+                  (mouseover)="applyTooltipIfTruncated($event, row.city)" 
+                  class="truncate-text">
+                    {{ row.city }}
+                  </span>
                 </td>
-                <td>{{ row.pc != 0 ? row.pc : "" }}</td>
-                <td [title]="row.address">
-                  {{ row.address }}
+                <td>
+                    {{ row.pc != 0 ? row.pc : "" }}
+                </td>
+                <td>
+                  <span
+                  [ngbTooltip]="tooltipText" 
+                  (mouseover)="applyTooltipIfTruncated($event, row.address)" 
+                  class="truncate-text">
+                    {{ row.address }}
+                  </span>
                 </td>
                 <td class="text-center">
                   <button class="btn btn-link p-0" (click)="editClient(row.id)" title="Ficha">
@@ -114,11 +133,15 @@
                   </button>
                 </td>
               </tr>
-
+              
             </ng-container>
+            <tr *ngIf="paginatedData.length === 0" >
+              <td colspan="8" class="text-center">
+                No hay datos
+              </td>
+            </tr>
           </tbody>
         </table>
-
       </div>
       <div class="d-flex justify-content-center {{cargando?'':'d-none'}}">
         <div class="spinner-border" role="status">

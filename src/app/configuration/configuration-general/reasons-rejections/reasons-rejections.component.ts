@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-reasons-rejections',
   templateUrl: './reasons-rejections.component.html',
-  styleUrls: ['./reasons-rejections.component.css'],
+  styleUrls: ['./reasons-rejections.component.scss'],
 })
 export class ReasonsRejectionsComponent {
   

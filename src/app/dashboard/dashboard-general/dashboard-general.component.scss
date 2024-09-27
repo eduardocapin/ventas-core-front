@@ -1,22 +1,16 @@
-.fondo {
-  background-color: #f3f3f3;
-}
-.page-heading{
+.page-heading {
   text-transform: uppercase;
   letter-spacing: .2em;
   font-weight: 300;
 }
+
 .hide {
   visibility: hidden;
   transition: all 1s ease-out;
   opacity: 0;
 }
 
-.color-dark {
-  color: #6D6D6D;
-}
-
-span.font-dashboard{
+span.font-dashboard {
   font-size: small;
   color: #6D6D6D;
 }
@@ -33,11 +27,6 @@ span.font-dashboard{
   background-color: #d6d253;
 }
 
-.fondo-blanco {
-  background-color: white;
-  border-radius: 1em;
-}
-
 .contenedor-grafica-s {
   height: 300px;
 }
@@ -46,37 +35,12 @@ span.font-dashboard{
   height: 618px;
 }
 
-// .grande {
-//     display: none;
-// }
-
-// @media (max-width: 1399px) {
-//     .medio {
-//         display: block;
-//     }
-
-//     .grande {
-//         display: none;
-//     }
-// }
-
-// @media (min-width: 1400px) {
-//     .medio {
-//         display: none;
-//     }
-
-//     .grande {
-//         display: block;
-//     }
-// }
-
 
 .icon-title {
   width: 40px;
   height: 40px;
   display: block;
 }
-
 
 //Estilos tabla
 
@@ -89,7 +53,7 @@ table {
   font-size: small;
 }
 
-td{
+td {
   vertical-align: middle;
 }
 
@@ -103,29 +67,29 @@ th {
   position: sticky;
   left: 0;
   background: white;
-  z-index: 1; /* Para que se superpongan correctamente al hacer scroll */
+  z-index: 1;
+  /* Para que se superpongan correctamente al hacer scroll */
 }
 
 /* Ancho para la columna 'nombre' */
 .sticky-left:first-child {
-  min-width: 400px; 
+  min-width: 400px;
 
 }
 
 /* Ancho para la columna 'total' */
 .sticky-left:nth-child(2) {
-  min-width: 180px; 
+  min-width: 180px;
   left: 400px;
   padding-right: 10px;
 
 }
 
-
 .column-rechazos {
   min-width: 180px;
 }
 
-#tablaActiva{
-  min-width: 200px; 
-  max-width: 300%; 
+#tablaActiva {
+  min-width: 200px;
+  max-width: 300%;
 }

@@ -4,7 +4,8 @@ import {
   ViewChild,
   OnInit,
   ChangeDetectorRef,
-  ElementRef
+  ElementRef,
+  Renderer2
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -39,7 +40,7 @@ declare var bootstrap: any;
   selector: 'app-rechazos-general',
   
   templateUrl: './rechazos-general.component.html',
-  styleUrls: ['./rechazos-general.component.css'],
+  styleUrls: ['./rechazos-general.component.scss'],
 })
 export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
@@ -77,10 +78,15 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   expandedElement?: IRechazo | null;
   selectedOption: string = 'Excel';
   filtrosAplicados: Array<{nombre: string, valor: any}> = [];
+
+  // Variable para manejar si el texto está truncado
+  isTooltipVisible: boolean = false;
+  tooltipText: string | null = null; 
   selectedFilters: { [key: string]: any } = {}
   searchTerm: string = '';
 
   constructor(
+    private renderer: Renderer2,
     public dialog: MatDialog,
     private rechazadosService: RechazadosService,
     private filterService: FilterService,
@@ -387,6 +393,24 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     console.log('Filtros seleccionados:', selectedFilters);
     this.selectedFilters = selectedFilters;
     this.loadRechazos()
+  }
+  /* logica para que aparezca tooltip cuando el texto es muy grande */
+  isTextTruncated(element: HTMLElement): boolean {
+    return element.offsetWidth < element.scrollWidth;
+  }
+
+  applyTooltipIfTruncated(event: Event, text: string) {
+    const element = event.target as HTMLElement;
+    this.isTooltipVisible = this.isTextTruncated(element);
+
+    // Solo asigna el texto del tooltip si el texto está truncado
+    if (this.isTooltipVisible) {
+      this.tooltipText = text;
+      this.renderer.setStyle(element, 'cursor', 'pointer'); // Añade el cursor tipo pointer
+    } else {
+      this.tooltipText = null;
+      this.renderer.removeStyle(element, 'cursor'); // Remueve el cursor tipo pointer
+    }
   }
 
   buscar() {

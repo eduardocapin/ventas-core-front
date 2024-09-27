@@ -4,7 +4,7 @@ import { IClient } from 'src/app/models/clients.model';
 @Component({
   selector: 'app-cliente-mas-info',
   templateUrl: './cliente-mas-info.component.html',
-  styleUrls: ['./cliente-mas-info.component.css']
+  styleUrls: ['./cliente-mas-info.component.scss']
 })
 export class ClienteMasInfoComponent {
   @Input() cliente?: IClient;

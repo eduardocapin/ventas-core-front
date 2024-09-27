@@ -4,7 +4,7 @@ import { ListItem } from 'src/app/models/listItem.model';
 @Component({
   selector: 'app-configuration-list-item-container',
   templateUrl: './configuration-list-item-container.component.html',
-  styleUrls: ['./configuration-list-item-container.component.css']
+  styleUrls: ['./configuration-list-item-container.component.scss']
 })
 export class ConfigurationListItemContainerComponent {
   @Input() title!: string;

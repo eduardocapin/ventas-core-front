@@ -4,7 +4,7 @@ import { IClient } from 'src/app/models/clients.model';
 @Component({
   selector: 'app-cliente-economicos',
   templateUrl: './cliente-economicos.component.html',
-  styleUrls: ['./cliente-economicos.component.css']
+  styleUrls: ['./cliente-economicos.component.scss']
 })
 export class ClienteEconomicosComponent {
   @Input() cliente?: IClient;

@@ -10,7 +10,7 @@ import { MotivoRechazoService } from 'src/app/services/reasons_rejection/motivo-
 @Component({
   selector: 'app-add-edit-reason-rejections',
   templateUrl: './add-edit-reason-rejections.component.html',
-  styleUrls: ['./add-edit-reason-rejections.component.css'],
+  styleUrls: ['./add-edit-reason-rejections.component.scss'],
 })
 export class AddEditReasonRejectionsComponent {
   reasonForm: FormGroup;

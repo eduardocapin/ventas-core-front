@@ -32,7 +32,7 @@ type EChartsOption = echarts.ComposeOption<
 @Component({
   selector: 'app-grafica-motivos',
   templateUrl: './grafica-motivos.component.html',
-  styleUrls: ['./grafica-motivos.component.css']
+  styleUrls: ['./grafica-motivos.component.scss']
 })
 export class GraficaMotivosComponent {
 

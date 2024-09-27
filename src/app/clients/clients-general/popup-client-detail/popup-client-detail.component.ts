@@ -16,7 +16,7 @@ import { PopupMapClientsComponent } from '../popup-map-clients/popup-map-clients
 @Component({
   selector: 'app-popup-client-detail',
   templateUrl: './popup-client-detail.component.html',
-  styleUrls: ['./popup-client-detail.component.css'],
+  styleUrls: ['./popup-client-detail.component.scss'],
 })
 export class PopupClientDetailComponent {
   id_cliente: number = 0;

@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-clients-contact',
   templateUrl: './clients-contact.component.html',
-  styleUrls: ['./clients-contact.component.css'],
+  styleUrls: ['./clients-contact.component.scss'],
 })
 export class ClientsContactComponent {
 

@@ -1,0 +1,57 @@
+a {
+  color: white !important;
+}
+
+/* Estilo para los submenús desplegables */
+.dropdown-menu {
+  display: none;
+  /* Ocultar por defecto */
+}
+
+.dropdown-menu.show {
+  display: block;
+  /* Mostrar cuando se activa */
+}
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  display: none;
+  /* Ocultar por defecto */
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+  /* Mostrar al pasar el ratón */
+}
+
+.menu-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.menu-items li {
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+
+.disabled-link {
+  pointer-events: none;
+  cursor: default;
+}
+
+@media (max-width: 991.98px) {
+  a {
+    color: black !important;
+  }
+}

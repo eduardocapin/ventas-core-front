@@ -7,7 +7,7 @@ import { IClient } from 'src/app/models/clients.model'; // Actualizar esta líne
 @Component({
   selector: 'app-popup-map-clients',
   templateUrl: './popup-map-clients.component.html',
-  styleUrls: ['./popup-map-clients.component.css']
+  styleUrls: ['./popup-map-clients.component.scss']
 })
 export class PopupMapClientsComponent implements OnInit, AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;

@@ -1,0 +1,377 @@
+.separador-superior {
+  height: 64px;
+}
+
+.page-heading {
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  font-weight: 300;
+}
+
+#busqueda {
+  width: 300px;
+}
+
+.main {
+  height: 50%;
+}
+
+
+table {
+  width: 100%;
+  font-size: small;
+  overflow: visible;
+}
+
+td {
+  vertical-align: middle;
+}
+
+.char-count {
+  font-size: 0.9rem;
+  color: #666;
+  margin-left: 8px;
+}
+
+.buttons-rechazos {
+  background-color: #6b757d;
+  color: white;
+}
+
+th {
+  color: #3F51B5;
+}
+
+.header-correctora {
+  color: white;
+  background-color: #3F51B5 !important;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.btn-azul-claro {
+  background-color: #bac1e9;
+}
+
+.btn-gris-claro {
+  background-color: lightgray;
+}
+
+.btn-color {
+  background-color: #3F51B5;
+  color: white;
+}
+
+.icon_color {
+  color: #3F51B5;
+}
+
+.custom-bold {
+  font-weight: 500;
+}
+
+.text-rech {
+  color: #87cefa;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 10;
+}
+
+.sticky-end {
+  position: sticky;
+  right: 0;
+  background-color: white;
+  z-index: 10;
+}
+
+
+.custom-rechazado,
+.custom-enproceso,
+.custom-noaplica,
+.custom-vendido {
+  background-color: #ebebeb;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+
+
+.option-image {
+  width: 20px;
+  /* Ajusta según el tamaño deseado */
+  height: auto;
+  vertical-align: middle;
+  /* Alinea verticalmente con el texto */
+
+}
+
+.rechazado {
+  color: #FF5757;
+}
+
+.en-proceso {
+  color: #3F57BC;
+}
+
+.vendido {
+  color: #10a03b;
+}
+
+.no-aplica {
+  color: rgb(175, 175, 175);
+}
+
+.color-accioncorrectora {
+  color: #10a03b;
+  cursor: pointer;
+}
+
+.color-rechazo {
+  color: #FF5757;
+}
+
+
+
+/* movil */
+@media (max-width: 991px) {
+  .screen {
+    padding-top: 48px;
+  }
+}
+
+
+.promo-icon {
+  font-size: 14px;
+  font-weight: bold;
+  color: #4CAF50;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+
+}
+
+
+/* barara de busqueda */
+.ms-n5 {
+  margin-left: -40px;
+}
+
+/* fin de barra de busqueda */
+.text-center {
+  text-align: center;
+}
+
+.icono-svg {
+  color: #5c5c5c;
+}
+
+.accion_correctora_precio {
+  width: 35px;
+}
+
+.accion_correctora_simbolo {
+  width: 65px;
+}
+
+.select_estado {
+  min-width: 120px;
+}
+
+.column-interes {
+  min-width: 40px;
+}
+
+.row_poblacion {
+  min-width: 90px;
+}
+
+.row_cliente {
+  min-width: 160px;
+}
+
+.row_subfamilia {
+  min-width: 90px;
+}
+
+.row_producto {
+  min-width: 160px;
+  max-width: 160px;
+  white-space: nowrap;
+  /* Evita el salto de línea */
+  overflow: hidden;
+  /* Oculta el desbordamiento */
+  text-overflow: ellipsis;
+}
+
+.select_rechazo {
+  width: 115px;
+}
+
+.row_precio_producto,
+.row_precio_competidor {
+  min-width: 85px;
+}
+
+.row_select_competidor {
+  width: 120px;
+}
+
+.row_accion_correctora {
+  min-width: 160px;
+}
+
+.row_propuesta_agente {
+  min-width: 40px;
+  white-space: nowrap;
+  /* Evita el salto de línea */
+  overflow: hidden;
+  /* Oculta el desbordamiento */
+  text-overflow: ellipsis;
+}
+
+.table-responsive {
+  max-height: 600px;
+  /* Ajusta según sea necesario */
+  max-width: 100%;
+  /* Asegura que el contenedor no exceda el ancho de su contenedor padre */
+  margin: 0 auto;
+  /* Centra la tabla en el contenedor */
+}
+
+.table thead th {
+  position: -webkit-sticky;
+  /* Para Safari */
+  position: sticky;
+  top: 0;
+  /* Fija el encabezado en la parte superior */
+  background-color: #fff;
+  /* Asegúrate de que el fondo sea blanco o del color que desees */
+  z-index: 1;
+  /* Asegúrate de que esté sobre el contenido de la tabla */
+}
+
+/* Estilo para la columna fija de los checkboxes */
+.table-responsive table thead th:first-child,
+.table-responsive table tbody td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  /* Asegura que el encabezado esté sobre el contenido */
+  background-color: white;
+  /* Mantiene el fondo blanco para la columna fija */
+}
+
+/* Estilo para la columna fija de expand */
+.table-responsive table thead th:last-child,
+.table-responsive table tbody td:last-child {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  /* Asegura que el encabezado esté sobre el contenido */
+  background-color: white;
+  /* Mantiene el fondo blanco para la columna fija */
+}
+
+/* Ajustes adicionales para las celdas de datos */
+.table-responsive table tbody td:first-child {
+  z-index: 1;
+  /* Asegura que el contenido esté debajo del encabezado */
+}
+
+.table-responsive table thead th:first-child {
+  z-index: 3;
+  /* Asegura que el encabezado esté encima del contenido */
+}
+
+.table-responsive table tbody td:last-child {
+  z-index: 0;
+  /* Asegura que el contenido esté debajo del encabezado */
+}
+
+.table-responsive table thead th:last-child {
+  z-index: 3;
+  /* Asegura que el encabezado esté encima del contenido */
+}
+
+.form-select-sm {
+  font-size: 12px;
+}
+
+.form-control-sm {
+  font-size: 12px;
+}
+
+.modal-header {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.modal-body {
+  padding-top: 0;
+}
+
+.modal-content {
+  height: 100vh;
+  padding: 8px;
+}
+
+.modal-dialog-slide-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  height: 100%;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.modal.fade .modal-dialog-slide-right {
+  transform: translateX(0);
+}
+
+/* color de la columna accion correctora */
+.fondo_azul {
+  background-color: #4e62d1 !important;
+  /* Color de fondo */
+  color: white;
+}
+
+.fondo_accionCorrectora {
+  background-color: #4e62d121;
+  color: white;
+}
+
+.w-max {
+  width: max-content;
+}
+
+/* eliminar las flechas de number */
+/* Para navegadores webkit (Chrome, Safari, etc.) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Para Firefox */
+/* input[type="number"] {
+  -moz-appearance: textfield;
+  text-align: right;
+} */
+
+/* estilo para que aparezca el tooltip al pasar el mouse si es muy grande el texto */
+.truncate-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: 100%; /* O ajusta según el tamaño de la columna */
+}

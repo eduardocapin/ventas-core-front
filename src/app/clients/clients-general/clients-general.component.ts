@@ -1,9 +1,4 @@
-import {
-  Component,
-  AfterViewInit,
-  OnInit,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, AfterViewInit, OnInit, ChangeDetectorRef, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
 import { IClient } from 'src/app/models/clients.model';
@@ -17,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-clients-general',
   templateUrl: './clients-general.component.html',
-  styleUrls: ['./clients-general.component.css'],
+  styleUrls: ['./clients-general.component.scss']
 })
 export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   displayedColumns: string[] = [
@@ -40,9 +35,13 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   filtrosAplicados: Array<{ nombre: string; valor: any }> = [];
   sortColumn: string = '';
   sortDirection: string = 'asc';
+  // Variable para manejar si el texto está truncado
+  isTooltipVisible: boolean = false;
+  tooltipText: string | null = null; 
   searchTerm: string = '';
 
   constructor(
+    private renderer: Renderer2,
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private _clientsServices: ClientsService,
@@ -233,6 +232,24 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     console.log('Filtros seleccionados:', selectedFilters);
     this.selectedFilters = selectedFilters;
     this.loadData();
+  }
+  /* logica para que aparezca el tooltip cuando el texto es muy grande */
+  isTextTruncated(element: HTMLElement): boolean {
+    return element.offsetWidth < element.scrollWidth;
+  }
+
+  applyTooltipIfTruncated(event: Event, text: string) {
+    const element = event.target as HTMLElement;
+    this.isTooltipVisible = this.isTextTruncated(element);
+
+    // Solo asigna el texto del tooltip si el texto está truncado
+    if (this.isTooltipVisible) {
+      this.tooltipText = text;
+      this.renderer.setStyle(element, 'cursor', 'pointer'); // Añade el cursor tipo pointer
+    } else {
+      this.tooltipText = null;
+      this.renderer.removeStyle(element, 'cursor'); // Remueve el cursor tipo pointer
+    }
   }
 
   buscar() {
