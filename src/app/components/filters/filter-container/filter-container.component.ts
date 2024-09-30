@@ -189,7 +189,7 @@ export class FilterContainerComponent implements OnInit {
     this.filtrosAplicados = this.filtrosAplicados.filter(
       (filtro) => filtro.id !== filtroToRemove.id
     );
-    this.filtersChanged.emit(this.selectedFilters);
+    this.filtersChanged.emit(this.filtrosAplicados);
 
     // Llamar a reset en el componente hijo si es un multi-select
     this.resetChildFilter(filtroToRemove.id);
