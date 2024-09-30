@@ -92,7 +92,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
           this.dataSource.data = clientsData;
           this.totalItems = data.totalItems;
           this.cargando = false;
-          this.updateSelectionFromCurrentPage()
+          this.updateSelectionFromCurrentPage();
         },
         (error) => {
           console.error('Error al asignar el dataSource:', error);
@@ -184,30 +184,34 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   }
 
   isSelected(row: IClient): boolean {
-    return this.selectedClients.some(client => client.id === row.id);
+    return this.selectedClients.some((client) => client.id === row.id);
   }
 
   onRowToggle(row: IClient): void {
     if (this.isSelected(row)) {
-      this.selectedClients = this.selectedClients.filter(selected => selected.id !== row.id);
+      this.selectedClients = this.selectedClients.filter(
+        (selected) => selected.id !== row.id
+      );
       this.selection.deselect(row);
     } else {
       this.selectedClients.push(row);
       this.selection.select(row);
     }
-    this.updateHeaderSelection(); 
+    this.updateHeaderSelection();
   }
 
   updateHeaderSelection() {
     const totalSelected = this.selectedClients.length;
     const totalVisible = this.dataSource.data.length;
-    const allSelected = totalVisible > 0 && this.dataSource.data.every(row => this.isSelected(row));
+    const allSelected =
+      totalVisible > 0 &&
+      this.dataSource.data.every((row) => this.isSelected(row));
 
     if (totalSelected === 0) {
       this.selection.clear(); // No hay filas seleccionadas
     } else {
       this.selection.clear();
-      this.dataSource.data.forEach(row => {
+      this.dataSource.data.forEach((row) => {
         if (this.isSelected(row)) {
           this.selection.select(row);
         }
@@ -220,7 +224,12 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
 
   isAllSelected(): boolean {
     const numVisibleRows = this.dataSource.data.length;
-    return numVisibleRows > 0 && this.dataSource.data.every(row => this.isSelected(row));
+    return (
+      numVisibleRows > 0 &&
+      this.dataSource.data.every(
+        (row) => this.isSelected(row) || this.isCheckboxDisabled(row)
+      )
+    );
   }
 
   isCheckboxDisabled(row: any): boolean {
@@ -232,13 +241,13 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   }
 
   private updateSelectionFromCurrentPage() {
-    this.selection.clear(); 
+    this.selection.clear();
     this.selectedClients.forEach((client) => {
       if (this.dataSource.data.some((row) => row.id === client.id)) {
-        this.selection.select(client); 
+        this.selection.select(client);
       }
     });
-    this.updateHeaderSelection()
+    this.updateHeaderSelection();
   }
 
   //Método para ver el popup del mapa

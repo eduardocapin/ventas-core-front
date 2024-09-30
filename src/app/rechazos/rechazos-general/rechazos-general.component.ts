@@ -40,7 +40,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     'interes',
     'expand',
   ];
-  dataSource: IRechazo[] = []; 
+  dataSource: IRechazo[] = [];
   //paginacion
   currentPage = 1;
   itemsPerPage = 10;
@@ -71,8 +71,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   searchTerm: string = '';
 
   //ordeanacion
-  sortColumn: string = '';
-  sortDirection: string = 'asc';
+  sortColumn: string = 'r.rejection_date';
+  sortDirection: string = 'desc';
 
   constructor(
     private renderer: Renderer2,
@@ -120,7 +120,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
         this.dataSource = rechazosData;
         this.totalItems = data.totalItems;
         this.cargando = false;
-        this.updateSelectionFromCurrentPage()
+        this.updateSelectionFromCurrentPage();
       });
   }
   private loadProvincias() {
@@ -183,8 +183,6 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     // Placeholder for further initialization if needed
   }
 
-
-
   getOptionImage(statusId: number): string {
     return `assets/icon/estado_${statusId}.svg`;
   }
@@ -205,30 +203,33 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   }
 
   isSelected(row: IRechazo): boolean {
-    return this.selectedRechazos.some(rechazo => rechazo.id === row.id);
+    return this.selectedRechazos.some((rechazo) => rechazo.id === row.id);
   }
 
   onRowToggle(row: IRechazo): void {
     if (this.isSelected(row)) {
-      this.selectedRechazos = this.selectedRechazos.filter(selected => selected.id !== row.id);
+      this.selectedRechazos = this.selectedRechazos.filter(
+        (selected) => selected.id !== row.id
+      );
       this.selection.deselect(row);
     } else {
       this.selectedRechazos.push(row);
       this.selection.select(row);
     }
-    this.updateHeaderSelection(); 
+    this.updateHeaderSelection();
   }
 
   updateHeaderSelection() {
     const totalSelected = this.selectedRechazos.length;
     const totalVisible = this.dataSource.length;
-    const allSelected = totalVisible > 0 && this.dataSource.every(row => this.isSelected(row));
+    const allSelected =
+      totalVisible > 0 && this.dataSource.every((row) => this.isSelected(row));
 
     if (totalSelected === 0) {
       this.selection.clear(); // No hay filas seleccionadas
     } else {
       this.selection.clear();
-      this.dataSource.forEach(row => {
+      this.dataSource.forEach((row) => {
         if (this.isSelected(row)) {
           this.selection.select(row);
         }
@@ -241,7 +242,12 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
   isAllSelected(): boolean {
     const numVisibleRows = this.dataSource.length;
-    return numVisibleRows > 0 && this.dataSource.every(row => this.isSelected(row));
+    return (
+      numVisibleRows > 0 &&
+      this.dataSource.every(
+        (row) => this.isSelected(row) || this.isCheckboxDisabled(row)
+      )
+    );
   }
 
   isCheckboxDisabled(row: any): boolean {
@@ -253,13 +259,13 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   }
 
   private updateSelectionFromCurrentPage() {
-    this.selection.clear(); 
+    this.selection.clear();
     this.selectedRechazos.forEach((rehazo) => {
       if (this.dataSource.some((row) => row.id === rehazo.id)) {
-        this.selection.select(rehazo); 
+        this.selection.select(rehazo);
       }
     });
-    this.updateHeaderSelection()
+    this.updateHeaderSelection();
   }
 
   verEnMapa() {
@@ -275,7 +281,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       width: '80%',
       height: '80%',
       disableClose: true,
-      data: { selectedRows: this.selectedRechazos},
+      data: { selectedRows: this.selectedRechazos },
     });
   }
 
@@ -329,34 +335,27 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   }
 
   exportar_rechazos() {
-    if (this.selection.isEmpty()) {
+    if (this.selectedRechazos.length <= 0) {
       return;
     }
     if (this.selectedOption == '') {
       return;
     }
-    this.exportarIds();
+    this.exportData();
   }
 
-  exportarIds() {
-    const idsSeleccionados = this.selection.selected.map((row) => row.id);
-    this.exportData(this.rechazoList);
-  }
-
-  exportData(data: any[]): void {
-    console.log('en funcion ', data);
-    console.log('en funcion', this.selectedOption);
+  exportData(): void {
     const now = new Date();
     const timestamp = now.toISOString().slice(0, 16).replace(/[-T:]/g, '-');
 
-    const fileName = `exportacion_pedidos_${timestamp}`;
+    const fileName = `exportacion_rechazos_${timestamp}`;
 
     if (this.selectedOption === 'Excel') {
-      this._exportService.exportToExcel(data, fileName);
+      this._exportService.exportToExcel(this.selectedRechazos, fileName);
     } else if (this.selectedOption === 'CSV') {
-      this._exportService.exportToCSV(data, fileName);
+      this._exportService.exportToCSV(this.selectedRechazos, fileName);
     } else if (this.selectedOption === 'Json') {
-      this._exportService.exportToJson(data, fileName);
+      this._exportService.exportToJson(this.selectedRechazos, fileName);
     }
   }
 
@@ -433,7 +432,6 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     this.currentPage = 1;
     this.loadRechazos();
   }
-
 
   //Funcion filtros
   onFiltersChanged(selectedFilters: { [key: string]: any }) {
