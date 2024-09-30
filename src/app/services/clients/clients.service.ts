@@ -7,12 +7,11 @@ import { LoginService } from '../auth/login.service';
 import { Contact } from 'src/app/models/clientContact.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ClientsService {
-
-  private baseUrl = "";
-  private port = "";
+  private baseUrl = '';
+  private port = '';
 
   constructor(private _http: HttpClient, private _loginServices: LoginService) {
     this.baseUrl = String(localStorage.getItem('baseUrl'));
@@ -20,7 +19,14 @@ export class ClientsService {
   }
 
   //Obtenemos la lista de clientes
-  getClients(selectedFilters: { [key: string]: any }, searchTerm: string, currentPage:number, itemsPerPage:number, sortColumn: string, sortDirection: string): Observable<IClient[]> {
+  getClients(
+    selectedFilters: { [key: string]: any },
+    searchTerm: string,
+    currentPage: number,
+    itemsPerPage: number,
+    sortColumn: string,
+    sortDirection: string
+  ): Observable<IClient[]> {
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
@@ -28,9 +34,17 @@ export class ClientsService {
       ),
     };
     return this._http
-      .post<IClient[]>(`${this.baseUrl}:${this.port}/api/clients/paginacion`,
-        {selectedFilters, searchTerm, currentPage, itemsPerPage, sortColumn, sortDirection },
-        options,
+      .post<IClient[]>(
+        `${this.baseUrl}:${this.port}/api/clients/paginacion`,
+        {
+          selectedFilters,
+          searchTerm,
+          currentPage,
+          itemsPerPage,
+          sortColumn,
+          sortDirection,
+        },
+        options
       )
       .pipe(
         map((data: any) => {
@@ -49,9 +63,10 @@ export class ClientsService {
       ),
     };
     return this._http
-      .post<IClient[]>(`${this.baseUrl}:${this.port}/api/clients/${id}`,
+      .post<IClient[]>(
+        `${this.baseUrl}:${this.port}/api/clients/${id}`,
         {},
-        options,
+        options
       )
       .pipe(
         map((data: any) => {
@@ -60,8 +75,6 @@ export class ClientsService {
         })
       );
   }
-
-  
 
   getContactClient(id: number): Observable<Contact[]> {
     let options = {
@@ -71,9 +84,10 @@ export class ClientsService {
       ),
     };
     return this._http
-      .post(`${this.baseUrl}:${this.port}/api/clients/contacts/:id${id}`,
+      .post(
+        `${this.baseUrl}:${this.port}/api/clients/contacts/:id${id}`,
         {},
-        options,
+        options
       )
       .pipe(
         map((data: any) => {
@@ -82,5 +96,4 @@ export class ClientsService {
         })
       );
   }
-
 }

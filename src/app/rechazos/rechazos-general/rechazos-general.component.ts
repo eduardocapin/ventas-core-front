@@ -1,49 +1,27 @@
-import {
-  AfterViewInit,
-  Component,
-  ViewChild,
-  OnInit,
-  ChangeDetectorRef,
-  ElementRef,
-  Renderer2
-} from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AfterViewInit, Component, OnInit, Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupMapComponent } from './popup-map-rechazos/popup-map-rechazos.component';
 import { IRechazo } from 'src/app/models/rechazos.model';
 import { RechazadosService } from 'src/app/services/rechazados/rechazados.service';
-
 import { FilterService } from 'src/app/services/filter/filter.service';
 import { IEstado } from 'src/app/models/estados.model';
 import { ISimbolo } from 'src/app/models/simbolos.model';
-import { ITipo_Rechazo } from 'src/app/models/tipos_rechazos.model';
 import { ExportService } from 'src/app/services/export/export.service';
 import { ToastrService } from 'ngx-toastr';
 import { SelectionModel } from '@angular/cdk/collections';
 import { PopupClientDetailComponent } from 'src/app/clients/clients-general/popup-client-detail/popup-client-detail.component';
 import { ICompetidor } from 'src/app/models/competidor.model';
-;
 import { IMotivoRechazo } from 'src/app/models/motivoRechazo.model';
 import { IProvincia } from 'src/app/models/provincias.model';
 import { IPoblacion } from 'src/app/models/poblaciones.model';
-import { IFamilia } from 'src/app/models/familia.mode';
-import { ISubFamilia } from 'src/app/models/subFamilia.model';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
-import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
-import { JsonPipe } from '@angular/common';
-
-
-declare var bootstrap: any;
 @Component({
   selector: 'app-rechazos-general',
-  
+
   templateUrl: './rechazos-general.component.html',
   styleUrls: ['./rechazos-general.component.scss'],
 })
 export class RechazosGeneralComponent implements AfterViewInit, OnInit {
-
   displayedColumns: string[] = [
     'select',
     'estado',
@@ -62,14 +40,21 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     'interes',
     'expand',
   ];
-  dataSource: IRechazo[] = []; // Temporarily set to any[]
-  paginatedData: IRechazo[] = []; // Datos que se muestran en la página actual
-  currentPage = 1; 
-  itemsPerPage = 10; 
-  rechazoList: IRechazo[] = [];
+  dataSource: IRechazo[] = []; 
+  //paginacion
+  currentPage = 1;
+  itemsPerPage = 10;
+  totalItems: number = 0;
+
+  cargando = true;
+
+  //selector
+  selectedRechazos: IRechazo[] = [];
   selection = new SelectionModel<IRechazo>(true, []);
+
+  rechazoList: IRechazo[] = [];
   estados: IEstado[] = [];
-  provincias: IProvincia[] =[];
+  provincias: IProvincia[] = [];
   poblacion: IPoblacion[] = [];
   competidores: ICompetidor[] = [];
   motivos_rechazo: IMotivoRechazo[] = [];
@@ -77,13 +62,17 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
   expandedElement?: IRechazo | null;
   selectedOption: string = 'Excel';
-  filtrosAplicados: Array<{nombre: string, valor: any}> = [];
+  filtrosAplicados: Array<{ nombre: string; valor: any }> = [];
 
   // Variable para manejar si el texto está truncado
   isTooltipVisible: boolean = false;
-  tooltipText: string | null = null; 
-  selectedFilters: { [key: string]: any } = {}
+  tooltipText: string | null = null;
+  selectedFilters: { [key: string]: any } = {};
   searchTerm: string = '';
+
+  //ordeanacion
+  sortColumn: string = '';
+  sortDirection: string = 'asc';
 
   constructor(
     private renderer: Renderer2,
@@ -92,11 +81,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     private filterService: FilterService,
     private _exportService: ExportService,
     private toastr: ToastrService
-  ) {
-    
+  ) {}
 
-  }
-  
   ngOnInit() {
     this.loadRechazos();
     this.loadEstados();
@@ -111,35 +97,43 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     const provincia = this.provincias.find((c) => c.id == id);
     return provincia ? provincia.name : 'No encontrado';
   }
-  
+
   getPoblacion(id: number): string {
     const poblacion = this.poblacion.find((c) => c.id == id);
     return poblacion ? poblacion.name : 'No encontrado';
   }
 
   private loadRechazos() {
-    this.rechazadosService.getRechazos(this.selectedFilters,this.searchTerm).subscribe((rechazos: IRechazo[]) => {
-      console.log('Rechazos cargados:', rechazos);
-      this.dataSource = rechazos;
-      this.rechazoList = rechazos;
-      this.paginate();
-    });
+    this.cargando = true;
+    this.rechazadosService
+      .getRechazos(
+        this.selectedFilters,
+        this.searchTerm,
+        this.currentPage,
+        this.itemsPerPage,
+        this.sortColumn,
+        this.sortDirection
+      )
+      .subscribe((data: any) => {
+        console.log('Rechazos cargados:', data.items);
+        const rechazosData: IRechazo[] = data.items;
+        this.dataSource = rechazosData;
+        this.totalItems = data.totalItems;
+        this.cargando = false;
+        this.updateSelectionFromCurrentPage()
+      });
   }
-  private loadProvincias(){
-    this.filterService.getProvincias().subscribe((provincias: IProvincia[]) =>{
+  private loadProvincias() {
+    this.filterService.getProvincias().subscribe((provincias: IProvincia[]) => {
       this.provincias = provincias;
     });
   }
 
-  
-
-  private loadPoblacion(){
-    this.filterService.getPoblaciones().subscribe((poblacion: IPoblacion[]) =>{
+  private loadPoblacion() {
+    this.filterService.getPoblaciones().subscribe((poblacion: IPoblacion[]) => {
       this.poblacion = poblacion;
-    })
+    });
   }
-
-
 
   private loadEstados() {
     this.filterService.getEstados().subscribe((estados: IEstado[]) => {
@@ -162,7 +156,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
         this.motivos_rechazo = motivos_rechazo;
       });
   }
-  
+
   private loadSimbolos() {
     this.filterService.getSimbolos().subscribe((simbolos: ISimbolo[]) => {
       this.simbolos = simbolos;
@@ -189,24 +183,87 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     // Placeholder for further initialization if needed
   }
 
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.length;
-    return numSelected === numRows;
-  }
+
 
   getOptionImage(statusId: number): string {
     return `assets/icon/estado_${statusId}.svg`;
   }
 
-  masterToggle() {
-    this.isAllSelected()
-      ? this.selection.clear()
-      : this.dataSource.forEach((row) => this.selection.select(row));
+  masterToggle(): void {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      this.selectedRechazos = [];
+    } else {
+      this.dataSource.forEach((row) => {
+        if (!this.isCheckboxDisabled(row) && !this.isSelected(row)) {
+          this.selection.select(row);
+          this.selectedRechazos.push(row);
+        }
+      });
+    }
+    this.updateHeaderSelection();
+  }
+
+  isSelected(row: IRechazo): boolean {
+    return this.selectedRechazos.some(rechazo => rechazo.id === row.id);
+  }
+
+  onRowToggle(row: IRechazo): void {
+    if (this.isSelected(row)) {
+      this.selectedRechazos = this.selectedRechazos.filter(selected => selected.id !== row.id);
+      this.selection.deselect(row);
+    } else {
+      this.selectedRechazos.push(row);
+      this.selection.select(row);
+    }
+    this.updateHeaderSelection(); 
+  }
+
+  updateHeaderSelection() {
+    const totalSelected = this.selectedRechazos.length;
+    const totalVisible = this.dataSource.length;
+    const allSelected = totalVisible > 0 && this.dataSource.every(row => this.isSelected(row));
+
+    if (totalSelected === 0) {
+      this.selection.clear(); // No hay filas seleccionadas
+    } else {
+      this.selection.clear();
+      this.dataSource.forEach(row => {
+        if (this.isSelected(row)) {
+          this.selection.select(row);
+        }
+      });
+    }
+    if (totalSelected > 0 && !allSelected) {
+      this.selection.select(this.dataSource[0]);
+    }
+  }
+
+  isAllSelected(): boolean {
+    const numVisibleRows = this.dataSource.length;
+    return numVisibleRows > 0 && this.dataSource.every(row => this.isSelected(row));
+  }
+
+  isCheckboxDisabled(row: any): boolean {
+    return (
+      !row.latitude ||
+      !row.longitude ||
+      (row.latitude === 0 && row.longitude === 0)
+    );
+  }
+
+  private updateSelectionFromCurrentPage() {
+    this.selection.clear(); 
+    this.selectedRechazos.forEach((rehazo) => {
+      if (this.dataSource.some((row) => row.id === rehazo.id)) {
+        this.selection.select(rehazo); 
+      }
+    });
+    this.updateHeaderSelection()
   }
 
   verEnMapa() {
-    if (this.selection.selected.length === 0) {
+    if (this.selectedRechazos.length === 0) {
       this.toastr.warning(
         'Debe seleccionar al menos 1 rechazo antes de ver en el mapa.',
         'Advertencia'
@@ -218,7 +275,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       width: '80%',
       height: '80%',
       disableClose: true,
-      data: { selectedRows: this.selection.selected },
+      data: { selectedRows: this.selectedRechazos},
     });
   }
 
@@ -232,7 +289,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   }
 
   actualizarEstados(row: IRechazo) {
-    console.log(row)
+    console.log(row);
     const estadoSeleccionado = this.estados.find(
       (estado) => estado.id == row.status_id
     );
@@ -307,31 +364,15 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     this.selectedOption = option;
   }
 
-  /* sort que ayudara a filtrar */
-  sortDirection: string = 'asc';
-  currentSortColumn: string = '';
   sortData(column: string) {
-    const isAsc = this.currentSortColumn === column && this.sortDirection === 'asc';
-    // Ordenar la fuente de datos dependiendo del tipo de dato
-    this.dataSource.sort((a, b) => {
-      const compareA = a[this.currentSortColumn as keyof IRechazo];
-      const compareB = b[this.currentSortColumn as keyof IRechazo];
-      // Verificar si los valores son de tipo cadena (string)
-      if (typeof compareA === 'string' && typeof compareB === 'string') {
-        return compareA.localeCompare(compareB) * (isAsc ? 1 : -1);
-      }
-      // Si son números, simplemente restar
-      if (typeof compareA === 'number' && typeof compareB === 'number') {
-        return (compareA - compareB) * (isAsc ? 1 : -1);
-      }
-      // Agregar soporte para otras comparaciones según sea necesario
-      return 0;
-    });
-    // Actualizar la columna actual y alternar la dirección
-    this.currentSortColumn = column;
-    this.sortDirection = isAsc ? 'desc' : 'asc';
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
     this.currentPage = 1;
-    this.paginate();
+    this.loadRechazos();
   }
 
   changeMotivo(event: Event, row: IRechazo) {
@@ -339,10 +380,13 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
     if (selectElement) {
       const newReasonId = Number(selectElement.value);
-      const newReasonName = this.motivos_rechazo.find(rechazo => rechazo.id === newReasonId);
+      const newReasonName = this.motivos_rechazo.find(
+        (rechazo) => rechazo.id === newReasonId
+      );
       const dataSourceIndex = this.dataSource.indexOf(row);
       this.dataSource[dataSourceIndex].reason_rejection_id = newReasonId;
-      this.dataSource[dataSourceIndex].reason_rejection = newReasonName?.name ?? "No encontrado";
+      this.dataSource[dataSourceIndex].reason_rejection =
+        newReasonName?.name ?? 'No encontrado';
     }
   }
 
@@ -350,12 +394,15 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     const selectElement = event.target as HTMLSelectElement;
     if (selectElement) {
       const newStatusId = Number(selectElement.value);
-      const newStatusName = this.estados.find(estado => estado.id === newStatusId);
+      const newStatusName = this.estados.find(
+        (estado) => estado.id === newStatusId
+      );
 
       const dataSourceIndex = this.dataSource.indexOf(row);
 
       this.dataSource[dataSourceIndex].status_id = newStatusId;
-      this.dataSource[dataSourceIndex].status = newStatusName?.name ?? "No encontrado";
+      this.dataSource[dataSourceIndex].status =
+        newStatusName?.name ?? 'No encontrado';
     }
   }
 
@@ -364,35 +411,36 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
     if (selectElement) {
       const newCompetidorId = Number(selectElement.value);
-      const newCompetidorName = this.competidores.find(competidor => competidor.id === newCompetidorId);
+      const newCompetidorName = this.competidores.find(
+        (competidor) => competidor.id === newCompetidorId
+      );
 
       const dataSourceIndex = this.dataSource.indexOf(row);
 
       this.dataSource[dataSourceIndex].competitor_id = newCompetidorId;
-      this.dataSource[dataSourceIndex].competitor_name = newCompetidorName?.name ?? "No encontrado";
+      this.dataSource[dataSourceIndex].competitor_name =
+        newCompetidorName?.name ?? 'No encontrado';
     }
-  }
-  paginate() {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
-    this.paginatedData = this.dataSource.slice(start, end);
   }
 
   onPageChange(page: number) {
     this.currentPage = page;
-    this.paginate();
+    this.loadRechazos();
   }
+
   onItemsPerPageChanged(itemsPerPage: number) {
     this.itemsPerPage = itemsPerPage;
     this.currentPage = 1;
-    this.paginate()
+    this.loadRechazos();
   }
+
 
   //Funcion filtros
   onFiltersChanged(selectedFilters: { [key: string]: any }) {
     console.log('Filtros seleccionados:', selectedFilters);
     this.selectedFilters = selectedFilters;
-    this.loadRechazos()
+    this.currentPage = 1;
+    this.loadRechazos();
   }
   /* logica para que aparezca tooltip cuando el texto es muy grande */
   isTextTruncated(element: HTMLElement): boolean {
@@ -414,7 +462,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   }
 
   buscar() {
-    console.log(this.searchTerm)
+    console.log(this.searchTerm);
+    this.currentPage = 1;
     this.loadRechazos();
   }
 

@@ -61,7 +61,6 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   constructor(
     private renderer: Renderer2,
     public dialog: MatDialog,
-    private cdr: ChangeDetectorRef,
     private _clientsServices: ClientsService,
     private toastr: ToastrService
   ) {}

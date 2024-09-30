@@ -63,89 +63,89 @@
             <th scope="col" class="text-center p-2">
               <div class=" d-flex align-items-center justify-self-center">
                 <input type="checkbox" (change)="masterToggle()" [checked]="selection.hasValue() && isAllSelected()"
-                  [indeterminate]="selection.hasValue() && !isAllSelected()" />
+                  [indeterminate]="selection.hasValue() && !isAllSelected()">
               </div>
             </th>
             <!-- Estado Column -->
             <th scope="col" class="text-center cursor" (click)="sortData('status_id')">
               Estado
-              <i *ngIf="currentSortColumn === 'status_id'" class="bi"
+              <i *ngIf="sortColumn === 'status_id'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Primer Rechazo Fecha Column -->
             <th scope="col" class="cursor" (click)="sortData('rejection_date')">
               Fecha
-              <i *ngIf="currentSortColumn === 'rejection_date'" class="bi"
+              <i *ngIf="sortColumn === 'rejection_date'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Población Column -->
             <th scope="col" class="row_poblacion cursor" (click)="sortData('city')">
               Población
-              <i *ngIf="currentSortColumn === 'city'" class="bi"
+              <i *ngIf="sortColumn === 'city'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Cliente Column -->
             <th scope="col" (click)="sortData('customer_name')" class="cursor">
               Cliente
-              <i *ngIf="currentSortColumn === 'customer_name'" class="bi"
+              <i *ngIf="sortColumn === 'customer_name'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Subfamilia Column -->
             <th scope="col" (click)="sortData('subfamily')" class="row_subfamilia cursor">
               Subfamilia
-              <i *ngIf="currentSortColumn === 'subfamily'" class="bi"
+              <i *ngIf="sortColumn === 'subfamily'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Producto Column -->
             <th scope="col" (click)="sortData('product')" class="cursor">
               Producto
-              <i *ngIf="currentSortColumn === 'product'" class="bi"
+              <i *ngIf="sortColumn === 'product'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Motivo Column -->
             <th scope="col" (click)="sortData('reason_rejection_id')" class="cursor">
               Motivo
-              <i *ngIf="currentSortColumn === 'reason_rejection_id'" class="bi"
+              <i *ngIf="sortColumn === 'reason_rejection_id'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Interés Column -->
             <th scope="col" (click)="sortData('interest_date')" class="cursor text-center column-interes">
               <i class="bi bi-calendar-check" [ngbTooltip]="'Interés'"></i>
-              <i *ngIf="currentSortColumn === 'interest_date'" class="bi"
+              <i *ngIf="sortColumn === 'interest_date'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Precio Column -->
             <th scope="col" class="text-end cursor" (click)="sortData('pvp')">
               Mi Precio
-              <i *ngIf="currentSortColumn === 'pvp'" class="bi"
+              <i *ngIf="sortColumn === 'pvp'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Promo Propia Column -->
             <th scope="col" class="text-center cursor" (click)="sortData('own_promo')">
-              <i *ngIf="currentSortColumn === 'own_promo'" class="bi"
+              <i *ngIf="sortColumn === 'own_promo'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Competidor Column -->
             <th scope="col" class="text-end cursor" (click)="sortData('pvp_competitor')">
               Su Precio
-              <i *ngIf="currentSortColumn === 'pvp_competitor'" class="bi"
+              <i *ngIf="sortColumn === 'pvp_competitor'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Promo Competidor Column -->
             <th scope="col" class="text-center cursor" (click)="sortData('promo_competencia')">
-              <i *ngIf="currentSortColumn === 'promo_competencia'" class="bi"
+              <i *ngIf="sortColumn === 'promo_competencia'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Competidor Column -->
             <th scope="col" (click)="sortData('competitor_id')" class="cursor">
               Competidor
-              <i *ngIf="currentSortColumn === 'competitor_id'" class="bi"
+              <i *ngIf="sortColumn === 'competitor_id'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Propuesta Agente Column -->
             <th scope="col" (click)="sortData('salesman_proposal')" class="cursor">
               <i class="bi bi-card-text" [ngbTooltip]="'Propuesta Agente'"></i>
-              <i *ngIf="currentSortColumn === 'salesman_proposal'" class="bi"
+              <i *ngIf="sortColumn === 'salesman_proposal'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Acción Correctora Column -->
@@ -159,13 +159,13 @@
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let row of paginatedData">
+          <ng-container *ngFor="let row of dataSource">
             <tr>
               <!-- Checkbox Column -->
               <td class="text-center px-2">
                 <div class=" d-flex align-items-center justify-self-center">
-                  <input type="checkbox" (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
-                    [checked]="selection.isSelected(row)" />
+                  <input type="checkbox" (click)="$event.stopPropagation()" (change)="onRowToggle(row)"
+                    [checked]="isSelected(row)" [disabled]="isCheckboxDisabled(row)">
                 </div>
               </td>
               <!-- Estado Column -->
@@ -187,23 +187,17 @@
               <td class="">{{ row.city }}</td>
               <!-- Cliente Column -->
               <td class="row_cliente">
-                <span
-                [ngbTooltip]="tooltipText" 
-                (mouseover)="applyTooltipIfTruncated($event, row.customer_name)" 
-                class="truncate-text"
-                >
-                {{ row.customer_name }}
+                <span [ngbTooltip]="tooltipText" (mouseover)="applyTooltipIfTruncated($event, row.customer_name)"
+                  class="truncate-text">
+                  {{ row.customer_name }}
                 </span>
               </td>
               <!-- Subfamilia Column -->
               <td class="">{{ row.subfamily }}</td>
               <!-- Producto Column -->
               <td class="row_producto">
-                <span 
-                [ngbTooltip]="tooltipText" 
-                (mouseover)="applyTooltipIfTruncated($event, row.product)" 
-                class="truncate-text"
-                >
+                <span [ngbTooltip]="tooltipText" (mouseover)="applyTooltipIfTruncated($event, row.product)"
+                  class="truncate-text">
                   {{ row.product }}
                 </span>
               </td>
@@ -283,7 +277,7 @@
                 </button>
               </td>
             </tr>
-            
+
 
             <!-- Row Expanded Detail -->
             <ng-container *ngIf="expandedElement === row">
@@ -314,7 +308,7 @@
               </tr>
             </ng-container>
           </ng-container>
-          <tr *ngIf="paginatedData.length === 0" >
+          <tr *ngIf="dataSource.length === 0">
             <td colspan="20" class="text-center">
               No hay datos
             </td>
@@ -323,7 +317,7 @@
       </table>
     </div>
     <!-- Paginador -->
-    <app-pagination [totalItems]="dataSource.length" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
+    <app-pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
       (pageChange)="onPageChange($event)" (itemsPerPageChanged)="onItemsPerPageChanged($event)">
     </app-pagination>
   </div>
