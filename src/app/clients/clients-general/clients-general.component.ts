@@ -90,9 +90,9 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
       .pipe(timeout(20000))
       .subscribe(
         (data: any) => {
-          const clientsData: any[] = data.items; // Asegúrate de que 'items' coincide con la estructura que devuelve tu backend
+          const clientsData: any[] = data.items;
           this.dataSource.data = clientsData;
-          this.totalItems = data.totalItems; // 'totalItems' debe ser el total de elementos que devuelve tu backend
+          this.totalItems = data.totalItems; 
           this.cargando = false;
         },
         (error) => {
