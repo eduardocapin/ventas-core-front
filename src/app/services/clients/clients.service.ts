@@ -20,7 +20,7 @@ export class ClientsService {
   }
 
   //Obtenemos la lista de clientes
-  getClients(selectedFilters: { [key: string]: any }, searchTerm: string): Observable<IClient[]> {
+  getClients(selectedFilters: { [key: string]: any }, searchTerm: string, currentPage:number, itemsPerPage:number, sortColumn: string, sortDirection: string): Observable<IClient[]> {
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
@@ -28,8 +28,8 @@ export class ClientsService {
       ),
     };
     return this._http
-      .post<IClient[]>(`${this.baseUrl}:${this.port}/api/clients/`,
-        {selectedFilters, searchTerm},
+      .post<IClient[]>(`${this.baseUrl}:${this.port}/api/clients/paginacion`,
+        {selectedFilters, searchTerm, currentPage, itemsPerPage, sortColumn, sortDirection },
         options,
       )
       .pipe(

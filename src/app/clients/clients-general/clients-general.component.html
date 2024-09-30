@@ -38,7 +38,7 @@
       </div>
       <!-- tabla -->
       <div class="table-responsive {{cargando?'d-none':''}}">
-        
+
         <table class="table table-hover table-sm w-100">
           <!-- Checkbox Column -->
           <thead>
@@ -83,47 +83,37 @@
             </tr>
           </thead>
           <tbody class="w-100">
-            <ng-container *ngFor="let row of paginatedData">
+            <ng-container *ngFor="let row of dataSource.data">
               <tr>
                 <td class="text-center px-2">
                   <div class="d-flex align-items-center">
-                    <input type="checkbox" (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
-                      [checked]="selection.isSelected(row)" [disabled]="isCheckboxDisabled(row)">
+                    <input type="checkbox" (click)="$event.stopPropagation()" (change)="onRowToggle(row)"
+                      [checked]="isSelected(row)" [disabled]="isCheckboxDisabled(row)">
                   </div>
                 </td>
                 <td>{{ row.customer_ERP_id }}</td>
-                <td >
-                  <span 
-                  [ngbTooltip]="tooltipText" 
-                  (mouseover)="applyTooltipIfTruncated($event, row.name)" 
-                  class="truncate-text"
-                  >{{ row.name }}</span>
+                <td>
+                  <span [ngbTooltip]="tooltipText" (mouseover)="applyTooltipIfTruncated($event, row.name)"
+                    class="truncate-text">{{ row.name }}</span>
                 </td>
                 <td [title]="row.province">
-                  <span
-                  [ngbTooltip]="tooltipText" 
-                  (mouseover)="applyTooltipIfTruncated($event, row.province)" 
-                  class="truncate-text"
-                  >
+                  <span [ngbTooltip]="tooltipText" (mouseover)="applyTooltipIfTruncated($event, row.province)"
+                    class="truncate-text">
                     {{ row.province }}
                   </span>
                 </td>
                 <td [title]="row.city">
-                  <span
-                  [ngbTooltip]="tooltipText" 
-                  (mouseover)="applyTooltipIfTruncated($event, row.city)" 
-                  class="truncate-text">
+                  <span [ngbTooltip]="tooltipText" (mouseover)="applyTooltipIfTruncated($event, row.city)"
+                    class="truncate-text">
                     {{ row.city }}
                   </span>
                 </td>
                 <td>
-                    {{ row.pc != 0 ? row.pc : "" }}
+                  {{ row.pc != 0 ? row.pc : "" }}
                 </td>
                 <td>
-                  <span
-                  [ngbTooltip]="tooltipText" 
-                  (mouseover)="applyTooltipIfTruncated($event, row.address)" 
-                  class="truncate-text">
+                  <span [ngbTooltip]="tooltipText" (mouseover)="applyTooltipIfTruncated($event, row.address)"
+                    class="truncate-text">
                     {{ row.address }}
                   </span>
                 </td>
@@ -133,9 +123,9 @@
                   </button>
                 </td>
               </tr>
-              
+
             </ng-container>
-            <tr *ngIf="paginatedData.length === 0" >
+            <tr *ngIf="dataSource.data.length === 0">
               <td colspan="8" class="text-center">
                 No hay datos
               </td>
@@ -150,8 +140,8 @@
       </div>
 
       <!-- Componente de paginación externo -->
-      <app-pagination class="{{cargando?'d-none':''}}" [totalItems]="dataSource.data.length"
-        [itemsPerPage]="itemsPerPage" [currentPage]="currentPage" (pageChange)="onPageChange($event)"
+      <app-pagination class="{{cargando?'d-none':''}}" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage"
+        [currentPage]="currentPage" (pageChange)="onPageChange($event)"
         (itemsPerPageChanged)="onItemsPerPageChanged($event)">
       </app-pagination>
 

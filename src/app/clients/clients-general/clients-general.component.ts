@@ -1,4 +1,12 @@
-import { Component, AfterViewInit, OnInit, ChangeDetectorRef, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  OnInit,
+  ChangeDetectorRef,
+  ViewChild,
+  ElementRef,
+  Renderer2,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
 import { IClient } from 'src/app/models/clients.model';
@@ -12,7 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-clients-general',
   templateUrl: './clients-general.component.html',
-  styleUrls: ['./clients-general.component.scss']
+  styleUrls: ['./clients-general.component.scss'],
 })
 export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   displayedColumns: string[] = [
@@ -26,18 +34,29 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     'acciones',
   ];
   dataSource: { data: IClient[] } = { data: [] };
-  paginatedData: IClient[] = []; // Datos que se muestran en la página actual
+
+  //paginacion
   currentPage = 1;
   itemsPerPage = 10;
-  clientsList: IClient[] = [];
-  cargando: boolean = false;
+  totalItems: number = 0;
+
+  //selector
+  selectedClients: IClient[] = [];
   selection = new SelectionModel<IClient>(true, []);
+
+  cargando: boolean = true;
+
+  
+  //filtrado
   filtrosAplicados: Array<{ nombre: string; valor: any }> = [];
+  
+  //ordeanacion
   sortColumn: string = '';
   sortDirection: string = 'asc';
+  
   // Variable para manejar si el texto está truncado
   isTooltipVisible: boolean = false;
-  tooltipText: string | null = null; 
+  tooltipText: string | null = null;
   searchTerm: string = '';
 
   constructor(
@@ -60,16 +79,20 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   private loadData() {
     this.cargando = true;
     this._clientsServices
-      .getClients(this.selectedFilters,this.searchTerm)
+      .getClients(
+        this.selectedFilters,
+        this.searchTerm,
+        this.currentPage,
+        this.itemsPerPage,
+        this.sortColumn,
+        this.sortDirection
+      ) 
       .pipe(timeout(20000))
       .subscribe(
         (data: any) => {
-          const clientsData: any[] = data;
+          const clientsData: any[] = data.items; // Asegúrate de que 'items' coincide con la estructura que devuelve tu backend
           this.dataSource.data = clientsData;
-          this.clientsList = this.dataSource.data;
-          this.paginate();
-          // Forzar la detección de cambios
-          this.cdr.detectChanges();
+          this.totalItems = data.totalItems; // 'totalItems' debe ser el total de elementos que devuelve tu backend
           this.cargando = false;
         },
         (error) => {
@@ -79,21 +102,15 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
       );
   }
 
-  paginate() {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
-    this.paginatedData = this.dataSource.data.slice(start, end);
-  }
-
   onPageChange(page: number) {
     this.currentPage = page;
-    this.paginate();
+    this.loadData();
   }
-
+  
   onItemsPerPageChanged(itemsPerPage: number) {
     this.itemsPerPage = itemsPerPage;
     this.currentPage = 1;
-    this.paginate();
+    this.loadData();
   }
 
   private loadGoogleMapsScript(): Promise<void> {
@@ -136,21 +153,8 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
       this.sortColumn = column;
       this.sortDirection = 'asc';
     }
-
-    this.dataSource.data.sort((a, b) => {
-      const valueA = a[this.sortColumn as keyof IClient];
-      const valueB = b[this.sortColumn as keyof IClient];
-
-      if (valueA < valueB) {
-        return this.sortDirection === 'asc' ? -1 : 1;
-      }
-      if (valueA > valueB) {
-        return this.sortDirection === 'asc' ? 1 : -1;
-      }
-      return 0;
-    });
     this.currentPage = 1;
-    this.paginate();
+    this.loadData()
   }
 
   editContact(id_Cliente?: number) {
@@ -167,29 +171,37 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
 
   masterToggle(): void {
     if (this.isAllSelected()) {
-      this.selection.clear();
+      this.dataSource.data.forEach(row => {
+        this.selection.deselect(row);
+        this.selectedClients = this.selectedClients.filter(selected => selected.id !== row.id);
+      });
     } else {
-      this.dataSource.data.forEach((row) => {
-        if (
-          row.latitude &&
-          row.longitude &&
-          row.latitude != 0 &&
-          row.longitude != 0
-        ) {
+      this.dataSource.data.forEach(row => {
+        if (!this.isCheckboxDisabled(row) && !this.isSelected(row)) {
           this.selection.select(row);
+          this.selectedClients.push(row);
         }
       });
     }
   }
 
-  isAllSelected() {
-    const numRows = this.dataSource.data.filter(
-      (row) =>
-        row.latitude && row.longitude && row.latitude != 0 && row.longitude != 0
-    ).length;
-    const numSelected = this.selection.selected.length;
-    return numRows === numSelected;
+  isSelected(row: IClient): boolean {
+    return this.selectedClients.some(client => client.id === row.id);
   }
+
+  onRowToggle(row: IClient): void {
+    if (this.isSelected(row)) {
+      this.selectedClients = this.selectedClients.filter(selected => selected.id !== row.id);
+    } else {
+      this.selectedClients.push(row);
+    }
+    this.selection.toggle(row);
+  }
+
+ isAllSelected(): boolean {
+  const numVisibleRows = this.dataSource.data.length;
+  return numVisibleRows > 0 && this.dataSource.data.every(row => this.isSelected(row));
+}
 
   isCheckboxDisabled(row: any): boolean {
     return (
@@ -231,6 +243,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   onFiltersChanged(selectedFilters: { [key: string]: any }) {
     console.log('Filtros seleccionados:', selectedFilters);
     this.selectedFilters = selectedFilters;
+    this.currentPage = 1
     this.loadData();
   }
   /* logica para que aparezca el tooltip cuando el texto es muy grande */
@@ -253,6 +266,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   }
 
   buscar() {
+    this.currentPage = 1
     this.loadData();
   }
 
