@@ -66,6 +66,8 @@
                   [indeterminate]="selection.hasValue() && !isAllSelected()">
               </div>
             </th>
+            <!-- Acción Correctora Column -->
+            <th scope="col" class="text-center header-correctora">Convertir en oportunidad (% ó € + Promo)</th>
             <!-- Estado Column -->
             <th scope="col" class="text-center cursor" (click)="sortData('status_id')">
               Estado
@@ -73,9 +75,9 @@
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Primer Rechazo Fecha Column -->
-            <th scope="col" class="cursor" (click)="sortData('rejection_date')">
+            <th scope="col" class="cursor" (click)="sortData('last_rejection_date')">
               Fecha
-              <i *ngIf="sortColumn === 'rejection_date'" class="bi"
+              <i *ngIf="sortColumn === 'last_rejection_date'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Población Column -->
@@ -88,12 +90,6 @@
             <th scope="col" (click)="sortData('customer_name')" class="cursor">
               Cliente
               <i *ngIf="sortColumn === 'customer_name'" class="bi"
-                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
-            </th>
-            <!-- Subfamilia Column -->
-            <th scope="col" (click)="sortData('subfamily')" class="row_subfamilia cursor">
-              Subfamilia
-              <i *ngIf="sortColumn === 'subfamily'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Producto Column -->
@@ -143,17 +139,14 @@
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Propuesta Agente Column -->
-            <th scope="col" (click)="sortData('salesman_proposal')" class="cursor">
+            <th scope="col" (click)="sortData('salesman_proposal')" class="cursor px-0">
               <i class="bi bi-card-text" [ngbTooltip]="'Propuesta Agente'"></i>
               <i *ngIf="sortColumn === 'salesman_proposal'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
-            <!-- Acción Correctora Column -->
-            <th scope="col" class="text-center header-correctora">Convertir en oportunidad (% ó € + Promo)</th>
-            <!-- Acción Correctora Enviar Column -->
-            <th scope="col" class="text-center header-correctora"></th>
+            
             <!-- columna ficha -->
-            <th scope="col" class="text-center">Ficha</th>
+            <th scope="col" class="text-center">Cliente</th>
             <!-- Expand Column -->
             <th scope="col" class="text-center"></th>
           </tr>
@@ -168,6 +161,31 @@
                     [checked]="isSelected(row)" [disabled]="isCheckboxDisabled(row)">
                 </div>
               </td>
+              <!-- Acción Correctora Column -->
+              <td class="fondo_accionCorrectora">
+                <div class="d-flex align-items-center gap-1">
+                  <!-- Campo para precio de promoción -->
+                  <input type="number" class="form-control form-control-sm accion_correctora_precio text-success"
+                    [(ngModel)]="row.corrective_action_value" placeholder="0" min="0" />
+
+                  <!-- Campo para símbolo de promoción -->
+                  <select class="form-select form-select-sm accion_correctora_simbolo"
+                    [(ngModel)]="row.corrective_action_symbol_id" (change)="updateSymbol(row)">
+                    <option *ngFor="let simbolo of simbolos" [value]="simbolo.id">
+                      {{ simbolo.symbol }}
+                    </option>
+                  </select>
+
+                  <!-- Campo para acción correctora -->
+                  <input type="text" class="form-control form-control-sm row_accion_correctora text-success"
+                    [(ngModel)]="row.corrective_action_text" maxlength="50" placeholder="Promoción"
+                    [ngbTooltip]="row.corrective_action_text" />
+                    <div class=" d-flex align-items-center justify-self-center">
+                      <input type="checkbox" (click)="$event.stopPropagation()" [checked]="row.corrective_action_sent" />
+                    </div>
+                </div>
+              </td>
+            
               <!-- Estado Column -->
               <td class="text-center">
                 <div class="d-flex align-items-center gap-1 justify-content-center">
@@ -182,7 +200,7 @@
                 </div>
               </td>
               <!-- Primer Rechazo Column -->
-              <td class="">{{ row.rejection_date }}</td>
+              <td class="">{{ row.last_rejection_date }}</td>
               <!-- Población Column -->
               <td class="">{{ row.city }}</td>
               <!-- Cliente Column -->
@@ -192,8 +210,6 @@
                   {{ row.customer_name }}
                 </span>
               </td>
-              <!-- Subfamilia Column -->
-              <td class="">{{ row.subfamily }}</td>
               <!-- Producto Column -->
               <td class="row_producto">
                 <span [ngbTooltip]="tooltipText" (mouseover)="applyTooltipIfTruncated($event, row.product)"
@@ -238,36 +254,10 @@
               <td class="row_propuesta_agente">
                 <i *ngIf="row.salesman_proposal" [ngbTooltip]="row.salesman_proposal" class="bi bi-card-text"></i>
               </td>
-              <!-- Acción Correctora Column -->
-              <td class="fondo_accionCorrectora">
-                <div class="d-flex align-items-center gap-1">
-                  <!-- Campo para precio de promoción -->
-                  <input type="number" class="form-control form-control-sm accion_correctora_precio text-success"
-                    [(ngModel)]="row.corrective_action_value" placeholder="0" min="0" />
-
-                  <!-- Campo para símbolo de promoción -->
-                  <select class="form-select form-select-sm accion_correctora_simbolo"
-                    [(ngModel)]="row.corrective_action_symbol_id" (change)="updateSymbol(row)">
-                    <option *ngFor="let simbolo of simbolos" [value]="simbolo.id">
-                      {{ simbolo.symbol }}
-                    </option>
-                  </select>
-
-                  <!-- Campo para acción correctora -->
-                  <input type="text" class="form-control form-control-sm row_accion_correctora text-success"
-                    [(ngModel)]="row.corrective_action_text" maxlength="50" placeholder="Promoción"
-                    [ngbTooltip]="row.corrective_action_text" />
-                </div>
-              </td>
-              <!-- Acción Correctora Enviar Column -->
-              <td class="pe-2 fondo_accionCorrectora">
-                <div class=" d-flex align-items-center justify-self-center">
-                  <input type="checkbox" (click)="$event.stopPropagation()" [checked]="row.corrective_action_sent" />
-                </div>
-              </td>
+              
               <!-- ficha column -->
               <td class="text-center">
-                <i class="bi bi-eye-fill fs-5 icon_color cursor" (click)="viewRechazo(row.customer_id)"></i>
+                <i class="bi bi-eye-fill fs-5 icon_color cursor px-0" (click)="viewRechazo(row.customer_id)"></i>
               </td>
               <!-- Expand Column -->
               <td class="text-center">

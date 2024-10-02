@@ -44,6 +44,8 @@ body {
 $light-gray: #f3f4f6;
 $background-login: #f4dec5;
 $title-dark-gray: #6D6D6D;
+$color-btn-primary: #3f51b5;
+
 
 
 /*clases con colores*/
@@ -61,4 +63,10 @@ $title-dark-gray: #6D6D6D;
 
 .dark-gray{
     color: $title-dark-gray !important;
+}
+.color-btn-primary{
+    background-color: $color-btn-primary !important;
+}
+.dropdown-item {
+    font-size: 12px;
 }

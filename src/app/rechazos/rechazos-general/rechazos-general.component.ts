@@ -27,7 +27,6 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     'estado',
     'poblacion',
     'cliente',
-    'nombre_subfamilia',
     'producto',
     'tipo_rechazo',
     'precio_producto',

@@ -23,6 +23,7 @@ declare const bootstrap: any;
 export class FilterContainerComponent implements OnInit {
   @Input() componentId: string = '';
   @Output() filtersChanged = new EventEmitter<{ [key: string]: any }>();
+  
 
   filters: any[] = [];
   selectedFilters: { [key: string]: any } = {};
@@ -117,9 +118,14 @@ export class FilterContainerComponent implements OnInit {
     const filterInfo = this.filters.find((filter) => filter.id === filterId);
 
     if (existingFilter) {
-      console.log('Filtro existente: ')
-      console.log(existingFilter.valor);
-      if (existingFilter.valor.length > 0) {
+      console.log('Filtro existente: ', existingFilter.valor);
+
+      if (existingFilter.tipo === 'date' && value.startDate && value.endDate) {
+        existingFilter.valor ={
+          startDate: value.startDate,
+          endDate: value.endDate,
+        };
+      }else if (existingFilter.valor.length > 0) {
         existingFilter.valor = value;
       }else{
         delete this.selectedFilters[existingFilter.id];
@@ -129,6 +135,16 @@ export class FilterContainerComponent implements OnInit {
         this.resetChildFilter(existingFilter.id);
       }
     } else if (filterInfo) {
+      /// si es un nuevo filtro
+      let newFilterValue = value;
+      //si es un filtro de tipo fecha, asegurarse de manejar el objeto con starDate y endDate
+      if (filterInfo.type === 'date' &&value.startDate && value.endDate) {
+        newFilterValue ={
+          startDate: value.starDate,
+          endDate: value.endDate,
+        };
+      }
+
       this.filtrosAplicados.push({
         id: filterId,
         nombre: filterInfo.title,
@@ -223,5 +239,9 @@ export class FilterContainerComponent implements OnInit {
       return value.map((item) => item.name).join(', ');
     }
     return 'Vacío';
+  }
+  formatDateToDisplay(date: string): string {
+    const [year, month, day] = date.split('-');
+    return `${day}/${month}/${year}`;
   }
 }

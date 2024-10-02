@@ -1,8 +1,27 @@
 <li class="dropend">
-    <a class="dropdown-item dropdown-toggle cursor" data-bs-toggle="dropdown" aria-expanded="false">Fecha</a>
-    <ul class="dropdown-menu">
-      <li *ngFor="let option of dateOptions" class="cursor">
-        <a class="dropdown-item" (click)="selectDate(option)">{{ option }}</a>
-      </li>
-    </ul>
-  </li>
+  <a class="dropdown-item dropdown-toggle cursor" data-bs-toggle="dropdown" aria-expanded="false">Fecha</a>
+  <ul class="dropdown-menu">
+    <li *ngFor="let option of dateOptions" class="cursor">
+      <a class="dropdown-item" (click)="selectDate(option)">{{ option }}</a>
+    </li>
+    <!-- Dropdown "Personalizado" -->
+    <li class="dropend">
+      <a class="dropdown-item dropdown-toggle cursor" data-bs-toggle="dropdown" aria-expanded="false" (click)="$event.stopPropagation()">Personalizado</a>
+      <ul class="dropdown-menu p-3">
+        <div class="d-flex gap-2">
+          <div>
+            <label for="startDate">Fecha de inicio:</label>
+            <input type="date" id="startDate" class="form-control mb-2" [(ngModel)]="customStartDate" />
+          </div>
+          <div>
+            <label for="endDate">Fecha de fin:</label>
+            <input type="date" id="endDate" class="form-control" [(ngModel)]="customEndDate" />
+          </div>
+        </div>
+        <div class="mt-3 text-end">
+          <button class="btn btn-sm text-white color-btn-primary w-100" (click)="applyCustomDate()">Filtrar</button>
+        </div>
+      </ul>
+    </li>
+  </ul>
+</li>
