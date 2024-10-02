@@ -105,8 +105,7 @@ export class PopupClientDetailComponent {
   verEnMapa() {
     const dialogRef = this.dialog.open(PopupMapClientsComponent, {
       width: '80%',
-      height: '80%',
-      disableClose: true,
+      height: '75%',
       data: {
         clients: [this.cliente],
       },

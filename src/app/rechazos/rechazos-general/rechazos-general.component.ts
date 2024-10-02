@@ -278,8 +278,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
     const dialogRef = this.dialog.open(PopupMapComponent, {
       width: '80%',
-      height: '80%',
-      disableClose: true,
+      height: '75%',
       data: { selectedRows: this.selectedRechazos },
     });
   }

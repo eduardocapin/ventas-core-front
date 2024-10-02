@@ -47,7 +47,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   cargando: boolean = true;
 
   //filtrado
-  filtrosAplicados: Array<{ nombre: string; valor: any }> = [];
+  selectedFilters: { [key: string]: any } = {};
 
   //ordeanacion
   sortColumn: string = '';
@@ -65,7 +65,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     private toastr: ToastrService
   ) {}
 
-  selectedFilters: { [key: string]: any } = {};
+  
 
   ngOnInit(): void {
     this.cargando = true;
@@ -255,8 +255,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     if (this.selectedClients.length > 0 && this.selectedClients.length < 200) {
       const dialogRef = this.dialog.open(PopupMapClientsComponent, {
         width: '80%',
-        height: '80%',
-        disableClose: true,
+        height: '75%',
         data: {
           clients: this.selectedClients,
         },
