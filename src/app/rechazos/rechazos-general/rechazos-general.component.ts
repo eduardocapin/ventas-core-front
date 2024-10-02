@@ -70,7 +70,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   searchTerm: string = '';
 
   //ordeanacion
-  sortColumn: string = 'r.rejection_date';
+  sortColumn: string = 'r.last_rejection_date';
   sortDirection: string = 'desc';
 
   constructor(
