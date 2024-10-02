@@ -47,7 +47,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   cargando: boolean = true;
 
   //filtrado
-  filtrosAplicados: Array<{ nombre: string; valor: any }> = [];
+  selectedFilters: { [key: string]: any } = {};
 
   //ordeanacion
   sortColumn: string = '';
@@ -65,7 +65,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     private toastr: ToastrService
   ) {}
 
-  selectedFilters: { [key: string]: any } = {};
+  
 
   ngOnInit(): void {
     this.cargando = true;

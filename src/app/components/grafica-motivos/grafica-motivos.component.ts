@@ -49,6 +49,8 @@ export class GraficaMotivosComponent {
     var option: EChartsOption;
 
     option = {
+      /*
+      AZULUES
       color: [
         '#87CEFA', // Light Sky Blue
         '#5F9BCC', // Light Steel Blue
@@ -56,7 +58,15 @@ export class GraficaMotivosComponent {
         '#4682B4', // Steel Blue
         '#1E90FF', // Dodger Blue
         '#ADD8E6', // Light Blue
-    ],
+    ],*/
+    color: [
+      '#FADADD', // Light Pink (pastel)
+      '#F7A1C4', // Soft Pink
+      '#FBD3E0', // Pastel Pink
+      '#EBA0B3', // Pale Pink
+      '#F3A6C9', // Baby Pink
+      '#F9CFE0', // Blush Pink
+  ],
       title: {
         top: 10,
         text: 'Motivos',
@@ -82,7 +92,7 @@ export class GraficaMotivosComponent {
           startAngle: 180,
           endAngle: 360,
           data: [
-            { value: 23136, name: 'Caducado' },
+            { value: 23136, name: 'Packaging' },
             { value: 18370, name: 'Mala calidad' },
             { value: 17224, name: 'Precio' },
             {value: 8130, name: 'No aplica'}
