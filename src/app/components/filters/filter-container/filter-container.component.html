@@ -35,8 +35,9 @@
             <!-- Modal para el input del nombre del filtro guardado -->
             <div class="modal fade" id="nombreFiltroModal" tabindex="-1" aria-labelledby="nombreFiltroModalLabel"
                 aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-dialog modal-dialog-centered custom-modal">
                     <div class="modal-content">
+                        <app-popup-header [title]=" 'Guardar filtro como plantilla'" [icon]="'save'"[isBootstrapIcon]="true"  (close)=" onClose()"></app-popup-header>
                         <div class="modal-body">
                             <input [(ngModel)]="nombreFiltroGuardado" class="form-control"
                                 placeholder="Nombre del filtro" />

@@ -244,4 +244,14 @@ export class FilterContainerComponent implements OnInit {
     const [year, month, day] = date.split('-');
     return `${day}/${month}/${year}`;
   }
+
+  onClose() {
+    const modalElement = document.getElementById('nombreFiltroModal');
+    if (modalElement) {
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide(); 
+      }
+    }
+  }
 }
