@@ -13,6 +13,10 @@ body {
     height: 100vh;
 }
 
+.tooltip .tooltip-inner {
+    font-size: 12px; 
+}
+
 /* componetnes en dasboard  */
 .card.border-left-primary {
     border-left: 0.25rem solid #4e73df;
