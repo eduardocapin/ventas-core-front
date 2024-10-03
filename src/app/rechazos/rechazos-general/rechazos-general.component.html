@@ -33,17 +33,15 @@
       <!-- botones y filtros -->
       <div class="d-flex align-items-center gap-2">
         <div class="btn-group" role="group">
-          <button type="button" class="btn btn-azul-claro" (click)="exportar_rechazos()">Exportar</button>
-          <button type="button" class="btn btn-gris-claro dropdown-toggle" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            {{ selectedOption }}
+          <button type="button" class="btn btn-azul-claro dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              Exportar
           </button>
           <ul class="dropdown-menu">
-            <li><button class="dropdown-item" (click)="updateOption('Excel')">Excel</button></li>
-            <li><button class="dropdown-item" (click)="updateOption('CSV')">CSV</button></li>
-            <li><button class="dropdown-item" (click)="updateOption('Json')">Json</button></li>
+              <li><button class="dropdown-item" (click)="exportData('Excel')">Excel</button></li>
+              <li><button class="dropdown-item" (click)="exportData('CSV')">CSV</button></li>
+              <li><button class="dropdown-item" (click)="exportData('Json')">Json</button></li>
           </ul>
-        </div>
+      </div>
         <button class="btn btn-color d-flex justify-content-center align-items-center" (click)="verEnMapa()">
           <i class="bi bi-geo-alt-fill"></i>
         </button>

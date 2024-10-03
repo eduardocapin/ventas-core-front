@@ -60,7 +60,6 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   simbolos: ISimbolo[] = [];
 
   expandedElement?: IRechazo | null;
-  selectedOption: string = 'Excel';
   filtrosAplicados: Array<{ nombre: string; valor: any }> = [];
 
   // Variable para manejar si el texto está truncado
@@ -332,33 +331,26 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     }
   }
 
-  exportar_rechazos() {
+  exportData(selectedOption: string): void {
     if (this.selectedRechazos.length <= 0) {
+      this.toastr.warning(
+        'Debe seleccionar al menos 1 rechazo antes de exportar.',
+        'Advertencia'
+      );
       return;
     }
-    if (this.selectedOption == '') {
-      return;
-    }
-    this.exportData();
-  }
-
-  exportData(): void {
     const now = new Date();
     const timestamp = now.toISOString().slice(0, 16).replace(/[-T:]/g, '-');
 
     const fileName = `exportacion_rechazos_${timestamp}`;
 
-    if (this.selectedOption === 'Excel') {
+    if (selectedOption === 'Excel') {
       this._exportService.exportToExcel(this.selectedRechazos, fileName);
-    } else if (this.selectedOption === 'CSV') {
+    } else if (selectedOption === 'CSV') {
       this._exportService.exportToCSV(this.selectedRechazos, fileName);
-    } else if (this.selectedOption === 'Json') {
+    } else if (selectedOption === 'Json') {
       this._exportService.exportToJson(this.selectedRechazos, fileName);
     }
-  }
-
-  updateOption(option: string) {
-    this.selectedOption = option;
   }
 
   sortData(column: string) {
