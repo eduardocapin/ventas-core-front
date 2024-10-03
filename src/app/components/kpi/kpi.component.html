@@ -7,20 +7,21 @@
     </div>
     <div id="kpis_centrales" class="d-flex gap-2">
         <div class="bg-white text-center rounded-3 d-flex justify-content-evenly align-items-center gap-2 px-2">
-            <div class="d-flex flex-column m-1 rechazos">
-                <h3 class="m-0 fw-bold"> 66.860</h3>
+            <div class="d-flex flex-column m-1 light-blue">
+                <h3 class="m-0 fw-bold"> {{'66860' | bigInt}}</h3>
                 <span class="smaller">Rechazos</span>
             </div>
         </div>
         <div class="bg-white text-center rounded-3 d-flex justify-content-evenly align-items-center gap-2 px-2">
-            <!-- <div class="border my-2" style="height: 45px;"></div> -->
-            <div class="d-flex flex-column m-1 pendientes">
-                <h3 class="m-0 fw-bold">8.123</h3>
+            <div class="d-flex flex-column m-1 orange">
+                <h3 class="m-0 fw-bold">{{8123| bigInt}}</h3>
                 <span class="smaller">Pendiente</span>
             </div>
-            <div class=" my-2" style="height: 45px;"><i class="bi bi-caret-right-fill"></i></div>
-            <div class="d-flex flex-column m-1 oportunidades">
-                <h3 class="m-0 fw-bold">10.368</h3>
+            <div class="d-flex align-items-center my-2" style="height: 45px;">
+                <i class="bi bi-caret-right-fill gray"></i>
+            </div>
+            <div class="d-flex flex-column m-1 primary-blue">
+                <h3 class="m-0 fw-bold">{{10368| bigInt}}</h3>
                 <span class="smaller">Oportunidad</span>
             </div>
         </div>

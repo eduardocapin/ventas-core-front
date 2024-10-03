@@ -214,7 +214,7 @@
               <!-- Motivo Column -->
               <td class="text-center">
                 <select (change)="changeMotivo($event, row)"
-                  class="form-select form-select-sm text-motivos select_rechazo" [(ngModel)]="row.reason_rejection_id"
+                  class="form-select form-select-sm pink select_rechazo" [(ngModel)]="row.reason_rejection_id"
                   [ngbTooltip]="row.reason_rejection">
                   <option *ngFor="let motivo of motivos_rechazo" [value]="motivo.id">{{ motivo.name }}</option>
                 </select>

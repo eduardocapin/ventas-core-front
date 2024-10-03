@@ -20,12 +20,14 @@ import { RangeFilterComponent } from '../components/filters/range-filter/range-f
 import { FilterContainerComponent } from '../components/filters/filter-container/filter-container.component';
 import { MapComponent } from '../components/map/map.component';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { BigIntPipe } from '../pipes/big-int.pipe';
 
 @NgModule({
   declarations: [
     KPIComponent,
     DecimalesPipe,
     EnterosPipe,
+    BigIntPipe,
     PaginationComponent,
     ProgressCircleComponent,
     EtiquetaValorComponent,

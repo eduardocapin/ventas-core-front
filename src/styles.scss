@@ -45,14 +45,17 @@ $light-gray: #f3f4f6;
 $background-login: #f4dec5;
 $title-dark-gray: #6D6D6D;
 $color-btn-primary: #3f51b5;
-
-
+$pink: #ff33d6;
+$orange: #ff9500;
+$light-blue: #87CEFA;
 
 /*clases con colores*/
 .background-light-gray {
     background-color: $light-gray !important;
 }
-
+.gray {
+    color: gray !important;
+}
 .background-white {
     background-color: white !important;
 }
@@ -64,8 +67,20 @@ $color-btn-primary: #3f51b5;
 .dark-gray{
     color: $title-dark-gray !important;
 }
-.color-btn-primary{
-    background-color: $color-btn-primary !important;
+.pink{
+    color: $pink !important;
+}
+.orange{
+    color: $orange !important;
+}
+.orange{
+    color: $orange !important;
+}
+.primary-blue{
+    color: $color-btn-primary !important;
+}
+.light-blue{
+    color: $light-blue !important;
 }
 .dropdown-item {
     font-size: 12px;
