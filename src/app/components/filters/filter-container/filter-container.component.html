@@ -3,7 +3,7 @@
     <div class="d-flex gap-2 align-items-center">
         <div  class="d-flex gap-2 align-items-center">
             <!-- Botón para cada filtro aplicado -->
-            <button class="d-flex m-0 btn btn-outline-danger btn-sm align-items-center"
+            <button class="d-flex m-0 btn btn-outline-primary btn-sm align-items-center"
                 *ngFor="let filtro of filtrosAplicados" (click)="removeFilter(filtro)">
                 <div class="d-flex align-items-center" *ngIf="filtro.tipo === 'search' ">
                     <p class="m-0">{{ filtro.nombre }}: {{ filtro.valor || 'Vacío' }}</p>
@@ -23,12 +23,12 @@
                 </div>
             </button>
             <!-- Botón "Limpiar" solo si hay filtros aplicados -->
-            <button *ngIf="filtrosAplicados.length > 0" class="btn btn-outline-danger btn-sm" (click)="filtroReset()"  ngbTooltip="Eliminar">
+            <button *ngIf="filtrosAplicados.length > 0" class="btn btn-outline-primary btn-sm" (click)="filtroReset()"  ngbTooltip="Limpiar filtros">
                 <i class="bi bi-trash-fill"></i>
             </button>
             <!-- Botón "Guardar" -->
             <button *ngIf="filtrosAplicados.length > 0" class="btn btn-outline-success btn-sm"
-                (click)="mostrarInputParaGuardar()" ngbTooltip="'Guardar'">
+                (click)="mostrarInputParaGuardar()" ngbTooltip="Guardar filtro como plantilla">
                 <i class="bi bi-save"></i>
             </button>
 

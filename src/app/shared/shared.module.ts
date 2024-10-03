@@ -21,6 +21,7 @@ import { FilterContainerComponent } from '../components/filters/filter-container
 import { MapComponent } from '../components/map/map.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { BigIntPipe } from '../pipes/big-int.pipe';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { BigIntPipe } from '../pipes/big-int.pipe';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    GoogleMapsModule 
+    GoogleMapsModule,
+    NgbTooltipModule, 
 
   ],
   exports: [
