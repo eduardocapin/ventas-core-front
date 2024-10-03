@@ -8,17 +8,17 @@
     <li class="dropend">
       <a class="dropdown-item dropdown-toggle cursor" data-bs-toggle="dropdown" aria-expanded="false" (click)="$event.stopPropagation()">Personalizado</a>
       <ul class="dropdown-menu p-3">
-        <div class="d-flex gap-2">
+        <div class="d-flex gap-2 text-font">
           <div>
             <label for="startDate">Fecha de inicio:</label>
-            <input type="date" id="startDate" class="form-control mb-2" [(ngModel)]="customStartDate" />
+            <input type="date" id="startDate" class="form-control mb-2 form-control-sm" [(ngModel)]="customStartDate" />
           </div>
           <div>
             <label for="endDate">Fecha de fin:</label>
-            <input type="date" id="endDate" class="form-control" [(ngModel)]="customEndDate" />
+            <input type="date" id="endDate" class="form-control form-control-sm" [(ngModel)]="customEndDate" />
           </div>
         </div>
-        <div class="mt-3 text-end">
+        <div class="mt-1 text-end">
           <button class="btn btn-sm text-white color-btn-primary w-100" (click)="applyCustomDate()">Filtrar</button>
         </div>
       </ul>

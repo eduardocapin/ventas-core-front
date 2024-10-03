@@ -77,7 +77,7 @@
                     </li>
                 </div>
                 <div *ngFor="let filter of filters">
-                    <app-date-filter *ngIf="filter.type === 'date'" [id]="filter.id"
+                    <app-date-filter  *ngIf="filter.type === 'date'" [id]="filter.id"
                         (dateSelection)="handleFilterChange(filter.id, $event)"></app-date-filter>
 
                     <app-search-filter *ngIf="filter.type === 'search'" [title]="filter.title" [id]="filter.id"
