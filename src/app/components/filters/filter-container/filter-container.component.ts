@@ -14,6 +14,7 @@ import { DateFilterComponent } from '../date-filter/date-filter.component';
 import { RangeFilterComponent } from '../range-filter/range-filter.component';
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 declare const bootstrap: any;
 @Component({
   selector: 'app-filter-container',
@@ -23,7 +24,6 @@ declare const bootstrap: any;
 export class FilterContainerComponent implements OnInit {
   @Input() componentId: string = '';
   @Output() filtersChanged = new EventEmitter<{ [key: string]: any }>();
-  
 
   filters: any[] = [];
   @Input() selectedFilters: { [key: string]: any } = {};
@@ -42,6 +42,8 @@ export class FilterContainerComponent implements OnInit {
   @ViewChildren(RangeFilterComponent)
   rangeComponents?: QueryList<RangeFilterComponent>;
 
+  private hijosCargados: boolean = false;
+
   constructor(private filterService: FilterService, public dialog: MatDialog) {}
 
   ngOnInit() {
@@ -54,6 +56,58 @@ export class FilterContainerComponent implements OnInit {
       }
     );
     this.cargarFiltrosGuardados();
+  }
+
+  ngAfterViewInit() {
+    if (Object.keys(this.selectedFilters).length > 0) {
+      this.aplicarFiltrosSeleccionados();
+    }
+    this.multiSelectComponents?.changes.subscribe(() =>
+      this.verificarCargaDeHijos()
+    );
+    this.searchComponents?.changes.subscribe(() =>
+      this.verificarCargaDeHijos()
+    );
+    this.dateComponents?.changes.subscribe(() => this.verificarCargaDeHijos());
+    this.rangeComponents?.changes.subscribe(() => this.verificarCargaDeHijos());
+  }
+  ngAfterViewChecked() {
+    // Verificar si los hijos ya están cargados
+    if (!this.hijosCargados) {
+      this.verificarCargaDeHijos();
+    }
+  }
+  verificarCargaDeHijos() {
+    // Comprobar si todos los componentes hijos están presentes y listos
+    const todosCargados =
+      this.multiSelectComponents?.toArray().length ===
+        this.filters.filter((f) => f.type === 'multi-select').length &&
+      this.searchComponents?.toArray().length ===
+        this.filters.filter((f) => f.type === 'search').length &&
+      this.dateComponents?.toArray().length ===
+        this.filters.filter((f) => f.type === 'date').length &&
+      this.rangeComponents?.toArray().length ===
+        this.filters.filter((f) => f.type === 'range').length;
+
+    if (todosCargados) {
+      this.hijosCargados = true;
+      this.actualizarComponentesHijos();
+    }
+  }
+
+  aplicarFiltrosSeleccionados() {
+    this.filtrosAplicados = JSON.parse(JSON.stringify(this.selectedFilters));
+    this.selectedFilters = this.filtrosAplicados.reduce(
+      (acc: { [key: string]: any }, filtro) => {
+        acc[filtro.id] = filtro.valor;
+        return acc;
+      },
+      {}
+    );
+    console.log(this.filtrosAplicados);
+    console.log(this.selectedFilters);
+    //this.actualizarComponentesHijos()
+    //this.filtersChanged.emit(this.filtrosAplicados);
   }
 
   cargarFiltrosGuardados() {
@@ -89,7 +143,6 @@ export class FilterContainerComponent implements OnInit {
         });
     }
   }
-  
 
   eliminarFiltroGuardado(filtroGuardado: any) {
     this.dialog
@@ -121,13 +174,13 @@ export class FilterContainerComponent implements OnInit {
       console.log('Filtro existente: ', existingFilter.valor);
 
       if (existingFilter.tipo === 'date' && value.startDate && value.endDate) {
-        existingFilter.valor ={
+        existingFilter.valor = {
           startDate: value.startDate,
           endDate: value.endDate,
         };
-      }else if (existingFilter.valor.length > 0) {
+      } else if (existingFilter.valor.length > 0) {
         existingFilter.valor = value;
-      }else{
+      } else {
         delete this.selectedFilters[existingFilter.id];
         this.filtrosAplicados = this.filtrosAplicados.filter(
           (filtro) => filtro.id !== existingFilter.id
@@ -138,8 +191,8 @@ export class FilterContainerComponent implements OnInit {
       /// si es un nuevo filtro
       let newFilterValue = value;
       //si es un filtro de tipo fecha, asegurarse de manejar el objeto con starDate y endDate
-      if (filterInfo.type === 'date' &&value.startDate && value.endDate) {
-        newFilterValue ={
+      if (filterInfo.type === 'date' && value.startDate && value.endDate) {
+        newFilterValue = {
           startDate: value.starDate,
           endDate: value.endDate,
         };
@@ -190,15 +243,35 @@ export class FilterContainerComponent implements OnInit {
 
   // Actualizar los componentes hijos con los filtros seleccionados
   actualizarComponentesHijos() {
-    this.multiSelectComponents?.forEach((component) =>
-      component.update(this.selectedFilters[component.id])
-    );
-    this.dateComponents?.forEach((component) =>
-      component.update(this.selectedFilters[component.id])
-    );
-    this.rangeComponents?.forEach((component) =>
-      component.update(this.selectedFilters[component.id])
-    );
+    // Solo actualiza los filtros que tienen valores seleccionados
+    console.log('sdsdsad');
+    this.multiSelectComponents?.forEach((component) => {
+      console.log('component');
+      const selectedValue = this.selectedFilters[component.id];
+      console.log(selectedValue);
+      if (selectedValue && selectedValue.length > 0) {
+        // Asegúrate de que el valor no esté vacío
+        component.update(selectedValue);
+      }
+    });
+
+    this.dateComponents?.forEach((component) => {
+      const selectedValue = this.selectedFilters[component.id];
+      if (selectedValue && selectedValue.startDate && selectedValue.endDate) {
+        component.update(selectedValue);
+      }
+    });
+
+    this.rangeComponents?.forEach((component) => {
+      const selectedValue = this.selectedFilters[component.id];
+      if (
+        selectedValue &&
+        selectedValue.min != null &&
+        selectedValue.max != null
+      ) {
+        component.update(selectedValue);
+      }
+    });
   }
 
   // Eliminar un filtro aplicado
@@ -250,7 +323,7 @@ export class FilterContainerComponent implements OnInit {
     if (modalElement) {
       const modal = bootstrap.Modal.getInstance(modalElement);
       if (modal) {
-        modal.hide(); 
+        modal.hide();
       }
     }
   }

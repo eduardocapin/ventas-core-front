@@ -5,6 +5,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { ReplaySubject } from 'rxjs';
 import { FilterService } from 'src/app/services/filter/filter.service';
 
 @Component({
@@ -22,6 +23,8 @@ export class MultiSelectFilterComponent {
   filteredOptions: any[] = [];
   selectedOptions: any[] = [];
   searchTerm: string = '';
+
+  private optionsSubject = new ReplaySubject<any[]>(1);
 
   constructor(private _filterService: FilterService) {}
 
@@ -42,6 +45,7 @@ export class MultiSelectFilterComponent {
       (options) => {
         this.options = options
         this.filteredOptions = options;
+        this.optionsSubject.next(this.options);
       },
       (error) => {
         console.error('Error al cargar las opciones:', error);
@@ -93,20 +97,27 @@ export class MultiSelectFilterComponent {
     /* this.selectionChange.emit(this.selectedOptions); */
   }
   update(filtroAplicado: { id: number; name: string; selected: boolean }[]) {
-    this.selectedOptions = [];
-  
-    this.options.forEach((option) => {
-      const match = filtroAplicado.find(
-        (selected) => selected.id === option.id
-      );
-  
-      if (match) {
-        option.selected = true;
-        this.selectedOptions.push(option);
-      } else {
-        option.selected = false;
-      }
+    // Wait for options to be available before applying the filter
+    this.optionsSubject.subscribe((options) => {
+      console.log(filtroAplicado);
+      console.log(options);
+      
+      this.selectedOptions = [];
+      options.forEach((option) => {
+        const match = filtroAplicado.find(
+          (selected) => selected.id === option.id
+        );
+
+        if (match) {
+          option.selected = true;
+          this.selectedOptions.push(option);
+        } else {
+          option.selected = false;
+        }
+      });
+
+      // Emit the change in selection
+      this.selectionChange.emit(this.selectedOptions.length > 0 ? this.selectedOptions : []);
     });
-    this.selectionChange.emit(this.selectedOptions.length > 0 ? this.selectedOptions : []);
   }
 }
