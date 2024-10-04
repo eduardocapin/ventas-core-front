@@ -21,7 +21,7 @@ import { FilterContainerComponent } from '../components/filters/filter-container
 import { MapComponent } from '../components/map/map.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { BigIntPipe } from '../pipes/big-int.pipe';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbTooltipModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -44,6 +44,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     MapComponent,
   ],
   imports: [
+    NgbModule,
+    NgbDatepickerModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

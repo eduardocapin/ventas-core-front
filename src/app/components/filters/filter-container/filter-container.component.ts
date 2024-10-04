@@ -240,10 +240,25 @@ export class FilterContainerComponent implements OnInit {
     }
     return 'Vacío';
   }
-  formatDateToDisplay(date: string): string {
-    const [year, month, day] = date.split('-');
-    return `${day}/${month}/${year}`;
-  }
+  formatDateToDisplay(startDate: string, endDate: string): string {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (start.toDateString() === end.toDateString()) {
+        // Si las fechas son iguales, devuelve solo una
+        return this.formatDate(start);
+    } else {
+        // Si no, devuelve el rango
+        return `${this.formatDate(start)} - ${this.formatDate(end)}`;
+    }
+}
+
+formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${day}-${month}-${year}`;
+}
 
   onClose() {
     const modalElement = document.getElementById('nombreFiltroModal');

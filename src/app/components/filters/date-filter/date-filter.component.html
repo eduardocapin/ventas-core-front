@@ -7,21 +7,70 @@
     <!-- Dropdown "Personalizado" -->
     <li class="dropend">
       <a class="dropdown-item dropdown-toggle cursor" data-bs-toggle="dropdown" aria-expanded="false" (click)="$event.stopPropagation()">Personalizado</a>
-      <ul class="dropdown-menu p-3">
-        <div class="d-flex gap-2 text-font">
-          <div>
-            <label for="startDate">Fecha de inicio:</label>
-            <input type="date" id="startDate" class="form-control mb-2 form-control-sm" [(ngModel)]="customStartDate" />
+      <ul class="dropdown-menu" (click)="$event.stopPropagation()"> <!-- Previene el cierre al hacer clic en el contenido -->
+        <form class="d-flex px-2 align-items-center gap-2" >
+          <div class="d-flex gap-2">
+            <div class="d-flex w-date-picker">
+              <div class="dp-hidden position-absolute">
+                <div class="input-group">
+                  <input
+                    name="datepicker"
+                    class="form-control form-control-sm"
+                    ngbDatepicker
+                    #datepicker="ngbDatepicker"
+                    [autoClose]="'outside'"
+                    (dateSelect)="onDateSelection($event)"
+                    [displayMonths]="2"
+                    [dayTemplate]="t"
+                    outsideDays="hidden"
+                    [startDate]="startDate!"
+                    tabindex="-1"
+                  />
+                  <ng-template #t let-date let-focused="focused">
+                    <span
+                      class="custom-day"
+                      [class.focused]="focused"
+                      [class.range]="isRange(date)"
+                      [class.faded]="isHovered(date) || isInside(date)"
+                      (mouseenter)="hoveredDate = date"
+                      (mouseleave)="hoveredDate = null"
+                    >
+                      {{ date.day }}
+                    </span>
+                  </ng-template>
+                </div>
+              </div>
+              <div class="input-group">
+                <input
+                  #dpFromDate
+                  class="form-control form-control-sm"
+                  placeholder="yyyy-mm-dd"
+                  name="dpFromDate"
+                  [value]="formatter.format(startDate)"
+                  (input)="startDate = validateInput(startDate, dpFromDate.value)"
+                />
+                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button"></button>
+              </div>
+            </div>
+            <div class="d-flex">
+              <div class="input-group">
+                <input
+                  #dpToDate
+                  class="form-control form-control-sm"
+                  placeholder="yyyy-mm-dd"
+                  name="dpToDate"
+                  [value]="formatter.format(endDate)"
+                  (input)="endDate = validateInput(endDate, dpToDate.value)"
+                />
+                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button"></button>
+              </div>
+            </div>
           </div>
-          <div>
-            <label for="endDate">Fecha de fin:</label>
-            <input type="date" id="endDate" class="form-control form-control-sm" [(ngModel)]="customEndDate" />
+          <div class=" text-end">
+            <button type="button" class="btn btn-sm text-white btn-primary" (click)="applyCustomDate(); $event.stopPropagation()">Filtrar</button>
           </div>
-        </div>
-        <div class="mt-1 text-end">
-          <button class="btn btn-sm text-white btn-primary w-100" (click)="applyCustomDate()">Filtrar</button>
-        </div>
-      </ul>
+        </form>
+      </ul> <!-- Cierre del ul de "Personalizado" -->
     </li>
   </ul>
 </li>

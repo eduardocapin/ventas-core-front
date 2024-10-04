@@ -1,18 +1,34 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, inject, ViewChild} from '@angular/core';
+import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-date-filter',
   templateUrl: './date-filter.component.html',
-  styleUrls: ['./date-filter.component.scss']
+  styleUrls: ['./date-filter.component.scss'],
 })
 export class DateFilterComponent implements OnInit {
   @Input() id: string = '';
   @Output() dateSelection = new EventEmitter<{ startDate: string, endDate: string }>();
   @Input() title: string = 'Seleccionar';
-
   dateOptions: string[] = [];
   customStartDate: string = '';
   customEndDate: string = '';
+  
+  // Variables para el rango personalizado
+  calendar = inject(NgbCalendar);
+  formatter = inject(NgbDateParserFormatter);
+  
+  hoveredDate: NgbDate | null = null;
+  startDate: NgbDate | null = this.calendar.getToday(); // Cambiado a NgbDate
+  endDate: NgbDate | null = this.calendar.getNext(this.calendar.getToday(), 'd', 10); // Cambiado a NgbDate
+  
+  constructor(
+    private toastr: ToastrService,
+  ){}
+
+  @ViewChild('dropdown') dropdown!: NgbDropdown; // Referencia al dropdown
 
   ngOnInit() {
     this.updateDateOptions();
@@ -141,13 +157,60 @@ export class DateFilterComponent implements OnInit {
     return this.formatDate(lastDay);
   }
 
+  /* para filtros personalizados */
   applyCustomDate() {
-    if (this.customStartDate && this.customEndDate) {
-      this.dateSelection.emit({ startDate: this.customStartDate, endDate: this.customEndDate });
+    if (this.startDate && this.endDate) {
+      const formattedStartDate = this.formatDate(this.ngbDateToDate(this.startDate));
+      const formattedEndDate = this.formatDate(this.ngbDateToDate(this.endDate));
+      this.dateSelection.emit({ startDate: formattedStartDate, endDate: formattedEndDate });
+      this.dropdown.close(); // Cierra el dropdown después de aplicar el filtro
     } else {
-      alert('Por favor selecciona ambas fechas');
+      this.toastr.error('Por favor seleccionar ambas fechas', 'Error');
     }
   }
+  // Convierte NgbDate a Date
+  ngbDateToDate(ngbDate: NgbDate): Date {
+    return new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
+  }
+  onDateSelection(date: NgbDate) {
+		if (!this.startDate && !this.endDate) {
+			this.startDate = date;
+		} else if (this.startDate && !this.endDate && date && date.after(this.startDate)) {
+			this.endDate = date;
+		} else {
+			this.endDate = null;
+			this.startDate = date;
+		}
+	}
+
+  isHovered(date: NgbDate) {
+		return (
+			this.startDate && !this.endDate && this.hoveredDate && date.after(this.startDate) && date.before(this.hoveredDate)
+		);
+	}
+  isInside(date: NgbDate) {
+		return this.startDate && date.after(this.startDate) && date.before(this.endDate);
+	}
+
+	isRange(date: NgbDate) {
+		return (
+			date.equals(this.startDate) ||
+			(this.endDate && date.equals(this.endDate)) ||
+			this.isInside(date) ||
+			this.isHovered(date)
+		);
+	}
+
+
+  validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
+		const parsed = this.formatter.parse(input);
+		return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
+	}
+  getValue(event: Event): string {
+    const target = event.target as HTMLInputElement;
+    return target ? target.value : '';
+  }
+  
 
   reset() {
     this.customStartDate = '';

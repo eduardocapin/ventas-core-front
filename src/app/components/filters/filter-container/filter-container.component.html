@@ -12,8 +12,7 @@
                 <div class="d-flex align-items-center" *ngIf="filtro.tipo === 'date' ">
                     <p class="m-0">
                         {{ filtro.nombre }}: 
-                        {{ formatDateToDisplay(filtro.valor.startDate) }} - 
-                        {{ formatDateToDisplay(filtro.valor.endDate) || 'Vacío' }}
+                        {{ formatDateToDisplay(filtro.valor.startDate, filtro.valor.endDate) || 'Vacío' }}
                       </p>
                     <i class="ps-2 bi bi-x-circle-fill"></i>
                 </div>

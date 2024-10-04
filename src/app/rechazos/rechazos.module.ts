@@ -37,7 +37,6 @@ import { MatMenuModule } from '@angular/material/menu';
 /* imports de boostrap */
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
-import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 /**
     * IMPORTS COMPONENTS
@@ -81,7 +80,6 @@ import { SharedModule } from '../shared/shared.module';
         MatButtonToggleModule,
         SharedModule,
         NgbDropdown,
-        NgbDatepickerModule
     ]
 })
 export class RechazosModule{}
