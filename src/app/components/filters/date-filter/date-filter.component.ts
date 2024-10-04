@@ -26,7 +26,7 @@ export class DateFilterComponent implements OnInit {
     this.dateOptions = [
       'Hoy', 'Ayer', 'Semana anterior', 'Mes actual', 'Mes anterior',
       'Últimos 3 meses', 'Últimos 6 meses', 'Año actual', 'Año anterior', 
-      `${currentMonth} del Año pasado`  // Actualiza esta opción
+      `${currentMonth} ${today.getFullYear() - 1}`  // Actualiza esta opción
     ];
   }
 
@@ -91,7 +91,7 @@ export class DateFilterComponent implements OnInit {
         startDate = this.getFirstDayOfYear(lastYear);
         endDate = this.getLastDayOfYear(lastYear);
         break;
-      case `${this.getMonthName(today.getMonth())} del Año pasado`:
+      case `${this.getMonthName(today.getMonth())} ${today.getFullYear() - 1}`:
         const lastYearSameMonth = new Date(today);
         lastYearSameMonth.setFullYear(today.getFullYear() - 1);
         startDate = this.getFirstDayOfMonth(lastYearSameMonth);
