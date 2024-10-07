@@ -9,19 +9,18 @@
     </div>
     <div class="m-3">
       <div class="d-flex align-items-center justify-content-between gap-5 mb-3">
-        <!-- buscador -->
         <div class="d-flex gap-3 align-items-center">
-          <div class="input-group" id="busqueda">
+          <!-- buscador -->
+          <div class="input-group">
             <input class="form-control border-end-0 border" type="search" placeholder="Buscar..."
               id="example-search-input" [(ngModel)]="searchTerm" (keyup.enter)="buscar()"
               (ngModelChange)="onSearchTermChange()">
-            <span class="input-group-append">
-              <button class="btn btn-outline-secondary bg-white border-start-0 border-bottom-0 border ms-n5"
+              <button class="btn border border-start-0 bg-white"
                 type="button" (click)="buscar()">
-                <i class="fa fa-search"></i>
+                <i class="bi bi-search"></i>
               </button>
-            </span>
           </div>
+
           <!-- boton de filtros aplicados o limpiar -->
           <app-filter-container [componentId]="'clients-general'" (filtersChanged)="onFiltersChanged($event)">
           </app-filter-container>

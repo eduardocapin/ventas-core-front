@@ -11,7 +11,7 @@
             <div class="header-col header-col--menu" [class.open]="menuOpen">
               <div class="horizontal-navbar" data-intercom-target="horizontal-navbar">
                 <ul class="menu-items list-unstyled">
-                  <app-menu-item
+                  <app-menu-item (click)="toggleMenu()"
                     *ngFor="let item of menuItems"
                     [item]="item"
                     [menuOpen]="menuOpen"
@@ -27,8 +27,8 @@
             </div>
             <div class="header-col flex-0">
                 <ul class="navbar-nav ml-auto ">
-                    <li class="nav-item ">
-                        <div class="d-flex gap-3 align-items-center btn-profile pe-3" (click)="toggleProfileMenu()" [class.active]="profileMenuOpen">
+                    <li class="nav-item dropdown">
+                        <div class="d-flex gap-3 align-items-center btn-profile pe-3" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <img 
                                  width="35"
                                  height="35"
@@ -42,15 +42,16 @@
                             </div>
                         </div>
                         <!-- Menú desplegable de perfil -->
-                        <div class="profile-menu" *ngIf="profileMenuOpen">
-                            <ul>
-                                <li (click)="openProfileEditPopup()" (click)="toggleProfileMenu()">Perfil</li>
-                                <li (click)="logout()" (click)="toggleProfileMenu()">Salir</li>
-                            </ul>
-                        </div>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-label="profileDropdown">
+                            <li>
+                                <a class="dropdown-item" (click)="openProfileEditPopup()">Perfil</a>
+                                <a class="dropdown-item"  (click)="logout()">Salir</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
+            
         </div>
     </div>
 </div>

@@ -3,6 +3,6 @@
     <div class="progress-circle"
         [ngStyle]="{'--percent': percentage, '--color': color, '--inner-color': backgroundColor}">
         <div class="progress-text">{{this.isHovered == true ? (value| bigInt) : percentage + "%"}}</div>
-        <div class="progress-value">{{text}}</div>
     </div>
+    <div class="progress-value">{{text}}</div>
 </div>
