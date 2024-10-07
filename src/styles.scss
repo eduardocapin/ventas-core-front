@@ -14,7 +14,7 @@ body {
 }
 
 .tooltip .tooltip-inner {
-    font-size: 12px; 
+    font-size: 12px;
 }
 
 /* componetnes en dasboard  */
@@ -57,9 +57,11 @@ $light-blue: #87CEFA;
 .background-light-gray {
     background-color: $light-gray !important;
 }
+
 .gray {
     color: gray !important;
 }
+
 .background-white {
     background-color: white !important;
 }
@@ -68,24 +70,30 @@ $light-blue: #87CEFA;
     background-color: $background-login !important;
 }
 
-.dark-gray{
+.dark-gray {
     color: $title-dark-gray !important;
 }
-.pink{
+
+.pink {
     color: $pink !important;
 }
-.orange{
+
+.orange {
     color: $orange !important;
 }
-.orange{
+
+.orange {
     color: $orange !important;
 }
-.primary-blue{
+
+.primary-blue {
     color: $color-btn-primary !important;
 }
-.light-blue{
+
+.light-blue {
     color: $light-blue !important;
 }
+
 .dropdown-item {
     font-size: 12px;
 }
