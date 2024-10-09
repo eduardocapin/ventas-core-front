@@ -105,3 +105,6 @@ $light-blue: #87CEFA;
 .toast-container{
     z-index: 2000 !important;
 }
+.cdk-overlay-container{
+    z-index: 3000;
+}
