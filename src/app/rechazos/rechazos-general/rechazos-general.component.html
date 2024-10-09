@@ -1,10 +1,11 @@
 <div class="screen background-light-gray d-flex flex-column">
   <div class="separador-superior"></div>
-  <div class="d-flex flex-column gap-2 flex-xl-row justify-content-between align-items-center pt-3  p-2 titulo bg-white">
+  <div
+    class="d-flex flex-column gap-2 flex-xl-row justify-content-between align-items-center pt-3  p-2 titulo bg-white">
     <!-- titulo y icono -->
     <div class="d-flex align-items-center justify-content-start ">
       <mat-icon class="dark-gray">broken_image</mat-icon>
-      <h1 class="mb-0 ps-2 dark-gray page-heading">Rechazos</h1>
+      <h2 class="mb-0 ps-2 dark-gray page-heading">Rechazos</h2>
     </div>
     <!-- Info Rechazos -->
     <div class="">
@@ -18,31 +19,30 @@
       <div class="d-flex gap-3 align-items-center">
         <!-- buscado -->
         <div class="input-group">
-          <input class="form-control border border-end-0" type="text" placeholder="Buscar..."
-            id="example-search-input" [(ngModel)]="searchTerm" (keyup.enter)="buscar()"
-            (ngModelChange)="onSearchTermChange()">
-            <button class="btn border border-start-0 bg-white" type="button"
-              (click)="buscar()">
-              <i class="bi bi-search"></i>
-            </button>
+          <input class="form-control border border-end-0" type="text" placeholder="Buscar..." id="example-search-input"
+            [(ngModel)]="searchTerm" (keyup.enter)="buscar()" (ngModelChange)="onSearchTermChange()">
+          <button class="btn border border-start-0 bg-white" type="button" (click)="buscar()">
+            <i class="bi bi-search"></i>
+          </button>
         </div>
         <!-- boton de filtros aplicados o limpiar -->
-        <app-filter-container [componentId]="'rechazos-general'" [selectedFilters]="selectedFilters" (filtersChanged)="onFiltersChanged($event)">
+        <app-filter-container [componentId]="'rechazos-general'" [selectedFilters]="selectedFilters"
+          (filtersChanged)="onFiltersChanged($event)">
         </app-filter-container>
       </div>
       <!-- botones y filtros -->
       <div class="d-flex align-items-center gap-2">
         <div class="btn-group" role="group">
-          <a type="button" class="dropdown-toggle fw-semibold text-decoration-none color-text"
-                data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" >
-                Exportar</a>
+          <a type="button" class="dropdown-toggle fw-semibold text-decoration-none color-secondary"
+            data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+            Exportar</a>
           <ul class="dropdown-menu">
-              <li><button class="dropdown-item" (click)="exportData('Excel')">Excel</button></li>
-              <li><button class="dropdown-item" (click)="exportData('CSV')">CSV</button></li>
-              <li><button class="dropdown-item" (click)="exportData('Json')">Json</button></li>
+            <li><button class="dropdown-item" (click)="exportData('Excel')">Excel</button></li>
+            <li><button class="dropdown-item" (click)="exportData('CSV')">CSV</button></li>
+            <li><button class="dropdown-item" (click)="exportData('Json')">Json</button></li>
           </ul>
-      </div>
-        <button class="btn btn-color d-flex justify-content-center align-items-center" (click)="verEnMapa()">
+        </div>
+        <button class="btn btn-primary d-flex justify-content-center align-items-center" (click)="verEnMapa()">
           <i class="bi bi-geo-alt-fill"></i>
         </button>
       </div>
@@ -52,93 +52,94 @@
         <thead>
           <tr class="">
             <!-- Checkbox Column -->
-            <th scope="col" class="text-center p-2 row_checkbox">
+            <th scope="col" class="text-center p-2 row_checkboxy">
               <div class=" d-flex align-items-center justify-self-center">
                 <input type="checkbox" (change)="masterToggle()" [checked]="selection.hasValue() && isAllSelected()"
                   [indeterminate]="selection.hasValue() && !isAllSelected()">
               </div>
             </th>
             <!-- Acción Correctora Column -->
-            <th scope="col" class="text-center row_accion_correctora  header-correctora">Convertir en oportunidad (% ó € + Promo)</th>
+            <th scope="col" class="text-center row_accion_correctora header-correctora background-color-primary">Convertir en oportunidad (% ó €
+              + Promo)</th>
             <!-- Estado Column -->
-            <th scope="col" class="text-center cursor select_estado" (click)="sortData('status')">
+            <th scope="col" class="text-center cursor select_estado color-primary" (click)="sortData('status')">
               Estado
               <i *ngIf="sortColumn === 'status'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Primer Rechazo Fecha Column -->
-            <th scope="col" class="cursor row_fecha" (click)="sortData('r.last_rejection_date')">
+            <th scope="col" class="cursor row_fecha color-primary" (click)="sortData('r.last_rejection_date')">
               Fecha
               <i *ngIf="sortColumn === 'r.last_rejection_date'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Población Column -->
-            <th scope="col" class="row_poblacion cursor" (click)="sortData('city')">
+            <th scope="col" class="row_poblacion cursor color-primary" (click)="sortData('city')">
               Población
               <i *ngIf="sortColumn === 'city'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Cliente Column -->
-            <th scope="col" (click)="sortData('customer_name')" class="cursor">
+            <th scope="col" (click)="sortData('customer_name')" class="cursor color-primary">
               Cliente
               <i *ngIf="sortColumn === 'customer_name'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Producto Column -->
-            <th scope="col" (click)="sortData('product')" class="cursor">
+            <th scope="col" (click)="sortData('product')" class="cursor color-primary">
               Producto
               <i *ngIf="sortColumn === 'product'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Motivo Column -->
-            <th scope="col" (click)="sortData('reason_rejection')" class="cursor row_motivo">
+            <th scope="col" (click)="sortData('reason_rejection')" class="cursor row_motivo color-primary">
               Motivo
               <i *ngIf="sortColumn === 'reason_rejection'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Interés Column -->
-            <th scope="col" (click)="sortData('r.interest_date')" class="cursor row_interes">
+            <th scope="col" (click)="sortData('r.interest_date')" class="cursor row_interes color-primary">
               <i class="bi bi-calendar-check" [ngbTooltip]="'Interés'"></i>
               <i *ngIf="sortColumn === 'r.interest_date'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Precio Column -->
-            <th scope="col" class="cursor row_precio_producto text-end" (click)="sortData('pvp')">
+            <th scope="col" class="cursor row_precio_producto text-end color-primary" (click)="sortData('pvp')">
               Mi Precio
               <i *ngIf="sortColumn === 'pvp'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Promo Propia Column -->
-            <th scope="col" class="text-center row_promocion_propia cursor" (click)="sortData('own_promo')">
+            <th scope="col" class="text-center row_promocion_propia cursor color-primary" (click)="sortData('own_promo')">
               <i *ngIf="sortColumn === 'own_promo'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Competidor Column -->
-            <th scope="col" class="text-end cursor" (click)="sortData('pvp_competitor')">
+            <th scope="col" class="text-end cursor color-primary" (click)="sortData('pvp_competitor')">
               Su Precio
               <i *ngIf="sortColumn === 'pvp_competitor'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Promo Competidor Column -->
-            <th scope="col" class="text-center cursor row_promocion_propia" (click)="sortData('competitor_promo')">
+            <th scope="col" class="text-center cursor row_promocion_propia color-primary" (click)="sortData('competitor_promo')">
               <i *ngIf="sortColumn === 'competitor_promo'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Competidor Column -->
-            <th scope="col" (click)="sortData('competitor_id')" class="cursor row_select_competidor">
+            <th scope="col" (click)="sortData('competitor_id')" class="cursor row_select_competidor color-primary">
               Competidor
               <i *ngIf="sortColumn === 'competitor_id'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Propuesta Agente Column -->
-            <th scope="col" (click)="sortData('salesman_proposal')" class="cursor row_propuesta_agente pr-0">
+            <th scope="col" (click)="sortData('salesman_proposal')" class="cursor row_propuesta_agente pr-0 color-primary">
               <i class="bi bi-card-text" [ngbTooltip]="'Propuesta Agente'"></i>
               <i *ngIf="sortColumn === 'salesman_proposal'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
-            
+
             <!-- columna cliente -->
-            <th scope="col" class="text-center px-0">Cliente</th>
+            <th scope="col" class="text-center px-0 color-primary">Cliente</th>
             <!-- Expand Column -->
             <th scope="col" class="text-center"></th>
           </tr>
@@ -172,12 +173,12 @@
                   <input type="text" class="form-control form-control-sm text-success"
                     [(ngModel)]="row.corrective_action_text" maxlength="50" placement="top" placeholder="Promoción"
                     [ngbTooltip]="row.corrective_action_text" />
-                    <div class=" d-flex align-items-center justify-self-center">
-                      <input type="checkbox" (click)="$event.stopPropagation()" [checked]="row.corrective_action_sent" />
-                    </div>
+                  <div class=" d-flex align-items-center justify-self-center">
+                    <input type="checkbox" (click)="$event.stopPropagation()" [checked]="row.corrective_action_sent" />
+                  </div>
                 </div>
               </td>
-            
+
               <!-- Estado Column -->
               <td class="text-center">
                 <div class="d-flex align-items-center gap-1 justify-content-center">
@@ -212,10 +213,11 @@
               <!-- Motivo Column -->
               <td class="text-center">
                 <select (change)="changeMotivo($event, row)"
-                  class="form-select form-select-sm column_motivo select_rechazo" [(ngModel)]="row.reason_rejection_id"
-                  [ngbTooltip]="row.reason_rejection">
-                  <option *ngFor="let motivo of motivos_rechazo" [value]="motivo.id">{{ motivo.name }}</option>
-                  <option  [value]="0">Añadir Motivo</option>
+                  class="form-select form-select-sm column_motivo select_rechazo color-quaternary"
+                  [(ngModel)]="row.reason_rejection_id" [ngbTooltip]="row.reason_rejection">
+                  <option class="color-quaternary" *ngFor="let motivo of motivos_rechazo" [value]="motivo.id">{{
+                    motivo.name }}</option>
+                  <option class="color-quaternary" [value]="0">Añadir Motivo</option>
                 </select>
               </td>
               <!-- Fecha Interés Column -->
@@ -248,14 +250,14 @@
               <td class="row_propuesta_agente">
                 <i *ngIf="row.salesman_proposal" [ngbTooltip]="row.salesman_proposal" class="bi bi-card-text"></i>
               </td>
-              
+
               <!-- ficha column -->
               <td class="text-center">
                 <i class="bi bi-eye-fill fs-5 icon_color cursor px-0" (click)="viewRechazo(row.customer_id)"></i>
               </td>
               <!-- Expand Column -->
               <td class="text-center">
-                <button class="btn btn-color py-0 px-1 text-white"
+                <button class="btn btn-primary py-0 px-1 text-white"
                   (click)="expandedElement = (expandedElement === row ? null : row)">
                   <i class="bi" [ngClass]="expandedElement === row ? 'bi-chevron-up' : 'bi bi-three-dots'"></i>
                 </button>

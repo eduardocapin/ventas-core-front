@@ -1,3 +1,5 @@
+@import "../../../styles.scss";
+
 .separador-superior {
   height: 64px;
 }
@@ -12,7 +14,8 @@
 .main {
   height: 50%;
 }
-.input-group{
+
+.input-group {
   width: 200px;
 }
 
@@ -38,12 +41,13 @@ td {
 }
 
 th {
-  color: #3F51B5;
+  color: $color-primary;
 }
 
 .header-correctora {
-  color: white;
-  background-color: #3F51B5 !important;
+  color: white !important;
+  min-width: 267px;
+  width: 267px;
 }
 
 .cursor {
@@ -87,10 +91,6 @@ th {
   right: 0;
   background-color: white;
   z-index: 10;
-}
-
-select.column_motivo{
-  color: #e02ebd;
 }
 
 .custom-rechazado,
@@ -157,6 +157,7 @@ select.column_motivo{
   width: 24px;
   height: 24px;
 }
+
 .promo-icon-p {
   font-size: 14px;
   font-weight: bold;
@@ -201,10 +202,12 @@ select.column_motivo{
   min-width: 35px;
   width: 35px;
 }
-.row_fecha{
+
+.row_fecha {
   min-width: 75px;
   width: 75px;
 }
+
 .row_poblacion {
   min-width: 110px;
   width: 110px;
@@ -217,10 +220,12 @@ select.column_motivo{
 .row_subfamilia {
   min-width: 90px;
 }
-.row_checkbox{
+
+.row_checkbox {
   width: 30px;
   min-width: 30px;
 }
+
 .row_producto {
   min-width: 160px;
   max-width: 160px;
@@ -230,9 +235,11 @@ select.column_motivo{
   /* Oculta el desbordamiento */
   text-overflow: ellipsis;
 }
-.row_promocion_propia{
+
+.row_promocion_propia {
   width: 32px;
 }
+
 .select_rechazo {
   width: 115px;
 }
@@ -242,14 +249,10 @@ select.column_motivo{
   min-width: 83px;
   width: 83px;
 }
+
 .row_motivo,
 .row_select_competidor {
   width: 120px;
-}
-
-.row_accion_correctora {
-  min-width: 267px;
-  width: 267px;
 }
 
 .row_propuesta_agente {
@@ -288,17 +291,20 @@ select.column_motivo{
   background-color: white;
   /* Mantiene el fondo blanco para la columna fija */
 }
-.table-responsive table thead th:nth-child(2){
+
+.table-responsive table thead th:nth-child(2) {
   position: sticky;
   left: 29px;
   z-index: 3;
   background-color: #dfe2f2;
 }
+
 .table-responsive table tbody td:nth-child(2) {
   position: sticky;
   left: 29px;
   z-index: 1;
 }
+
 /* Estilo para la columna fija de expand */
 .table-responsive table thead th:last-child,
 .table-responsive table tbody td:last-child {
@@ -403,6 +409,6 @@ input[type="number"]::-webkit-inner-spin-button {
   overflow: hidden;
   text-overflow: ellipsis;
 
-  max-width: 100%; /* O ajusta según el tamaño de la columna */
+  max-width: 100%;
+  /* O ajusta según el tamaño de la columna */
 }
-

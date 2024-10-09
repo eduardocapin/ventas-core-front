@@ -40,71 +40,108 @@ body {
 
 p {
     font-size: small;
-  }
+}
+
+input {
+    font-size: small;
+}
+
+label {
+    font-size: small;
+}
 
 /* estilo para el funcionamiento de toast */
 @import 'ngx-toastr/toastr';
 @import '~@ng-select/ng-select/themes/default.theme.css';
 @import "~daterangepicker/daterangepicker.css";
+@import "bootstrap";
 
 
 /* Variables de colores */
 $light-gray: #f3f4f6;
 $background-login: #f4dec5;
 $title-dark-gray: #6D6D6D;
-$color-btn-primary: #3f51b5;
 $pink: #ff33d6;
-$orange: #ff9500;
-$light-blue: #87CEFA;
+$orange: #F2A057;
+
+$color-primary: #3f51b5;
+$color-secondary: #17a6ff;
+$color-tertiary: #B3BE77;
+$color-quaternary: #F56473;
 
 /*clases con colores*/
 .background-light-gray {
-    background-color: $light-gray !important;
+    background-color: $light-gray  ;
 }
 
 .gray {
-    color: gray !important;
+    color: gray  ;
 }
 
 .background-white {
-    background-color: white !important;
+    background-color: white  ;
 }
 
 .background-login {
-    background-color: $background-login !important;
+    background-color: $background-login  ;
 }
 
 .dark-gray {
-    color: $title-dark-gray !important;
+    color: $title-dark-gray  ;
 }
 
 .pink {
-    color: $pink !important;
+    color: $pink  ;
 }
 
 .orange {
-    color: $orange !important;
+    color: $orange  ;
 }
 
 .orange {
-    color: $orange !important;
+    color: $orange  ;
 }
 
-.primary-blue {
-    color: $color-btn-primary !important;
+.color-primary {
+    color: $color-primary  ;
 }
 
-.light-blue {
-    color: $light-blue !important;
+.background-color-primary {
+    background-color: $color-primary !important;
+}
+
+.color-secondary {
+    color: $color-secondary  ;
+}
+
+.color-tertiary {
+    color: $color-tertiary  ;
+}
+
+.color-quaternary {
+    color: $color-quaternary  ;
 }
 
 .dropdown-item {
     font-size: 12px;
 }
 
-.toast-container{
-    z-index: 2000 !important;
+.btn-outline-primary {
+    @include button-outline-variant($color-secondary , #ffffff, lighten($color-secondary , 5%), $color-secondary );
 }
-.cdk-overlay-container{
-    z-index: 3000;
+
+.btn-outline-success {
+    @include button-outline-variant($color-tertiary , #ffffff, lighten($color-tertiary , 5%), $color-tertiary );
+}
+
+.btn-primary {
+    @include button-variant($color-primary, darken($color-primary, 7.5%), #ffffff, lighten($color-primary, 5%), lighten($color-primary, 10%), #ffffff);
+}
+
+.btn-secondary {
+    @include button-variant($color-secondary, darken($color-secondary, 7.5%), #000000, lighten($color-secondary, 5%), lighten($color-secondary, 10%), darken($color-secondary, 30%));
+}
+
+.btn-primary-white {
+    @include button-variant($color-secondary, darken($color-secondary, 7.5%), #ffffff, lighten($color-secondary, 5%), lighten($color-secondary, 10%), #ffffff);
 }
