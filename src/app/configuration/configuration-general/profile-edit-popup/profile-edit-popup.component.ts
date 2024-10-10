@@ -35,15 +35,14 @@ export class ProfileEditPopupComponent {
   confirmNewPassword: ['', Validators.required],
 });
 
-selectedFiles?: FileList;
-  currentFile?: File;
   progress = 0;
   message = '';
-  preview = '';
+
 
   img: string|null = 'assets/images/user.png'; // Imagen de usuario por defecto
   imageInfos?: Observable<any>;
-  
+  imgSelected = false;
+
   constructor(
     public dialogRef: MatDialogRef<ProfileEditPopupComponent>,
     private fb: FormBuilder,
@@ -74,7 +73,7 @@ selectedFiles?: FileList;
   }
 
   cancelar(): void {
-    if (this.form.dirty || this.currentFile || this.passForm.dirty) {
+    if (this.form.dirty || this.imgSelected || this.passForm.dirty) {
       this.dialog
       .open(ConfirmDialogComponent, {
         data: `Hay cambios sin guardar, ¿deseas salir sin guardar?`,
@@ -151,49 +150,20 @@ selectedFiles?: FileList;
     this.formChanges = this.form.dirty;
   }
 
-
-   triggerFileInput(): void {
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-    fileInput.click();
+  onFileSelected(selected: boolean): void {
+    this.imgSelected = selected; 
   }
-
-  // Selección de archivo
-  selectFile(event: any): void {
-    this.message = '';
-    this.preview = '';
-    this.progress = 0;
-    this.selectedFiles = event.target.files;
-
-    if (this.selectedFiles) {
-      const file: File | null = this.selectedFiles.item(0);
-
-      if (file && file.type.startsWith('image/')) { 
-        this.currentFile = file;
-
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.preview = e.target.result;
-        };
-
-        reader.readAsDataURL(this.currentFile);
-      } else {
-        this.message = 'Por favor selecciona un archivo de imagen válido.';
-        this.currentFile = undefined;
-      }
-    }
-  }
-
-  upload(): void {
-    if (this.currentFile) {
+  handleUpload(file: File): void  {
+    if (file) {
       this.progress = 0;
       /*
-      this._loginServices.upload(this.currentFile).subscribe({
+      this._loginServices.upload(file).subscribe({
         next: (event: any) => {
           if (event.type === HttpEventType.UploadProgress) {
             this.progress = Math.round((100 * event.loaded) / event.total);
           } else if (event instanceof HttpResponse) {
             this.message = 'Imagen subida con éxito.';
-            this.updateImg(); // Llamamos a la función update para actualizar la imagen del usuario
+            this.updateImg(file); // Llamamos a la función update para actualizar la imagen del usuario
           }
         },
         error: (err: any) => {
@@ -201,17 +171,17 @@ selectedFiles?: FileList;
           this.progress = 0;
 
           this.message = err.error.message || 'No se ha podido subir la imagen.';
-          this.currentFile = undefined;
+
         }
       });*/
-      this.currentFile = undefined
+
     }
   }
 
-  updateImg(): void {
-    if (this.currentFile) {
+  updateImg(file: File): void {
+    if (file) {
       /*
-      this._loginServices.updateimg(this.currentFile.name).subscribe(data => {
+      this._loginServices.updateimg(file.name).subscribe(data => {
         if (data === 'Success') {
           console.log('Imagen de perfil actualizada');
         }

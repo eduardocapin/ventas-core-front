@@ -6,16 +6,9 @@
   <div class="container py-0">
     <div *ngIf="!cargando">
       <div class="row gap-2">
-        <div class="col-12 col-lg d-flex flex-column gap-2 background-light-gray justify-content-center p-4">
-          <div class="avatar-container" (click)="triggerFileInput()">
-            <img [src]="preview || img" class="img-fluid avatar-img" id="img" 
-                 onError="this.src='assets/images/user.png'" />
-            <div class="avatar-overlay">
-              <span>Seleccionar imagen</span>
-            </div>
-          </div>
-          <input type="file" id="fileInput" style="display: none;" (change)="selectFile($event)" accept="image/*" />
-          <button *ngIf="currentFile" type="button" class="btn btn-primary mt-auto" (click)="upload()">Actualizar imagen</button>
+        <div class="col-12 col-lg d-flex flex-column background-light-gray justify-content-center p-4"> 
+          <app-change-image [defaultImage]="'assets/images/user.png'" [preview]="img" (upload)="handleUpload($event)"
+            (fileSelected)="onFileSelected($event)"></app-change-image>
         </div>
         <div class="col-12 col-lg-8 d-flex flex-column justify-content-between p-0 ">
           <div class="d-flex flex-column gap-2">

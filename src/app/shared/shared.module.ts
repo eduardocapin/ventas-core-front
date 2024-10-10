@@ -28,6 +28,7 @@ import { GraficaPastelComponent } from '../components/graficas/grafica-pastel/gr
 import { GraficaSemiCirculoComponent } from '../components/graficas/grafica-semi-circulo/grafica-semi-circulo.component';
 import { ClienteContactosComponent } from '../components/cliente-contactos/cliente-contactos.component';
 import { ClienteDireccionesComponent } from '../components/cliente-direcciones/cliente-direcciones.component';
+import { ChangeImageComponent } from '../components/change-image/change-image.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { ClienteDireccionesComponent } from '../components/cliente-direcciones/c
     GraficaBarraHorizontalComponent,
     GraficaPastelComponent,
     GraficaSemiCirculoComponent,
+    ChangeImageComponent,
   ],
   imports: [
     NgbModule,
@@ -88,6 +90,7 @@ import { ClienteDireccionesComponent } from '../components/cliente-direcciones/c
     GraficaBarraHorizontalComponent,
     GraficaPastelComponent,
     GraficaSemiCirculoComponent,
+    ChangeImageComponent,
   ]
 })
 export class SharedModule { }

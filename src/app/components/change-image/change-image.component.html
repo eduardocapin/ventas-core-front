@@ -1,0 +1,11 @@
+<div class="contenedor gap-2 ">
+    <div class="img-container" (click)="triggerFileInput()">
+        <img [src]="preview || defaultImage" class="img-fluid img" (error)="'this.src=defaultImage'" />
+        <div class="img-overlay">
+            <span>Seleccionar imagen</span>
+        </div>
+        <input type="file" id="fileInput" style="display: none;" (change)="selectFile($event)" accept="image/*" />
+    </div>
+    <button *ngIf="currentFile" type="button" class="btn btn-primary mt-auto" (click)="onUpload()">Actualizar
+        imagen</button>
+</div>

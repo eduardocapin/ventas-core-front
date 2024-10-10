@@ -1,0 +1,61 @@
+.img-upload-container {
+  display: flex;
+  flex-direction: column; /* Alinea los elementos en columna */
+  justify-content: space-between; /* Asegúrate de que haya espacio entre los elementos */
+  height: 100%; /* Asegúrate de que el contenedor tenga una altura adecuada */
+  position: relative; /* Para posicionar el overlay de la imagen */
+}
+
+.img-container {
+  position: relative;
+  display: flex; /* Asegúrate de que el contenedor de la imagen sea flexible */
+  flex-direction: column; /* Asegúrate de que los elementos en img-container se apilen verticalmente */
+  justify-content: center; /* Centra la imagen verticalmente */
+  align-items: center; /* Centra la imagen horizontalmente */
+  cursor: pointer; /* Cambia el cursor a pointer */
+  width: 100%; /* Ajusta el tamaño según sea necesario */
+  overflow: hidden; /* Para evitar que la imagen se desborde */
+  flex-grow: 1;
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: auto; /* Ajusta la altura automáticamente */
+}
+
+.img-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.img-overlay span {
+  color: #333;
+}
+
+.img-container:hover .img-overlay {
+  opacity: 1;
+}
+
+button {
+  align-self: center; /* Centra el botón horizontalmente */
+  margin-top: auto; /* Empuja el botón hacia el fondo */
+  width: 100%; /* O ajusta según sea necesario */
+}
+
+.contenedor {
+  display: flex;
+  flex-direction: column; /* Para alinear los elementos en columna */
+  justify-content: space-between; /* Asegura que el botón se quede abajo */
+  width: 100%;
+  height: 100%; /* Ocupa el 100% del espacio del contenedor padre */
+}
