@@ -1,7 +1,12 @@
 <nav aria-label="Page navigation">
   <div class="container-fluid">
     <div class="row">
-      <div class="col"></div>
+      <div class="col d-flex align-items-center">
+        <div class="d-flex gap-3">
+          <label class="color-primary" for="totalElementos">Total: </label>
+          <span id="totalElementos">{{totalItems}}</span>
+        </div>
+      </div>
       <div class="col ">
         <ul class="pagination justify-content-center m-0">
           <li class="page-item" [class.disabled]="currentPage === 1">
