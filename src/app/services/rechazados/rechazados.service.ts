@@ -33,7 +33,7 @@ export class RechazadosService {
     console.log(searchTerm);
     return this._http
       .post<IRechazo[]>(
-        `${baseUrl}:${port}/api/rechazo/paginacion`,
+        `${baseUrl}:${port}/api/rechazo`,
         {
           selectedFilters,
           searchTerm,
