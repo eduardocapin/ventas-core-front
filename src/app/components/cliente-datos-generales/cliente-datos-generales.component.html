@@ -1,86 +1,84 @@
-<div class="container p-2 background-light-gray">
+<div class="container background-light-gray">
     <h2 class="m-0">Generales</h2>
+    
     <div class="row">
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-4 col-lg-3">
+        <div class="col-lg-6">
+            <div class="row mb-lg-2">
+                <div class="col-12">
                     <app-etiqueta-valor [etiqueta]="'Código'" [valor]=" cliente?.customer_ERP_id "></app-etiqueta-valor>
                 </div>
-                <div class="col">
+                <div class="col-12">
                     <app-etiqueta-valor [etiqueta]="'Nombre'" [valor]=" cliente?.name"></app-etiqueta-valor>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 col-lg-3">
+                <div class="col-12">
                     <app-etiqueta-valor [etiqueta]="'CIF'" [valor]=" cliente?.cif"></app-etiqueta-valor>
                 </div>
-                <div class="col">
+                <div class="col-12">
                     <app-etiqueta-valor [etiqueta]="'Nombre fiscal'" [valor]=" cliente?.tax_name "></app-etiqueta-valor>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 col-lg-3">
+            <div class="row mb-lg-2">
+                <div class="col-12">
                     <app-etiqueta-valor [etiqueta]="'País'" [valor]="'ESPAÑA' "></app-etiqueta-valor>
                 </div>
-                <div class="col">
+                <div class="col-12">
                     <app-etiqueta-valor [etiqueta]="'Dirección'" [valor]=" cliente?.address "></app-etiqueta-valor>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
+                <div class="col-12">
                     <app-etiqueta-valor [etiqueta]="'CP'" [valor]="  cliente?.pc "></app-etiqueta-valor>
                 </div>
-                <div class="col-6">
+                <div class="col-12">
                     <app-etiqueta-valor [etiqueta]="'Población'" [valor]=" cliente?.city "></app-etiqueta-valor>
                 </div>
-                <div class="col-3">
+                <div class="col-12">
                     <app-etiqueta-valor [etiqueta]="'Provincia'" [valor]=" cliente?.province "></app-etiqueta-valor>
                 </div>
             </div>
             <div class="row">
-                <div *ngIf="cliente?.nsegmentacion_1" class="col-7">
+                <div *ngIf="cliente?.nsegmentacion_1" class="col-12">
                     <app-etiqueta-valor [etiqueta]="cliente?.nsegmentacion_1"
                         [valor]=" cliente?.descripcion_s1 "></app-etiqueta-valor>
                 </div>
-                <div *ngIf="cliente?.nsegmentacion_3" class="col-5">
+                <div *ngIf="cliente?.nsegmentacion_3" class="col-12">
                     <app-etiqueta-valor [etiqueta]="cliente?.nsegmentacion_3"
                         [valor]=" cliente?.descripcion_s3 "></app-etiqueta-valor>
                 </div>
-    
-            </div>
-            <div *ngIf="cliente?.nsegmentacion_2" class="">
-                <app-etiqueta-valor [etiqueta]="cliente?.nsegmentacion_2"
-                    [valor]=" cliente?.descripcion_s2 "></app-etiqueta-valor>
+                <div *ngIf="cliente?.nsegmentacion_2" class="col-12">
+                    <app-etiqueta-valor [etiqueta]="cliente?.nsegmentacion_2"
+                        [valor]=" cliente?.descripcion_s2 "></app-etiqueta-valor>
+                </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <!-- 
                 <div class="mb-3">
                   <app-etiqueta-valor [etiqueta]="'Contacto'" [valor]=" 'Sin especificar' "></app-etiqueta-valor>
                 </div>
                 -->
-            <div class="row">
-                <div class="col">
+            <div class="row mb-lg-2">
+                <div class="col-12">
                     <app-etiqueta-valor [etiqueta]="'Tel. 1'" [valor]=" cliente?.phone_1 "></app-etiqueta-valor>
                 </div>
-                <div class="col">
+                <div class="col-12">
                     <app-etiqueta-valor [etiqueta]="'Tel. 2'" [valor]=" cliente?.phone_2 "></app-etiqueta-valor>
                 </div>
-                <div class="col">
+                <div class="col-12">
                     <app-etiqueta-valor [etiqueta]="'Fax'" [valor]=" 'Sin especificar' "></app-etiqueta-valor>
                 </div>
+                <div class="col-12">
+                    <app-etiqueta-valor [etiqueta]="'Email'" [valor]=" cliente?.email "></app-etiqueta-valor>
+                </div>
             </div>
-            <div class="">
-                <app-etiqueta-valor [etiqueta]="'Email'" [valor]=" cliente?.email "></app-etiqueta-valor>
-            </div>
-            <div class="">
-                <app-etiqueta-valor [etiqueta]="'Web'" [valor]="'Sin especificar'"></app-etiqueta-valor>
-            </div>
-            <div class="">
-                <app-etiqueta-valor [etiqueta]="'Agencia'" [valor]="'Sin especificar'"></app-etiqueta-valor>
-            </div>
-            <div class="">
-                <app-etiqueta-valor [etiqueta]="'Ruta'" [valor]="'Sin especificar'"></app-etiqueta-valor>
+            <div class="row mb-lg-2">
+                <div class="col-12">
+                    <app-etiqueta-valor [etiqueta]="'Web'" [valor]="'Sin especificar'"></app-etiqueta-valor>
+                </div>
+                <div class="col-12">
+                    <app-etiqueta-valor [etiqueta]="'Agencia'" [valor]="'Sin especificar'"></app-etiqueta-valor>
+                </div>
+                <div class="col-12">
+                    <app-etiqueta-valor [etiqueta]="'Ruta'" [valor]="'Sin especificar'"></app-etiqueta-valor>
+                </div>
             </div>
             <div class="row">
                 <!-- 
@@ -99,7 +97,7 @@
                 </div>
                 -->
             </div>
-            <div class="form-check">
+            <div class="form-check mt-3">
                 <input class="form-check-input" type="checkbox" id="potencialCheck" disabled>
                 <label class="form-check-label" for="potencialCheck">
                     Potencial
@@ -107,5 +105,4 @@
             </div>
         </div>
     </div>
-    
 </div>

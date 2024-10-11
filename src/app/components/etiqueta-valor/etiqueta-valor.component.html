@@ -1,4 +1,6 @@
-<div>
-    <span class="border-bottom ">{{ etiqueta }}</span>
-    <p class="text-black">{{valor}}</p>
+<div class="container">
+    <div class="row">
+        <span class="col-4 bg-primary p-1 text-white">{{ etiqueta }}</span>
+        <p class="col bg-white m-0 p-1 text-black w-100"> {{valor ? valor : '- No hay dato -'}}</p>
+    </div>
 </div>
