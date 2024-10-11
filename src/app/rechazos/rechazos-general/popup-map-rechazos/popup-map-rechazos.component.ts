@@ -49,8 +49,8 @@ export class PopupMapComponent {
       case 'Oportunidad': return `${basePath}enproceso_marker.png`;
       case 'Vendido': return `${basePath}vendido_marker.png`;
       case 'Desistido': return `${basePath}noaplica_marker.png`;
-      case 'Aceptado': return ``;
-      case 'Pendiente': return ``;
+      case 'Aceptado': return `${basePath}aceptado_marker.png`;
+      case 'Pendiente': return `${basePath}pendiente_marker.png`;
       default: return '';
     }
   }
@@ -58,9 +58,11 @@ export class PopupMapComponent {
   getEstadoColor(estado: string): string {
     switch (estado) {
       case 'Rechazado': return 'red';
-      case 'En Proceso': return 'blue';
+      case 'Oportunidad': return 'blue';
       case 'Vendido': return 'green';
-      case 'No aplica': return 'gray';
+      case 'Desistido': return 'gray';
+      case 'Aceptado': return 'green';
+      case 'Pendiente': return 'orange';
       default: return 'black';
     }
   }
