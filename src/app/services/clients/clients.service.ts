@@ -36,7 +36,7 @@ export class ClientsService {
     };
     return this._http
       .post<IClient[]>(
-        `${this.baseUrl}:${this.port}/api/clients/paginacion`,
+        `${this.baseUrl}:${this.port}/api/clients`,
         {
           selectedFilters,
           searchTerm,
