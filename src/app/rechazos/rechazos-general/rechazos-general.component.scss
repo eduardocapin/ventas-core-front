@@ -1,18 +1,17 @@
 @import "../../../styles.scss";
 
 .separador-superior {
-  height: 64px;
+  display: block;
+  height: 80px;
 }
+
+
+
 
 .page-heading {
   text-transform: uppercase;
   letter-spacing: .2em;
   font-weight: 300;
-}
-
-
-.main {
-  height: 50%;
 }
 
 .input-group {
@@ -138,15 +137,12 @@ th {
   color: #FF5757;
 }
 
-
-
 /* movil */
 @media (max-width: 991px) {
   .screen {
     padding-top: 48px;
   }
 }
-
 
 .promo-icon {
   font-size: 14px;
@@ -169,7 +165,6 @@ th {
   height: 24px;
 
 }
-
 
 /* barara de busqueda */
 .ms-n5 {
@@ -381,7 +376,7 @@ th {
 }
 
 .fondo_accionCorrectora {
-  background-color: #dfe2f2;
+  background-color: #dfe2f2 !important;
   color: white;
 }
 
