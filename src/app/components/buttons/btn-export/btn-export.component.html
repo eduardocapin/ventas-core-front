@@ -1,0 +1,13 @@
+<div>
+    <div class="btn-group" role="group">
+        <a type="button" class="dropdown-toggle fw-semibold text-decoration-none color-secondary"
+           data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+            Exportar
+        </a>
+        <ul class="dropdown-menu">
+            <li><button class="dropdown-item" (click)="exportData('Excel')">Excel</button></li>
+            <li><button class="dropdown-item" (click)="exportData('CSV')">CSV</button></li>
+            <li><button class="dropdown-item" (click)="exportData('Json')">Json</button></li>
+        </ul>
+    </div>
+</div>

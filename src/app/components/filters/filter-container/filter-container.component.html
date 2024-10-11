@@ -38,19 +38,23 @@
                     <div class="modal-content">
                         <app-popup-header [title]=" 'Guardar filtro como plantilla'" [icon]="'save'"[isBootstrapIcon]="true"  (close)=" onClose()"></app-popup-header>
                         <div class="modal-body">
-                            <input [(ngModel)]="nombreFiltroGuardado" class="form-control"
-                                placeholder="Nombre del filtro" />
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-primary btn-sm" (click)="guardarFiltros()"
-                                data-bs-dismiss="modal">Guardar</button>
+                            <div>
+                                <div class="bordes-redondeados background-light-gray p-2">
+                                    <input [(ngModel)]="nombreFiltroGuardado" class="form-control" type="text"
+                                        placeholder="Nombre del filtro" />
+                                </div>
+                                <div class="text-end">
+                                    <button class="btn btn-primary btn-sm mt-2" (click)="guardarFiltros()"
+                                    data-bs-dismiss="modal">Guardar</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="btn-group" #dropdownWrapper>
-            <a type="button" class="dropdown-toggle fw-semibold text-decoration-none color-text"
+            <a type="button" class="dropdown-toggle fw-semibold text-decoration-none color-secondary"
                 data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" id="dropdownMenuButton">+
                 Filtros</a>
             <ul class="dropdown-menu">

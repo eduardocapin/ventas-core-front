@@ -1,56 +1,109 @@
-<h2 mat-dialog-title class="m-0 py-0">Perfil</h2>
-<form [formGroup]="form" (ngSubmit)="update()">
-  <mat-dialog-content class="container py-0">
-    <div [class.d-none]="cargando">
+<div>
+  <app-popup-header [title]="'Perfil'" [icon]="'person-fill'" [isBootstrapIcon]="true"
+    (close)="cancelar()"></app-popup-header>
+</div>
+<mat-dialog-content>
+  <div class="container py-0">
+    <div *ngIf="!cargando">
       <div class="row gap-2">
-        <div class="col-4 d-flex flex-column p-2 gap-2">
-          <img [src]="img" class="img " onError="this.src='assets/images/user.png'" />
-          <button type="button" class="botonAceptar text-white" (click)="editarImg()" mat-button>Cambiar Avatar</button>
+        <div class="col-12 col-lg d-flex flex-column background-light-gray justify-content-center p-4"> 
+          <app-change-image [defaultImage]="'assets/images/user.png'" [preview]="img" (upload)="handleUpload($event)"
+            (fileSelected)="onFileSelected($event)"></app-change-image>
         </div>
-        <div class="col p-2 d-flex flex-column justify-content-between">
-          <div class="container">
-            <div class="row gx-2">
-              <div class="col">
-                <!--Producto-->
-                <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                  <mat-label>Usuario</mat-label>
-                  <input readonly="false" formControlName="usuario" matInput placeholder="Usuario" autocomplete="off" />
-                </mat-form-field>
+        <div class="col-12 col-lg-8 d-flex flex-column justify-content-between p-0 ">
+          <div class="d-flex flex-column gap-2">
+            <form [formGroup]="form" (ngSubmit)="update()" (ngModelChange)="onFormChange()">
+              <div class="container background-light-gray p-4">
+                <h2>Información general</h2>
+                <div class="row gx-2">
+                  <div class="col-12 col-md">
+                    <div class="form-group">
+                      <label for="usuario">Usuario</label>
+                      <input type="text" class="form-control" id="usuario" formControlName="usuario"
+                        placeholder="Usuario" autocomplete="off" />
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-5">
+                    <div class="form-group">
+                      <label for="cargo">Cargo</label>
+                      <input type="text" class="form-control" id="cargo" formControlName="cargo" placeholder="Cargo"
+                        autocomplete="off" />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <app-etiqueta-valor [etiqueta]="'Email'" [valor]=" email"></app-etiqueta-valor>
+                  </div>
+                  <div class="col text-end">
+                    <button type="submit" class="btn btn-primary" *ngIf="form.dirty">Aceptar</button>
+                  </div>
+                </div>
               </div>
-              <div class="col-5">
-                <!--Descripcion-->
-                <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                  <mat-label>Cargo</mat-label>
-                  <input readonly="false" formControlName="cargo" matInput placeholder="Cargo" autocomplete="off" />
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <!--Referencia-->
-                <mat-form-field appearance="fill" subscriptSizing="dynamic">
-                  <mat-label>Email</mat-label>
-                  <input readonly="true" formControlName="email" matInput placeholder="Email" autocomplete="off" />
-                </mat-form-field>
-              </div>
-            </div>
+            </form>
 
-            <div class="row">
-              <div class="col text-end">
-                <button type="button" class="botonAceptar text-white" (click)="changePassword()" mat-button>Cambiar Contraseña</button>
+            <form [formGroup]="passForm" (ngSubmit)="changePassword()">
+              <div class="container background-light-gray p-4">
+                <h2>Cambiar Contraseña</h2>
+                <div class="">
+                  <div class="row">
+                    <div class="col-12 col-lg-6">
+                      <!-- Contraseña Actual -->
+                      <div class="form-group">
+                        <label for="currentPassword">Contraseña actual</label>
+                        <div class="input-group">
+                          <input [type]="hide1 ? 'password' : 'text'" class="form-control" id="currentPassword"
+                            formControlName="currentPassword" placeholder="Contraseña actual" />
+                          <button type="button" class="btn btn-outline-secondary" (click)="hide1 = !hide1">
+                            <i class="bi" [ngClass]="hide1 ? 'bi-eye-slash' : 'bi-eye'"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 col-lg">
+                      <!-- Nueva Contraseña -->
+                      <div class="form-group">
+                        <label for="newPassword">Nueva Contraseña</label>
+                        <div class="input-group">
+                          <input [type]="hide2 ? 'password' : 'text'" class="form-control" id="newPassword"
+                            formControlName="newPassword" placeholder="Nueva contraseña" />
+                          <button type="button" class="btn btn-outline-secondary" (click)="hide2 = !hide2">
+                            <i class="bi" [ngClass]="hide2 ? 'bi-eye-slash' : 'bi-eye'"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-lg">
+                      <!-- Repetir Nueva Contraseña -->
+                      <div class="form-group">
+                        <label for="confirmNewPassword">Repetir Nueva Contraseña</label>
+                        <div class="input-group">
+                          <input [type]="hide3 ? 'password' : 'text'" class="form-control" id="confirmNewPassword"
+                            formControlName="confirmNewPassword" placeholder="Repetir nueva contraseña" />
+                          <button type="button" class="btn btn-outline-secondary" (click)="hide3 = !hide3">
+                            <i class="bi" [ngClass]="hide3 ? 'bi-eye-slash' : 'bi-eye'"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <div class="">
+                    <div class="color-quaternary" *ngIf="errorChangePass">{{messageError}}</div>
+                  </div>
+                  <div class="justify-self-end">
+                    <button type="submit" class="btn btn-primary" [disabled]="!passForm.valid">Cambiar
+                      Contraseña</button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="text-end pe-3">
-            <p>Usuario registrado el {{fecha_insert}}</p>
+            </form>
           </div>
         </div>
       </div>
     </div>
-  </mat-dialog-content>
-  <mat-dialog-actions class="d-flex justify-content-end gap-2">
-    <button mat-raised-button color="light" type="submit">Aceptar</button>
-    <button mat-raised-button color="light" type="button" (click)="cancelar()" mat-button
-      cdkFocusInitial>Cancelar</button>
-  </mat-dialog-actions>
-</form>
+  </div>
+</mat-dialog-content>

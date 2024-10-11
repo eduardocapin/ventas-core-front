@@ -1,29 +1,28 @@
-mat-form-field {
-    width: 100%;
-}
-
-.img {
-    width: 100%;
-    max-width: 300px;
-}
-
 .row {
-    padding-bottom: .5em;
+  padding-bottom: 0.5em;
 }
 
 .botonCancelar {
-    background-color: lightgray;
+  background-color: lightgray;
 }
 
 .botonCancelar:hover {
-    background-color: rgb(194, 194, 194);
+  background-color: rgb(194, 194, 194);
 }
 
 .botonAceptar {
-    background-color: #3f51b5;
+  background-color: #3f51b5;
 }
 
 .botonAceptar:hover {
-    background-color: #3f51b5;
+  background-color: #3f51b5;
 }
 
+.container {
+  border-radius: 0.25rem;
+}
+
+h2 {
+  color: #3f51b5;
+  margin-bottom: 0px;
+}

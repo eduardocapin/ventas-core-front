@@ -1,4 +1,9 @@
+@import "../../../../styles.scss";
+
 .custom-modal {
     max-width: 400px;
-    width: 100%; 
+    width: 100%;
+}
+.bordes-redondeados{
+    border-radius: 0.25rem; 
 }

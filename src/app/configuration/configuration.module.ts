@@ -30,8 +30,6 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
  */
 import { ConfigurationGeneralComponent } from './configuration-general/configuration-general.component';
 import { ProfileEditPopupComponent } from './configuration-general/profile-edit-popup/profile-edit-popup.component';
-import { ChangePasswordComponent } from './configuration-general/change-password/change-password.component';
-import { UpdatePhotoComponent } from './configuration-general/update-photo/update-photo.component';
 import { ReasonsRejectionsComponent } from './configuration-general/reasons-rejections/reasons-rejections.component';
 import { ListItemComponent } from '../components/list-item/list-item.component';
 import { ConfigurationListItemContainerComponent } from '../components/configuration-list-item-container/configuration-list-item-container.component';
@@ -42,8 +40,6 @@ import { AddCompetitorComponent } from './configuration-general/add-competitor/a
   declarations: [
     ConfigurationGeneralComponent,
     ProfileEditPopupComponent,
-    ChangePasswordComponent,
-    UpdatePhotoComponent,
     ReasonsRejectionsComponent,
     ListItemComponent, // A futuro igual mover a shared
     ConfigurationListItemContainerComponent, AddCompetitorComponent,

@@ -28,6 +28,14 @@ import { GraficaPastelComponent } from '../components/graficas/grafica-pastel/gr
 import { GraficaSemiCirculoComponent } from '../components/graficas/grafica-semi-circulo/grafica-semi-circulo.component';
 import { ClienteContactosComponent } from '../components/cliente-contactos/cliente-contactos.component';
 import { ClienteDireccionesComponent } from '../components/cliente-direcciones/cliente-direcciones.component';
+import { ChangeImageComponent } from '../components/change-image/change-image.component';
+import { ConfirmDialogComponent } from '../components/confirm-dialog/confirm-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BtnExportComponent } from '../components/buttons/btn-export/btn-export.component';
+import { BtnIconEditComponent } from '../components/buttons/btn-icons/btn-icon-edit/btn-icon-edit.component';
+import { BtnIconDeleteComponent } from '../components/buttons/btn-icons/btn-icon-delete/btn-icon-delete.component';
+import { BtnIconFileComponent } from '../components/buttons/btn-icons/btn-icon-file/btn-icon-file.component';
+import { BtnIconExpandComponent } from '../components/buttons/btn-icons/btn-icon-expand/btn-icon-expand.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +62,14 @@ import { ClienteDireccionesComponent } from '../components/cliente-direcciones/c
     GraficaBarraHorizontalComponent,
     GraficaPastelComponent,
     GraficaSemiCirculoComponent,
+    ChangeImageComponent,
+    ConfirmDialogComponent,
+    BtnIconEditComponent,
+    BtnIconDeleteComponent,
+    BtnIconFileComponent,
+    BtnIconExpandComponent,
+    BtnExportComponent
+
   ],
   imports: [
     NgbModule,
@@ -63,6 +79,7 @@ import { ClienteDireccionesComponent } from '../components/cliente-direcciones/c
     ReactiveFormsModule,
     GoogleMapsModule,
     NgbTooltipModule, 
+    MatDialogModule,
 
   ],
   exports: [
@@ -88,6 +105,13 @@ import { ClienteDireccionesComponent } from '../components/cliente-direcciones/c
     GraficaBarraHorizontalComponent,
     GraficaPastelComponent,
     GraficaSemiCirculoComponent,
+    ChangeImageComponent,
+    ConfirmDialogComponent,
+    BtnIconEditComponent,
+    BtnIconDeleteComponent,
+    BtnIconFileComponent,
+    BtnIconExpandComponent,
+    BtnExportComponent
   ]
 })
 export class SharedModule { }

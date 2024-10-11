@@ -1,8 +1,8 @@
-<h1 mat-dialog-title class="m-0">Confirmación</h1>
+<app-popup-header [title]="'Confirmación'" [icon]="'question-circle'" [isBootstrapIcon]="true" (close)="cerrarDialogo()"></app-popup-header>
 <div mat-dialog-content class="pt-2">
     {{mensaje}}
 </div>
 <mat-dialog-actions class="d-flex justify-content-end gap-2">
-    <button mat-raised-button color="light" (click)="confirmado()">Sí</button>
-    <button mat-raised-button color="light" (click)="cerrarDialogo()" cdkFocusInitial>No</button>
+    <button type="button" class="btn btn-primary" (click)="confirmado()">Sí</button>
+    <button type="button" class="btn btn-secondary" (click)="cerrarDialogo()">No</button>
 </mat-dialog-actions>

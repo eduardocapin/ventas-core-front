@@ -20,13 +20,11 @@
                 <td >
                     <div class="d-flex justify-content-center gap-3">
                         <!-- Mostrar lápiz si no está en modo de edición, y check si está en modo de edición -->
-                        <i *ngIf="editingCompetitorId !== row.id && row.id" (click)="toggleEdit(row.id)" class="bi bi-pencil-fill btnEdit" ngbTooltip="Editar"></i>
+                        <app-btn-icon-edit *ngIf="editingCompetitorId !== row.id && row.id" (btnClicked)="toggleEdit(row.id)"></app-btn-icon-edit>
                         <i *ngIf="editingCompetitorId === row.id" (click)="saveChanges(row)" class="bi bi-check-lg btnSave" ngbTooltip="Guardar"></i>
                         
                         <!-- Mostrar X si está en edición y trash si no está en modo de edición -->
-                        <i *ngIf="editingCompetitorId !== row.id && row.id !== undefined" class="bi bi-trash-fill btnDelete" 
-                        ngbTooltip="Eliminar" 
-                        (click)="deleteCompetidor(row.id)"></i>
+                        <app-btn-icon-delete *ngIf="editingCompetitorId !== row.id && row.id !== undefined" (btnClicked)="deleteCompetidor(row.id)"></app-btn-icon-delete>
                         <i *ngIf="editingCompetitorId === row.id" (click)="cancelEdit()" class="bi bi-x-lg btnClear" ngbTooltip="Cancelar"></i>
                     </div>
                 </td>
