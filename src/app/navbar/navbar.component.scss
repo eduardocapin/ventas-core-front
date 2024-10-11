@@ -1,17 +1,13 @@
-*{
-    z-index: 5000;
-}
+@import "src/styles.scss";
+
 body {
     color: #1f2937;
-    font-family: Roboto, sans-serif !important;
     font-size: 14px;
     font-weight: 400;
     letter-spacing: .036em;
     -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
-    -webkit-font-feature-settings: "kern" 1;
-    -moz-font-feature-settings: "kern" 1;
 }
 
 
@@ -160,8 +156,10 @@ a .brand:hover{
     color: white;
   }
   .no-padding {
-    margin: 0 !important;
+    margin: 0;
   }
+
+  //important
   
 
   .btn-profile{

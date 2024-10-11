@@ -1,16 +1,13 @@
 <div class="screen background-light-gray">
-  <div class="separador-superior"></div>
-  <div class="py-3">
-    <div class="d-flex align-items-center justify-content-start m-3">
-      <mat-icon class="dark-gray">build</mat-icon>
-      <h1 class="mb-0 ps-2 dark-gray page-heading">Configuración</h1>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4 col-md-6 col-sm-12 align-items-stretch my-3 px-0" *ngFor="let container of containers">
-          <app-configuration-list-item-container [title]="container.title"
-            [items]="container.items"></app-configuration-list-item-container>
-        </div>
+  <div class="d-flex align-items-center justify-content-start p-3">
+    <mat-icon class="dark-gray">build</mat-icon>
+    <h1 class="mb-0 ps-2 dark-gray page-heading">Configuración</h1>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-6 col-sm-12 align-items-stretch my-3 px-0" *ngFor="let container of containers">
+        <app-configuration-list-item-container [title]="container.title"
+          [items]="container.items"></app-configuration-list-item-container>
       </div>
     </div>
   </div>

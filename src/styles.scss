@@ -1,11 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
-html,
-body {
-    height: 100%;
-}
+/* estilo para el funcionamiento de toast */
+@import "bootstrap";
+@import 'ngx-toastr/toastr';
+/* @import '~@ng-select/ng-select/themes/default.theme.css';*/
 
+/* You can add global styles to this file, and also import other style files */
 body {
-    margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
@@ -13,50 +12,25 @@ body {
     height: 100vh;
 }
 
-.tooltip .tooltip-inner {
-    font-size: 12px;
+.pointer {
+    cursor: pointer;
 }
 
-/* componetnes en dasboard  */
-.card.border-left-primary {
-    border-left: 0.25rem solid #4e73df;
-    /* Color primario de Bootstrap */
-}
-
-.card.border-left-success {
-    border-left: 0.25rem solid #1cc88a;
-    /* Color de éxito de Bootstrap */
-}
-
-.card.border-left-info {
-    border-left: 0.25rem solid #36b9cc;
-    /* Color de info de Bootstrap */
-}
-
-.card.border-left-warning {
-    border-left: 0.25rem solid #f6c23e;
-    /* Color de advertencia de Bootstrap */
-}
-
-p {
-    font-size: small;
-}
-
+p,
+label,
+.tooltip .tooltip-inner,
 input[type="text"].form-control,
-input[type="password"].form-control{
+input[type="password"].form-control,
+.dropdown-item,
+th,
+td {
     font-size: small;
 }
 
-label {
-    font-size: small;
+.dropdown-menu,
+.dropdown-item {
+    min-width: auto;
 }
-
-/* estilo para el funcionamiento de toast */
-@import 'ngx-toastr/toastr';
-@import '~@ng-select/ng-select/themes/default.theme.css';
-@import "~daterangepicker/daterangepicker.css";
-@import "bootstrap";
-
 
 /* Variables de colores */
 $light-gray: #f3f4f6;
@@ -72,60 +46,58 @@ $color-quaternary: #F56473;
 
 /*clases con colores*/
 .background-light-gray {
-    background-color: $light-gray  ;
+    background-color: $light-gray ;
 }
 
 .gray {
-    color: gray  ;
+    color: gray;
 }
 
 .background-white {
-    background-color: white  ;
+    background-color: white;
 }
 
 .background-login {
-    background-color: $background-login  ;
+    background-color: $background-login ;
 }
 
 .dark-gray {
-    color: $title-dark-gray  ;
+    color: $title-dark-gray ;
 }
 
 .pink {
-    color: $pink  ;
+    color: $pink ;
 }
 
 .orange {
-    color: $orange  ;
+    color: $orange ;
 }
 
 .orange {
-    color: $orange  ;
+    color: $orange ;
 }
 
 .color-primary {
-    color: $color-primary  ;
+    color: $color-primary ;
 }
 
 .background-color-primary {
-    background-color: $color-primary !important;
+    background-color: $color-primary ;
 }
 
 .color-secondary {
-    color: $color-secondary  ;
+    color: $color-secondary ;
 }
 
 .color-tertiary {
-    color: $color-tertiary  ;
+    color: $color-tertiary ;
 }
 
 .color-quaternary {
-    color: $color-quaternary  ;
+    color: $color-quaternary ;
 }
 
-.dropdown-item {
-    font-size: 12px;
-}
+//Clases para botones
 
 .btn-outline-primary {
     @include button-outline-variant($color-secondary , #ffffff, lighten($color-secondary , 5%), $color-secondary );
