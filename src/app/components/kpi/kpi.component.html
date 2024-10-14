@@ -1,5 +1,6 @@
 <div class="d-flex gap-4 align-items-center">
-    <div id="graficas_izquierda" class="d-flex gap-3">
+    <div id="graficas_izquierda" class="d-flex gap-3 pt-2">
+        <!-- background-light-gray pt-2 rounded-3 -->
         <app-progress-circle [total]="66860" [value]="23136" [color]="'#ff419a'" [text]="'Packaging'"></app-progress-circle>
         <app-progress-circle [total]="66860" [value]="18136" [color]="'#ff419a'"  [text]="'Mala calidad'"></app-progress-circle>
         <app-progress-circle [total]="66860" [value]="17224" [color]="'#ff419a'"  [text]="'Precio'"></app-progress-circle>
@@ -7,7 +8,7 @@
     </div>
     <div id="kpis_centrales" class="d-flex gap-2">
         <div class="bg-white text-center rounded-3 d-flex justify-content-evenly align-items-center gap-2 px-2">
-            <div class="d-flex flex-column m-1 color-secondary">
+            <div class="d-flex flex-column m-1 dark-gray">
                 <h3 class="m-0 fw-bold"> {{'66860' | bigInt}}</h3>
                 <span class="smaller">Rechazos</span>
             </div>
@@ -26,7 +27,7 @@
             </div>
         </div>
     </div>
-    <div id="graficas_derecha" class="d-flex gap-3">
+    <div id="graficas_derecha" class="d-flex gap-3 pt-2">
         <app-progress-circle [total]="66860" [value]="4321" [color]="'#17a6ff'" [text]="'Desistido'"></app-progress-circle>
         <app-progress-circle [total]="66860" [value]="11210" [color]="'#17a6ff'" [text]="'Rechazado'"></app-progress-circle>
         <app-progress-circle [total]="66860" [value]="15005" [color]="'#17a6ff'" [text]="'Aceptado'"></app-progress-circle>

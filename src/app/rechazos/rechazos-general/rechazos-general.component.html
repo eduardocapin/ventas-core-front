@@ -1,6 +1,6 @@
 <div class="screen background-light-gray d-flex flex-column">
   <div
-    class="d-flex flex-column gap-2 flex-xl-row justify-content-between align-items-center pt-3  p-2 titulo bg-white">
+    class="d-flex flex-column gap-2 flex-xl-row justify-content-between align-items-center  p-2 titulo bg-white">
     <!-- titulo y icono -->
     <div class="d-flex align-items-center justify-content-start ">
       <mat-icon class="dark-gray">broken_image</mat-icon>
@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-hover table-sm my-3">
+      <table class="table table-sm my-3">
         <thead>
           <tr class="">
             <!-- Checkbox Column -->
@@ -53,7 +53,7 @@
               Convertir en oportunidad (% ó €
               + Promo)</th>
             <!-- Estado Column -->
-            <th scope="col" class="text-center cursor select_estado color-primary" (click)="sortData('status')">
+            <th scope="col" class="text-center cursor select_estado color-primary " (click)="sortData('status')">
               Estado
               <i *ngIf="sortColumn === 'status'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
@@ -225,7 +225,7 @@
               <td class="text-center centrado_column">
                 <i *ngIf="row.has_own_promo" class="promo-icon-p" [ngbTooltip]="row.own_promo">P</i>
               </td>
-              <!-- Competidor Column -->
+              <!-- Precio Competidor Column -->
               <td class="text-end row_precio_competidor centrado_column">{{ row.pvp_competitor | decimales }} €</td>
               <!-- Promo Competidor Column -->
               <td class="text-center centrado_column">

@@ -1,7 +1,7 @@
 <div>
     <!-- boton de filtros aplicados o limpiar -->
     <div class="d-flex gap-2 align-items-center">
-        <div  class="d-flex gap-2 align-items-center">
+        <div class="d-flex gap-2 align-items-center">
             <!-- Botón para cada filtro aplicado -->
             <button class="d-flex m-0 btn btn-outline-primary btn-sm align-items-center"
                 *ngFor="let filtro of filtrosAplicados" (click)="removeFilter(filtro)">
@@ -11,9 +11,9 @@
                 </div>
                 <div class="d-flex align-items-center" *ngIf="filtro.tipo === 'date' ">
                     <p class="m-0">
-                        {{ filtro.nombre }}: 
+                        {{ filtro.nombre }}:
                         {{ formatDateToDisplay(filtro.valor.startDate, filtro.valor.endDate) || 'Vacío' }}
-                      </p>
+                    </p>
                     <i class="ps-2 bi bi-x-circle-fill"></i>
                 </div>
                 <div class="d-flex align-items-center" *ngIf="filtro.tipo === 'multi-select'">
@@ -22,13 +22,14 @@
                 </div>
             </button>
             <!-- Botón "Limpiar" solo si hay filtros aplicados -->
-            <button *ngIf="filtrosAplicados.length > 0" class="btn btn-outline-primary btn-sm" (click)="filtroReset()"  ngbTooltip="Limpiar filtros">
-                <i class="bi bi-trash-fill"></i>
+            <button *ngIf="filtrosAplicados.length > 0" class="btn btn-outline-primary btn-sm" (click)="filtroReset()"
+                ngbTooltip="Limpiar filtros">
+                <i class="bi bi-x-circle-fill"></i>
             </button>
             <!-- Botón "Guardar" -->
             <button *ngIf="filtrosAplicados.length > 0" class="btn btn-outline-success btn-sm"
                 (click)="mostrarInputParaGuardar()" ngbTooltip="Guardar filtro como plantilla">
-                <i class="bi bi-save"></i>
+                <i class="bi bi-bookmark-plus-fill"></i>
             </button>
 
             <!-- Modal para el input del nombre del filtro guardado -->
@@ -36,7 +37,8 @@
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered custom-modal">
                     <div class="modal-content">
-                        <app-popup-header [title]=" 'Guardar filtro como plantilla'" [icon]="'save'"[isBootstrapIcon]="true"  (close)=" onClose()"></app-popup-header>
+                        <app-popup-header [title]=" 'Guardar filtro como plantilla'" [icon]="'bookmark-plus-fill'"
+                            [isBootstrapIcon]="true" (close)=" onClose()"></app-popup-header>
                         <div class="modal-body">
                             <div>
                                 <div class="bordes-redondeados background-light-gray p-2">
@@ -45,7 +47,7 @@
                                 </div>
                                 <div class="text-end">
                                     <button class="btn btn-primary btn-sm mt-2" (click)="guardarFiltros()"
-                                    data-bs-dismiss="modal">Guardar</button>
+                                        data-bs-dismiss="modal">Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +82,7 @@
                     </li>
                 </div>
                 <div *ngFor="let filter of filters">
-                    <app-date-filter  *ngIf="filter.type === 'date'" [id]="filter.id"
+                    <app-date-filter *ngIf="filter.type === 'date'" [id]="filter.id"
                         (dateSelection)="handleFilterChange(filter.id, $event)"></app-date-filter>
 
                     <app-search-filter *ngIf="filter.type === 'search'" [title]="filter.title" [id]="filter.id"
