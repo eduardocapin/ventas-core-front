@@ -4,68 +4,71 @@
 </div>
 
 <mat-dialog-content class="mat-typography py-0">
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Código</th>
-        <th scope="col">Nombre</th>
-        <th scope="col" class="text-center">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of rejectList">
-        <td>
-          <input *ngIf="editingReasonId === row.id" [(ngModel)]="row.rejection_code" class="form-control">
-          <span *ngIf="editingReasonId !== row.id">{{ row.rejection_code }}</span>
-        </td>
-        <td>
-          <input *ngIf="editingReasonId === row.id" [(ngModel)]="row.name" class="form-control">
-          <span *ngIf="editingReasonId !== row.id">{{ row.name }}</span>
-        </td>
-        <td>
-          <div class="d-flex justify-content-center gap-3">
-            <app-btn-icon-edit *ngIf="editingReasonId !== row.id && row.id !== undefined"
-              (btnClicked)="toogleEdit(row.id)"></app-btn-icon-edit>
-            <i *ngIf="editingReasonId === row.id" (click)="saveChanges(row)" class="bi bi-check-lg btnSave"
-              ngbTooltip="Guardar"></i>
+  <div class="table-responsive">
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th scope="col" class="color-primary ">Código</th>
+          <th scope="col" class="color-primary ">Nombre</th>
+          <th scope="col" class="text-center color-primary">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of paginatedData">
+          <td>
+            <input *ngIf="editingReasonId === row.id" [(ngModel)]="row.rejection_code" class="form-control">
+            <span *ngIf="editingReasonId !== row.id">{{ row.rejection_code }}</span>
+          </td>
+          <td>
+            <input *ngIf="editingReasonId === row.id" [(ngModel)]="row.name" class="form-control">
+            <span *ngIf="editingReasonId !== row.id">{{ row.name }}</span>
+          </td>
+          <td>
+            <div class="d-flex justify-content-center gap-3">
+              <app-btn-icon-edit *ngIf="editingReasonId !== row.id && row.id !== undefined"
+                (btnClicked)="toogleEdit(row.id)"></app-btn-icon-edit>
+              <i *ngIf="editingReasonId === row.id" (click)="saveChanges(row)" class="bi bi-check-lg btnSave fs-5 px-0"
+                ngbTooltip="Guardar"></i>
 
-            <app-btn-icon-delete *ngIf="editingReasonId !== row.id && row.id !== undefined"
-              (btnClicked)="deleteRechazo(row.id)"></app-btn-icon-delete>
-            <i *ngIf="editingReasonId === row.id" (click)="cancelEdit()" class="bi bi-x-lg btnClear"
-              ngbTooltip="Cancelar"></i>
-          </div>
-        </td>
-      </tr>
+              <app-btn-icon-delete *ngIf="editingReasonId !== row.id && row.id !== undefined"
+                (btnClicked)="deleteRechazo(row.id)"></app-btn-icon-delete>
+              <i *ngIf="editingReasonId === row.id" (click)="cancelEdit()" class="bi bi-x-lg btnClear color-quaternary fs-5 px-0"
+                ngbTooltip="Cancelar"></i>
+            </div>
+          </td>
+        </tr>
 
-      <tr *ngIf="rejectList.length === 0">
-        <td colspan="3" class="text-center">No se han encontrado datos</td>
-      </tr>
+        <tr *ngIf="paginatedData.length === 0">
+          <td colspan="3" class="text-center">No se han encontrado datos</td>
+        </tr>
 
-      <tr>
-        <td>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="newRejectionCode" placeholder="Código">
-        </td>
-        <td>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="newRejectionName" placeholder="Nombre">
-        </td>
-        <td class="text-center">
-          <div class="d-flex justify-content-center gap-1">
-            <button (click)="insertReason()"
-              [ngClass]="{'btnSave': true, 'disabled-icon': !newRejectionCode || !newRejectionName}"
-              ngbTooltip="Guardar">
-              <i class="bi bi-check-lg"></i>
-            </button>
+        <tr class="sticky-footer ">
+          <td>
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="newRejectionCode" placeholder="Código">
+          </td>
+          <td>
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="newRejectionName" placeholder="Nombre">
+          </td>
+          <td class="text-center">
+            <div class="d-flex justify-content-center gap-1">
+              <button (click)="insertReason()"
+                [ngClass]="{'btnSave': true, 'disabled-icon': !newRejectionCode || !newRejectionName}"
+                ngbTooltip="Guardar">
+                <i class="bi bi-check-lg fs-5 px-0"></i>
+              </button>
 
-            <button (click)="clearNewRechazo()"
-              [ngClass]="{'btnDelete': true, 'disabled-icon': !newRejectionCode || !newRejectionName}"
-              ngbTooltip="Limpiar">
-              <i class="bi bi-x-lg"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+              <button (click)="clearNewRechazo()"
+                [ngClass]="{'btnDelete': true, 'disabled-icon': !newRejectionCode || !newRejectionName}"
+                ngbTooltip="Limpiar"
+                class="color-quaternary">
+                <i class="bi bi-x-lg fs-5 px-0"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <app-pagination [totalItems]="rejectList.length" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
     (pageChange)="onPageChange($event)" (itemsPerPageChanged)="onItemsPerPageChanged($event)"></app-pagination>
 </mat-dialog-content>

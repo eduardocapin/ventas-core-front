@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-add-competitor',
   templateUrl: './add-competitor.component.html',
-  styleUrls: ['./add-competitor.component.scss']
+  styleUrls: ['./add-competitor.component.scss',]
 })
 export class AddCompetitorComponent {
 
@@ -19,16 +19,17 @@ export class AddCompetitorComponent {
   cargando: boolean = false;
 
   newCompetitonName: string = '';
-
+  newSegmentation_value_id: number = 0;
   editingCompetitorId: number | null = null;
-  originalCompetitor: ICompetidor | null = null;  // variable que se encarga de almacenar la variable original
-  
+  originalCompetitor: ICompetidor | null = null;  
+  familyList: { id: number, name: string }[] = [];
   paginatedData: ICompetidor[] =[];
   currentPage = 1;
   itemsPerPage = 10;
   
   constructor(
     private competitorsService: CompetidoresService,
+    private filterService: FilterService,
     public dialogRef: MatDialogRef<AddCompetitorComponent>,
     public dialog: MatDialog,
     public toastr: ToastrService,
@@ -36,6 +37,8 @@ export class AddCompetitorComponent {
 
   ngOnInit(): void {
     this.cargarCompetitors();
+    this.cargarFamilias();
+  
   }
   /* cargar los datos */
   cargarCompetitors(): void {
@@ -48,17 +51,33 @@ export class AddCompetitorComponent {
           console.log('Datos de competidores recibidos:', data);
           this.competitorList = data;
           this.cargando = false;
+          console.log(this.competitorList)
+          this.paginate();
         },
         (error) => {
           console.error('Error al cargar los competidores', error);
           this.cargando = false;
         }
       );
+      
   }
+
+  cargarFamilias(): void {
+    this.filterService.getFilterOptions('segmentacion-productos/1').subscribe(
+      (families: { id: number, name: string }[]) => {
+        this.familyList = families;
+        console.log(this.familyList)
+      },
+      (error) => console.error(error)
+    );
+  }
+
   insertCompetitor(){
     if(this.newCompetitonName){
       const newCompetitor = {
-        name: this.newCompetitonName
+        name: this.newCompetitonName,
+        segmentation_value_id: this.newSegmentation_value_id,
+        segmentation_value: ''
       };
       this.competitorsService.insertCompetitor(newCompetitor).subscribe(
         (status) =>{
@@ -126,6 +145,7 @@ export class AddCompetitorComponent {
   /* limpiar el input */
   clearNewCompetitor() {
     this.newCompetitonName = '';
+    this.newSegmentation_value_id= 0
   }
 
   deleteCompetidor(id: Number){
@@ -167,6 +187,11 @@ export class AddCompetitorComponent {
     this.itemsPerPage = itemsPerPage;
     this.currentPage = 1;
     this.paginate()
+  }
+
+  getFamilyName(familyId: number): string {
+    const family = this.familyList.find(f => f.id === familyId);
+    return family ? family.name : 'Todas';
   }
 
   /* lógica de botón de Cancelar de Motivo de Rechazo */

@@ -71,11 +71,13 @@ export class CompetidoresService{
                 `Bearer ${this._loginServices.getToken()}`
             ),
         };
+        console.log(competidores)
         return this._http
             .post(
                 `${this.baseUrl}:${this.port}/api/competidores/update/${competidores.id}`,
                 {
                     nombre: competidores.name,
+                    product_segmentation_id: competidores.segmentation_value_id
                 },
                 options
             )
@@ -99,6 +101,7 @@ export class CompetidoresService{
                 `${this.baseUrl}:${this.port}/api/competidores/add`,
                 {
                     nombre: competidores.name,
+                    product_segmentation_id: competidores.segmentation_value_id
                 },
                 options
             )
