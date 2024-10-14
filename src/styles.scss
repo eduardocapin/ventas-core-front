@@ -1,5 +1,4 @@
 /* estilo para el funcionamiento de toast */
-@import "bootstrap";
 @import 'ngx-toastr/toastr';
 /* @import '~@ng-select/ng-select/themes/default.theme.css';*/
 
@@ -9,7 +8,7 @@ body {
 }
 
 .screen {
-    height: 100vh;
+    height: calc(100vh - 64px);
 }
 
 .pointer {
@@ -42,7 +41,14 @@ $orange: #F2A057;
 $color-primary: #3f51b5;
 $color-secondary: #17a6ff;
 $color-tertiary: #B3BE77;
-$color-quaternary: #F56473;
+$color-quaternary: #ff419a;
+
+/* fondo de contenedor elementos de la ficha */
+$color-content-ficha-client: #e6eaf5; 
+.bg-content-ficha-client{
+    background-color: $color-content-ficha-client;
+}
+/* fin de contendor elementos de la ficha */
 
 /*clases con colores*/
 .background-light-gray {
@@ -97,6 +103,7 @@ $color-quaternary: #F56473;
     color: $color-quaternary ;
 }
 
+/*
 //Clases para botones
 
 .btn-outline-primary {
@@ -115,6 +122,11 @@ $color-quaternary: #F56473;
     @include button-variant($color-secondary, darken($color-secondary, 7.5%), #000000, lighten($color-secondary, 5%), lighten($color-secondary, 10%), darken($color-secondary, 30%));
 }
 
+.btn-secondary {
+    @include button-variant($light-gray, darken($light-gray, 7.5%), #000000, lighten($light-gray, 5%), lighten($light-gray, 10%), darken($light-gray, 30%));
+}
+
 .btn-primary-white {
     @include button-variant($color-secondary, darken($color-secondary, 7.5%), #ffffff, lighten($color-secondary, 5%), lighten($color-secondary, 10%), #ffffff);
 }
+*/

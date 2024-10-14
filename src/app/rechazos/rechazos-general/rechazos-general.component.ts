@@ -304,7 +304,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   /* popup-rechazo-detail */
   viewRechazo(id_Cliente?: any) {
     const dialogRef = this.dialog.open(PopupClientDetailComponent, {
-      width: '1000px',
+
       disableClose: true,
       data: { id: id_Cliente },
     });

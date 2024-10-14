@@ -1,4 +1,6 @@
-<div>
-    <label class="text-black">{{ etiqueta }}:</label>
-    <p class="form-control-plaintext">{{ valor }}</p>
+<div class="container">
+    <div class="row">
+        <span class="col-3 color-primary p-1 ">{{ etiqueta }}:</span>
+        <p class="col  m-0 p-1 text-black w-100 rounded"> {{valor ? valor : 'Sin especificar'}}</p>
+    </div>
 </div>

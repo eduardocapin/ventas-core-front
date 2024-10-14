@@ -36,6 +36,7 @@ import { BtnIconEditComponent } from '../components/buttons/btn-icons/btn-icon-e
 import { BtnIconDeleteComponent } from '../components/buttons/btn-icons/btn-icon-delete/btn-icon-delete.component';
 import { BtnIconFileComponent } from '../components/buttons/btn-icons/btn-icon-file/btn-icon-file.component';
 import { BtnIconExpandComponent } from '../components/buttons/btn-icons/btn-icon-expand/btn-icon-expand.component';
+import { EtiquetaValorVerticalComponent } from '../components/etiqueta-valor-vertical/etiqueta-valor-vertical.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { BtnIconExpandComponent } from '../components/buttons/btn-icons/btn-icon
     BtnIconDeleteComponent,
     BtnIconFileComponent,
     BtnIconExpandComponent,
-    BtnExportComponent
+    BtnExportComponent,
+    EtiquetaValorVerticalComponent
 
   ],
   imports: [
@@ -83,6 +85,7 @@ import { BtnIconExpandComponent } from '../components/buttons/btn-icons/btn-icon
 
   ],
   exports: [
+    EtiquetaValorVerticalComponent,
     KPIComponent,
     DecimalesPipe,
     EnterosPipe,

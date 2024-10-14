@@ -37,8 +37,13 @@ th {
 
 .header-correctora {
   color: white !important;
+  background-color: $color-primary !important;
   min-width: 267px;
   width: 267px;
+}
+
+.row_checkboxy{
+  width: 29px;
 }
 
 .cursor {

@@ -1,11 +1,19 @@
-<div class="bg-color p-2">
+<div class="container mt-4 py-2 px-4 background-light-gray">
     <h2 class="mb-1">Más info</h2>
     <div class="row">
-      <div class="col">
-        <app-etiqueta-valor [etiqueta]="'Notas para pedidos'" [valor]="'Sin especificar'"></app-etiqueta-valor>
-      </div>
-      <div class="col">
-        <app-etiqueta-valor [etiqueta]="'Observaciones'" [valor]="'Sin especificar'"></app-etiqueta-valor>
-      </div>
+        <div class="col-lg-6">
+          <div class="row mb-3 rounded w-100 mx-0">
+            <div class="bg-content-ficha-client p-1">
+              <app-etiqueta-valor-vertical [etiqueta]="'Notas para pedidos'" [valor]="'Sin especificar'" [colorEtiqueta]="'#3f51b5'"></app-etiqueta-valor-vertical>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="row mb-3 rounded w-100 mx-0">
+            <div class="bg-content-ficha-client p-1">
+              <app-etiqueta-valor-vertical [colorEtiqueta]="'#3f51b5'" [etiqueta]="'Observaciones'" [valor]="'Sin especificar'"></app-etiqueta-valor-vertical>
+            </div>
+          </div>
+        </div>
     </div>
   </div>
