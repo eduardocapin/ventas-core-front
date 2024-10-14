@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef  } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/auth/login.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,6 +12,8 @@ import { MenuItem }  from 'src/app/models/menuItem.model';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
+
+  @ViewChild('navbarNav', { static: false }) navbarNav!: ElementRef;
   menuOpen = false;
   profileMenuOpen = false; 
 
@@ -23,6 +25,9 @@ export class NavbarComponent {
     private router: Router,
     public dialog: MatDialog
   ) {}
+  ngAfterViewInit() {
+    this.closeNavbar();
+  }
 
   ngOnInit(): void {
     this._menuService.getMenuItems(1, 'es').subscribe(
@@ -50,14 +55,6 @@ export class NavbarComponent {
     }));
   }
 
-  closeMenu() {
-    this.menuOpen = false;
-  }
-
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
-  }
-
 
   profilePicSize() {
     return '40'; // Tamaño del perfil, puedes ajustar esto si es necesario
@@ -75,11 +72,17 @@ export class NavbarComponent {
     this.router.navigateByUrl('/login');
   }
 
-  toggleProfileMenu() {
-    this.profileMenuOpen = !this.profileMenuOpen;
+  // Método que cierra el menú
+  closeNavbar() {
+    const navbar = this.navbarNav?.nativeElement; // Usa `?` para evitar el error de inicialización
+    if (navbar && navbar.classList.contains('show')) {
+      // Aquí cerramos el colapso del menú
+      const navbarToggler = document.querySelector('.navbar-toggler') as HTMLElement;
+      if (navbarToggler) {
+        navbarToggler.click(); // Simula un clic en el toggler para cerrarlo
+      }
+    }
   }
-
- 
 
   onSearch(query: string) {
     // Implementa la lógica de búsqueda aquí

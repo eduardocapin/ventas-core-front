@@ -1,63 +1,42 @@
-<div class="header">
-    <div class="relative no-padding">
-        <div class="header-row">
-            <div class="header-col header-col--logo">
-                <a class="navbar-brand header-inner d-flex align-items-center boards-main-link" [routerLink]="['/']">
-                    <div class="brand inline">
-                        <img class="header-logo" src="../../assets/images/mobentisLogo.png" alt="logo" />
-                    </div>
+<nav class="navbar navbar-expand-lg navbar-dark header">
+    <div class="container-fluid d-flex flex-lg-nowrap">
+        <!-- Botón de toggler para pantallas pequeñas (a la izquierda del logo) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center p-1 order-lg-1" [routerLink]="['/']">
+            <img src="../../assets/images/mobentisLogo.png" alt="logo" width="30" height="30" class="d-inline-block align-text-top" />
+        </a>
+        
+        <!-- Sección del perfil de usuario, manteniéndose a la derecha -->
+        <ul class="m-0 list-style order-lg-3">
+            <li class="dropdown">
+                <a class="nav-link dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="assets/images/user.png" alt="Perfil" width="35" height="35" class="avatar" />
                 </a>
-            </div>
-            <div class="header-col header-col--menu" [class.open]="menuOpen">
-              <div class="horizontal-navbar" data-intercom-target="horizontal-navbar">
-                <ul class="menu-items list-unstyled">
-                  <app-menu-item (click)="toggleMenu()"
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                    <li></li>
+                    <li><a class="dropdown-item" (click)="openProfileEditPopup()">Perfil</a></li>
+                    <li><a class="dropdown-item" (click)="logout()">Salir</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- Menú de navegación -->
+        <div class="collapse navbar-collapse order-lg-2" id="navbarNav" #navbarNav>
+            <ul class="navbar-nav p-2">
+                <app-menu-item
                     *ngFor="let item of menuItems"
                     [item]="item"
-                    [menuOpen]="menuOpen"
-                  ></app-menu-item>
-                </ul>
-              </div>
-            </div>
-            <div class="header-col">
-                <!-- Botón de toggler para vista móvil -->
-                <button class="navbar-toggler" (click)="toggleMenu()" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon">&#9776;</span>
-                </button>
-            </div>
-            <div class="header-col flex-0">
-                <ul class="navbar-nav ml-auto ">
-                    <li class="nav-item dropdown">
-                        <div class="d-flex gap-3 align-items-center btn-profile pe-3" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img 
-                                 width="35"
-                                 height="35"
-                                 src="assets/images/user.png"
-                                 alt="Perfil"
-                                 class="avatar"
-                                 />
-                            <div >
-                                <h3 class="name no-padding">{{_loginServices.user}}</h3>
-                                <p class="cargo no-padding">Mobentis</p>
-                            </div>
-                        </div>
-                        <!-- Menú desplegable de perfil -->
-                        <ul class="dropdown-menu dropdown-menu-end" aria-label="profileDropdown">
-                            <li>
-                                <a class="dropdown-item" (click)="openProfileEditPopup()">Perfil</a>
-                                <a class="dropdown-item"  (click)="logout()">Salir</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            
+                    (click)="closeNavbar()"
+                ></app-menu-item>
+            </ul> 
         </div>
     </div>
-</div>
+</nav>
 
 <div>
-    <div>
-        <router-outlet></router-outlet>
-    </div>
+    <router-outlet></router-outlet>
 </div>
