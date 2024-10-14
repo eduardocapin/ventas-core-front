@@ -1,4 +1,4 @@
-<div class="d-flex align-items-center justify-content-center screen background-login">
+<div class="d-flex align-items-center justify-content-center pantalla background-login">
   <div class="row p-3 background-light-gray rounded-4">
     <div class="col justify-content-center p-0">
       <img id="sideImage" src="{{selectedImage}}" class="rounded-4">
@@ -46,7 +46,7 @@
           <div class="error" *ngIf="errorLogin">
             {{messageError}}
           </div>
-          <a class="align-self-start">¿Has olvidado la contraseña?</a>
+          <a class="align-self-center">¿Has olvidado la contraseña?</a>
           <button mat-raised-button color="primary" type="submit" (click)="login()" class="w-100 mt-3">Iniciar
             Sesión</button>
           <a class="align-self-center pt-3" href="https://mobentis.com/">mobentis.com</a>
