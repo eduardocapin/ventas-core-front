@@ -1,47 +1,54 @@
 @import "src/styles.scss";
-th {
-    color: #4e5eba;
-    font-size: small;
-}
-tr{
-    font-size: small;
-}
-i{
-    font-size: 20px;
-}
+
 .disabled {
-    size: 1000px;
+  size: 1000px;
 }
 
 .btnSave,
 .btnClear {
-    cursor: pointer;
-}
-
-.btnClear {
-    color: #B0304B;
-    border: none;
-    background-color: white;
-}
-
-.btnSave{
-    color: rgb(7, 170, 7);
-    border: none;
-    background-color: white;
-}
-
-.disabled-icon {
-    opacity: 0.5;
-    color: gray;
+  cursor: pointer;
 }
 
 .btnDelete,
 .btnClear {
-    color: #B0304B;
-    border: none;
-    background-color: white;
+  border: none;
+  background-color: white;
 }
 
 .btnEdit {
-    color: darkgrey;
+  color: darkgrey;
+}
+.btnSave {
+  color: rgb(7, 170, 7);
+  border: none;
+  background-color: white;
+}
+
+.disabled-icon {
+  opacity: 0.5;
+  color: gray;
+}
+
+.table-responsive {
+  max-height: 50vh;
+}
+
+.table thead th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.sticky-footer {
+  bottom: 0;
+  position: -webkit-sticky;
+  position: sticky;
+  background-color: #fff;
+  z-index: 1;
+  background-color: white;
+}
+.table-responsive table {
+  border-collapse: separate;
 }

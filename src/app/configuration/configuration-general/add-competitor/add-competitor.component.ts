@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-add-competitor',
   templateUrl: './add-competitor.component.html',
-  styleUrls: ['./add-competitor.component.scss']
+  styleUrls: ['./add-competitor.component.scss',]
 })
 export class AddCompetitorComponent {
 
@@ -21,7 +21,7 @@ export class AddCompetitorComponent {
   newCompetitonName: string = '';
   newSegmentation_value_id: number = 0;
   editingCompetitorId: number | null = null;
-  originalCompetitor: ICompetidor | null = null;  // variable que se encarga de almacenar la variable original
+  originalCompetitor: ICompetidor | null = null;  
   familyList: { id: number, name: string }[] = [];
   paginatedData: ICompetidor[] =[];
   currentPage = 1;
@@ -38,6 +38,7 @@ export class AddCompetitorComponent {
   ngOnInit(): void {
     this.cargarCompetitors();
     this.cargarFamilias();
+  
   }
   /* cargar los datos */
   cargarCompetitors(): void {
@@ -51,12 +52,14 @@ export class AddCompetitorComponent {
           this.competitorList = data;
           this.cargando = false;
           console.log(this.competitorList)
+          this.paginate();
         },
         (error) => {
           console.error('Error al cargar los competidores', error);
           this.cargando = false;
         }
       );
+      
   }
 
   cargarFamilias(): void {
