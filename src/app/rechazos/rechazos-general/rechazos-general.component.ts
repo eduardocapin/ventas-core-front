@@ -501,16 +501,10 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     }
   }
 
-  buscar() {
-    console.log(this.searchTerm);
+  onSearch(term: string): void {
+    this.searchTerm = term;
     this.currentPage = 1;
-    this.loadRechazos();
-  }
-
-  onSearchTermChange() {
-    if (this.searchTerm === '') {
-      this.buscar();
-    }
+    this.loadRechazos(); 
   }
 
   openReasonsRejections(){

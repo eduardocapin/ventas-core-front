@@ -17,13 +17,9 @@
     <div class="d-flex align-items-center justify-content-between mb-1">
       <div class="d-flex gap-3 align-items-center">
         <!-- buscado -->
-        <div class="input-group">
-          <input class="form-control border border-end-0" type="text" placeholder="Buscar..." id="example-search-input"
-            [(ngModel)]="searchTerm" (keyup.enter)="buscar()" (ngModelChange)="onSearchTermChange()">
-          <button class="btn border border-start-0 bg-white" type="button" (click)="buscar()">
-            <i class="bi bi-search"></i>
-          </button>
-        </div>
+         <div class="input-group">
+          <app-search-input [searchTerm]="searchTerm" (searchChange)="onSearch($event)"></app-search-input>
+         </div>
         <!-- boton de filtros aplicados o limpiar -->
         <app-filter-container [componentId]="'rechazos-general'" [selectedFilters]="selectedFilters"
           (filtersChanged)="onFiltersChanged($event)">

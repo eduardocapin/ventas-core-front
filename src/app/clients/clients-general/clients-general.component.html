@@ -10,13 +10,9 @@
       <div class="d-flex gap-3 align-items-center">
         <!-- buscador -->
         <div class="input-group">
-          <input class="form-control border-end-0 border" type="search" placeholder="Buscar..."
-            id="example-search-input" [(ngModel)]="searchTerm" (keyup.enter)="buscar()"
-            (ngModelChange)="onSearchTermChange()">
-          <button class="btn border border-start-0 bg-white" type="button" (click)="buscar()">
-            <i class="bi bi-search"></i>
-          </button>
+          <app-search-input [searchTerm]="searchTerm" (searchChange)="onSearch($event)"></app-search-input>
         </div>
+        
 
         <!-- boton de filtros aplicados o limpiar -->
         <app-filter-container [componentId]="'clients-general'" (filtersChanged)="onFiltersChanged($event)">

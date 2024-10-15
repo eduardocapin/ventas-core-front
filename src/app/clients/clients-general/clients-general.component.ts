@@ -281,14 +281,10 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     }
   }
 
-  buscar() {
+  onSearch(term: string): void {
+    this.searchTerm = term;
     this.currentPage = 1;
-    this.loadData();
+    this.loadData(); 
   }
 
-  onSearchTermChange() {
-    if (this.searchTerm === '') {
-      this.buscar();
-    }
-  }
 }
