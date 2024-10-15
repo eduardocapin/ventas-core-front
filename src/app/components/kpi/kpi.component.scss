@@ -31,3 +31,17 @@ span.font-dashboard {
 .smaller{
     font-size: smaller;
 }
+
+.vertical-text {
+    writing-mode: vertical-rl;
+    font-weight: bold;
+    transform: rotate(180deg);
+    font-size: small;
+}
+.horizontal-text{
+    font-weight: bold;
+    font-size: small;
+}
+.padding-rechazos-kpi{
+    padding-top: 19px;
+}
