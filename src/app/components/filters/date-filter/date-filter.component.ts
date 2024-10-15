@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Output, OnInit, inject, ViewChild} from '@angular/core';
-import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-date-filter',
@@ -222,5 +223,14 @@ export class DateFilterComponent implements OnInit {
       this.customStartDate = filtroAplicado.valor.startDate;
       this.customEndDate = filtroAplicado.valor.endDate;
     }
+  }
+
+  @ViewChild('datepicker', { static: false }) datepicker?: NgbInputDatepicker // Referencia a NgbDatepickerInput
+
+
+  // Método que abre el calendario cuando se selecciona "Personalizado"
+  openCustomDatepicker(event: MouseEvent): void {
+    event.stopPropagation(); // Evita el cierre del dropdown
+    this.datepicker?.toggle(); // Abre el calendario
   }
 }
