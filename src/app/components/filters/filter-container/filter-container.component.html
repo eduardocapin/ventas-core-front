@@ -68,11 +68,11 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li *ngFor="let filtroGuardado of filtrosGuardados" class="cursor">
-                                <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex justify-content-between p-1">
                                     <a class="dropdown-item " (click)="seleccionarFiltrosGuardados(filtroGuardado)">
                                         {{ filtroGuardado.nombre }}
                                     </a>
-                                    <button class="btn btn-outline-danger btn-sm ms-2"
+                                    <button class="btn btn-outline-quaternary btn-sm ms-2"
                                         (click)="eliminarFiltroGuardado(filtroGuardado)">
                                         <i class="bi bi-trash"></i>
                                     </button>
@@ -80,6 +80,7 @@
                             </li>
                         </ul>
                     </li>
+                    <hr class="my-1"/>
                 </div>
                 <div *ngFor="let filter of filters">
                     <app-date-filter *ngIf="filter.type === 'date'" [id]="filter.id"
