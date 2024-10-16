@@ -10,8 +10,6 @@ import { FormBuilder } from '@angular/forms';
 import { timeout } from 'rxjs';
 import { IClient } from 'src/app/models/clients.model';
 import { ClientsService } from 'src/app/services/clients/clients.service';
-import { ClientsGeneralComponent } from '../clients-general.component';
-import { ClientContactListComponent } from '../client-contact-list/client-contact-list.component';
 import { PopupMapClientsComponent } from '../popup-map-clients/popup-map-clients.component';
 @Component({
   selector: 'app-popup-client-detail',
@@ -85,20 +83,6 @@ export class PopupClientDetailComponent {
     this.dialogRef.close({
       editado: true,
       id: this.id_cliente,
-    });
-  }
-
-  editContact() {
-    const dialogRef = this.dialog.open(ClientContactListComponent, {
-      width: '1000px',
-      disableClose: true,
-      data: { id: this.id_cliente },
-    });
-
-    dialogRef.afterClosed().subscribe((data) => {
-      console.log(data);
-
-      console.log('The dialog was closed');
     });
   }
 

@@ -37,8 +37,6 @@ import { ClientsGeneralComponent } from './clients-general/clients-general.compo
 import { PopupClientDetailComponent } from './clients-general/popup-client-detail/popup-client-detail.component';
 import { PopupMapClientsComponent } from './clients-general/popup-map-clients/popup-map-clients.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ClientsContactComponent } from './clients-general/clients-contact/clients-contact.component';
-import { ClientContactListComponent } from './clients-general/client-contact-list/client-contact-list.component';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
@@ -46,8 +44,6 @@ import { SharedModule } from '../shared/shared.module';
         ClientsGeneralComponent,
         PopupClientDetailComponent,
         PopupMapClientsComponent,
-        ClientsContactComponent,
-        ClientContactListComponent,
         
     ],
     imports:[

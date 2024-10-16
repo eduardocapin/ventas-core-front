@@ -1,7 +1,7 @@
 @import "src/styles.scss";
 
 .text-font{
-    font-size: 12px;
+    font-size: small;
 }
 .w-date-picker{
     width: 225px;
@@ -24,9 +24,10 @@
 }
 .custom-day.range,
 .custom-day:hover {
-    background-color: rgb(2, 117, 216);
+    background-color: $color-primary;
     color: white;
 }
 .custom-day.faded {
-    background-color: rgba(2, 117, 216, 0.5);
+    background-color: #e3f2fd;
+    color: black
 }

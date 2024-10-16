@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
@@ -13,6 +12,7 @@ import {
 import { LoginService } from 'src/app/services/auth/login.service';
 import { Observable } from 'rxjs';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
   selector: 'app-profile-edit-popup',
@@ -51,7 +51,8 @@ export class ProfileEditPopupComponent {
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
-    private _loginServices: LoginService
+    private _loginServices: LoginService,
+    private _notifactionService: NotificationService,
   ) {
     this.form = this.fb.group({
       usuario: [''],
@@ -95,6 +96,7 @@ export class ProfileEditPopupComponent {
     if (this.form.dirty) {
       localStorage.setItem('user', this.form.value.usuario);
       localStorage.setItem('cargo', this.form.value.cargo);
+      this._notifactionService.showSuccess('');
       console.log('Actualizado:', this.form.value);
       this.form.markAsPristine();
     }
@@ -108,10 +110,12 @@ export class ProfileEditPopupComponent {
       if (newPassword !== confirmNewPassword) {
         this.errorChangePass = true;
         this.messageError = 'La nueva contraseña no coincide.';
+        this._notifactionService.showError(this.messageError)
       } else if (newPassword === currentPassword) {
         this.errorChangePass = true;
         this.messageError =
           'La nueva contraseña no puede ser la misma que la actual.';
+          this._notifactionService.showError(this.messageError)
       } else {
         this.errorChangePass = false;
         this.messageError = '';
@@ -121,6 +125,7 @@ export class ProfileEditPopupComponent {
           confirmNewPassword: '',
         });
         this.passForm.markAsPristine();
+        this._notifactionService.showSuccess('Contraseña cambiada con éxito')
         /*
         this._loginServices.changePassword(currentPassword, newPassword).subscribe(
           (data) => {
@@ -165,6 +170,7 @@ export class ProfileEditPopupComponent {
           this.progress = 0;
 
           this.message = err.error.message || 'No se ha podido subir la imagen.';
+          this._notifactionService.showError(err.error.message || 'No se ha podido subir la imagen.')
 
         }
       });*/
@@ -177,6 +183,7 @@ export class ProfileEditPopupComponent {
       this._loginServices.updateimg(file.name).subscribe(data => {
         if (data === 'Success') {
           console.log('Imagen de perfil actualizada');
+          this._notifactionService.showSuccess('Imagen de perfil actualizada')
         }
       });*/
     }

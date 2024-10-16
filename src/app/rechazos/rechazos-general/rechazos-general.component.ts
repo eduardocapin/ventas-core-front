@@ -8,7 +8,6 @@ import { FilterService } from 'src/app/services/filter/filter.service';
 import { IEstado } from 'src/app/models/estados.model';
 import { ISimbolo } from 'src/app/models/simbolos.model';
 import { ExportService } from 'src/app/services/export/export.service';
-import { ToastrService } from 'ngx-toastr';
 import { SelectionModel } from '@angular/cdk/collections';
 import { PopupClientDetailComponent } from 'src/app/clients/clients-general/popup-client-detail/popup-client-detail.component';
 import { ICompetidor } from 'src/app/models/competidor.model';
@@ -17,6 +16,7 @@ import { IProvincia } from 'src/app/models/provincias.model';
 import { IPoblacion } from 'src/app/models/poblaciones.model';
 import { ReasonsRejectionsComponent } from 'src/app/configuration/configuration-general/reasons-rejections/reasons-rejections.component';
 import { AddCompetitorComponent } from 'src/app/configuration/configuration-general/add-competitor/add-competitor.component';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 
 @Component({
@@ -95,8 +95,9 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     private rechazadosService: RechazadosService,
     private filterService: FilterService,
     private _exportService: ExportService,
-    private toastr: ToastrService,
+    private _notifactionService: NotificationService,
     private router: Router,
+    
     
   ) {}
 
@@ -287,10 +288,9 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
   verEnMapa() {
     if (this.selectedRechazos.length === 0) {
-      this.toastr.warning(
-        'Debe seleccionar al menos 1 rechazo antes de ver en el mapa.',
-        'Advertencia'
-      );
+      this._notifactionService.showWarning(
+        'Debe seleccionar al menos 1 rechazo antes de ver en el mapa.'
+    );
       return;
     }
 
@@ -340,10 +340,10 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
         )
         .subscribe(
           (response) => {
-            this.toastr.success('Símbolo actualizado correctamente.', '', {});
+            this._notifactionService.showSuccess('Símbolo actualizado correctamente.');
           },
           (error) => {
-            this.toastr.error('Error al actualizar el símbolo.', '', {});
+            this._notifactionService.showError('Error al actualizar el símbolo.');
             console.error('Error al actualizar el símbolo:', error);
           }
         );
@@ -352,9 +352,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
   exportData(selectedOption: string): void {
     if (this.selectedRechazos.length <= 0) {
-      this.toastr.warning(
-        'Debe seleccionar al menos 1 rechazo antes de exportar.',
-        'Advertencia'
+      this._notifactionService.showWarning(
+        'Debe seleccionar al menos 1 rechazo antes de exportar.'
       );
       return;
     }
@@ -502,16 +501,10 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     }
   }
 
-  buscar() {
-    console.log(this.searchTerm);
+  onSearch(term: string): void {
+    this.searchTerm = term;
     this.currentPage = 1;
-    this.loadRechazos();
-  }
-
-  onSearchTermChange() {
-    if (this.searchTerm === '') {
-      this.buscar();
-    }
+    this.loadRechazos(); 
   }
 
   openReasonsRejections(){

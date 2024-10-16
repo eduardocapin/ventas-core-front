@@ -6,7 +6,7 @@
   <div class="container py-0">
     <div *ngIf="!cargando">
       <div class="row gap-2">
-        <div class="col-12 col-lg d-flex flex-column background-light-gray justify-content-center p-4"> 
+        <div class="col-12 col-lg background-light-gray p-4"> 
           <app-change-image [defaultImage]="'assets/images/user.png'" [preview]="img" (upload)="handleUpload($event)"
             (fileSelected)="onFileSelected($event)"></app-change-image>
         </div>

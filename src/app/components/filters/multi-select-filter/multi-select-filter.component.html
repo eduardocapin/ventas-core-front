@@ -4,8 +4,8 @@
     <div class="d-flex align-items-center gap-1 search-style">
       <div class="input-group input-group-sm">
         <input type="text" class="form-control border border-end-0" placeholder="Buscar..." [(ngModel)]="searchTerm"
-          (keydown.enter)="onSearchChange()">
-        <button class="btn border border-start-0" type="button" id="button-addon2" (click)="onSearchChange()"><i
+          (keydown.enter)="onSearchChange($event)" (input)="oninputChange($event)">
+        <button class="btn border border-start-0" type="button" id="button-addon2" (click)="onSearchChange($event)"><i
             class="bi bi-search"></i></button>
       </div>
     </div>

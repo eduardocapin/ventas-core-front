@@ -43,7 +43,7 @@ export class MultiSelectFilterComponent {
   loadOptions(endpoint: string) {
     this._filterService.getFilterOptions(endpoint).subscribe(
       (options) => {
-        this.options = options
+        this.options = options;
         this.filteredOptions = options;
         this.optionsSubject.next(this.options);
       },
@@ -52,7 +52,20 @@ export class MultiSelectFilterComponent {
       }
     );
   }
-  onSearchChange() {
+  onSearchChange(event: Event) {
+    event.stopPropagation();
+    this.filterOptions();
+  }
+
+  oninputChange(event: Event) {
+    if (this.searchTerm.length >= 4) {
+      this.filterOptions();
+    } else {
+      this.filteredOptions = this.options;
+    }
+  }
+
+  private filterOptions() {
     this.filteredOptions = this.options.filter((option) =>
       option.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
@@ -101,7 +114,7 @@ export class MultiSelectFilterComponent {
     this.optionsSubject.subscribe((options) => {
       console.log(filtroAplicado);
       console.log(options);
-      
+
       this.selectedOptions = [];
       options.forEach((option) => {
         const match = filtroAplicado.find(
@@ -117,7 +130,9 @@ export class MultiSelectFilterComponent {
       });
 
       // Emit the change in selection
-      this.selectionChange.emit(this.selectedOptions.length > 0 ? this.selectedOptions : []);
+      this.selectionChange.emit(
+        this.selectedOptions.length > 0 ? this.selectedOptions : []
+      );
     });
   }
 }

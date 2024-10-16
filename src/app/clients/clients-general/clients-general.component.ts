@@ -2,9 +2,6 @@ import {
   Component,
   AfterViewInit,
   OnInit,
-  ChangeDetectorRef,
-  ViewChild,
-  ElementRef,
   Renderer2,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,8 +11,7 @@ import { PopupClientDetailComponent } from './popup-client-detail/popup-client-d
 import { PopupMapClientsComponent } from './popup-map-clients/popup-map-clients.component';
 import { ClientsService } from 'src/app/services/clients/clients.service';
 import { timeout } from 'rxjs';
-import { ClientContactListComponent } from './client-contact-list/client-contact-list.component';
-import { ToastrService } from 'ngx-toastr';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
   selector: 'app-clients-general',
@@ -62,7 +58,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     private renderer: Renderer2,
     public dialog: MatDialog,
     private _clientsServices: ClientsService,
-    private toastr: ToastrService
+    private _notifactionService: NotificationService
   ) {}
 
   
@@ -154,18 +150,6 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     }
     this.currentPage = 1;
     this.loadData();
-  }
-
-  editContact(id_Cliente?: number) {
-    const dialogRef = this.dialog.open(ClientContactListComponent, {
-      width: '1000px',
-      disableClose: true,
-      data: { id: id_Cliente },
-    });
-
-    dialogRef.afterClosed().subscribe((data) => {
-      console.log('The dialog was closed');
-    });
   }
 
   masterToggle(): void {
@@ -262,14 +246,11 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
       });
     } else {
       if (this.selectedClients.length <= 0) {
-        this.toastr.warning(
-          'Por favor, seleccione al menos 1 cliente para ver en el mapa.',
-          'Seleccionar cliente'
-        );
+        this._notifactionService.showWarning(
+          'Seleccionar cliente \n' +'Por favor, seleccione al menos 1 cliente para ver en el mapa.');
       } else if (this.selectedClients.length > 200) {
-        this.toastr.error(
-          'Se han seleccionado ' + this.selectedClients.length + ' clientes',
-          'Límite superado (200 clientes)'
+        this._notifactionService.showError(
+          'Límite superado (200 clientes) \n'+'Se han seleccionado ' + this.selectedClients.length + ' clientes',
         );
       }
     }
@@ -300,14 +281,10 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     }
   }
 
-  buscar() {
+  onSearch(term: string): void {
+    this.searchTerm = term;
     this.currentPage = 1;
-    this.loadData();
+    this.loadData(); 
   }
 
-  onSearchTermChange() {
-    if (this.searchTerm === '') {
-      this.buscar();
-    }
-  }
 }

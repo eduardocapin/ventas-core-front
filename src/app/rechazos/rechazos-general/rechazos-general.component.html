@@ -1,6 +1,6 @@
 <div class="screen background-light-gray d-flex flex-column">
   <div
-    class="d-flex flex-column gap-2 flex-xl-row justify-content-between align-items-center pt-3  p-2 titulo bg-white w-100">
+    class="d-flex flex-column gap-2 flex-xl-row justify-content-between align-items-center  p-2 titulo bg-white w-100">
     <!-- titulo y icono -->
     <div class="d-flex align-items-center justify-content-start ">
       <mat-icon class="dark-gray">broken_image</mat-icon>
@@ -17,13 +17,9 @@
     <div class="d-flex align-items-center justify-content-between mb-1">
       <div class="d-flex gap-3 align-items-center">
         <!-- buscado -->
-        <div class="input-group">
-          <input class="form-control border border-end-0" type="text" placeholder="Buscar..." id="example-search-input"
-            [(ngModel)]="searchTerm" (keyup.enter)="buscar()" (ngModelChange)="onSearchTermChange()">
-          <button class="btn border border-start-0 bg-white" type="button" (click)="buscar()">
-            <i class="bi bi-search"></i>
-          </button>
-        </div>
+         <div class="input-group">
+          <app-search-input [searchTerm]="searchTerm" (searchChange)="onSearch($event)"></app-search-input>
+         </div>
         <!-- boton de filtros aplicados o limpiar -->
         <app-filter-container [componentId]="'rechazos-general'" [selectedFilters]="selectedFilters"
           (filtersChanged)="onFiltersChanged($event)">
@@ -38,7 +34,7 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-hover table-sm my-3">
+      <table class="table table-sm my-3">
         <thead>
           <tr class="">
             <!-- Checkbox Column -->
@@ -53,7 +49,7 @@
               Convertir en oportunidad (% ó €
               + Promo)</th>
             <!-- Estado Column -->
-            <th scope="col" class="text-center cursor select_estado color-primary" (click)="sortData('status')">
+            <th scope="col" class="text-center cursor select_estado color-primary " (click)="sortData('status')">
               Estado
               <i *ngIf="sortColumn === 'status'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
@@ -225,7 +221,7 @@
               <td class="text-center centrado_column">
                 <i *ngIf="row.has_own_promo" class="promo-icon-p" [ngbTooltip]="row.own_promo">P</i>
               </td>
-              <!-- Competidor Column -->
+              <!-- Precio Competidor Column -->
               <td class="text-end row_precio_competidor centrado_column">{{ row.pvp_competitor | decimales }} €</td>
               <!-- Promo Competidor Column -->
               <td class="text-center centrado_column">

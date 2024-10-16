@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -43,7 +44,7 @@ export class FilterContainerComponent implements OnInit {
 
   private hijosCargados: boolean = false;
 
-  constructor(private filterService: FilterService, public dialog: MatDialog) {}
+  constructor(private filterService: FilterService, public dialog: MatDialog, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.filterService.getFiltersForComponent(this.componentId).subscribe(
@@ -103,6 +104,7 @@ export class FilterContainerComponent implements OnInit {
       },
       {}
     );
+    this.cdr.detectChanges();
     console.log(this.filtrosAplicados);
     console.log(this.selectedFilters);
     //this.actualizarComponentesHijos()
@@ -228,6 +230,7 @@ export class FilterContainerComponent implements OnInit {
       );
       return;
     }
+    this.filtroReset()
     this.filtrosAplicados = JSON.parse(JSON.stringify(filtroGuardado.filtros));
     this.selectedFilters = this.filtrosAplicados.reduce(
       (acc: { [key: string]: any }, filtro) => {
@@ -304,7 +307,12 @@ export class FilterContainerComponent implements OnInit {
 
   getMultiSelectDisplay(value: any[]): string {
     if (value && value.length) {
-      return value.map((item) => item.name).join(', ');
+      //return value.map((item) => item.name).join(', ');
+      if (value.length === 1) {
+        return value[0].name;
+    } else {
+        return 'Varios';
+    }
     }
     return 'Vacío';
   }
@@ -313,20 +321,20 @@ export class FilterContainerComponent implements OnInit {
     const end = new Date(endDate);
 
     if (start.toDateString() === end.toDateString()) {
-        // Si las fechas son iguales, devuelve solo una
-        return this.formatDate(start);
+      // Si las fechas son iguales, devuelve solo una
+      return this.formatDate(start);
     } else {
-        // Si no, devuelve el rango
-        return `${this.formatDate(start)} - ${this.formatDate(end)}`;
+      // Si no, devuelve el rango
+      return `${this.formatDate(start)} - ${this.formatDate(end)}`;
     }
-}
+  }
 
-formatDate(date: Date): string {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${day}-${month}-${year}`;
-}
+  formatDate(date: Date): string {
+    const day = ('0' + date.getDate()).slice(-2); 
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); 
+    const year = date.getFullYear().toString().slice(-2); 
+    return `${day}/${month}/${year}`;
+  }
 
   onClose() {
     const modalElement = document.getElementById('nombreFiltroModal');

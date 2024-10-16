@@ -16,7 +16,7 @@
     </div>
     <div id="kpis_centrales" class="d-flex gap-2">
         <div class="bg-white text-center rounded-3 d-flex padding-rechazos-kpi justify-content-evenly align-items-center gap-2 px-2">
-            <div class="d-flex flex-column m-1 color-secondary">
+            <div class="d-flex flex-column m-1 dark-gray">
                 <h3 class="m-0 fw-bold"> {{'66860' | bigInt}}</h3>
                 <span class="smaller">Rechazos</span>
             </div>
@@ -47,7 +47,7 @@
             <span class="vertical-text">Resultados</span>
         </div>
     </div>
-    <div id="graficas_derecha" class="d-flex gap-3">
+    <div id="graficas_derecha" class="d-flex gap-3 pt-2">
         <app-progress-circle [total]="66860" [value]="4321" [color]="'#17a6ff'" [text]="'Desistido'"></app-progress-circle>
         <app-progress-circle [total]="66860" [value]="11210" [color]="'#17a6ff'" [text]="'Rechazado'"></app-progress-circle>
         <app-progress-circle [total]="66860" [value]="15005" [color]="'#17a6ff'" [text]="'Aceptado'"></app-progress-circle>

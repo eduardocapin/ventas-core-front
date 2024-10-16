@@ -5,13 +5,13 @@ import { FilterService } from 'src/app/services/filter/filter.service';
 import { CompetidoresService } from 'src/app/services/competitors/competidores.service';
 import { timeout } from 'rxjs';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
-import { ToastrService } from 'ngx-toastr';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 
 @Component({
   selector: 'app-add-competitor',
   templateUrl: './add-competitor.component.html',
-  styleUrls: ['./add-competitor.component.scss']
+  styleUrls: ['./add-competitor.component.scss',]
 })
 export class AddCompetitorComponent {
 
@@ -19,23 +19,26 @@ export class AddCompetitorComponent {
   cargando: boolean = false;
 
   newCompetitonName: string = '';
-
+  newSegmentation_value_id: number = 0;
   editingCompetitorId: number | null = null;
-  originalCompetitor: ICompetidor | null = null;  // variable que se encarga de almacenar la variable original
-  
+  originalCompetitor: ICompetidor | null = null;  
+  familyList: { id: number, name: string }[] = [];
   paginatedData: ICompetidor[] =[];
   currentPage = 1;
   itemsPerPage = 10;
   
   constructor(
     private competitorsService: CompetidoresService,
+    private filterService: FilterService,
     public dialogRef: MatDialogRef<AddCompetitorComponent>,
     public dialog: MatDialog,
-    public toastr: ToastrService,
+    private _notifactionService: NotificationService,
   ) {}
 
   ngOnInit(): void {
     this.cargarCompetitors();
+    this.cargarFamilias();
+  
   }
   /* cargar los datos */
   cargarCompetitors(): void {
@@ -48,34 +51,50 @@ export class AddCompetitorComponent {
           console.log('Datos de competidores recibidos:', data);
           this.competitorList = data;
           this.cargando = false;
+          console.log(this.competitorList)
+          this.paginate();
         },
         (error) => {
           console.error('Error al cargar los competidores', error);
           this.cargando = false;
         }
       );
+      
   }
+
+  cargarFamilias(): void {
+    this.filterService.getFilterOptions('segmentacion-productos/1').subscribe(
+      (families: { id: number, name: string }[]) => {
+        this.familyList = families;
+        console.log(this.familyList)
+      },
+      (error) => console.error(error)
+    );
+  }
+
   insertCompetitor(){
     if(this.newCompetitonName){
       const newCompetitor = {
-        name: this.newCompetitonName
+        name: this.newCompetitonName,
+        segmentation_value_id: this.newSegmentation_value_id,
+        segmentation_value: ''
       };
       this.competitorsService.insertCompetitor(newCompetitor).subscribe(
         (status) =>{
           if(status === 'Success'){
-            this.toastr.success('Competidor añadido con exito');
+            this._notifactionService.showSuccess('Competidor añadido con exito');
             this.cargarCompetitors();
             this.clearNewCompetitor();
           }
         },
         (error) =>{
           console.error('Error al añadir el competidor', error);
-          this.toastr.error('Error al añadir el competidor', 'Error');
+          this._notifactionService.showError('Error al añadir el competidor');
         }
       );
     }else{
       /// aqui mostramos el error
-      this.toastr.error('Por favor complete todos los campos.', 'Error');
+      this._notifactionService.showError('Por favor complete todos los campos.');
     }
   }
   // Activar modo de edición para un competidor específico y guardar los datos originales
@@ -94,7 +113,7 @@ export class AddCompetitorComponent {
       this.competitorsService.updateCompetitors(competitor).subscribe(
         (status) =>{
           if(status === 'Success'){
-            this.toastr.success('Competidor actualizado con éxito');
+            this._notifactionService.showSuccess('Competidor actualizado con éxito');
             this.cargarCompetitors();
             this.editingCompetitorId = null;
             this.originalCompetitor = null;
@@ -102,12 +121,12 @@ export class AddCompetitorComponent {
         },
         (error) =>{
           console.error('Error al actualizar el competidor', error);
-          this.toastr.error('Error al actualizar al competidor', 'Error');
+          this._notifactionService.showError('Error al actualizar al competidor');
           this.cancelEdit();
         }
       );
     }else{
-      this.toastr.error('Por favor complete todos los campos.', 'Error');
+      this._notifactionService.showError('Por favor complete todos los campos.');
     }
   }
 
@@ -126,6 +145,7 @@ export class AddCompetitorComponent {
   /* limpiar el input */
   clearNewCompetitor() {
     this.newCompetitonName = '';
+    this.newSegmentation_value_id= 0
   }
 
   deleteCompetidor(id: Number){
@@ -148,9 +168,7 @@ export class AddCompetitorComponent {
 
   /* mesanje de exito */
   mensajeExito(){
-    this.toastr.success('Competidor eliminado correctamente', 'Exito',{
-      timeOut: 2000,
-    });
+    this._notifactionService.showSuccess('Competidor eliminado correctamente')
   }
   /* paginator */
   paginate() {
@@ -167,6 +185,11 @@ export class AddCompetitorComponent {
     this.itemsPerPage = itemsPerPage;
     this.currentPage = 1;
     this.paginate()
+  }
+
+  getFamilyName(familyId: number): string {
+    const family = this.familyList.find(f => f.id === familyId);
+    return family ? family.name : 'Todas';
   }
 
   /* lógica de botón de Cancelar de Motivo de Rechazo */

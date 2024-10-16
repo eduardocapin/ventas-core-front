@@ -5,7 +5,7 @@ import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confir
 import { timeout } from 'rxjs';
 import { MotivoRechazoService } from 'src/app/services/reasons_rejection/motivo-rechazo.service';
 import { IMotivoRechazo } from 'src/app/models/motivoRechazo.model';
-import { ToastrService } from 'ngx-toastr';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
   selector: 'app-reasons-rejections',
@@ -32,7 +32,7 @@ export class ReasonsRejectionsComponent {
     private router: Router,
     public dialogRef: MatDialogRef<ReasonsRejectionsComponent>,
     public dialog: MatDialog,
-    private toastr: ToastrService,
+    private _notifactionService: NotificationService,
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +49,7 @@ export class ReasonsRejectionsComponent {
           this.rejectList = data;
           this.cargando = false;
           console.log(this.rejectList)
+          this.paginate();
         },
         (error) => {
           console.error('Error al cargar los motivos de rechazo', error);
@@ -67,19 +68,19 @@ export class ReasonsRejectionsComponent {
       this._motivoRechazoService.insertReason(newReason).subscribe(
         (status) => {
           if (status === 'Success') {
-            this.toastr.success('Motivo de rechazo añadido con éxito');
+            this._notifactionService.showSuccess('Motivo de rechazo añadido con éxito');
             this.cargaRechazos();  // Volver a cargar la lista
             this.clearNewRechazo();  // Limpiar los campos
           }
         },
         (error) => {
           console.error('Error al añadir el motivo de rechazo', error);
-          this.toastr.error('Error al añadir el motivo de rechazo', 'Error');
+          this._notifactionService.showError('Error al añadir el motivo de rechazo');
         }
       );
     } else {
       // Aquí mostramos el error
-      this.toastr.error('Por favor complete todos los campos.', 'Error');
+      this._notifactionService.showError('Por favor complete todos los campos.');
     }
   }
   /* editar un motivo de rechazo */
@@ -96,7 +97,7 @@ export class ReasonsRejectionsComponent {
       this._motivoRechazoService.updateReason(reason).subscribe(
         (status) => {
           if (status === 'Success') {
-            this.toastr.success('Motivo de rechazo actualizado con éxito');
+            this._notifactionService.showSuccess('Motivo de rechazo actualizado con éxito');
             this.cargaRechazos();  // Recargar la lista de motivos
             this.editingReasonId = null;  // Salir del modo de edición
             this.originalReason = null;  // Limpiar la referencia del original
@@ -104,13 +105,13 @@ export class ReasonsRejectionsComponent {
         },
         (error) => {
           console.error('Error al actualizar el motivo de rechazo', error);
-          this.toastr.error('Error al actualizar el motivo de rechazo', 'Error');
+          this._notifactionService.showError('Error al actualizar el motivo de rechazo');
           // Restaurar el estado original si hay un error
           this.cancelEdit();
         }
       );
     } else {
-      this.toastr.error('Por favor complete todos los campos.', 'Error');
+      this._notifactionService.showError('Por favor complete todos los campos.');
     }
   }
   
@@ -150,9 +151,7 @@ export class ReasonsRejectionsComponent {
   }
 
   mensajeExito() {
-    this.toastr.success('Motivo eliminado con exito', '', {
-      timeOut: 2000,
-    });
+    this._notifactionService.showSuccess('Motivo eliminado con exito')
   }
   /* paginator */
   paginate() {

@@ -36,13 +36,8 @@ td {
   color: white;
 }
 
-th {
-  color: $color-primary;
-}
-
 .header-correctora {
   color: white !important;
-  background-color: $color-primary !important;
   min-width: 267px;
   width: 267px;
 }
@@ -266,10 +261,6 @@ th {
   position: sticky;
   top: 0;
   /* Fija el encabezado en la parte superior */
-  background-color: #fff;
-  /* Asegúrate de que el fondo sea blanco o del color que desees */
-  z-index: 1;
-  /* Asegúrate de que esté sobre el contenido de la tabla */
 }
 
 /* Estilo para la columna fija de los checkboxes */
@@ -277,17 +268,13 @@ th {
 .table-responsive table tbody td:first-child {
   position: sticky;
   left: 0;
-  z-index: 3;
   /* Asegura que el encabezado esté sobre el contenido */
-  background-color: white;
-  /* Mantiene el fondo blanco para la columna fija */
 }
 
 .table-responsive table thead th:nth-child(2) {
   position: sticky;
   left: 29px;
   z-index: 3;
-  background-color: #dfe2f2;
 }
 
 .table-responsive table tbody td:nth-child(2) {
@@ -326,14 +313,6 @@ th {
 .table-responsive table thead th:last-child {
   z-index: 3;
   /* Asegura que el encabezado esté encima del contenido */
-}
-
-.form-select-sm {
-  font-size: 12px;
-}
-
-.form-control-sm {
-  font-size: 12px;
 }
 
 .modal-header {
