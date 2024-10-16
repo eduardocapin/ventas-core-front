@@ -10,9 +10,14 @@
   width: 200px;
 }
 
-/*  */
+
 .max-w-kpi{
-  max-width: 84%;
+  max-width: 100%;
+}
+@media (min-width: 1200px) {
+  .max-w-kpi {
+      max-width: 84%;
+  }
 }
 
 table {
