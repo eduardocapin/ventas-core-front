@@ -250,9 +250,15 @@ td {
   min-width: 35px !important;
   width: 35px !important;
 }
+.row_client{
+  width: 70px;
+}
 
+.row_expand{
+  width: 48px;
+}
 .table-responsive {
-  max-height: 600px;
+  height: calc(100vh - 220px - 60px);
   /* Ajusta según sea necesario */
   max-width: 100%;
   /* Asegura que el contenedor no exceda el ancho de su contenedor padre */
