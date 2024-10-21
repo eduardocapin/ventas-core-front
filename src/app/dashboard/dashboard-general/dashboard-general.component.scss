@@ -11,7 +11,9 @@
   transition: all 1s ease-out;
   opacity: 0;
 }
-
+.max-w-kpi{
+  max-width: 100%;
+}
 span.font-dashboard {
   font-size: small;
   color: #6D6D6D;

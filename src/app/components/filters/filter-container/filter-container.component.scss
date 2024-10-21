@@ -7,3 +7,19 @@
 .bordes-redondeados{
     border-radius: 0.25rem; 
 }
+::ng-deep ngb-datepicker.dropdown-menu{
+    transform: translate(-10px, 33px) !important;
+    max-width: 355px !important;
+    font-size: small;
+}
+::ng-deep .ngb-dp-month{
+    width: 50%;
+}
+
+::ng-deep .custom-day{
+    width: -webkit-fill-available !important;
+}
+::ng-deep .ngb-dp-month:last-child .ngb-dp-week{
+    padding-right: 0 !important;
+    padding-left: 0.5rem !important;
+}

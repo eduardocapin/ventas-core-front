@@ -233,8 +233,8 @@ table {
   width: 70px;
 }
 
-.row_expand {
-  width: 48px;
+.row_expand{
+  width: 60px;
 }
 
 .table-responsive {
@@ -244,6 +244,8 @@ table {
   /* Asegura que el contenedor no exceda el ancho de su contenedor padre */
   margin: 0 auto;
   /* Centra la tabla en el contenedor */
+  margin-top: 17px;
+
 }
 
 .table thead th {
@@ -251,6 +253,7 @@ table {
   /* Para Safari */
   position: sticky;
   top: 0;
+  z-index: 3;
   /* Fija el encabezado en la parte superior */
 }
 
@@ -265,7 +268,7 @@ table {
 .table-responsive table thead th:nth-child(2) {
   position: sticky;
   left: 29px;
-  z-index: 3;
+  z-index: 4;
 }
 
 .table-responsive table tbody td:nth-child(2) {
