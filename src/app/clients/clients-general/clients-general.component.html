@@ -19,8 +19,14 @@
         </app-filter-container>
       </div>
 
-      <!-- botones de  filtros y mapa -->
+      
       <div class="boton-filtro d-flex gap-2 align-self-start">
+         <!-- Spinner de filtros -->
+        <div *ngIf="cargando_filtros" class="d-flex justify-content-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
         <button ngbTooltip="Ver en Mapa" class="btn btn-primary d-flex justify-content-center align-items-center gap-2"
           (click)="verEnMapa()">
           <i class="bi bi-geo-alt-fill"></i>

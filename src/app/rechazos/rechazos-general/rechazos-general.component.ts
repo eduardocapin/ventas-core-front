@@ -21,7 +21,6 @@ import { NotificationService } from 'src/app/services/notification/notification.
 
 @Component({
   selector: 'app-rechazos-general',
-
   templateUrl: './rechazos-general.component.html',
   styleUrls: ['./rechazos-general.component.scss'],
 })
@@ -50,6 +49,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   totalItems: number = 0;
 
   cargando = true;
+  cargando_filtros = true;
 
   //selector
   selectedRechazos: IRechazo[] = [];
@@ -110,6 +110,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     this.loadCompetidores();
     this.loadTiposRechazo();
     this.loadPoblacion();
+    this.cargando = true;
   }
   getProvincia(id: number): string {
     const provincia = this.provincias.find((c) => c.id == id);
@@ -122,7 +123,11 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   }
 
   private loadRechazos() {
-    this.cargando = true;
+    if (this.currentPage === 1 && !this.searchTerm && Object.keys(this.selectedFilters).length === 0) {
+      this.cargando = true;
+    } else {
+      this.cargando_filtros = true;
+    }
     this.rechazadosService
       .getRechazos(
         this.selectedFilters,
@@ -137,6 +142,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
         const rechazosData: IRechazo[] = data.items;
         this.dataSource = rechazosData;
         this.totalItems = data.totalItems;
+        this.cargando_filtros = false;
         this.cargando = false;
         this.updateSelectionFromCurrentPage();
       });

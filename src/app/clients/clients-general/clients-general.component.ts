@@ -41,6 +41,7 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   selection = new SelectionModel<IClient>(true, []);
 
   cargando: boolean = true;
+  cargando_filtros: boolean = true;
 
   //filtrado
   selectedFilters: { [key: string]: any } = {};
@@ -70,8 +71,14 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
     });
   }
 
+
   private loadData() {
-    this.cargando = true;
+    // Mostrar el spinner de carga inicial si estamos en la primera página sin filtros
+    if (this.currentPage === 1 && !this.searchTerm && Object.keys(this.selectedFilters).length === 0) {
+      this.cargando = true;
+    } else {
+      this.cargando_filtros = true;
+    }
     this._clientsServices
       .getClients(
         this.selectedFilters,
@@ -87,11 +94,13 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
           const clientsData: any[] = data.items;
           this.dataSource.data = clientsData;
           this.totalItems = data.totalItems;
+          this.cargando_filtros = false;
           this.cargando = false;
           this.updateSelectionFromCurrentPage();
         },
         (error) => {
           console.error('Error al asignar el dataSource:', error);
+          this.cargando_filtros = false;
           this.cargando = false;
         }
       );
