@@ -27,7 +27,9 @@ td,
 select {
     font-size: small;
 }
-
+.tooltip .tooltip-inner{
+    z-index: 4 !important;
+}
 .dropdown-menu,
 .dropdown-item {
     min-width: auto;
