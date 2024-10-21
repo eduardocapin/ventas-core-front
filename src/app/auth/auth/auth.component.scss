@@ -34,3 +34,15 @@ a {
   color: red;
   font-size: 15px;
 }
+
+@media (max-width: 1098px) {
+  .img-container {
+    display: none;
+  }
+}
+
+@media (min-width: 1099px) {
+  .img-container {
+    display: flex;
+  }
+}

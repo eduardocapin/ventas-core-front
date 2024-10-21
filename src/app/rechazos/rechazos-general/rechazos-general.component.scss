@@ -11,13 +11,8 @@
 }
 
 
-.max-w-kpi{
+.max-w-kpi {
   max-width: 100%;
-}
-@media (min-width: 1200px) {
-  .max-w-kpi {
-      max-width: 84%;
-  }
 }
 
 table {
@@ -47,7 +42,7 @@ td {
   width: 267px;
 }
 
-.row_checkboxy{
+.row_checkboxy {
   width: 29px;
 }
 
@@ -250,13 +245,15 @@ td {
   min-width: 35px !important;
   width: 35px !important;
 }
-.row_client{
+
+.row_client {
   width: 70px;
 }
 
-.row_expand{
+.row_expand {
   width: 48px;
 }
+
 .table-responsive {
   height: calc(100vh - 220px - 60px);
   /* Ajusta según sea necesario */
@@ -392,4 +389,10 @@ input[type="number"]::-webkit-inner-spin-button {
 
   max-width: 100%;
   /* O ajusta según el tamaño de la columna */
+}
+
+@media (min-width: 1200px) {
+  .max-w-kpi {
+    max-width: 84%;
+  }
 }
