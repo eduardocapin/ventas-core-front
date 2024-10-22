@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ICompetidor } from 'src/app/models/competidor.model';
 import { FilterService } from 'src/app/services/filter/filter.service';
 import { CompetidoresService } from 'src/app/services/competitors/competidores.service';
@@ -33,7 +33,9 @@ export class AddCompetitorComponent {
     public dialogRef: MatDialogRef<AddCompetitorComponent>,
     public dialog: MatDialog,
     private _notifactionService: NotificationService,
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: { autoClose: boolean }
+  ) {
+  }
 
   ngOnInit(): void {
     this.cargarCompetitors();
@@ -80,11 +82,17 @@ export class AddCompetitorComponent {
         segmentation_value: ''
       };
       this.competitorsService.insertCompetitor(newCompetitor).subscribe(
-        (status) =>{
-          if(status === 'Success'){
+        (data) =>{
+          if(data.status === 'Success'){
             this._notifactionService.showSuccess('Competidor añadido con exito');
             this.cargarCompetitors();
             this.clearNewCompetitor();
+            if (this.data.autoClose) {
+              this.dialogRef.close({
+                id: data.data.insertId,
+                name: newCompetitor.name,
+              });
+            }
           }
         },
         (error) =>{

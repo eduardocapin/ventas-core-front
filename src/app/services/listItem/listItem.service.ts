@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { LoginService } from '../auth/login.service';
 import { Observable } from 'rxjs';
@@ -10,12 +10,11 @@ import { ConfigurationContainer } from 'src/app/models/configurationContainer.mo
 import { AddCompetitorComponent } from 'src/app/configuration/configuration-general/add-competitor/add-competitor.component';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ListItemService {
-
-  private baseUrl = "";
-  private puerto_integracion = "";
+  private baseUrl = '';
+  private puerto_integracion = '';
 
   constructor(
     private _http: HttpClient,
@@ -23,29 +22,32 @@ export class ListItemService {
     public dialog: MatDialog
   ) {
     this.baseUrl = String(localStorage.getItem('baseUrl'));
-    this.puerto_integracion = String(localStorage.getItem('puerto_integracion'));
+    this.puerto_integracion = String(
+      localStorage.getItem('puerto_integracion')
+    );
   }
 
   private functionRegistry: { [key: string]: () => void } = {
     openProfileEditPopup: () => {
       const dialogRef = this.dialog.open(ProfileEditPopupComponent, {
         width: 'auto',
-        disableClose: true
+        disableClose: true,
       });
     },
     openReasonsRejections: () => {
       const dialogRef = this.dialog.open(ReasonsRejectionsComponent, {
         width: 'auto',
-        disableClose: true
+        disableClose: true,
+        data: { autoClose: false },
       });
     },
-    openCompetitor: () =>{
-      const dialogRef = this.dialog.open(AddCompetitorComponent,{
+    openCompetitor: () => {
+      const dialogRef = this.dialog.open(AddCompetitorComponent, {
         width: 'auto',
-        disableClose: true
-      })
-    }
-    
+        disableClose: true,
+        data: { autoClose: false },
+      });
+    },
   };
 
   executeFunction(functionName: string) {
@@ -55,7 +57,7 @@ export class ListItemService {
       console.error(`Function ${functionName} not found`);
     }
   }
-  getConfigContainers(): Observable<ConfigurationContainer[]>{
+  getConfigContainers(): Observable<ConfigurationContainer[]> {
     let baseUrl = localStorage.getItem('baseUrl');
     let port = localStorage.getItem('port');
     let options = {
@@ -64,6 +66,9 @@ export class ListItemService {
         `Bearer ${this._loginServices.getToken()}`
       ),
     };
-    return this._http.get<ConfigurationContainer[]>(`${baseUrl}:${port}/api/lista-navegable/configuracion`, options)
+    return this._http.get<ConfigurationContainer[]>(
+      `${baseUrl}:${port}/api/lista-navegable/configuracion`,
+      options
+    );
   }
 }

@@ -103,9 +103,7 @@ export class MotivoRechazoService {
       )
       .pipe(
         map((data: any) => {
-          console.log(data)
-          /* Aqui puedes realizar cualquier transformacion neesaria en los datos */
-          return data.status;
+          return data;
         })
       );
   }
