@@ -55,6 +55,23 @@ export class CompetidoresService {
       );
   }
 
+  getCompetidoresPorFamilia(family_id: number): Observable<ICompetidor[]> {
+    let baseUrl = localStorage.getItem('baseUrl');
+    let port = localStorage.getItem('port');
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    return this._http
+      .get<ICompetidor[]>(`${baseUrl}:${port}/api/competidores/family/${family_id}`, options)
+      .pipe(
+        map((data: any) => {
+          return data;
+        })
+      );
+  }
   /* update */
   updateCompetitors(competidores: ICompetidor) {
     let options = {

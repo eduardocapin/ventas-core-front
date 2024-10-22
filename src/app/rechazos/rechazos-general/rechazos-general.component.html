@@ -236,7 +236,7 @@
                 <select (change)="changeCompetidor($event, row)" (mousedown)="capturePreviousValueCompetitorId(row)"
                   class="form-select form-select-sm row_select_competidor" [(ngModel)]="row.competitor_id"
                   [ngbTooltip]="row.competitor_name">
-                  <option *ngFor="let competidor of competidores" [value]="competidor.id">{{ competidor.name }}
+                  <option *ngFor="let competidor of row.competitors" [value]="competidor.id">{{ competidor.name }}
                   </option>
                   <option value="0">Añadir Competidor</option>
                 </select>

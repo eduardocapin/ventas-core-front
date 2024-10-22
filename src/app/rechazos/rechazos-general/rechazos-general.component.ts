@@ -17,6 +17,7 @@ import { IPoblacion } from 'src/app/models/poblaciones.model';
 import { ReasonsRejectionsComponent } from 'src/app/configuration/configuration-general/reasons-rejections/reasons-rejections.component';
 import { AddCompetitorComponent } from 'src/app/configuration/configuration-general/add-competitor/add-competitor.component';
 import { NotificationService } from 'src/app/services/notification/notification.service';
+import { CompetidoresService } from 'src/app/services/competitors/competidores.service';
 
 @Component({
   selector: 'app-rechazos-general',
@@ -58,7 +59,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   estados: IEstado[] = [];
   provincias: IProvincia[] = [];
   poblacion: IPoblacion[] = [];
-  competidores: ICompetidor[] = [];
+  //competidores: ICompetidor[] = [];
   motivos_rechazo: IMotivoRechazo[] = [];
   simbolos: ISimbolo[] = [];
 
@@ -98,7 +99,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     private filterService: FilterService,
     private _exportService: ExportService,
     private _notifactionService: NotificationService,
-    private router: Router
+    private _competidoresService: CompetidoresService,
   ) {}
 
   ngOnInit() {
@@ -107,7 +108,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     this.loadProvincias();
     this.loadSimbolos();
     this.loadGoogleMapsScript();
-    this.loadCompetidores();
+    //this.loadCompetidores();
     this.loadTiposRechazo();
     this.loadPoblacion();
     this.cargando = true;
@@ -148,6 +149,11 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
         this.totalItems = data.totalItems;
         this.cargando_filtros = false;
         this.cargando = false;
+        this.dataSource.forEach((row) => {
+          this._competidoresService.getCompetidoresPorFamilia(row.family_id).subscribe((competitors) => {
+            row.competitors = competitors;
+          });
+        });
         this.updateSelectionFromCurrentPage();
       });
   }
@@ -173,7 +179,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     this.filterService
       .getCompetidores()
       .subscribe((competidores: ICompetidor[]) => {
-        this.competidores = competidores;
+        //this.competidores = competidores;
       });
   }
 
@@ -454,7 +460,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
           .afterClosed()
           .subscribe((result) => {
             if (result) {
-              this.competidores.push(result);
+              row.competitors.push(result);
               row.competitor_id = result.id;
               row.competitor_name = result.name;
             } else {
@@ -463,7 +469,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
           });
         return;
       }
-      const newCompetidorName = this.competidores.find(
+      const newCompetidorName = row.competitors.find(
         (competidor) => competidor.id === newCompetidorId
       );
 
