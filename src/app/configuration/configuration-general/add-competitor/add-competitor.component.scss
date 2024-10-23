@@ -4,10 +4,7 @@
   size: 1000px;
 }
 
-.btnSave,
-.btnClear {
-  cursor: pointer;
-}
+
 
 .btnDelete,
 .btnClear {
@@ -27,6 +24,7 @@
 .disabled-icon {
   opacity: 0.5;
   color: gray;
+  pointer-events: none;
 }
 
 .table-responsive {

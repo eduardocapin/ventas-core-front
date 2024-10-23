@@ -204,4 +204,7 @@ export class AddCompetitorComponent {
   cerrarPopup() {
     this.dialogRef.close();
   }
+  isButtonEnabled(): boolean {
+    return this.newCompetitonName.trim() !== '' && this.newSegmentation_value_id !== -1;
+  }
 }

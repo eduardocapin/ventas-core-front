@@ -60,12 +60,12 @@
                     </td>
                     <td>
                         <div class="d-flex justify-content-center gap-3">
-                            <button ngbTooltip="Guardar" (click)="insertCompetitor()"
-                                [ngClass]="{'btnSave': true, 'disabled-icon': !newCompetitonName}">
-                                <i class="bi bi-check-lg fs-5 px-0"></i>
+                            <button [ngbTooltip]="isButtonEnabled() ? 'Guardar' : null" (click)="insertCompetitor()"
+                                [ngClass]="{'btnSave': true, 'disabled-icon': !isButtonEnabled()}">
+                                <i class="bi bi-check-lg fs-5 px-0"></i> 
                             </button>
-                            <button ngbTooltip="Limpiar" (click)="clearNewCompetitor()"
-                                [ngClass]="{'btnDelete':true, 'disabled-icon': !newCompetitonName}"
+                            <button [ngbTooltip]="isButtonEnabled() ? 'Limpiar' : null" (click)="clearNewCompetitor()"
+                                [ngClass]="{'btnDelete':true, 'disabled-icon': !isButtonEnabled()}"
                                 class="color-quaternary">
                                 <i class="bi bi-x-lg fs-5 px-0"></i>
                             </button>

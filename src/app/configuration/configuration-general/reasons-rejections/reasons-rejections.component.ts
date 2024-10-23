@@ -194,4 +194,7 @@ export class ReasonsRejectionsComponent {
   cerrarPopup() {
     this.dialogRef.close();
   }
+  isButtonEnabled(): boolean {
+    return this.newRejectionCode.trim() !== '' && this.newRejectionName.trim() !== '';
+  }
 }

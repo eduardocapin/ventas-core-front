@@ -53,13 +53,13 @@
             <div class="d-flex justify-content-center gap-1">
               <button (click)="insertReason()"
                 [ngClass]="{'btnSave': true, 'disabled-icon': !newRejectionCode || !newRejectionName}"
-                ngbTooltip="Guardar">
+                [ngbTooltip]="isButtonEnabled() ? 'Guardar' : null">
                 <i class="bi bi-check-lg fs-5 px-0"></i>
               </button>
 
               <button (click)="clearNewRechazo()"
                 [ngClass]="{'btnDelete': true, 'disabled-icon': !newRejectionCode || !newRejectionName}"
-                ngbTooltip="Limpiar"
+                [ngbTooltip]="isButtonEnabled() ? 'Limpiar' : null"
                 class="color-quaternary">
                 <i class="bi bi-x-lg fs-5 px-0"></i>
               </button>
