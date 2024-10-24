@@ -296,6 +296,9 @@ export class AddCompetitorComponent {
   }
 
   selectCompetitor(competitor: ICompetidor): void {
+    if (this.editingCompetitorId !== null) {
+      return;
+  }
     if (this.selectedCompetitor) {
       this.logPreviousSelectedFamilies();
       //REALIZAR EL UPDATE DE LA SELECCION???
