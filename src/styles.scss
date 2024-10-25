@@ -4,7 +4,7 @@
 
 /* You can add global styles to this file, and also import other style files */
 * {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .pointer {
@@ -23,17 +23,17 @@ th,
 td,
 select,
 a {
-    font-size: small;
+  font-size: small;
 }
 
 .tooltip .tooltip-inner {
-    z-index: 4 !important;
+  z-index: 4 !important;
 }
 
 th,
 td {
-    height: 40px;
-    vertical-align: middle;
+  height: 40px;
+  vertical-align: middle;
 
 }
 
@@ -43,6 +43,7 @@ td {
 }
 
 /* Variables de colores */
+
 $light-gray: #f3f4f6;
 $background-login: #f4dec5;
 $title-dark-gray: #6d6d6d;
@@ -116,7 +117,7 @@ $color-content-ficha-client: #e6eaf5;
   color: $color-quaternary;
 }
 
-//Clases para botones
+/*Clases para botones*/
 
 .btn-outline-primary {
   color: $color-secondary;
@@ -188,16 +189,17 @@ $color-content-ficha-client: #e6eaf5;
 }
     */
 
-// Estilos infowindow google maps
+/* Estilos infowindow google maps*/
+
 .gm-ui-hover-effect {
-  width: 20px !important; 
-  height: 20px !important; 
-  padding: 0 !important; 
-  margin: 0px !important; 
+  width: 20px !important;
+  height: 20px !important;
+  padding: 0 !important;
+  margin: 0px !important;
 }
 
 .gm-ui-hover-effect span {
-  width: 15px !important; 
-  height: 15px !important; 
-  margin: 0 !important; 
+  width: 15px !important;
+  height: 15px !important;
+  margin: 0 !important;
 }
