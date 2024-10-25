@@ -1,15 +1,15 @@
-<div class="screen background-light-gray">
+<div class="background-light-gray">
   <div class="d-flex justify-content-between p-4">
     <h1 class="mb-0">
       <img class="icon-title" src="assets/images/iconos/clientes-icon-dark.svg" alt="Clientes" matListItemIcon />
       <span class=" mb-0 ps-2 dark-gray page-heading">Clientes</span>
     </h1>
   </div>
-  <div class="m-3">
+  <div class="p-3">
     <div class="d-flex align-items-center justify-content-between gap-5 mb-3">
       <div class="d-flex gap-3 align-items-center">
         <!-- buscador -->
-        <div class="input-group">
+        <div class="buscador">
           <app-search-input [searchTerm]="searchTerm" (searchChange)="onSearch($event)"></app-search-input>
         </div>
         
@@ -29,7 +29,7 @@
         </div>
         <button ngbTooltip="Ver en Mapa" class="btn btn-primary d-flex justify-content-center align-items-center gap-2"
           (click)="verEnMapa()">
-          <mat-icon>location_on</mat-icon>
+          <i class="bi bi-geo-alt-fill"></i>
         </button>
       </div>
 

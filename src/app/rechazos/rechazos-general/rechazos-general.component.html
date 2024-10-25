@@ -1,9 +1,10 @@
-<div class="screen background-light-gray d-flex flex-column">
+<div class="background-light-gray d-flex flex-column">
   <div
-    class="d-flex flex-column gap-2 flex-xl-row justify-content-between align-items-center  p-1 titulo bg-white w-100">
+    class="d-flex flex-column gap-2 flex-xl-row justify-content-between align-items-center p-2 titulo bg-white ">
     <!-- titulo y icono -->
     <div class="d-flex align-items-center justify-content-start ">
-      <mat-icon class="dark-gray">broken_image</mat-icon>
+      <!-- <mat-icon class="dark-gray">broken_image</mat-icon> -->
+      <i class="bi bi-columns-gap title-icon"></i>
       <h1 class="mb-0 ps-2 dark-gray page-heading">Rechazos</h1>
     </div>
     <!-- Info Rechazos -->
@@ -44,7 +45,7 @@
   </div>
   <!-- TABLA -->
     <div class="table-responsive {{cargando?'d-none':''}}">
-      <table class="table table-sm">
+      <table class="table table-sm table-hover">
         <thead>
           <tr class="">
             <!-- Checkbox Column -->
@@ -209,14 +210,14 @@
               </td>
               <!-- Motivo Column -->
               <td class="text-center">
-                <select (change)="changeMotivo($event, row)"
+                <select (change)="changeMotivo($event, row)" (mousedown)="capturePreviousValueReasonId(row)"
                         class="form-select form-select-sm column_motivo select_rechazo color-quaternary truncate-select"
                         [(ngModel)]="row.reason_rejection_id"
                         [ngbTooltip]="tooltipText"
                         (mouseenter)="showTooltipForSelect($event, motivos_rechazo, 'id', 'name')"
                         (mouseleave)="tooltipText = null"
                         #selectElement>
-                  <option *ngFor="let motivo of motivos_rechazo" [value]="motivo.id">
+                  <option *ngFor="let motivo of motivos_rechazo;trackBy: trackByFn" [value]="motivo.id">
                     {{ motivo.name }}
                   </option>
                   <option [value]="0">Añadir Motivo</option>
@@ -224,31 +225,32 @@
               </td>
               <!-- Fecha Interés Column -->
               <td class="text-success centrado_column row_fecha_interes">
-                <i *ngIf="row.interest_date" class="bi bi-calendar-check promo-icon"
+                <i *ngIf="row.interest_date" class="bi bi-calendar-check promo-icon color-tertiary"
                   [ngbTooltip]="row.interest_date"></i>
               </td>
               <!-- Precio Column -->
               <td class="text-end row_precio_producto centrado_column">{{ row.pvp | decimales }} €</td>
               <!-- Promo Propia Column -->
               <td class="text-center centrado_column">
-                <i *ngIf="row.has_own_promo" class="promo-icon-p" [ngbTooltip]="row.own_promo">P</i>
+                <div *ngIf="row.has_own_promo" class="promo-icon-p color-tertiary" [ngbTooltip]="row.own_promo">P</div>
               </td>
               <!-- Precio Competidor Column -->
               <td class="text-end row_precio_competidor centrado_column">{{ row.pvp_competitor | decimales }} €</td>
               <!-- Promo Competidor Column -->
               <td class="text-center centrado_column">
-                <i *ngIf="row.has_competitor_promo" class="promo-icon-p" [ngbTooltip]="row.competitor_promo">P</i>
+                <div *ngIf="row.has_competitor_promo" class="promo-icon-p color-tertiary" [ngbTooltip]="row.competitor_promo">P</div>
               </td>
               <!-- Competidor Column -->
               <td>
-                <select (change)="changeCompetidor($event, row)"
+                <select (change)="changeCompetidor($event, row)" (mousedown)="capturePreviousValueCompetitorId(row)"
                   class="form-select form-select-sm row_select_competidor truncate-select" 
                   [(ngModel)]="row.competitor_id"
                   [ngbTooltip]="tooltipText"
                   (mouseenter)="showTooltipForSelect($event, competidores, 'id', 'name')"
                         (mouseleave)="tooltipText = null"
                   >
-                  <option *ngFor="let competidor of competidores" [value]="competidor.id">{{ competidor.name }}</option>
+                  <option *ngFor="let competidor of row.competitors; trackBy: trackByFn" [value]="competidor.id">{{ competidor.name }}
+                  </option>
                   <option value="0">Añadir Competidor</option>
                 </select>
               </td>

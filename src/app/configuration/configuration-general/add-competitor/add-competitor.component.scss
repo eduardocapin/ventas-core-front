@@ -4,8 +4,12 @@
   size: 1000px;
 }
 
-
-
+.selected-row {
+  background-color: #e3f2fd; /* Color de fondo para la fila seleccionada */
+}
+tr {
+  cursor: pointer;
+}
 .btnDelete,
 .btnClear {
   border: none;

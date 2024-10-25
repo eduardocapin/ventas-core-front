@@ -16,14 +16,14 @@
       <tbody>
         <tr *ngFor="let row of paginatedData">
           <td>
-            <input *ngIf="editingReasonId === row.id" [(ngModel)]="row.rejection_code" class="form-control">
+            <input *ngIf="editingReasonId === row.id" [(ngModel)]="row.rejection_code" type="text" class="form-control form-control-sm">
             <div *ngIf="editingReasonId === row.id && showEditCodeError" class="text-danger mt-1">
               Caracteres no permitidos
             </div>
             <span *ngIf="editingReasonId !== row.id">{{ row.rejection_code }}</span>
           </td>
           <td>
-            <input *ngIf="editingReasonId === row.id" [(ngModel)]="row.name" class="form-control">
+            <input *ngIf="editingReasonId === row.id" [(ngModel)]="row.name" type="text" class="form-control form-control-sm">
             <div *ngIf="editingReasonId === row.id && showEditNameError" class="text-danger mt-1">
               Caracteres no permitidos
             </div>

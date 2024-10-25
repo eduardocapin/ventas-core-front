@@ -1,19 +1,16 @@
 /* estilo para el funcionamiento de toast */
-@import 'ngx-toastr/toastr';
+@import "ngx-toastr/toastr";
 /* @import '~@ng-select/ng-select/themes/default.theme.css';*/
 
 /* You can add global styles to this file, and also import other style files */
-body {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-.screen {
-    height: calc(100vh - 64px);
+* {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
+
 
 p,
 label,
@@ -24,146 +21,155 @@ input[type="search"],
 .dropdown-item,
 th,
 td,
-select {
-    font-size: small;
+select,
+a {
+  font-size: small;
 }
-::ng-deep .tooltip .tooltip-inner{
-    z-index: 99999 !important;
+
+.tooltip .tooltip-inner {
+  z-index: 4 !important;
 }
+
+th,
+td {
+  height: 40px;
+  vertical-align: middle;
+
+}
+
 .dropdown-menu,
 .dropdown-item {
-    min-width: auto;
+  min-width: auto;
 }
 
 /* Variables de colores */
+
 $light-gray: #f3f4f6;
 $background-login: #f4dec5;
-$title-dark-gray: #6D6D6D;
+$title-dark-gray: #6d6d6d;
 $pink: #ff33d6;
-$orange: #F2A057;
+$orange: #f2a057;
 
 $color-primary: #3f51b5;
 $color-secondary: #17a6ff;
-$color-tertiary: #B3BE77;
+$color-tertiary: #b3be77;
 $color-quaternary: #ff419a;
 
 /* fondo de contenedor elementos de la ficha */
 $color-content-ficha-client: #e6eaf5;
 
 .bg-content-ficha-client {
-    background-color: $color-content-ficha-client;
+  background-color: $color-content-ficha-client;
 }
 
 /* fin de contendor elementos de la ficha */
 
 /*clases con colores*/
 .background-light-gray {
-    background-color: $light-gray ;
+  background-color: $light-gray;
 }
 
 .gray {
-    color: gray;
+  color: gray;
 }
 
 .background-white {
-    background-color: white;
+  background-color: white;
 }
 
 .background-login {
-    background-color: $background-login ;
+  background-color: $background-login;
 }
 
 .dark-gray {
-    color: $title-dark-gray ;
+  color: $title-dark-gray;
 }
 
 .pink {
-    color: $pink ;
+  color: $pink;
 }
 
 .orange {
-    color: $orange ;
+  color: $orange;
 }
 
 .orange {
-    color: $orange ;
+  color: $orange;
 }
 
 .color-primary {
-    color: $color-primary !important;
+  color: $color-primary !important;
 }
 
 .background-color-primary {
-    background-color: $color-primary !important;
+  background-color: $color-primary !important;
 }
 
 .color-secondary {
-    color: $color-secondary ;
+  color: $color-secondary;
 }
 
 .color-tertiary {
-    color: $color-tertiary ;
+  color: $color-tertiary;
 }
 
 .color-quaternary {
-    color: $color-quaternary ;
+  color: $color-quaternary;
 }
 
-//Clases para botones
+/*Clases para botones*/
 
 .btn-outline-primary {
-    color: $color-secondary;
-    background-color: none;
-    border-color: $color-secondary;
+  color: $color-secondary;
+  background-color: none;
+  border-color: $color-secondary;
 }
 
 .btn-outline-primary:hover,
 .btn-outline-primary:active {
-    color: white;
-    background-color: $color-secondary;
-    border-color: $color-secondary;
+  color: white;
+  background-color: $color-secondary;
+  border-color: $color-secondary;
 }
 
 .btn-outline-quaternary {
-    color: $color-quaternary;
-    background-color: none;
-    border-color: $color-quaternary;
+  color: $color-quaternary;
+  background-color: none;
+  border-color: $color-quaternary;
 }
 
 .btn-outline-quaternary:hover,
 .btn-outline-quaternary:active {
-    color: white;
-    background-color: $color-quaternary;
-    border-color: $color-quaternary;
+  color: white;
+  background-color: $color-quaternary;
+  border-color: $color-quaternary;
 }
 
 .btn-outline-success {
-    color: $color-tertiary;
-    background-color: none;
-    border-color: $color-tertiary;
+  color: $color-tertiary;
+  background-color: none;
+  border-color: $color-tertiary;
 }
 
 .btn-outline-success:hover,
 .btn-outline-success:active {
-    color: white;
-    background-color: $color-tertiary;
-    border-color: $color-tertiary;
+  color: white;
+  background-color: $color-tertiary;
+  border-color: $color-tertiary;
 }
 
 .btn-primary {
-    color: white;
-    background-color: $color-primary;
-    border-color: $color-primary;
+  color: white;
+  background-color: $color-primary;
+  border-color: $color-primary;
 }
 
 .btn-primary:hover,
 .btn-primary:active {
-    color: white;
-    background-color: lighten($color: $color-primary, $amount: 7%);
-    border-color: $color-primary;
+  color: white;
+  background-color: lighten($color: $color-primary, $amount: 7%);
+  border-color: $color-primary;
 }
-
-
 
 /*
 .btn-primary {
@@ -182,3 +188,18 @@ $color-content-ficha-client: #e6eaf5;
     @include button-variant($color-secondary, darken($color-secondary, 7.5%), #ffffff, lighten($color-secondary, 5%), lighten($color-secondary, 10%), #ffffff);
 }
     */
+
+/* Estilos infowindow google maps*/
+
+.gm-ui-hover-effect {
+  width: 20px !important;
+  height: 20px !important;
+  padding: 0 !important;
+  margin: 0px !important;
+}
+
+.gm-ui-hover-effect span {
+  width: 15px !important;
+  height: 15px !important;
+  margin: 0 !important;
+}

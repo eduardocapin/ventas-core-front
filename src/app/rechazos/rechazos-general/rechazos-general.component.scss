@@ -6,6 +6,10 @@
   font-weight: 300;
 }
 
+.title-icon{
+  font-size: 24px;
+}
+
 .input-group {
   width: 200px;
 }
@@ -19,10 +23,6 @@ table {
   width: 100%;
   font-size: small;
   overflow: visible;
-}
-
-td {
-  vertical-align: middle;
 }
 
 .char-count {
@@ -139,27 +139,14 @@ td {
   color: #FF5757;
 }
 
-
-.promo-icon {
-  font-size: 14px;
-  font-weight: bold;
-  color: #4CAF50;
-  display: inline-flex;
-  align-items: center;
-  width: 24px;
-  height: 24px;
-}
-
 .promo-icon-p {
   font-size: 14px;
   font-weight: bold;
-  color: #4CAF50;
   display: inline-flex;
   justify-content: center;
   align-items: center;
   width: 24px;
   height: 24px;
-
 }
 
 /* barara de busqueda */
@@ -179,7 +166,7 @@ td {
 .accion_correctora_precio {
   width: 35px;
 }
-
+ 
 .accion_correctora_simbolo {
   width: 65px;
 }

@@ -17,7 +17,7 @@ import { IPoblacion } from 'src/app/models/poblaciones.model';
 import { ReasonsRejectionsComponent } from 'src/app/configuration/configuration-general/reasons-rejections/reasons-rejections.component';
 import { AddCompetitorComponent } from 'src/app/configuration/configuration-general/add-competitor/add-competitor.component';
 import { NotificationService } from 'src/app/services/notification/notification.service';
-
+import { CompetidoresService } from 'src/app/services/competitors/competidores.service';
 
 @Component({
   selector: 'app-rechazos-general',
@@ -59,35 +59,38 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   estados: IEstado[] = [];
   provincias: IProvincia[] = [];
   poblacion: IPoblacion[] = [];
-  competidores: ICompetidor[] = [];
+  //competidores: ICompetidor[] = [];
   motivos_rechazo: IMotivoRechazo[] = [];
   simbolos: ISimbolo[] = [];
 
   expandedElement?: IRechazo | null;
- 
 
   // Variable para manejar si el texto está truncado
   isTooltipVisible: boolean = false;
   tooltipText: string | null = null;
   selectedFilters: { [key: string]: any } = [
     {
-        "id": "status_id",
-        "nombre": "Estados",
-        "valor": [
-            {
-                "id": 5,
-                "name": "Pendiente",
-                "selected": true
-            }
-        ],
-        "tipo": "multi-select"
-    }
-];
+      id: 'status_id',
+      nombre: 'Estados',
+      valor: [
+        {
+          id: 5,
+          name: 'Pendiente',
+          selected: true,
+        },
+      ],
+      tipo: 'multi-select',
+    },
+  ];
   searchTerm: string = '';
   mostrarError: boolean = false;
   //ordeanacion
   sortColumn: string = 'r.last_rejection_date';
   sortDirection: string = 'desc';
+
+  // Añadir motivos y competidores
+  private previousReasonId?: number;
+  private previousCompetitorId?: number;
 
   constructor(
     private renderer: Renderer2,
@@ -96,9 +99,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     private filterService: FilterService,
     private _exportService: ExportService,
     private _notifactionService: NotificationService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
-    
+    private _competidoresService: CompetidoresService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -107,7 +109,6 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     this.loadProvincias();
     this.loadSimbolos();
     this.loadGoogleMapsScript();
-    this.loadCompetidores();
     this.loadTiposRechazo();
     this.loadPoblacion();
     this.cargando = true;
@@ -123,7 +124,11 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   }
 
   private loadRechazos() {
-    if (this.currentPage === 1 && !this.searchTerm && Object.keys(this.selectedFilters).length === 0) {
+    if (
+      this.currentPage === 1 &&
+      !this.searchTerm &&
+      Object.keys(this.selectedFilters).length === 0
+    ) {
       this.cargando = true;
     } else {
       this.cargando_filtros = true;
@@ -142,6 +147,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
         const rechazosData: IRechazo[] = data.items;
         this.dataSource = rechazosData;
         this.totalItems = data.totalItems;
+        this.loadCompetidores()
         this.cargando_filtros = false;
         this.cargando = false;
         this.updateSelectionFromCurrentPage();
@@ -166,11 +172,11 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   }
 
   private loadCompetidores() {
-    this.filterService
-      .getCompetidores()
-      .subscribe((competidores: ICompetidor[]) => {
-        this.competidores = competidores;
+    this.dataSource.forEach((row) => {
+      this._competidoresService.getCompetidoresPorFamilia(row.family_id).subscribe((competitors) => {
+        row.competitors = competitors;
       });
+    });
   }
 
   private loadTiposRechazo() {
@@ -296,7 +302,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     if (this.selectedRechazos.length === 0) {
       this._notifactionService.showWarning(
         'Debe seleccionar al menos 1 rechazo antes de ver en el mapa.'
-    );
+      );
       return;
     }
 
@@ -310,7 +316,6 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   /* popup-rechazo-detail */
   viewRechazo(id_Cliente?: any) {
     const dialogRef = this.dialog.open(PopupClientDetailComponent, {
-
       disableClose: true,
       data: { id: id_Cliente },
     });
@@ -346,10 +351,14 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
         )
         .subscribe(
           (response) => {
-            this._notifactionService.showSuccess('Símbolo actualizado correctamente.');
+            this._notifactionService.showSuccess(
+              'Símbolo actualizado correctamente.'
+            );
           },
           (error) => {
-            this._notifactionService.showError('Error al actualizar el símbolo.');
+            this._notifactionService.showError(
+              'Error al actualizar el símbolo.'
+            );
             console.error('Error al actualizar el símbolo:', error);
           }
         );
@@ -390,35 +399,33 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
   changeMotivo(event: Event, row: IRechazo) {
     const selectElement = event.target as HTMLSelectElement;
-
-    // Verificar si se selecciona "Añadir Motivo" (asumiendo que el valor es 0 o un valor que defines)
-
     if (selectElement) {
       const newReasonId = Number(selectElement.value);
-      
-      if(newReasonId === 0){
-        this.openReasonsRejections();
-        /// que le cambie el valor a -1
-
-        setTimeout(() => {
-          selectElement.value = '-1'; // Cambia aquí el valor según lo que desees
-          const dataSourceIndex = this.dataSource.indexOf(row);
-          this.dataSource[dataSourceIndex].reason_rejection_id = -1;
-          this.dataSource[dataSourceIndex].reason_rejection = 'Seleccione el motivo';
-        }, 0);
-        
-        return; // Evitar que continúe actualizando con el valor 0
+      if (newReasonId === 0) {
+        this.openReasonsRejections()
+          .afterClosed()
+          .subscribe((result) => {
+            if (result) {
+              row.reason_rejection_id = result.id;
+              row.reason_rejection = result.name;
+            } else {
+              selectElement.value = String(this.previousReasonId);
+            }
+            this.loadTiposRechazo();
+          });
+        return;
       }
-      
+
       const newReasonName = this.motivos_rechazo.find(
         (rechazo) => rechazo.id === newReasonId
       );
-      const dataSourceIndex = this.dataSource.indexOf(row);
-      this.dataSource[dataSourceIndex].reason_rejection_id = newReasonId;
-      this.dataSource[dataSourceIndex].reason_rejection =
-        newReasonName?.name ?? 'No encontrado';
+      row.reason_rejection_id = newReasonId;
+      row.reason_rejection = newReasonName?.name ?? 'No encontrado';
     }
-    
+  }
+
+  capturePreviousValueReasonId(row: IRechazo) {
+    this.previousReasonId = row.reason_rejection_id;
   }
 
   changeEstado(event: Event, row: IRechazo) {
@@ -443,22 +450,21 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     if (selectElement) {
       const newCompetidorId = Number(selectElement.value);
 
-      if(newCompetidorId === 0){
-        this.openCompetitor();
-        /// que le cambie el valor a -1
-
-        setTimeout(() => {
-          selectElement.value = '-1'; // Cambia aquí el valor según lo que desees
-          const dataSourceIndex = this.dataSource.indexOf(row);
-          this.dataSource[dataSourceIndex].competitor_id = -1;
-          this.dataSource[dataSourceIndex].competitor_name = 'Seleccione Copetidor';
-        }, 0);
-        
-        return; // Evitar que continúe actualizando con el valor 0
+      if (newCompetidorId === 0) {
+        this.openCompetitor()
+          .afterClosed()
+          .subscribe((result) => {
+            if (result) {
+              row.competitor_id = result.id;
+              row.competitor_name = result.name;
+            } else {
+              selectElement.value = String(this.previousCompetitorId);
+            }
+            this.loadCompetidores()
+          });
+        return;
       }
-
-
-      const newCompetidorName = this.competidores.find(
+      const newCompetidorName = row.competitors.find(
         (competidor) => competidor.id === newCompetidorId
       );
 
@@ -468,6 +474,10 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       this.dataSource[dataSourceIndex].competitor_name =
         newCompetidorName?.name ?? 'No encontrado';
     }
+  }
+
+  capturePreviousValueCompetitorId(row: IRechazo) {
+    this.previousCompetitorId = row.competitor_id;
   }
 
   onPageChange(page: number) {
@@ -567,20 +577,28 @@ showTooltipForSelect(event: MouseEvent, optionsList: any[], idKey: string, nameK
   onSearch(term: string): void {
     this.searchTerm = term;
     this.currentPage = 1;
-    this.loadRechazos(); 
+    this.loadRechazos();
   }
 
-  openReasonsRejections(){
+  openReasonsRejections() {
     const dialogRef = this.dialog.open(ReasonsRejectionsComponent, {
       width: 'auto',
-      disableClose: true
+      disableClose: true,
+      data: { autoClose: true },
     });
+    return dialogRef;
   }
 
-  openCompetitor(){
-    const dialogRef = this.dialog.open(AddCompetitorComponent,{
+  openCompetitor() {
+    const dialogRef = this.dialog.open(AddCompetitorComponent, {
       width: 'auto',
-      disableClose: true
-    })
+      disableClose: true,
+      data: { autoClose: true },
+    });
+    return dialogRef;
+  }
+
+  trackByFn(item:any) {
+    return item.value; 
   }
 }
