@@ -17,10 +17,16 @@
         <tr *ngFor="let row of paginatedData">
           <td>
             <input *ngIf="editingReasonId === row.id" [(ngModel)]="row.rejection_code" class="form-control">
+            <div *ngIf="editingReasonId === row.id && showEditCodeError" class="text-danger mt-1">
+              Caracteres no permitidos
+            </div>
             <span *ngIf="editingReasonId !== row.id">{{ row.rejection_code }}</span>
           </td>
           <td>
             <input *ngIf="editingReasonId === row.id" [(ngModel)]="row.name" class="form-control">
+            <div *ngIf="editingReasonId === row.id && showEditNameError" class="text-danger mt-1">
+              Caracteres no permitidos
+            </div>
             <span *ngIf="editingReasonId !== row.id">{{ row.name }}</span>
           </td>
           <td>
@@ -45,9 +51,15 @@
         <tr class="sticky-footer ">
           <td>
             <input type="text" class="form-control form-control-sm" [(ngModel)]="newRejectionCode" placeholder="Código">
+            <div *ngIf="showNewCodeError" class="text-danger mt-1">
+              Caracteres no permitidos
+            </div>
           </td>
           <td>
             <input type="text" class="form-control form-control-sm" [(ngModel)]="newRejectionName" placeholder="Nombre">
+            <div *ngIf="showNewNameError" class="text-danger mt-1">
+              Caracteres no permitidos
+            </div>
           </td>
           <td class="text-center">
             <div class="d-flex justify-content-center gap-1">
@@ -66,6 +78,7 @@
             </div>
           </td>
         </tr>
+        
       </tbody>
     </table>
   </div>

@@ -22,6 +22,12 @@ export class ReasonsRejectionsComponent {
 
   newRejectionCode: string = '';
   newRejectionName: string = '';
+  
+  // Variables de control de error para cada campo
+  showNewCodeError: boolean = false;
+  showNewNameError: boolean = false;
+  showEditCodeError: boolean = false;
+  showEditNameError: boolean = false;
 
   paginatedData: IMotivoRechazo[] =[];
   currentPage = 1;
@@ -57,31 +63,35 @@ export class ReasonsRejectionsComponent {
         }
       );
   }
+  // Método de validación de caracteres prohibidos
+  hayCaracteresProhibidos(termino: string): boolean {
+    const caracteresProhibidos = /['();]/g;
+    return caracteresProhibidos.test(termino);
+  }
   /* insertar nuevo motivo de rechazo */
   insertReason() {
-    if (this.newRejectionCode && this.newRejectionName) {
-      const newReason = {
-        rejection_code: this.newRejectionCode,
-        name: this.newRejectionName
-      };
-  
-      this._motivoRechazoService.insertReason(newReason).subscribe(
-        (status) => {
-          if (status === 'Success') {
-            this._notifactionService.showSuccess('Motivo de rechazo añadido con éxito');
-            this.cargaRechazos();  // Volver a cargar la lista
-            this.clearNewRechazo();  // Limpiar los campos
-          }
-        },
-        (error) => {
-          console.error('Error al añadir el motivo de rechazo', error);
-          this._notifactionService.showError('Error al añadir el motivo de rechazo');
+    // Validamos cada campo de forma independiente
+    this.showNewCodeError = this.hayCaracteresProhibidos(this.newRejectionCode);
+    this.showNewNameError = this.hayCaracteresProhibidos(this.newRejectionName);
+    // Resto de la lógica de inserción de motivo
+    const newReason = {
+      rejection_code: this.newRejectionCode,
+      name: this.newRejectionName
+    };
+
+    this._motivoRechazoService.insertReason(newReason).subscribe(
+      (status) => {
+        if (status === 'Success') {
+          this._notifactionService.showSuccess('Motivo de rechazo añadido con éxito');
+          this.cargaRechazos();  
+          this.clearNewRechazo(); 
         }
-      );
-    } else {
-      // Aquí mostramos el error
-      this._notifactionService.showError('Por favor complete todos los campos.');
-    }
+      },
+      (error) => {
+        console.error('Error al añadir el motivo de rechazo', error);
+        this._notifactionService.showError('Error al añadir el motivo de rechazo');
+      }
+    );
   }
   /* editar un motivo de rechazo */
   toogleEdit(reasonId: number){
@@ -92,6 +102,12 @@ export class ReasonsRejectionsComponent {
     }
   }
   saveChanges(reason: IMotivoRechazo) {
+    this.showEditCodeError = this.hayCaracteresProhibidos(reason.rejection_code);
+    this.showEditNameError = this.hayCaracteresProhibidos(reason.name);
+    if (this.showEditCodeError || this.showEditNameError) {
+      // Detener la función si hay caracteres no permitidos
+      return;
+    }
     // Validamos si hay cambios en los campos
     if (reason.rejection_code && reason.name) {
       this._motivoRechazoService.updateReason(reason).subscribe(
@@ -117,12 +133,23 @@ export class ReasonsRejectionsComponent {
   
 
   cancelEdit(){
-    if (this.originalReason) {
+    if (this.originalReason && this.editingReasonId !== null) {
+      // Encuentra el índice en los datos paginados
+      const paginatedIndex = this.paginatedData.findIndex(r => r.id === this.originalReason!.id);
+      
+      // Si se encuentra el motivo editado, revierte los datos al original
+      if (paginatedIndex !== -1) {
+          this.paginatedData[paginatedIndex] = { ...this.originalReason };
+      }
+
+      // Encuentra y actualiza en la lista principal para reflejar los cambios al salir de edición
       const index = this.rejectList.findIndex(r => r.id === this.originalReason!.id);
       if (index !== -1) {
-        this.rejectList[index] = { ...this.originalReason };
+          this.rejectList[index] = { ...this.originalReason };
       }
     }
+    
+    // Restablecer la referencia y salir del modo de edición
     this.editingReasonId = null;
     this.originalReason = null;
   }

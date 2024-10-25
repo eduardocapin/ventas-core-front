@@ -18,7 +18,7 @@
       <div class="d-flex flex-column flex-lg-row gap-3 align-items-center">
         <!-- buscado -->
         <div class="input-group">
-          <app-search-input [searchTerm]="searchTerm" (searchChange)="onSearch($event)"></app-search-input>
+          <app-search-input [searchTerm]="searchTerm" (searchChange)="onSearch($event)" (errorDeCaracteres)="mostrarError = $event"></app-search-input>
         </div>
         <!-- boton de filtros aplicados o limpiar -->
         <app-filter-container [componentId]="'rechazos-general'" [selectedFilters]="selectedFilters"
@@ -37,6 +37,10 @@
         <i class="bi bi-geo-alt-fill"></i>
       </button>
     </div>
+  </div>
+  <!-- Mensaje de error fuera del componente search-input -->
+  <div *ngIf="mostrarError" class="text-danger mt-1">
+    Caracteres no permitidos
   </div>
   <!-- TABLA -->
     <div class="table-responsive {{cargando?'d-none':''}}">

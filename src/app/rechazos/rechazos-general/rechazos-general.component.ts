@@ -84,7 +84,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     }
 ];
   searchTerm: string = '';
-
+  mostrarError: boolean = false;
   //ordeanacion
   sortColumn: string = 'r.last_rejection_date';
   sortDirection: string = 'desc';
@@ -507,48 +507,61 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     }
   }
 
-  // Función reutilizable para mostrar tooltip en selects
-  showTooltipForSelect(event: MouseEvent, optionsList: any[], idKey: string, nameKey: string, minLength: number = 13) {
-    const selectElement = event.target as HTMLSelectElement;
-    const selectedIndex = selectElement.selectedIndex;
-    const selectedOption = selectElement.options[selectedIndex];
-
-    // Obtener el id seleccionado
-    const selectedId = Number(selectedOption.value);
-
-    // Buscar el texto correspondiente en la lista de opciones (motivos o competidores)
-    const selectedItem = optionsList.find(option => option[idKey] === selectedId);
-
-    // Si encontramos el elemento correspondiente, obtenemos su nombre
-    const textoOpcion = selectedItem ? selectedItem[nameKey] : '';
-
-    // Crear un span temporal para medir el ancho del texto de la opción
-    const tempSpan = document.createElement('span');
-    tempSpan.style.visibility = 'hidden';
-    tempSpan.style.position = 'absolute';
-    tempSpan.style.whiteSpace = 'nowrap';
-    tempSpan.textContent = textoOpcion;
-
-    document.body.appendChild(tempSpan);
-
-    const optionWidth = tempSpan.offsetWidth;
-    const selectWidth = selectElement.offsetWidth;
-
-    // Limpiar el span temporal
-    document.body.removeChild(tempSpan);
-
-    // Verificar si el texto está truncado o si es mayor a minLength caracteres
-    if (optionWidth > selectWidth || textoOpcion.length > 9) {
-      this.tooltipText = textoOpcion; // Aquí obtendrás el texto del elemento seleccionado
-      this.renderer.setStyle(selectElement, 'cursor', 'pointer'); // Cambia el cursor
-    } else {
-      this.tooltipText = null;
-      this.renderer.removeStyle(selectElement, 'cursor'); // Cambia el cursor
-    }
-
-    // Forzar actualización para asegurar que el tooltip se muestre correctamente
-    this.cdr.detectChanges();
+// Función reutilizable para mostrar tooltip en selects
+showTooltipForSelect(event: MouseEvent, optionsList: any[], idKey: string, nameKey: string, minLength: number = 13) {
+  const selectElement = event.target as HTMLSelectElement;
+  const selectedIndex = selectElement.selectedIndex;
+  
+  // Verificar si hay un elemento seleccionado
+  if (selectedIndex === -1) {
+    this.tooltipText = null;
+    return; // Salir si no hay selección
   }
+
+  const selectedOption = selectElement.options[selectedIndex];
+
+  // Obtener el id seleccionado
+  const selectedId = Number(selectedOption.value);
+
+  // Buscar el texto correspondiente en la lista de opciones (motivos o competidores)
+  const selectedItem = optionsList.find(option => option[idKey] === selectedId);
+
+  // Si encontramos el elemento correspondiente, obtenemos su nombre
+  const textoOpcion = selectedItem ? selectedItem[nameKey] : '';
+
+  // Si el texto está vacío, no hacer nada
+  if (!textoOpcion) {
+    this.tooltipText = null; // Asegurarse de que no haya tooltip
+    return; // Salir si el texto está vacío
+  }
+
+  // Crear un span temporal para medir el ancho del texto de la opción
+  const tempSpan = document.createElement('span');
+  tempSpan.style.visibility = 'hidden';
+  tempSpan.style.position = 'absolute';
+  tempSpan.style.whiteSpace = 'nowrap';
+  tempSpan.textContent = textoOpcion;
+
+  document.body.appendChild(tempSpan);
+
+  const optionWidth = tempSpan.offsetWidth;
+  const selectWidth = selectElement.offsetWidth;
+
+  // Limpiar el span temporal
+  document.body.removeChild(tempSpan);
+
+  // Verificar si el texto está truncado o si es mayor a minLength caracteres
+  if (optionWidth > selectWidth || textoOpcion.length > 9) {
+    this.tooltipText = textoOpcion; // Aquí obtendrás el texto del elemento seleccionado
+    this.renderer.setStyle(selectElement, 'cursor', 'pointer'); // Cambia el cursor
+  } else {
+    this.tooltipText = null;
+    this.renderer.removeStyle(selectElement, 'cursor'); // Cambia el cursor
+  }
+
+  // Forzar actualización para asegurar que el tooltip se muestre correctamente
+  this.cdr.detectChanges();
+}
 
 
   onSearch(term: string): void {
