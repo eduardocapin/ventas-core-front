@@ -1,124 +1,136 @@
-<div>
-    <app-popup-header [title]="'Competidores'" [icon]="'/assets/images/iconos/configuracion-icon-dark.svg'"
-        (close)="cerrarPopup()"></app-popup-header>
-</div>
 
-<mat-dialog-content class="mat-typography py-0">
-    <div class="container-fluid">
-        <div class="row d-flex">
-            <!-- Columna para Competidores -->
-            <div class="col-12 col-md-6">
-                <h2>Competidores</h2>
-                <!-- buscado -->
-                <div class="input-group">
-                    <app-search-input [searchTerm]="searchTermCompetitor"
-                        (searchChange)="onSearchCompetitor($event)"></app-search-input>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-sm m-0 table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="color-primary">Nombre</th>
-                                <th scope="col" class="color-primary text-center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let row of filteredCompetitorList" (click)="selectCompetitor(row)"
-                                 >
-                                <td [ngClass]="{'selected-row': selectedCompetitor?.id === row.id}">
-                                    <input *ngIf="editingCompetitorId === row.id" [(ngModel)]="row.name"
-                                        class="form-control" type="text" (keyup.enter)="saveChanges(row)"/>
-                                    <p *ngIf="editingCompetitorId !== row.id" [ngbTooltip]="tooltipText"
-                                        (mouseover)="applyTooltipIfTruncated($event, row.name)"
-                                        class="truncate-text m-0">
-                                        {{ row.name }}
-                                    </p>
-                                </td>
-                                <td [ngClass]="{'selected-row': selectedCompetitor?.id === row.id}">
-                                    <div class="d-flex justify-content-center gap-1">
-                                        <app-btn-icon-edit *ngIf="editingCompetitorId !== row.id && row.id"
-                                            (btnClicked)="toggleEdit(row.id)"></app-btn-icon-edit>
-                                        <i *ngIf="editingCompetitorId === row.id" (click)="saveChanges(row)"
-                                            class="bi bi-check-lg btnSave fs-5 px-0" ngbTooltip="Guardar"></i>
-                                        <app-btn-icon-delete
-                                            *ngIf="editingCompetitorId !== row.id && row.id !== undefined"
-                                            (btnClicked)="deleteCompetidor(row.id)"></app-btn-icon-delete>
-                                        <i *ngIf="editingCompetitorId === row.id" (click)="cancelEdit()"
-                                            class="bi bi-x-lg btnClear color-quaternary fs-5 px-0"
-                                            ngbTooltip="Cancelar"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr *ngIf="filteredCompetitorList.length === 0">
-                                <td colspan="2" class="text-center">No se han encontrado datos</td>
-                            </tr>
-                            <tr class="sticky-footer">
-                                <td>
-                                    <input type="text" class="form-control form-control-sm"
-                                        [(ngModel)]="newCompetitonName" placeholder="Nombre" (keyup.enter)="insertCompetitor()"/>
-                                </td>
-                                <td>
-                                    <div class="d-flex justify-content-center gap-1">
-                                        <button [ngbTooltip]="isButtonEnabled() ? 'Guardar' : null"
-                                            (click)="insertCompetitor()"
-                                            [ngClass]="{'btnSave': true, 'disabled-icon': !isButtonEnabled()}">
-                                            <i class="bi bi-check-lg fs-5 px-0"></i>
-                                        </button>
-                                        <button [ngbTooltip]="isButtonEnabled() ? 'Limpiar' : null"
-                                            (click)="clearNewCompetitor()"
-                                            [ngClass]="{'btnDelete':true, 'disabled-icon': !isButtonEnabled()}"
-                                            class="color-quaternary">
-                                            <i class="bi bi-x-lg fs-5 px-0"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <div>
+        <app-popup-header [title]="'Competidores'" [icon]="'/assets/images/iconos/configuracion-icon-dark.svg'"
+            (close)="cerrarPopup()"></app-popup-header>
+    </div>
+    
+    <mat-dialog-content class="mat-typography py-1">
+        <div class="container-fluid">
+            <div class="d-flex flex-column flex-md-row gap-2 w-100">
+                <!-- Columna para Competidores -->
+                <div class=" background-light-gray py-2 px-3 w-100">
+                    <!-- buscado -->
+                    <div class="input-group">
+                        <app-search-input [searchTerm]="searchTermCompetitor"
+                            (searchChange)="onSearchCompetitor($event)"></app-search-input>
+                    </div>
 
-            <!-- Columna para Familias -->
-            <div class="col-12 col-md-6 d-flex flex-column" style="height: 100%;">
-                <h2>Familias</h2>
-                <!-- buscado -->
-                <div class="input-group">
-                    <app-search-input [searchTerm]="searchTermFamily"
-                        (searchChange)="onSearchFamily($event)"></app-search-input>
+                    <div class="table-responsive w-100 my-3">
+                        <table class="table table-sm m-0 table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="color-primary">Nombre</th>
+                                    <th scope="col" class="color-primary text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of filteredCompetitorList" (click)="selectCompetitor(row)"
+                                     >
+                                    <td [ngClass]="{'selected-row': selectedCompetitor?.id === row.id}">
+                                        <input *ngIf="editingCompetitorId === row.id" [(ngModel)]="row.name"
+                                            class="form-control" type="text" (keyup.enter)="saveChanges(row)"/>
+                                        <div *ngIf="editingCompetitorId === row.id && showEditNameError" class="text-danger mt-1">
+                                            Caracteres no permitidos
+                                        </div>
+                                        <p *ngIf="editingCompetitorId !== row.id" [ngbTooltip]="tooltipText"
+                                            (mouseover)="applyTooltipIfTruncated($event, row.name)"
+                                            class="truncate-text m-0">
+                                            {{ row.name }}
+                                        </p>
+                                    </td>
+                                    <td [ngClass]="{'selected-row': selectedCompetitor?.id === row.id}">
+                                        <div class="d-flex justify-content-center gap-1">
+                                            <app-btn-icon-edit *ngIf="editingCompetitorId !== row.id && row.id"
+                                                (btnClicked)="toggleEdit(row.id)"></app-btn-icon-edit>
+                                            <i *ngIf="editingCompetitorId === row.id" (click)="saveChanges(row)"
+                                                class="bi bi-check-lg btnSave fs-5 px-0" ngbTooltip="Guardar"></i>
+                                            <app-btn-icon-delete
+                                                *ngIf="editingCompetitorId !== row.id && row.id !== undefined"
+                                                (btnClicked)="deleteCompetidor(row.id)"></app-btn-icon-delete>
+                                            <i *ngIf="editingCompetitorId === row.id" (click)="cancelEdit()"
+                                                class="bi bi-x-lg btnClear color-quaternary fs-5 px-0"
+                                                ngbTooltip="Cancelar"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="filteredCompetitorList.length === 0">
+                                    <td colspan="2" class="text-center">No se han encontrado datos</td>
+                                </tr>
+                                <tr class="sticky-footer">
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm"
+                                            [(ngModel)]="newCompetitonName" placeholder="Nombre" (keyup.enter)="insertCompetitor()"/>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-1">
+                                            <button [ngbTooltip]="isButtonEnabled() ? 'Guardar' : null"
+                                                (click)="insertCompetitor()"
+                                                [ngClass]="{'btnSave': true, 'disabled-icon': !isButtonEnabled()}">
+                                                <i class="bi bi-check-lg fs-5 px-0"></i>
+                                            </button>
+                                            <button [ngbTooltip]="isButtonEnabled() ? 'Limpiar' : null"
+                                                (click)="clearNewCompetitor()"
+                                                [ngClass]="{'btnDelete':true, 'disabled-icon': !isButtonEnabled()}"
+                                                class="color-quaternary">
+                                                <i class="bi bi-x-lg fs-5 px-0"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div *ngIf="showNewNameError" class="text-danger" style="font-size: small;">
+                            Caracteres no permitidos
+                        </div>
+                    </div>
                 </div>
-                <div class="table-responsive" style="height: 100%;">
-                    <table class="table table-sm m-0 table-hover" *ngIf="selectedCompetitor">
-                        <thead>
-                            <tr>
-                                <!-- Columna para el checkbox -->
-                                <th scope="col" class="color-primary text-center">
-                                    <input type="checkbox" [checked]="allFamiliesSelected"
-                                        [indeterminate]="isSomeSelected" (change)="toggleSelectAll($event)" />
-                                </th>
-                                <th scope="col" class="color-primary">Nombre</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let row of filteredFamilyList" (click)="toggleFamilySelection(row.id)">
-                                <td class="text-center">
-                                    <input type="checkbox" [(ngModel)]="row.selected"
-                                        (ngModelChange)="toggleFamilySelectionCheckbox(row.id,$event)" />
-                                </td>
-                                <td>
-                                    <p [ngbTooltip]="tooltipText"
-                                        (mouseover)="applyTooltipIfTruncated($event, row.name)"
-                                        class="truncate-text m-0">
-                                        {{ row.name }}
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr *ngIf="filteredFamilyList.length === 0">
-                                <td colspan="2" class="text-center">No se han encontrado datos</td>
-                            </tr>
-                        </tbody>
-                    </table>
+    
+                <!-- Columna para Familias -->
+                <div class="d-flex flex-column  align-items-center background-light-gray py-2 px-3 w-100">
+                    <div *ngIf="!selectedCompetitor" class="h-100 d-flex align-items-center background-light-gray rounded-3">
+                        <div class="d-flex flex-column text-center text-muted">
+                            <i class="bi bi-buildings-fill" style="font-size: 30px;"></i>
+                            <h5>Selecciona un competidor para ver sus familias.</h5>
+                        </div>
+                    </div>
+                    <!-- buscado -->
+                    <div class="input-group" *ngIf="selectedCompetitor">
+                        <app-search-input [searchTerm]="searchTermFamily"
+                            (searchChange)="onSearchFamily($event)"></app-search-input>
+                    </div>
+                    <div class="table-responsive w-100 my-3" *ngIf="selectedCompetitor">
+                        <table class="table table-sm m-0 table-hover">
+                            <thead>
+                                <tr>
+                                    <!-- Columna para el checkbox -->
+                                    <th scope="col" class="color-primary text-center">
+                                        <input type="checkbox" [checked]="allFamiliesSelected"
+                                            [indeterminate]="isSomeSelected" (change)="toggleSelectAll($event)" />
+                                    </th>
+                                    <th scope="col" class="color-primary">Familia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of filteredFamilyList" (click)="toggleFamilySelection(row.id)">
+                                    <td class="text-center">
+                                        <input type="checkbox" [(ngModel)]="row.selected"
+                                            (ngModelChange)="toggleFamilySelectionCheckbox(row.id,$event)" />
+                                    </td>
+                                    <td>
+                                        <p [ngbTooltip]="tooltipText"
+                                            (mouseover)="applyTooltipIfTruncated($event, row.name)"
+                                            class="truncate-text m-0">
+                                            {{ row.name }}
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="filteredFamilyList.length === 0">
+                                    <td colspan="2" class="text-center">No se han encontrado datos</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</mat-dialog-content>
+    </mat-dialog-content>

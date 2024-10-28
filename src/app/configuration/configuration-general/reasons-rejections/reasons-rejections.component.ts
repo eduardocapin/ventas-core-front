@@ -68,14 +68,29 @@ export class ReasonsRejectionsComponent {
   }
   // Método de validación de caracteres prohibidos
   hayCaracteresProhibidos(termino: string): boolean {
-    const caracteresProhibidos = /['();]/g;
+    const caracteresProhibidos = /["'`]/g;
     return caracteresProhibidos.test(termino);
+  }
+  reasonExists(internal_id: number, name: string, excludeId?: number): boolean {
+    return this.rejectList.some(
+        (reason) =>
+            reason.name.trim().toLowerCase() === name.trim().toLowerCase() &&
+            reason.id !== excludeId &&
+              Number(reason.internal_id) === internal_id // Comparación de código como número
+      );
   }
   /* insertar nuevo motivo de rechazo */
   insertReason() {
     // Validamos cada campo de forma independiente
     this.showNewCodeError = this.hayCaracteresProhibidos(this.newRejectionCode);
     this.showNewNameError = this.hayCaracteresProhibidos(this.newRejectionName);
+
+    // Validación de duplicado en code y name
+    if (this.reasonExists(Number(this.newRejectionCode), this.newRejectionName)) {
+      this._notifactionService.showError('Este motivo de rechazo o código ya existe');
+      return;
+    }
+
     // Resto de la lógica de inserción de motivo
     const newReason = {
       rejection_code: this.newRejectionCode,

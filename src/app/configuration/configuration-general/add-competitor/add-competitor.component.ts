@@ -44,6 +44,10 @@ export class AddCompetitorComponent {
   isTooltipVisible: boolean = false;
   tooltipText: string | null = null;
 
+  //variable para mostrar mensaje de error
+  showNewNameError: boolean = false;
+  showEditNameError: boolean = false;
+
   constructor(
     private renderer: Renderer2,
     private competitorsService: CompetidoresService,
@@ -112,8 +116,39 @@ export class AddCompetitorComponent {
       }
     });
   }
+
+  /* Metodo de validacion de caracteres prohibidos */
+  hayCaracteresProhibidos(termino: string): boolean {
+    const caracteresProhibidos = /["'`]/g;
+    return caracteresProhibidos.test(termino);
+  }
+
+  /* metodo para evitar que se dupliquen competidores */
+  competitorExists(name: string, excludeId?: number): boolean {
+    return this.competitorList.some(
+      (competitor) =>
+        competitor.name.trim().toLowerCase() === name.trim().toLowerCase() &&
+        competitor.id !== excludeId // Excluye al competidor en edición
+    );
+  }
+
   insertCompetitor() {
+     // Verificamos caracteres prohibidos al intentar agregar un competidor
+    if (this.hayCaracteresProhibidos(this.newCompetitonName)) {
+        this.showNewNameError = true;
+        return; // Salimos si hay caracteres prohibidos
+    } else {
+        this.showNewNameError = false; // Ocultamos el mensaje si no hay caracteres prohibidos
+    }
+
     if (this.newCompetitonName) {
+
+      //validacion de duplicado
+      if(this.competitorExists(this.newCompetitonName)){
+        this._notifactionService.showError('Este competidor ya existe');
+        return;
+      }
+
       const newCompetitor = {
         name: this.newCompetitonName,
         segmentation_value_ids: '',
@@ -156,6 +191,20 @@ export class AddCompetitorComponent {
   }
 
   saveChanges(competitor: ICompetidor) {
+    // Validación de caracteres prohibidos
+    if (this.hayCaracteresProhibidos(competitor.name)) {
+        this.showEditNameError = true;
+        return; // Terminamos la función si hay caracteres prohibidos
+    } else {
+        this.showEditNameError = false; // Ocultamos el mensaje si no hay caracteres prohibidos
+    }
+
+    // Validación de duplicado: revisamos si ya existe un competidor con el mismo nombre, excluyendo el actual en edición
+    if (this.competitorExists(competitor.name, competitor.id)) {
+      this._notifactionService.showError('Este competidor ya existe');
+      return;
+    }
+
     if (competitor.name) {
       this.competitorsService.updateCompetitors(competitor).subscribe(
         (status) => {
@@ -220,7 +269,7 @@ export class AddCompetitorComponent {
   }
 
   cancelEdit() {
-    if (this.originalCompetitor) {
+    if (this.originalCompetitor && this.editingCompetitorId !== null) {
       const index = this.competitorList.findIndex(
         (c) => c.id === this.originalCompetitor!.id
       );

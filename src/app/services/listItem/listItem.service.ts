@@ -43,7 +43,7 @@ export class ListItemService {
     },
     openCompetitor: () => {
       const dialogRef = this.dialog.open(AddCompetitorComponent, {
-        width: 'auto',
+        width: '660px',
         disableClose: true,
         data: { autoClose: false },
       });

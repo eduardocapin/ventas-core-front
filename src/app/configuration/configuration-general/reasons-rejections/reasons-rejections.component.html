@@ -23,7 +23,7 @@
             <span *ngIf="editingReasonId !== row.id">{{ row.rejection_code }}</span>
           </td>
           <td>
-            <input *ngIf="editingReasonId === row.id" [(ngModel)]="row.name" type="text" class="form-control form-control-sm">
+            <input *ngIf="editingReasonId === row.id" [(ngModel)]="row.name" class="form-control form-control-sm">
             <div *ngIf="editingReasonId === row.id && showEditNameError" class="text-danger mt-1">
               Caracteres no permitidos
             </div>

@@ -1,5 +1,11 @@
 @import "src/styles.scss";
 
+/* buscador de la tabla */
+app-search-input{
+  width: 100%;
+}
+
+
 .disabled {
   size: 1000px;
 }
@@ -13,22 +19,24 @@ tr {
 .btnDelete,
 .btnClear {
   border: none;
-  background-color: white;
 }
 
 .btnEdit {
   color: darkgrey;
 }
+.btnDelete, .btnSave{
+  background: none;
+}
 .btnSave {
   color: rgb(7, 170, 7);
   border: none;
-  background-color: white;
 }
 
 .disabled-icon {
   opacity: 0.5;
   color: gray;
   pointer-events: none;
+  background: none;
 }
 
 .table-responsive {
