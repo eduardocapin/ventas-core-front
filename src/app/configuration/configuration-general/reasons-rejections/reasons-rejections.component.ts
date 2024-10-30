@@ -71,13 +71,14 @@ export class ReasonsRejectionsComponent {
     const caracteresProhibidos = /["'`]/g;
     return caracteresProhibidos.test(termino);
   }
-  reasonExists(internal_id: number, name: string, excludeId?: number): boolean {
+  // Método actualizado para verificar duplicados
+  reasonExists(rejection_code: string, name: string, excludeId?: number): boolean {
     return this.rejectList.some(
-        (reason) =>
-            reason.name.trim().toLowerCase() === name.trim().toLowerCase() &&
-            reason.id !== excludeId &&
-              Number(reason.internal_id) === internal_id // Comparación de código como número
-      );
+      (reason) =>
+        (reason.rejection_code.trim().toLowerCase() === rejection_code.trim().toLowerCase() ||
+         reason.name.trim().toLowerCase() === name.trim().toLowerCase()) &&
+        reason.id !== excludeId
+    );
   }
   /* insertar nuevo motivo de rechazo */
   insertReason() {
@@ -85,9 +86,9 @@ export class ReasonsRejectionsComponent {
     this.showNewCodeError = this.hayCaracteresProhibidos(this.newRejectionCode);
     this.showNewNameError = this.hayCaracteresProhibidos(this.newRejectionName);
 
-    // Validación de duplicado en code y name
-    if (this.reasonExists(Number(this.newRejectionCode), this.newRejectionName)) {
-      this._notifactionService.showError('Este motivo de rechazo o código ya existe');
+     // Validación de duplicados para el código y el nombre
+    if (this.reasonExists(this.newRejectionCode, this.newRejectionName)) {
+      this._notifactionService.showError('Este código o nombre ya existe en los motivos de rechazo');
       return;
     }
 
@@ -128,8 +129,14 @@ export class ReasonsRejectionsComponent {
   saveChanges(reason: IMotivoRechazo) {
     this.showEditCodeError = this.hayCaracteresProhibidos(reason.rejection_code);
     this.showEditNameError = this.hayCaracteresProhibidos(reason.name);
+    //validacion de caracteres prohibidos
     if (this.showEditCodeError || this.showEditNameError) {
       // Detener la función si hay caracteres no permitidos
+      return;
+    }
+    // Validación de duplicados para el código y el nombre, excluyendo el motivo actual
+    if (this.reasonExists(reason.rejection_code, reason.name, reason.id)) {
+      this._notifactionService.showError('Este código o nombre ya existe en los motivos de rechazo');
       return;
     }
     // Validamos si hay cambios en los campos
