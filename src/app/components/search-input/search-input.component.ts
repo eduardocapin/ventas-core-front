@@ -38,7 +38,7 @@ export class SearchInputComponent {
   }
 
   hayCaracteresProhibidos(termino: string): boolean {
-    const caracteresProhibidos = /[" ' `]/g;
+    const caracteresProhibidos = /["'`]/g;
     return caracteresProhibidos.test(termino);
   }
 }
