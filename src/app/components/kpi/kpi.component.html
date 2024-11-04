@@ -1,54 +1,78 @@
 <div class="d-flex flex-column flex-lg-row gap-2 align-items-center ">
-    <div id="graficas_izquierda" class="d-flex w-100 min-w-reasonReject bg-color-kpi-element ps-1" >
+    <div id="graficas_izquierda" class="d-flex min-w-reasonReject bg-color-kpi-element ps-1">
         <div class="d-flex justify-content-center align-items-center">
-            <span class="vertical-text dark-gray ">Motivos</span>
+            <span class="vertical-text dark-gray ">Rechazos</span>
             <div class="h-90"></div>
         </div>
         <div class="d-flex gap-3 min-w-reasonReject py-1">
-            <app-progress-circle [total]="66860" [value]="23136" [color]="'#ff419a'" [text]="'Packaging'"></app-progress-circle>
-            <app-progress-circle [total]="66860" [value]="18136" [color]="'#ff419a'"  [text]="'Mala calidad'"></app-progress-circle>
-            <app-progress-circle [total]="66860" [value]="17224" [color]="'#ff419a'"  [text]="'Precio'"></app-progress-circle>
-            <app-progress-circle [total]="66860" [value]="8130" [color]="'#ff419a'"  [text]="'No Aplica'"></app-progress-circle>
+            <app-progress-circle [total]="66860" [value]="23136" [color]="'#ff419a'"
+                [text]="'Packaging'"></app-progress-circle>
+            <app-progress-circle [total]="66860" [value]="18136" [color]="'#ff419a'"
+                [text]="'Mala calidad'"></app-progress-circle>
+            <app-progress-circle [total]="66860" [value]="17224" [color]="'#ff419a'"
+                [text]="'Precio'"></app-progress-circle>
+            <app-progress-circle [total]="66860" [value]="8130" [color]="'#ff419a'"
+                [text]="'No Aplica'"></app-progress-circle>
         </div>
-        <div class="text-center rounded-3 d-flex padding-rechazos-kpi justify-content-evenly align-items-center gap-2 px-2">
+        <div
+            class="text-center rounded-3 d-flex padding-rechazos-kpi justify-content-evenly align-items-center gap-2 px-2">
             <div class="d-flex flex-column m-1 dark-gray">
                 <h3 class="m-0 fw-bold"> {{'66860' | bigInt}}</h3>
                 <span class="smaller">Rechazos</span>
             </div>
         </div>
     </div>
+
+    <div class="d-flex align-items-center my-2" style="height: 45px;">
+        <i class="bi bi-caret-right-fill gray"></i>
+    </div>
+
     <div id="kpis_centrales" class="d-flex gap-2 bg-color-kpi-element ps-1">
-        
         <!-- Contenedor que contendra  Pendiente y oportunidad -->
         <div class="d-flex justify-content-center align-items-center">
-            <span class="vertical-text dark-gray">Conversion</span>
+            <span class="vertical-text dark-gray">A Convertir</span>
             <div class="h-90"></div>
         </div>
         <div class=" text-center rounded-3 d-flex justify-content-evenly align-items-center gap-2 px-2">
             <div class="d-flex flex-column m-1 orange">
                 <h3 class="m-0 fw-bold">{{73| bigInt}}</h3>
-                <span class="smaller">Pendiente</span>
+                <span class="smaller">Conversiones Pendientes</span>
             </div>
             <div class="d-flex align-items-center my-2" style="height: 45px;">
                 <i class="bi bi-caret-right-fill gray"></i>
             </div>
             <div class="d-flex flex-column m-1 color-primary">
                 <h3 class="m-0 fw-bold">{{248| bigInt}}</h3>
-                <span class="smaller">Oportunidad</span>
+                <span class="smaller">Oportunidades Activas</span>
             </div>
         </div>
     </div>
-    <div class="d-flex bg-color-kpi-element ps-1 py-1">
-        
+
+    <div class="d-flex align-items-center my-2" style="height: 45px;">
+        <i class="bi bi-caret-right-fill gray"></i>
+    </div>
+
+    <div class="d-flex bg-color-kpi-element ps-1 py-1 ">
         <div class="d-flex justify-content-center align-items-center ">
-            <span class="vertical-text dark-gray">Resultados</span>
+            <span class="vertical-text dark-gray">Convertido</span>
             <div class="h-90"></div>
         </div>
+        <div
+            class="text-center rounded-3 d-flex padding-rechazos-kpi justify-content-evenly align-items-center gap-2 px-2">
+            <div class="d-flex flex-column m-1 dark-gray">
+                <h3 class="m-0 fw-bold"> {{'58760' | bigInt}}</h3>
+                <span class="smaller">Oportunidades</span>
+            </div>
+        </div>
         <div id="graficas_derecha" class="d-flex gap-3">
-            <app-progress-circle [total]="66860" [value]="4321" [color]="'#17a6ff'" [text]="'Desistido'"></app-progress-circle>
-            <app-progress-circle [total]="66860" [value]="11210" [color]="'#17a6ff'" [text]="'Rechazado'"></app-progress-circle>
-            <app-progress-circle [total]="66860" [value]="15005" [color]="'#17a6ff'" [text]="'Aceptado'"></app-progress-circle>
-            <app-progress-circle [total]="66860" [value]="28201" [color]="'#17a6ff'" [text]="'Vendido'"></app-progress-circle>
+            <app-progress-circle [total]="58760" [value]="4321" [color]="'#17a6ff'"
+                [text]="'No Aplica'"></app-progress-circle>
+            <app-progress-circle [total]="58760" [value]="11210" [color]="'#17a6ff'"
+                [text]="'Rechazado'"></app-progress-circle>
+            <app-progress-circle [total]="58760" [value]="15005" [color]="'#17a6ff'"
+                [text]="'Aceptado'"></app-progress-circle>
+            <app-progress-circle [total]="58760" [value]="28201" [color]="'#17a6ff'"
+                [text]="'Vendido'"></app-progress-circle>
         </div>
     </div>
 </div>
