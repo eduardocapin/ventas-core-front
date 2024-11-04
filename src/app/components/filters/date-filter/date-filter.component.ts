@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 export class DateFilterComponent implements OnInit {
   @Input() id: string = '';
   @Output() dateSelection = new EventEmitter<{ startDate: string, endDate: string }>();
-  @Input() title: string = 'Seleccionar';
+  @Input() title: string = 'Fecha';
   dateOptions: string[] = [];
   customStartDate: string = '';
   customEndDate: string = '';
