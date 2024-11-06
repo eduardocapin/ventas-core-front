@@ -370,6 +370,11 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
 /* cambios detectados en la fila */
 
+  hayCaracteresProhibidos(termino: string): boolean {
+    const caracteresProhibidos = /["'`]/g;
+    return caracteresProhibidos.test(termino);
+  }
+
   changeNumber(event: Event, row: IRechazo) {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement) {
@@ -404,6 +409,14 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   }
 
   changeText(newValue: string, row: IRechazo) {
+
+    // Verifica si hay caracteres prohibidos
+    if (this.hayCaracteresProhibidos(newValue)) {
+      // Muestra una advertencia y no permite el cambio si hay caracteres prohibidos
+      this._notifactionService.showWarning("La promoción contiene caracteres no permitidos.");
+      return; // Sale de la función sin realizar cambios
+    }
+
     // Encuentra el índice de la fila en `dataSource`
     const dataSourceIndex = this.dataSource.indexOf(row);
   
@@ -504,6 +517,14 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     if (this.modifiedRow !== null) {
       const row = this.dataSource.find(item => item.id === this.modifiedRow);
       if (row) {
+
+        // Verifica si el campo `corrective_action_text` contiene caracteres prohibidos
+        if (this.hayCaracteresProhibidos(row.corrective_action_text)) {
+          // Muestra advertencia y no envía los cambios
+          this._notifactionService.showWarning("La promoción contiene caracteres no permitidos. No se pueden guardar los cambios.");
+          return; // Sale de la función sin enviar
+        }
+
         this.rechazadosService.updateRechazo(row).subscribe(
           (status) => {
             console.log('Rechazo actualizado:', status);

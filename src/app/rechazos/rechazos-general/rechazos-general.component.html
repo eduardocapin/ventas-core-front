@@ -180,6 +180,7 @@
                     [(ngModel)]="row.corrective_action_text" maxlength="50" placement="top" placeholder="Promoción"
                     (ngModelChange)="changeText($event, row)"
                     [ngbTooltip]="tooltipText" (mouseover)="applyTooltipIfTruncated($event, row.corrective_action_text)" />
+                  <!-- campo de checkbox de estado -->
                   <div class=" d-flex align-items-center justify-self-center">
                     <input type="checkbox" (click)="$event.stopPropagation()" [checked]="row.corrective_action_sent" />
                   </div>
