@@ -45,6 +45,11 @@ export class ProfileEditPopupComponent {
   imageInfos?: Observable<any>;
   imgSelected = false;
 
+  /// variable para mostrar el mensaje de error
+  mostrarErrorInfo: boolean = false;
+  mostrarErrorPassword: boolean = false;
+
+
   constructor(
     public dialogRef: MatDialogRef<ProfileEditPopupComponent>,
     private fb: FormBuilder,
@@ -92,18 +97,49 @@ export class ProfileEditPopupComponent {
     }
   }
 
+  hayCaracteresProhibidos(termino: string): boolean {
+    const caracteresProhibidos = /["'`]/g;
+    return caracteresProhibidos.test(termino);
+  }
+
   update(): void {
+    // Verifica si hay caracteres prohibidos en los campos del formulario
+    if (this.hayCaracteresProhibidos(this.form.value.usuario) || this.hayCaracteresProhibidos(this.form.value.cargo)) {
+      // Si se encuentran caracteres prohibidos, muestra el mensaje de error y no ejecuta la actualización
+      this.mostrarErrorInfo = true;
+      return; // Detiene la ejecución de la función
+    }
+
+    //si el formulario tiene cambios y no hay caracteres prohibidos, procede a actualizar
     if (this.form.dirty) {
       localStorage.setItem('user', this.form.value.usuario);
       localStorage.setItem('cargo', this.form.value.cargo);
       this._notifactionService.showSuccess('');
       console.log('Actualizado:', this.form.value);
       this.form.markAsPristine();
+      this.mostrarErrorInfo = false;
     }
   }
   
   changePassword() {
     console.log('camibar');
+
+    // Verifica si hay caracteres prohibidos en los campos de contraseña
+      
+    // Obtén los valores de los campos de contraseña y asegúrate de que sean strings
+    const currentPassword = this.passForm.value.currentPassword ?? '';
+    const newPassword = this.passForm.value.newPassword ?? '';
+    const confirmNewPassword = this.passForm.value.confirmNewPassword ?? '';
+      
+      if (
+        this.hayCaracteresProhibidos(currentPassword) ||
+        this.hayCaracteresProhibidos(newPassword) ||
+        this.hayCaracteresProhibidos(confirmNewPassword)
+      ) {
+        this.mostrarErrorPassword = true; // Muestra el error de contraseña
+        return; // Detiene la ejecución de la función
+      }
+
     if (this.passForm.valid) {
       const { currentPassword, newPassword, confirmNewPassword } =
         this.passForm.value;
