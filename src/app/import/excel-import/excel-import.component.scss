@@ -1,7 +1,7 @@
+@import "src/styles.scss";
+
 .screen {
-  min-height: 100vh;
-  background-color: #f3f4f6;
-  padding-top: 60px;
+  min-height: calc(100vh - 68px);
 }
 
 .contenedor-tabla {
@@ -16,15 +16,7 @@ table {
   table-layout: fixed;
 }
 
-.botones {
-  overflow-x: auto;
-  overflow-y: hidden;
-  width: 100%;
-}
 
-[class*="mat-column-"] {
-  width: 180px;
-}
 
 td,
 th {
@@ -33,12 +25,7 @@ th {
   overflow: hidden;
 }
 
-.rojo {
-  background-color: red;
-}
-
 .sin-bordes {
-  box-sizing: border-box;
   padding: 0;
   margin: 3px;
   color: gray;

@@ -95,6 +95,10 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   //mensaje de no guardado
   hasUnsavedChanges: boolean = false;
 
+  //select de fila
+  selectedRowId: number | null = null;
+  modifiedRow: number | null = null;
+
   constructor(
     private renderer: Renderer2,
     public dialog: MatDialog,
@@ -115,6 +119,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     this.loadTiposRechazo();
     this.loadPoblacion();
     this.cargando = true;
+
+    this.dataSource = this.dataSource.map(row => ({ ...row, modified: false }));
   }
   getProvincia(id: number): string {
     const provincia = this.provincias.find((c) => c.id == id);
@@ -324,24 +330,6 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     });
   }
 
-  actualizarEstados(row: IRechazo) {
-    console.log(row);
-    const estadoSeleccionado = this.estados.find(
-      (estado) => estado.id == row.status_id
-    );
-
-    if (estadoSeleccionado) {
-      const idEstadoSeleccionado = estadoSeleccionado.id;
-      console.log('ID de Rechazo seleccionado:', row.id);
-      console.log('ID de Estado seleccionado:', idEstadoSeleccionado);
-    } else {
-      console.error(
-        'No se encontró el ID del estado seleccionado en el array estados'
-      );
-    }
-  }
-
-
 
   exportData(selectedOption: string): void {
     if (this.selectedRechazos.length <= 0) {
@@ -391,6 +379,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       const dataSourceIndex = this.dataSource.indexOf(row);
       // Actualiza el valor numérico en dataSource
       this.dataSource[dataSourceIndex].corrective_action_value = newValue;
+      this.modifiedRow = row.id;
     }
     this.hasUnsavedChanges = true;
   }
@@ -407,6 +396,9 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       this.dataSource[dataSourceIndex].corrective_action_symbol_id = newSymbolId;
       this.dataSource[dataSourceIndex].corrective_action_symbol = 
       newSymbolName?.symbol ?? 'No encontrado';
+
+      console.log('ID de Rechazo seleccionado:', row.id);
+      this.modifiedRow = row.id;
     }
     this.hasUnsavedChanges = true;
   }
@@ -417,7 +409,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   
     // Actualiza el texto de `corrective_action_text`
     this.dataSource[dataSourceIndex].corrective_action_text = newValue;
-  
+    this.modifiedRow = row.id;
     // Marca cambios no guardados
     this.hasUnsavedChanges = true;
   }
@@ -434,6 +426,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       this.dataSource[dataSourceIndex].status_id = newStatusId;
       this.dataSource[dataSourceIndex].status =
         newStatusName?.name ?? 'No encontrado';
+
+        this.modifiedRow = row.id;
     }
     this.hasUnsavedChanges = true;
   }
@@ -449,7 +443,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
             if (result) {
               row.reason_rejection_id = result.id;
               row.reason_rejection = result.name;
-              
+              this.modifiedRow = row.id;
             } else {
               selectElement.value = String(this.previousReasonId);
             }
@@ -463,6 +457,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       );
       row.reason_rejection_id = newReasonId;
       row.reason_rejection = newReasonName?.name ?? 'No encontrado';
+
+      this.modifiedRow = row.id;
     }
     this.hasUnsavedChanges = true;
   }
@@ -478,6 +474,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
           if (result) {
             row.competitor_id = result.id;
             row.competitor_name = result.name;
+            this.modifiedRow = row.id;
           } else {
             selectElement.value = String(this.previousCompetitorId);
           }
@@ -493,12 +490,42 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
       row.competitor_id = newCompetidorId;
       row.competitor_name = newCompetidor ? newCompetidor.name : 'No encontrado';
-
+      this.modifiedRow = row.id;
     }
     this.hasUnsavedChanges = true;
   }
 /* fin de la decteccion de cambios en la fila */
 /* funcion para hacer un UPDATE a laa fila de rechazo */
+  onRowEdit(row: IRechazo) {
+    this.selectedRowId = row.id;
+  }
+
+  guardarCambios() {
+    if (this.modifiedRow !== null) {
+      const row = this.dataSource.find(item => item.id === this.modifiedRow);
+      if (row) {
+        this.rechazadosService.updateRechazo(row).subscribe(
+          (status) => {
+            console.log('Rechazo actualizado:', status);
+            this._notifactionService.showSuccess('Cambios guardados correctamente.');
+            this.modifiedRow = null; // Reinicia después de guardar
+            this.hasUnsavedChanges = false;
+          },
+          (error) => {
+            console.error('Error al actualizar el rechazo:', error);
+            this._notifactionService.showError('Error al guardar los cambios.');
+          }
+        );
+      }
+    }
+  }
+
+  selectReject(rowId: number) {
+  if (this.modifiedRow !== null && this.modifiedRow !== rowId) {
+    this.guardarCambios(); // Guarda cambios de la fila anterior
+  }
+}
+/* fin de la funcion UPDATE */
 
   capturePreviousValueCompetitorId(row: IRechazo) {
     this.previousCompetitorId = row.competitor_id;

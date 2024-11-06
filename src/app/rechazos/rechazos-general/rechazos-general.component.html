@@ -34,7 +34,7 @@
         </div>
       </div>
       <!-- mensaje de guardar -->
-      <button *ngIf="hasUnsavedChanges" class="btn btn-primary btn-sm d-flex align-items-center gap-2" >
+      <button *ngIf="hasUnsavedChanges" class="btn btn-primary btn-sm d-flex align-items-center gap-2" (click)="guardarCambios()">
         <span>Cambios no guardados</span>
         <i class="bi bi-cloud-slash-fill" style="height: 18px;"></i>
       </button>
@@ -150,7 +150,7 @@
         </thead>
         <tbody>
           <ng-container *ngFor="let row of dataSource">
-            <tr>
+            <tr (click)="selectReject(row.id)">
               <!-- Checkbox Column -->
               <td class="text-center px-2">
                 <div class=" d-flex align-items-center justify-self-center">
@@ -192,7 +192,7 @@
                   <img [src]="getOptionImage(row.status_id)" alt="{{ getEstado(row.status_id) }} Image"
                     class="option-image">
                   <select (change)="changeEstado($event, row)" class="form-select form-select-sm "
-                    [(ngModel)]="row.status_id" (ngModelChange)="actualizarEstados(row)">
+                    [(ngModel)]="row.status_id" >
                     <option *ngFor="let estado of estados" [value]="estado.id">
                       {{ estado.name }}
                     </option>

@@ -9,21 +9,20 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
     ExcelImportComponent,
   ],
   imports: [
-    MatIconModule,
-    MatTooltipModule,
-    MatSelectModule,
     CommonModule,
     ImportRoutingModule,
-    MatListModule,
-    MatButtonModule,
-    MatTableModule,
-    MatSnackBarModule
+    FormsModule,
+    SharedModule,
+    NgbTooltipModule
   ]
 })
 export class ImportModule { }

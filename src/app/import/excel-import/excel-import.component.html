@@ -1,72 +1,72 @@
-<div class="screen">
+<div class="background-light-gray screen">
   <input id="boton" class="d-none" type="file" accept=".xlsx, .csv, .xls" (change)="handleFileInputChange($event)">
-
-  <!-- Mostrar la tabla correspondiente cuando se hace clic en un botón -->
-  <div class="cuerpo">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <div class="d-flex align-items-center">
-        <button mat-icon-button (click)="volverAConfig()">
-          <mat-icon>keyboard_arrow_left</mat-icon>
-        </button>
-        <h2 *ngIf="selectedSheet" class="m-0 ps-3">{{ selectedSheet.name }} -
-        </h2>
-        <h2 class="m-0 ps-1">
-          <mat-form-field class="col-9" subscriptSizing="dynamic">
-            <mat-select [(value)]="tablaActiva" (selectionChange)="cambiarTablaCabecera()">
-              <mat-option *ngFor="let tabla of tablasMobentis" [value]="tablasMobentis.indexOf(tabla)">
-                {{tabla}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-icon class="sin-bordes" fontIcon="info"
-            matTooltip="Selecciona el tipo de dato que contiene el archivo seleccionado y que deseas importar"></mat-icon>
-        </h2>
-        <button mat-raised-button color="primary" (click)="abrirInput()">Seleccionar archivo</button>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex align-items-center">
+      <!-- Botón para volver -->
+      <button class="btn btn-link" (click)="volverAConfig()">
+        <i class="bi bi-arrow-left dadrk-gray"></i>
+      </button>
+      <h2 *ngIf="selectedSheet" class="m-0 ps-3">{{ selectedSheet.name }} -</h2>
+      <!-- Contenedor para el selector y el icono -->
+      <div class="d-flex align-items-center ps-1">
+        <!-- Selector de tabla -->
+        <select class="form-select form-select-sm" [(ngModel)]="tablaActiva" (change)="cambiarTablaCabecera()">
+          <option *ngFor="let tabla of tablasMobentis; let i = index" [value]="i">
+            {{ tabla }}
+          </option>
+        </select>
+        <!-- Icono de información con tooltip -->
+        <i class="bi bi-info-circle ms-2"
+          ngbTooltip="Selecciona el tipo de dato que contiene el archivo seleccionado y que deseas importar"></i>
       </div>
-      <button mat-raised-button color="primary" [disabled]="!selectedSheet" (click)="importar()">Importar
-        Selección</button>
+      <!-- Botón para seleccionar archivo -->
+      <button class="btn btn-sm btn-primary ms-3" (click)="abrirInput()">Seleccionar archivo</button>
     </div>
 
-    <div *ngIf="selectedSheet" class="contenedor-tabla">
-      <!-- Tabla de "Cabeceras" -->
-      <table class="" mat-table [dataSource]="listaDeEmparejamientoDeCampos" multiTemplateDataRows>
-        <ng-container *ngFor="let emparejamientoDeCampo of listaDeEmparejamientoDeCampos"
-          [matColumnDef]="emparejamientoDeCampo.origen">
-          <th class="pe-0 ps-1" mat-header-cell *matHeaderCellDef>
-            <mat-form-field class="col-12" subscriptSizing="dynamic">
-              <mat-select [(value)]="emparejamientoDeCampo.destino"
-                (selectionChange)="borrarSeleccionesSimilares(emparejamientoDeCampo)">
-                <mat-option *ngFor="let campo of camposTablaSeleccionada" [value]="campo">
-                  {{campo}}</mat-option>
-              </mat-select>
-            </mat-form-field>
+    <!-- Botón de importación -->
+    <button class="btn  btn-sm btn-primary" [disabled]="!selectedSheet" (click)="importar()">Importar
+      Selección</button>
+  </div>
+
+  <!-- Tabla de datos seleccionados -->
+  <div *ngIf="selectedSheet" class="contenedor-tabla">
+    <!-- Tabla de "Cabeceras" -->
+    <table class="table table-bordered mb-0">
+      <thead class="sticky-header-top">
+        <tr>
+          <th *ngFor="let emparejamientoDeCampo of listaDeEmparejamientoDeCampos" class="p-1">
+            <select class="form-select w-100" [(ngModel)]="emparejamientoDeCampo.destino"
+              (change)="borrarSeleccionesSimilares(emparejamientoDeCampo)">
+              <option *ngFor="let campo of camposTablaSeleccionada" [value]="campo">{{ campo }}</option>
+            </select>
           </th>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="getOrigenes(listaDeEmparejamientoDeCampos)"></tr>
-      </table>
+        </tr>
+      </thead>
+    </table>
+    <!-- Tabla de vista previa de datos -->
+    <table class="table table-bordered mt-0">
+      <thead class="sticky-header">
+        <tr>
+          <th *ngFor="let columnName of getColumnNames()" [title]="columnName.length > 18 ? columnName : ''">
+            {{ columnName }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of selectedSheet.sheetName">
+          <td *ngFor="let columnName of getColumnNames()"> {{ row[columnName] }} </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-
-      <table mat-table [dataSource]="selectedSheet.sheetName" multiTemplateDataRows>
-        <ng-container *ngFor="let columnName of getColumnNames()" [matColumnDef]="columnName">
-          <th mat-header-cell *matHeaderCellDef matTooltip="{{columnName}}"
-            [matTooltipDisabled]="columnName.length <= 18">
-            {{ columnName }} </th>
-          <td mat-cell *matCellDef="let element"> {{ element[columnName] }} </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="getColumnNames()"></tr>
-        <tr mat-row *matRowDef="let row; columns: getColumnNames();"></tr>
-      </table>
-    </div>
-
-    <!-- Mostrar botones para cada hoja del Excel -->
-    <div class="d-flex gap-2 botones p-1" *ngIf="ExcelData.length>1">
-      <div *ngFor="let sheet of ExcelData">
-        <div class="dropdown" (mouseenter)="toggleDropdown(sheet.name, true)"
-          (mouseleave)="toggleDropdown(sheet.name, false)">
-          <button mat-raised-button (click)="showTable(sheet.name)" [class.active]="selectedSheet.name === sheet.name">
-            {{ sheet.name }}
-          </button>
-        </div>
-      </div>
+  <!-- Botones para cada hoja del Excel -->
+  <div class="d-flex gap-2 p-1" *ngIf="ExcelData.length > 1">
+    <div *ngFor="let sheet of ExcelData">
+      <button class="btn btn-sm btn-outline-primary" (click)="showTable(sheet.name)"
+        [class.active]="selectedSheet.name === sheet.name">
+        {{ sheet.name }}
+      </button>
     </div>
   </div>
 </div>
