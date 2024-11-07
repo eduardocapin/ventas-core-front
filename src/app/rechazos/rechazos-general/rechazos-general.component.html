@@ -29,12 +29,8 @@
             <span class="sr-only">Loading...</span>
           </div>
         </div>
-        <!-- mensaje de guardar -->
-        <button *ngIf="hasUnsavedChanges" class="btn btn-primary btn-sm d-flex align-items-center gap-2"
-          (click)="guardarCambios()">
-          <span>Cambios no guardados</span>
-          <i class="bi bi-cloud-slash-fill" style="height: 18px;"></i>
-        </button>
+        <!-- Mensaje para actualizar -->
+        <app-message-update [isVisible]="hasUnsavedChanges" (saveChanges)="guardarCambios()"></app-message-update>
         <!-- boton de exportar -->
         <app-btn-export (formatSelected)="exportData($event)"></app-btn-export>
         <button class="btn btn-primary d-flex justify-content-center align-items-center" (click)="verEnMapa()">
