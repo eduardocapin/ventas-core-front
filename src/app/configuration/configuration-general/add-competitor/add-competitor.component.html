@@ -103,7 +103,7 @@
                         <app-search-input [searchTerm]="searchTermFamily"
                             (searchChange)="onSearchFamily($event)"></app-search-input>
                     </div>
-                    <div class="table-responsive w-100 my-3" *ngIf="selectedCompetitor">
+                    <div class="table-responsive w-100 my-3" *ngIf="selectedCompetitor" #familyTableContainer>
                         <table class="table table-sm m-0 table-hover">
                             <thead>
                                 <tr>

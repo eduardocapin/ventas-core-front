@@ -1,4 +1,4 @@
-import { Component, Inject, Renderer2 } from '@angular/core';
+import { Component, Inject, Renderer2, ViewChild, ElementRef } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -17,6 +17,8 @@ import { NotificationService } from 'src/app/services/notification/notification.
   styleUrls: ['./add-competitor.component.scss'],
 })
 export class AddCompetitorComponent {
+  @ViewChild('familyTableContainer') familyTableContainer!: ElementRef;
+
   competitorList: ICompetidor[] = [];
   filteredCompetitorList: ICompetidor[] = [];
   cargando: boolean = false;
@@ -100,7 +102,9 @@ export class AddCompetitorComponent {
           this.familyList = families.map((family) => ({
             ...family,
             selected: false,
-          }));
+          }))
+          .sort((a, b) => a.name.localeCompare(b.name));
+
           this.filteredFamilyList = [...this.familyList];
           resolve();
         },
@@ -111,7 +115,7 @@ export class AddCompetitorComponent {
 
       );
 
-    })
+    });
   }
 
   initializeSelectedFamilies(): void {
@@ -371,7 +375,8 @@ export class AddCompetitorComponent {
     this.searchTermFamily = term;
     this.filteredFamilyList = this.familyList.filter((family) =>
       family.name.toLowerCase().includes(term.toLowerCase())
-    );
+    )
+    .sort((a, b) => a.name.localeCompare(b.name));
     this.loadSelectedFamilies(this.selectedCompetitor!);
     this.sortSelectedFamilies();
     this.updateHeaderCheckboxState();
@@ -397,6 +402,10 @@ export class AddCompetitorComponent {
     this.selectedCompetitor = competitor;
     this.loadSelectedFamilies(competitor);
     this.sortSelectedFamilies();
+
+    if (this.familyTableContainer) {
+      this.familyTableContainer.nativeElement.scrollTop = 0;
+  }
   }
 
   logPreviousSelectedFamilies(): void {
@@ -422,11 +431,7 @@ export class AddCompetitorComponent {
   }
 
   sortSelectedFamilies(): void {
-    this.filteredFamilyList.sort((a, b) => {
-      const aSelected = a.selected ? 1 : 0;
-      const bSelected = b.selected ? 1 : 0;
-      return bSelected - aSelected;
-    });
+    this.filteredFamilyList.sort((a, b) => a.name.localeCompare(b.name));
   }
 
   toggleFamilySelection(familyId: number): void {
