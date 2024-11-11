@@ -7,11 +7,12 @@
 .bordes-redondeados{
     border-radius: 0.25rem; 
 }
-::ng-deep ngb-datepicker.dropdown-menu{
-    transform: translate(-10px, 33px) !important;
+::ng-deep ngb-datepicker.dropdown-menu {
+    margin: 0 0 0 -9px !important;
     max-width: 355px !important;
     font-size: small;
 }
+
 ::ng-deep .ngb-dp-month{
     width: 50%;
 }

@@ -8,4 +8,5 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class MessageUpdateComponent {
   @Input() isVisible: boolean = false;
   @Output() saveChanges = new EventEmitter<void>();
+  @Input() buttonText: string = 'Cambios no guardados';  // Texto predeterminado
 }

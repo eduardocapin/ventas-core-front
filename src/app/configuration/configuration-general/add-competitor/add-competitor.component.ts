@@ -50,6 +50,9 @@ export class AddCompetitorComponent {
   showNewNameError: boolean = false;
   showEditNameError: boolean = false;
 
+  //mostrar boton de guardar si hay algun cambio al seleccionar un checkbox
+  hasUnsavedChanges: boolean = false;
+
 
   constructor(
     private renderer: Renderer2,
@@ -300,6 +303,15 @@ export class AddCompetitorComponent {
       );
   }
 
+  guardarCambios(): void {
+    if (this.selectedCompetitor) {
+        this.updateSgmentatios(this.selectedCompetitor.id!);
+        this.hasUnsavedChanges = false;
+        console.log('Cambios guardados');
+    }
+  }
+
+
   cancelEdit() {
     if (this.originalCompetitor && this.editingCompetitorId !== null) {
       const index = this.competitorList.findIndex(
@@ -405,7 +417,8 @@ export class AddCompetitorComponent {
 
     if (this.familyTableContainer) {
       this.familyTableContainer.nativeElement.scrollTop = 0;
-  }
+    }
+    this.hasUnsavedChanges = false;
   }
 
   logPreviousSelectedFamilies(): void {
@@ -449,6 +462,7 @@ export class AddCompetitorComponent {
     if (family) {
       family.selected = !family.selected;
       this.updateHeaderCheckboxState();
+      this.hasUnsavedChanges = true; 
     }
   }
   toggleFamilySelectionCheckbox(familyId: number, isSelected: boolean) {
@@ -456,6 +470,7 @@ export class AddCompetitorComponent {
     if (family) {
       family.selected = isSelected;
       this.updateHeaderCheckboxState();
+      this.hasUnsavedChanges = true; 
     }
   }
 
@@ -466,6 +481,7 @@ export class AddCompetitorComponent {
     });
     this.allFamiliesSelected = isChecked;
     this.updateHeaderCheckboxState();
+    this.hasUnsavedChanges = true; 
   }
 
   updateHeaderCheckboxState(): void {
@@ -488,6 +504,8 @@ export class AddCompetitorComponent {
 
     this.allFamiliesSelected = selectedCount === totalFamilies;
   }
+
+  /* para truncar el texto para el tooltip */
   applyTooltipIfTruncated(event: Event, text: string) {
     const element = event.target as HTMLElement;
     this.isTooltipVisible = this.isTextTruncated(element);

@@ -1,4 +1,4 @@
 <button *ngIf="isVisible" class="btn btn-primary btn-sm d-flex align-items-center gap-2" (click)="saveChanges.emit()">
-    <span>Cambios no guardados</span>
+    <span>{{ buttonText }}</span>
     <i class="bi bi-cloud-slash-fill" style="height: 18px;"></i>
   </button>
