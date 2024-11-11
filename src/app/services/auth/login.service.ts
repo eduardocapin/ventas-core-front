@@ -10,6 +10,7 @@ import {
 import { LoginRequest } from './login.request';
 import { User } from './user';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Md5 } from 'ts-md5'
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,7 @@ export class LoginService {
   });
 
   user: string | null = localStorage.getItem('user');
+  cargo: string | null = localStorage.getItem('user');
   lastname: string |null = localStorage.getItem('lastname');
 
   constructor(private http: HttpClient) {
@@ -90,22 +92,109 @@ export class LoginService {
         })
       );
   }
-  /* encargado de mostrar errores */
-  private handleError(error: HttpErrorResponse) {
-    if (error.status === 0) {
-      console.error('Se ha producido un error', error.error);
-    } else {
-      console.error(
-        'Backend devolvió el código de estado ',
-        error.status,
-        error.error
+
+  resetPassword(email: string) {
+    let baseUrl = localStorage.getItem('baseUrl');
+    let port = localStorage.getItem('port');
+    return this.http
+      .post<User>(`${baseUrl}:${port}/api/users/reset-password`, {
+        email: email,
+      })
+      .pipe(
+        map((data: any) => {
+          return data.status;
+        })
       );
-    }
-    return throwError(
-      () => new Error('Algo falló, por favor intentelo de nuevo')
-    );
   }
   
+  addNewPassword(email: string, newpass: string) {
+    let baseUrl = localStorage.getItem('baseUrl');
+    let port = localStorage.getItem('port');
+    return this.http
+      .post(`${baseUrl}:${port}/api/users/new-password`, {
+        email: email,
+        newpass: Md5.hashStr(newpass),
+      })
+      .pipe(
+        map((data: any) => {
+          return data.status;
+        })
+      );
+  }
+
+  checkCode(code: string) {
+    let ip = String(localStorage.getItem('baseUrl'))
+    let puerto = String(localStorage.getItem('port'))
+    return this.http
+      .post(`${ip}:${puerto}/api/users/check-code`, {
+        code: code,
+      })
+      .pipe(
+        map((data: any) => {
+          return data[0];
+        })
+
+      );
+  }
+  
+  updateUserInfo(user: string, cargo: string) {
+    this.user = user;
+    this.cargo = cargo;
+    let ip = String(localStorage.getItem('baseUrl'))
+    let puerto = String(localStorage.getItem('port'))
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this.getToken()}`
+      ),
+    };
+    return this.http
+      .post(
+        `${ip}:${puerto}/api/users/update`,
+        {
+          email: localStorage.getItem('email'),
+          user: user,
+          cargo: cargo,
+        },
+        options
+      )
+      .pipe(
+        map((data: any) => {
+          return data.status;
+        })
+        //catchError(this.handleError)
+      );
+  }
+
+  changePassword(oldpass: string, newpass: string) {
+
+    let ip = String(localStorage.getItem('baseUrl'))
+    let puerto = String(localStorage.getItem('port'))
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this.getToken()}`
+      ),
+    };
+    return this.http
+      .post(
+        `${ip}:${puerto}/api/users/change-password`,
+        {
+          email: localStorage.getItem('email'),
+          oldpass: Md5.hashStr(oldpass),
+          newpass: Md5.hashStr(newpass),
+        },
+        options
+      )
+      .pipe(
+        map((data: any) => {
+          return data.status;
+        })
+      );
+  }
+
+
+
   get userData(): Observable<User> {
     return this.currentUserData.asObservable();
   }

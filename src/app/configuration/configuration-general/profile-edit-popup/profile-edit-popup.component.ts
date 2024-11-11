@@ -1,9 +1,5 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -49,7 +45,6 @@ export class ProfileEditPopupComponent {
   mostrarErrorInfo: boolean = false;
   mostrarErrorPassword: boolean = false;
 
-
   constructor(
     public dialogRef: MatDialogRef<ProfileEditPopupComponent>,
     private fb: FormBuilder,
@@ -57,7 +52,7 @@ export class ProfileEditPopupComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     private _loginServices: LoginService,
-    private _notifactionService: NotificationService,
+    private _notifactionService: NotificationService
   ) {
     this.form = this.fb.group({
       usuario: [''],
@@ -104,7 +99,10 @@ export class ProfileEditPopupComponent {
 
   update(): void {
     // Verifica si hay caracteres prohibidos en los campos del formulario
-    if (this.hayCaracteresProhibidos(this.form.value.usuario) || this.hayCaracteresProhibidos(this.form.value.cargo)) {
+    if (
+      this.hayCaracteresProhibidos(this.form.value.usuario) ||
+      this.hayCaracteresProhibidos(this.form.value.cargo)
+    ) {
       // Si se encuentran caracteres prohibidos, muestra el mensaje de error y no ejecuta la actualización
       this.mostrarErrorInfo = true;
       return; // Detiene la ejecución de la función
@@ -112,33 +110,46 @@ export class ProfileEditPopupComponent {
 
     //si el formulario tiene cambios y no hay caracteres prohibidos, procede a actualizar
     if (this.form.dirty) {
-      localStorage.setItem('user', this.form.value.usuario);
-      localStorage.setItem('cargo', this.form.value.cargo);
-      this._notifactionService.showSuccess('');
-      console.log('Actualizado:', this.form.value);
-      this.form.markAsPristine();
-      this.mostrarErrorInfo = false;
+      this._loginServices
+        .updateUserInfo(this.form.value.usuario, this.form.value.cargo)
+        .subscribe(
+          (data) => {
+            if (data === 'Success') {
+              localStorage.setItem('user', this.form.value.usuario);
+              localStorage.setItem('cargo', this.form.value.cargo);
+              this._notifactionService.showSuccess('Información actualizada');
+              console.log('Actualizado:', this.form.value);
+              this.form.markAsPristine();
+              this.mostrarErrorInfo = false;
+            }
+          },
+          (error) => {
+            this._notifactionService.showSuccess(
+              'No se ha podido actualizar la información'
+            );
+          }
+        );
     }
   }
-  
+
   changePassword() {
     console.log('camibar');
 
     // Verifica si hay caracteres prohibidos en los campos de contraseña
-      
+
     // Obtén los valores de los campos de contraseña y asegúrate de que sean strings
     const currentPassword = this.passForm.value.currentPassword ?? '';
     const newPassword = this.passForm.value.newPassword ?? '';
     const confirmNewPassword = this.passForm.value.confirmNewPassword ?? '';
-      
-      if (
-        this.hayCaracteresProhibidos(currentPassword) ||
-        this.hayCaracteresProhibidos(newPassword) ||
-        this.hayCaracteresProhibidos(confirmNewPassword)
-      ) {
-        this.mostrarErrorPassword = true; // Muestra el error de contraseña
-        return; // Detiene la ejecución de la función
-      }
+
+    if (
+      this.hayCaracteresProhibidos(currentPassword) ||
+      this.hayCaracteresProhibidos(newPassword) ||
+      this.hayCaracteresProhibidos(confirmNewPassword)
+    ) {
+      this.mostrarErrorPassword = true; // Muestra el error de contraseña
+      return; // Detiene la ejecución de la función
+    }
 
     if (this.passForm.valid) {
       const { currentPassword, newPassword, confirmNewPassword } =
@@ -146,37 +157,37 @@ export class ProfileEditPopupComponent {
       if (newPassword !== confirmNewPassword) {
         this.errorChangePass = true;
         this.messageError = 'La nueva contraseña no coincide.';
-        this._notifactionService.showError(this.messageError)
+        this._notifactionService.showError(this.messageError);
       } else if (newPassword === currentPassword) {
         this.errorChangePass = true;
         this.messageError =
           'La nueva contraseña no puede ser la misma que la actual.';
-          this._notifactionService.showError(this.messageError)
+        this._notifactionService.showError(this.messageError);
       } else {
-        this.errorChangePass = false;
-        this.messageError = '';
-        this.passForm.patchValue({
-          currentPassword: '',
-          newPassword: '',
-          confirmNewPassword: '',
-        });
-        this.passForm.markAsPristine();
-        this._notifactionService.showSuccess('Contraseña cambiada con éxito')
-        /*
-        this._loginServices.changePassword(currentPassword, newPassword).subscribe(
-          (data) => {
-            if (data === 'Success') {
-              this.passForm.reset();
-              this.errorChangePass = false;
-              this.messageError = '';
-              this._snackBar.open('Contraseña cambiada con éxito', '', { duration: 2000 });
+        this._loginServices
+          .changePassword(currentPassword!, newPassword!)
+          .subscribe(
+            (data) => {
+              if (data === 'Success') {
+                this.errorChangePass = false;
+                this.messageError = '';
+                this.passForm.patchValue({
+                  currentPassword: '',
+                  newPassword: '',
+                  confirmNewPassword: '',
+                });
+                this.passForm.markAsPristine();
+                this._notifactionService.showSuccess(
+                  'Contraseña cambiada con éxito'
+                );
+              }
+            },
+            (error) => {
+              this.errorChangePass = true;
+              this.messageError = error.error.msg;
+              this._notifactionService.showError(this.messageError);
             }
-          },
-          (error) => {
-            this.errorChangePass = true;
-            this.messageError = error.error.msg;
-          }
-        );*/
+          );
       }
     }
   }
