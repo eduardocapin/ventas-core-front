@@ -3,7 +3,6 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/services/auth/login.service';
 import { LoginRequest } from 'src/app/services/auth/login.request';
-import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -66,15 +65,6 @@ export class AuthComponent {
         }
       );
     }
-  }
-
-  resetPassword() {
-    const dialogRef = this.dialog.open(ResetPasswordComponent, {
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      
-    });
   }
 
   seccionarImagen(): string {

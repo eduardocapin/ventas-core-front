@@ -15,13 +15,17 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ChangePasswordComponent } from './reset-password/change-password/change-password.component';
+import { RouterModule } from '@angular/router';
+
 
 
 
 @NgModule({
     declarations: [
         AuthComponent,
-        ResetPasswordComponent
+        ResetPasswordComponent,
+        ChangePasswordComponent
     ],
     imports: [
         CommonModule,
@@ -36,7 +40,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
         MatInputModule,
         MatFormFieldModule,
         FormsModule,
-        MatDialogModule
+        MatDialogModule,
+        RouterModule
     ]
 })
 export class AuthModule {}

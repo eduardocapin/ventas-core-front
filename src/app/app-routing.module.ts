@@ -5,6 +5,9 @@ import { AuthComponent } from './auth/auth/auth.component';
 import { authGuard } from './auth/auth/authGuard/authGuard';
 
 import { NavbarComponent } from './navbar/navbar.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { codeGuard } from './auth/reset-password/change-password/codeGuard/codeGuard';
+import { ChangePasswordComponent } from './auth/reset-password/change-password/change-password.component';
 
 const routes: Routes = [
 
@@ -12,7 +15,10 @@ const routes: Routes = [
   {path:'', redirectTo:'/mobentis/dashboard/global', pathMatch:'full'},
   
   {path: 'login', component: AuthComponent},
-  
+  { path: 'reset-password', component: ResetPasswordComponent},
+  { path: 'reset-password/:code', component: ChangePasswordComponent,
+    canMatch: [codeGuard],
+  },
   /* Rutas de todo el proyecto */
   {
     path: 'mobentis', component: NavbarComponent, 
@@ -36,7 +42,6 @@ const routes: Routes = [
         loadChildren: () => import('./clients/clients.module').then(m => m.ClientsModule),
         canActivate: [authGuard],
         canMatch: [authGuard]
-
       },
       {
         path: 'configuracion',

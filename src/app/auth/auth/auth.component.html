@@ -53,7 +53,7 @@
             {{messageError}}
           </div>
 
-          <a (click)="resetPassword()" class="align-self-center mt-3">¿Has olvidado la contraseña?</a>
+          <a [routerLink]="['/reset-password']" class="align-self-center mt-3">¿Has olvidado la contraseña?</a>
           
           <!-- Botón de Iniciar Sesión -->
           <button type="submit" class="btn btn-primary w-100 mt-3" (click)="login()">Iniciar Sesión</button>

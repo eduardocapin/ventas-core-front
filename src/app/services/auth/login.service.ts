@@ -11,6 +11,7 @@ import { LoginRequest } from './login.request';
 import { User } from './user';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Md5 } from 'ts-md5'
+import { ConfigurationService } from 'src/app/configuration/configuration.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,13 +29,32 @@ export class LoginService {
     lastname: '',
   });
 
+  private baseUrl = "";
+  private port = "";
+  private puerto_archivos = "";
+
+
   user: string | null = localStorage.getItem('user');
   cargo: string | null = localStorage.getItem('user');
   lastname: string |null = localStorage.getItem('lastname');
+  
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private configurationService: ConfigurationService,
+  ) {
     this.user = localStorage.getItem('user');
     this.lastname = localStorage.getItem('lastname');
+    this.inicializar();
+  }
+
+
+  /* funcion de inicializacion */
+  async inicializar(){
+    await this.configurationService.loadConfig();
+    this.baseUrl = String(localStorage.getItem('baseUrl'));
+    this.port = String(localStorage.getItem('port'));
+    this.puerto_archivos = String(localStorage.getItem('puerto_archivos'));
   }
 
   login(credential:LoginRequest): Observable<User>{
@@ -94,10 +114,9 @@ export class LoginService {
   }
 
   resetPassword(email: string) {
-    let baseUrl = localStorage.getItem('baseUrl');
-    let port = localStorage.getItem('port');
+
     return this.http
-      .post<User>(`${baseUrl}:${port}/api/users/reset-password`, {
+      .post<User>(`${this.baseUrl}:${this.port}/api/users/reset-password`, {
         email: email,
       })
       .pipe(
