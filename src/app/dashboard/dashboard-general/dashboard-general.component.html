@@ -6,89 +6,81 @@
       <app-kpi></app-kpi>
     </div>
   </div>
-  <div>
-    <!-- boton de filtros aplicados o limpiar -->
-    <app-filter-container [componentId]="'dashboard-general'" (filtersChanged)="onFiltersChanged($event)">
-    </app-filter-container>
-  </div>
-  <div class="container d-grid gap-3 mt-3">
+  <!-- apartado de las graficas -->
+  <div class="container-fluid ">
     <div class="row">
-      <div class="col-4">
-        <div class="contenedor-grafica-s background-white rounded-4">
-          <app-grafica-pastel [titulo]="'Clientes'"
-            [datos]="[{ value: 1324, name: 'Con rechazos' }, { value: 570, name: 'Sin rechazos' }]"
-            [elementoId]="'graficoClientes'"></app-grafica-pastel>
+      <!-- Columna vacía izquierda -->
+      <div class="col"></div>
+      
+      <!-- Columna principal con gráficas -->
+      <div class="col-10">
+        <div class="my-3">
+          <!-- boton de filtros aplicados o limpiar -->
+          <app-filter-container [componentId]="'dashboard-general'" (filtersChanged)="onFiltersChanged($event)"></app-filter-container>
+        </div>
+        <div class="row ">
+          <!-- Primera fila de gráficas -->
+          <div class="col-md-4 mb-3">
+            <div class="contenedor-grafica-s background-white rounded-4">
+              <app-grafica-pastel [titulo]="'Clientes'" [datos]="[{ value: 1324, name: 'Con rechazos' }, { value: 570, name: 'Sin rechazos' }]" [elementoId]="'graficoClientes'"></app-grafica-pastel>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="contenedor-grafica-s background-white rounded-4">
+              <app-grafica-semi-circulo [titulo]="'Motivos de Rechazo'" [valores]="[{ value: 23136, name: 'Packaging' }, { value: 18370, name: 'Mala calidad' }, { value: 17224, name: 'Precio' }, { value: 8130, name: 'No aplica' }]" [elementoId]="'motivos-rechazo'"></app-grafica-semi-circulo>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="contenedor-grafica-s background-white rounded-4">
+              <app-grafica-barra-horizontal [titulo]="'Familias de productos'" [categorias]="['Conservas', 'Verduras', 'Congelados', 'Vinos', 'Carnes', 'Frutas']" [valores]="[11600, 18460, 12300, 7200, 7100, 10200]" [elementoId]="'rechazos-familias'"></app-grafica-barra-horizontal>
+            </div>
+          </div>
+        </div>
+  
+        <div class="row ">
+          <!-- Segunda fila de gráficas -->
+          <div class="col-md-4 mb-3">
+            <div class="contenedor-grafica-s background-white rounded-4">
+              <app-grafica-barra-horizontal [titulo]="'Potencialidad'" [categorias]="['D', 'C', 'B', 'A']" [valores]="[11210, 8123, 32522, 15005]" [elementoId]="'rechazos-segmentacion-1'"></app-grafica-barra-horizontal>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="contenedor-grafica-s background-white rounded-4">
+              <app-grafica-barra-horizontal [titulo]="'Tipología'" [categorias]="['Tienda Alimentación Minorista', 'Personal Empresa', 'OCIO', 'Mayoristas', 'Bar/Tapas']" [valores]="[10700, 15300, 6010, 24700, 10530]" [elementoId]="'rechazos-segmentacion-2'"></app-grafica-barra-horizontal>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="contenedor-grafica-s background-white rounded-4">
+              <app-grafica-barra-horizontal [titulo]="'Imagen'" [categorias]="['Tradicional', 'Moderna', 'Emblemática']" [valores]="[24680, 22000, 20000]" [elementoId]="'rechazos-segmentacion-3'"></app-grafica-barra-horizontal>
+            </div>
+          </div>
+        </div>
+  
+        <div class="row">
+          <!-- Tercera fila de gráficas -->
+          <div class="col-md-4 mb-3">
+            <div class="contenedor-grafica-s background-white rounded-4">
+              <app-grafica-barra-horizontal [titulo]="'Top de productos'" [categorias]="['Aceite de oliva Arbequina', 'Miel de azahar', 'Lentejas Las Charras', 'Loctite 243', 'Bombones La Despensa de Palacio', 'Leche Pascual Semidesnatada', 'Mermelada plátano Román', 'Barbacoa', 'Pattex 120', 'Naturfresh Italiana']" [valores]="[6686, 1500, 12058, 7500, 6686, 6686, 6686, 6686, 6686, 6686]" [elementoId]="'rechazos-producto'"></app-grafica-barra-horizontal>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="contenedor-grafica-s background-white rounded-4">
+              <app-grafica-barra-vertical [titulo]="'Por mes'" [categorias]="['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']" [valores]="[0, 0, 0, 0, 5860, 18000, 43000]" [elementoId]="'rechazos-mes'"></app-grafica-barra-vertical>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="contenedor-grafica-s background-white rounded-4">
+              <app-grafica-barra-vertical [titulo]="'Por día de la semana'" [categorias]="['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']" [valores]="[12346, 15035, 9120, 6500, 6303, 9350, 8206]" [elementoId]="'rechazos-dia'"></app-grafica-barra-vertical>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-4">
-        <div class="contenedor-grafica-s background-white rounded-4">
-          <app-grafica-semi-circulo [titulo]="'Motivos de Rechazo'"
-            [valores]="[{ value: 23136, name: 'Packaging' }, { value: 18370, name: 'Mala calidad' }, { value: 17224, name: 'Precio' }, { value: 8130, name: 'No aplica' }]"
-            [elementoId]="'motivos-rechazo'"></app-grafica-semi-circulo>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="contenedor-grafica-s background-white rounded-4">
-          <app-grafica-barra-horizontal [titulo]="'Familias de productos'"
-            [categorias]="['Conservas', 'Verduras', 'Congelados', 'Vinos', 'Carnes', 'Frutas']"
-            [valores]="[11600, 18460, 12300, 7200, 7100, 10200]"
-            [elementoId]="'rechazos-faimlias'"></app-grafica-barra-horizontal>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-4">
-        <div class="contenedor-grafica-s background-white rounded-4">
-          <app-grafica-barra-horizontal [titulo]="'Potencialidad'" [categorias]="['D', 'C', 'B', 'A']"
-            [valores]="[11210, 8123, 32522, 15005]"
-            [elementoId]="'rechazos-segmentacion-1'"></app-grafica-barra-horizontal>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="contenedor-grafica-s background-white rounded-4">
-          <app-grafica-barra-horizontal [titulo]="'Tipología'"
-            [categorias]="['Tienda Alimentacion Minorista', 'Personal Empresa', 'OCIO', 'Mayoristas', 'Bar/Tapas']"
-            [valores]="[10700, 15300, 6010, 24700, 10530]"
-            [elementoId]="'rechazos-segmentacion-2'"></app-grafica-barra-horizontal>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="contenedor-grafica-s background-white rounded-4">
-          <app-grafica-barra-horizontal [titulo]="'Imagen'" [categorias]="['Tradicional', 'Moderna', 'Emblemática']"
-            [valores]="[24680, 22000, 20000]" [elementoId]="'rechazos-segmentacion-3'"></app-grafica-barra-horizontal>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-4">
-        <div class="contenedor-grafica-s background-white rounded-4">
-          <app-grafica-barra-horizontal [titulo]="'Top de productos'"
-            [categorias]="['Aceite de oliva Arbequina', 'Miel de azahar', 'Lentejas Las Charras', 'Loctite 243', 'Bombones La Despensa de Palacio', 'Leche Pascual Semidesnatada', 'Mermelada plátano Román', 'Barbacoa', 'Pattex 120', 'Naturfresh Italiana']"
-            [valores]="[6686, 1500, 12058, 7500, 6686, 6686, 6686, 6686, 6686, 6686]"
-            [elementoId]="'rechazos-producto'"></app-grafica-barra-horizontal>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="contenedor-grafica-s background-white rounded-4">
-          <app-grafica-barra-vertical [titulo]="'Por mes'"
-            [categorias]="['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']"
-            [valores]="[0, 0, 0, 0, 5860, 18000, 43000]" [elementoId]="'rechazos-mes'"></app-grafica-barra-vertical>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="contenedor-grafica-s background-white rounded-4">
-          <app-grafica-barra-vertical [titulo]="'Por día de la semana'"
-            [categorias]="['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']"
-            [valores]="[12346, 15035, 9120, 6500, 6303, 9350, 8206]"
-            [elementoId]="'rechazos-dia'"></app-grafica-barra-vertical>
-        </div>
-      </div>
+      
+      <!-- Columna vacía derecha -->
+      <div class="col"></div>
     </div>
   </div>
-
-  <div class="background-white rounded-4 p-3 mt-3">
+  <div class="background-white rounded-4  p-3 mt-3">
     <div>
       <div class="form-group col-3">
         <select id="tablaActiva" class="form-select form-select-sm" [(ngModel)]="tablaActiva" (change)="select($event)">
@@ -139,3 +131,5 @@
       </div>
     </div>
   </div>
+
+</div>
