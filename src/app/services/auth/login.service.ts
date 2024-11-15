@@ -27,6 +27,7 @@ export class LoginService {
     email: '',
     name: '',
     lastname: '',
+    cargo: '',
   });
 
   private baseUrl = "";
@@ -35,7 +36,7 @@ export class LoginService {
 
 
   user: string | null = localStorage.getItem('user');
-  cargo: string | null = localStorage.getItem('user');
+  cargo: string | null = localStorage.getItem('position_company');
   lastname: string |null = localStorage.getItem('lastname');
   
 
@@ -45,6 +46,7 @@ export class LoginService {
   ) {
     this.user = localStorage.getItem('user');
     this.lastname = localStorage.getItem('lastname');
+    this.cargo = localStorage.getItem('position_company');
     this.inicializar();
   }
 
@@ -65,7 +67,7 @@ export class LoginService {
       .post<User>(`${baseUrl}:${port}/api/users/login`, {
         schema: schema,
         email: credential.email,
-        password: credential.password,
+        password: Md5.hashStr(credential.password),
       })
       .pipe(
         map((data:any) =>{
@@ -78,9 +80,10 @@ export class LoginService {
           this.setToken(data.token);
           localStorage.setItem('user', data.name);
           localStorage.setItem('lastname', data.lastname)
+          localStorage.setItem('cargo', data.cargo)
           this.user = data.name;
           this.lastname = data.lastname;
-          
+          this.cargo = data.cargo;
           return data;
         })
       );
