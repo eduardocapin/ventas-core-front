@@ -37,8 +37,8 @@ export class LoginService {
 
   user: string | null = localStorage.getItem('user');
   cargo: string | null = localStorage.getItem('position_company');
-  lastname: string |null = localStorage.getItem('lastname');
-  
+  lastname: string | null = localStorage.getItem('lastname');
+
 
   constructor(
     private http: HttpClient,
@@ -52,31 +52,23 @@ export class LoginService {
 
 
   /* funcion de inicializacion */
-  async inicializar(){
+  async inicializar() {
     await this.configurationService.loadConfig();
     this.baseUrl = String(localStorage.getItem('baseUrl'));
     this.port = String(localStorage.getItem('port'));
     this.puerto_archivos = String(localStorage.getItem('puerto_archivos'));
   }
 
-  login(credential:LoginRequest): Observable<User>{
-    let schema = 'db_rechazos';
-    let baseUrl = 'https://converter.mobentis.com';
-    let port = '3000';
+  login(credential: LoginRequest): Observable<User> {
     return this.http
-      .post<User>(`${baseUrl}:${port}/api/users/login`, {
-        schema: schema,
+      .post<User>(`${this.baseUrl}:${this.port}/api/users/login`, {
         email: credential.email,
         password: Md5.hashStr(credential.password),
       })
       .pipe(
-        map((data:any) =>{
+        map((data: any) => {
           localStorage.setItem('dir', 'db_rechazos');
           localStorage.setItem('email', credential.email);
-          localStorage.setItem('baseUrl', 'https://converter.mobentis.com');
-          localStorage.setItem('schema', 'db_rechazos');
-          localStorage.setItem('port', '3000');
-
           this.setToken(data.token);
           localStorage.setItem('user', data.name);
           localStorage.setItem('lastname', data.lastname)
@@ -90,13 +82,13 @@ export class LoginService {
   }
 
   /* Para modificar datos del usuario */
-  getUserInfo(){
+  getUserInfo() {
     let schema = localStorage.getItem('schema');
     let baseUrl = localStorage.getItem('baseUrl');
     let port = localStorage.getItem('port');
-    let options ={
+    let options = {
       headers: new HttpHeaders().set(
-        'Authorization', 
+        'Authorization',
         `Bearer ${this.getToken()}`
       ),
     };
@@ -110,14 +102,13 @@ export class LoginService {
         options
       )
       .pipe(
-        map((data: any) =>{
+        map((data: any) => {
           return data.fecha_insert;
         })
       );
   }
 
   resetPassword(email: string) {
-
     return this.http
       .post<User>(`${this.baseUrl}:${this.port}/api/users/reset-password`, {
         email: email,
@@ -128,7 +119,7 @@ export class LoginService {
         })
       );
   }
-  
+
   addNewPassword(email: string, newpass: string) {
     let baseUrl = localStorage.getItem('baseUrl');
     let port = localStorage.getItem('port');
@@ -158,7 +149,7 @@ export class LoginService {
 
       );
   }
-  
+
   updateUserInfo(user: string, cargo: string) {
     this.user = user;
     this.cargo = cargo;
