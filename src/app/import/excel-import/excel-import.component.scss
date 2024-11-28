@@ -37,3 +37,12 @@ th {
 th.dragging {
   opacity: 0.5;
 }
+
+.placeholder-box {
+  height: 250px;
+  border: 3px dashed #ccc;   /* Borde opcional */
+  border-radius: 4px;       /* Bordes redondeados opcionales */
+  color: #666;             /* Color del texto */
+  font-size: 16px;         /* Tamaño del texto */
+  text-align: center;      /* Centrado del texto */
+}

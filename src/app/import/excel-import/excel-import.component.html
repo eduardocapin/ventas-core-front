@@ -6,6 +6,7 @@
       <button class="btn btn-link" (click)="volverAConfig()">
         <i class="bi bi-arrow-left dadrk-gray"></i>
       </button>
+      <!-- select para seleccionar hoja de la tabla de excel -->
       <div class="d-flex gap-2 p-1" *ngIf="ExcelData.length > 1">
         <select
           id="sheetSelector"
@@ -17,11 +18,16 @@
           </option>
         </select>
       </div>
+      
+      <!-- Si hay solo una hoja, mostrar su nombre en un H2 -->
+      <h2 *ngIf="ExcelData.length === 1" class="m-0">{{ ExcelData[0]?.name }}</h2>
+    
       <h2 *ngIf="selectedSheet" class="m-0 px-3">-</h2>
       <!-- Contenedor para el selector y el icono -->
       <div class="d-flex align-items-center ps-1">
         <!-- Selector de tabla -->
         <select class="form-select form-select-sm" [(ngModel)]="tablaActiva" (change)="cambiarTablaCabecera()" [disabled]="!selectedSheet">
+          <option [value]="-1" disabled hidden>-- Seleccione una tabla --</option>
           <option *ngFor="let tabla of tablasMobentis; let i = index" [value]="i">
             {{ tabla }}
           </option>
@@ -39,15 +45,22 @@
       Selección</button>
   </div>
 
+  <div *ngIf="!selectedSheet" class="placeholder-box d-flex justify-content-center align-items-center flex-column">
+    <i class="bi bi-cloud-upload-fill mb-4" style="font-size: 40px;"></i>
+    <h2 class="mb-2">Seleccione un archivo .xlsx<br/> o</h2>
+    <button class="btn btn-sm btn-primary " (click)="abrirInput()">Seleccionar archivo</button>
+  </div>
+
   <!-- Tabla de datos seleccionados -->
-  <div *ngIf="selectedSheet" class="contenedor-tabla">
+  <div *ngIf="selectedSheet " class="contenedor-tabla">
     <!-- Tabla de "Cabeceras" -->
-    <table class="table table-bordered mb-0">
+    <table class="table  mb-2">
       <thead class="sticky-header-top">
         <tr>
           <th *ngFor="let emparejamientoDeCampo of listaDeEmparejamientoDeCampos" class="p-1">
             <select class="form-select w-100" [(ngModel)]="emparejamientoDeCampo.destino"
-              (change)="borrarSeleccionesSimilares(emparejamientoDeCampo)">
+              (change)="borrarSeleccionesSimilares(emparejamientoDeCampo)" [disabled]="tablaActiva === -1 || camposTablaSeleccionada.length === 0">
+              <option value="" disabled hidden selected>-- Selecciona el campo --</option>
               <option *ngFor="let campo of camposTablaSeleccionada" [value]="campo">{{ campo }}</option>
             </select>
           </th>
@@ -58,7 +71,7 @@
     <table class="table table-bordered mt-0">
       <thead class="sticky-header">
         <tr>
-          <th *ngFor="let columnName of getColumnNames()" [title]="columnName.length > 18 ? columnName : ''">
+          <th *ngFor="let columnName of getColumnNames()" [title]="columnName.length > 18 ? columnName : ''" class="color-primary">
             {{ columnName }}
           </th>
         </tr>
@@ -70,7 +83,8 @@
       </tbody>
     </table>
   </div>
-
-  <!-- Botones para cada hoja del Excel -->
-  
+  <!-- Mensaje cuando la hoja está vacía -->
+<div *ngIf="isSheetEmpty" class=" d-flex justify-content-center align-items-center">
+  No hay datos en el archivo.
+</div>
 </div>

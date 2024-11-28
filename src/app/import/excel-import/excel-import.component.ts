@@ -13,7 +13,7 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./excel-import.component.scss'],
 })
 export class ExcelImportComponent {
-  tablaActiva: number;
+  tablaActiva: number= -1;
   tablasMobentis: any[] = ['Clientes', 'Vendedores', 'Rechazos'];
   tablasMobentisReales: any[] = ['customers', 'salesmen', 'rechazos'];
 
@@ -110,6 +110,8 @@ export class ExcelImportComponent {
   ExcelData: any[] = [];
   selectedSheet: any = null;
   dropdownVisible: { [key: string]: boolean }; // Objeto para rastrear la visibilidad del menú desplegable por hoja
+  isSheetEmpty: boolean = false;
+
 
   listaDeEmparejamientoDeCampos: IPareja[] = [];
 
@@ -119,10 +121,12 @@ export class ExcelImportComponent {
     private _excelImportServices: ImportExcelService,
     private _notifactionService: NotificationService
   ) {
-    this.tablaActiva = 0;
+    this.tablaActiva = -1;
     route.params.subscribe((params) => {
-      if (params) {
+      if (params['tabla'] !== undefined) {
         this.tablaActiva = Number(params['tabla']);
+      } else {
+        this.tablaActiva = -1; // Valor predeterminado
       }
     });
     this.cambiarTablaCabecera();
@@ -147,6 +151,10 @@ export class ExcelImportComponent {
       var workBook = XLSX.read(fileReader.result, { type: 'binary' });
       var sheetNames = workBook.SheetNames;
 
+      // Reiniciar ExcelData al cargar un nuevo archivo
+      this.ExcelData = [];
+      this.selectedSheet = null;
+      
       // Iterar sobre cada nombre de hoja
       sheetNames.forEach((sheetName) => {
         // Convertir cada hoja en un objeto JSON y agregarlo a la matriz ExcelData
@@ -156,12 +164,20 @@ export class ExcelImportComponent {
       });
 
       // Establecer la primera hoja como la hoja seleccionada automáticamente
+      // Establecer la primera hoja como seleccionada automáticamente
       if (this.ExcelData.length > 0) {
         this.selectedSheet = this.ExcelData[0];
+        this.isSheetEmpty = this.selectedSheet.sheetName.length === 0; // Verificar si está vacía
+
+        // Reiniciar lista de emparejamientos de campos
         this.listaDeEmparejamientoDeCampos = [];
-        Object.keys(this.selectedSheet.sheetName[0]).forEach((key) => {
-          this.listaDeEmparejamientoDeCampos.push({ origen: key });
-        });
+        if (!this.isSheetEmpty) {
+          Object.keys(this.selectedSheet.sheetName[0]).forEach((key) => {
+            this.listaDeEmparejamientoDeCampos.push({ origen: key });
+          });
+        }
+      } else {
+        this.isSheetEmpty = true; // Si no hay hojas
       }
     };
   }
@@ -183,10 +199,24 @@ export class ExcelImportComponent {
   }
 
   // Método para mostrar la tabla correspondiente al hacer clic en un botón
-  showTable(sheetName: string) {
-    this.selectedSheet = this.ExcelData.find(
-      (sheet) => sheet.name === sheetName
-    );
+  showTable(sheetName: string): void {
+    const selectedSheetData = this.ExcelData.find(sheet => sheet.name === sheetName);
+  
+    if (selectedSheetData) {
+    this.selectedSheet = selectedSheetData;
+    this.isSheetEmpty = selectedSheetData.sheetName.length === 0; // Actualiza el estado según los datos de la hoja
+
+      // Reiniciar lista de emparejamientos de campos si la hoja tiene datos
+      this.listaDeEmparejamientoDeCampos = [];
+      if (!this.isSheetEmpty) {
+        Object.keys(this.selectedSheet.sheetName[0]).forEach((key) => {
+          this.listaDeEmparejamientoDeCampos.push({ origen: key });
+        });
+      }
+    } else {
+      this.selectedSheet = null;
+      this.isSheetEmpty = true;
+    }
   }
 
   // Método para mostrar u ocultar el menú desplegable de un botón específico
@@ -196,8 +226,13 @@ export class ExcelImportComponent {
 
   cambiarTablaCabecera() {
     const tablaActiva = Number(this.tablaActiva); // Convertir a número si es una cadena
-    console.log('Tabla activa (convertida):', tablaActiva);
     switch (tablaActiva) {
+      case -1:
+        console.log('No se ha seleccionado ninguna tabla.');
+        this.camposTablaSeleccionada = [];
+        this.camposTablaSeleccionadaObligatorios = [];
+        this.camposTablaRealSeleccionada = [];
+        break;
       case 0:
         this.camposTablaSeleccionada = this.camposCustomers;
         this.camposTablaSeleccionadaObligatorios =
