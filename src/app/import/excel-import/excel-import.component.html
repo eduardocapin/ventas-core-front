@@ -8,7 +8,7 @@
       </button>
       <!-- Apartado: nombre de las hojas, seleccion de tablas y boton de seleccionar archivo -->
       <div *ngIf="selectedSheet" class="d-flex align-items-center">
-        <!-- select para seleccionar hoja de la tabla de excel -->
+        <!-- select para seleccionar hoja de excel -->
         <div class="d-flex gap-2 p-1" *ngIf="ExcelData.length > 1">
           <select
             id="sheetSelector"
@@ -30,8 +30,8 @@
           <!-- Selector de tabla -->
           <select class="form-select form-select-sm" [(ngModel)]="tablaActiva" (change)="cambiarTablaCabecera()" [disabled]="!selectedSheet">
             <option [value]="-1" disabled hidden>-- Seleccione una tabla --</option>
-            <option *ngFor="let tabla of tablasMobentis; let i = index" [value]="i">
-              {{ tabla }}
+            <option *ngFor="let tabla of tablasMobentis" [value]="tabla.id">
+              {{ tabla.show_table_name }}
             </option>
           </select>
           <!-- Icono de información con tooltip -->
@@ -56,7 +56,7 @@
     (drop)="onFileDrop($event)"  
   >
     <i class="bi bi-cloud-upload-fill mb-4" style="font-size: 40px;"></i>
-    <h2 class="mb-2">Seleccione un archivo Excel<br/>o</h2>
+    <h2 class="mb-2">Arrastre un archivo Excel<br/>o</h2>
     <button class="btn btn-sm btn-primary " (click)="abrirInput()">Seleccionar archivo</button>
   </div>
 
@@ -70,7 +70,7 @@
             <select class="form-select w-100" [(ngModel)]="emparejamientoDeCampo.destino"
               (change)="borrarSeleccionesSimilares(emparejamientoDeCampo)" [disabled]="tablaActiva === -1 || camposTablaSeleccionada.length === 0">
               <option value="" disabled hidden selected>-- Selecciona el campo --</option>
-              <option *ngFor="let campo of camposTablaSeleccionada" [value]="campo">{{ campo }}</option>
+              <option *ngFor="let campo of camposTablaSeleccionada" [value]="campo.real_field_name">{{ campo.show_field_name }}</option>
             </select>
           </th>
         </tr>

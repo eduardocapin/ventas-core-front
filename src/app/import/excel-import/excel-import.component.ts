@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPareja } from 'src/app/models/pareja.model';
-
 import { ImportExcelService } from 'src/app/services/import/import-excel.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import * as XLSX from 'xlsx';
+import { ImportTableName } from 'src/app/models/importTableName.model';
+import { ImportTableField } from 'src/app/models/importTableField.model';
 
 @Component({
   selector: 'app-excel-import',
@@ -17,105 +18,18 @@ export class ExcelImportComponent {
   isDragging = false;
 
   tablaActiva: number= -1;
-  tablasMobentis: any[] = ['Clientes', 'Vendedores', 'Rechazos'];
-  tablasMobentisReales: any[] = ['customers', 'salesmen', 'rechazos'];
+  tablasMobentis: any[] = [];
+  tablasMobentisReales: any[]=[];
+  fields: ImportTableField[] = [];
+  selectedTableId: number = 1; 
 
-  camposCustomers: string[] = [
-    'Id Cliente',
-    'Nombre',
-    'Nombre Fiscal',
-    'cif',
-    'Id Provincia',
-    'Provincia',
-    'Id Población',
-    'Población',
-    'CP',
-    'Dirección',
-    'Teléfono 1',
-    'Teléfono 2',
-    'Email',
-    'Segmentacion 1',
-    'Segmentacion 2',
-    'Segmentacion 3',
-  ];
-  camposCustomersObligatorios: string[] = [
-    'Id Cliente',
-    'Nombre',
-    'Nombre Fiscal',
-    'cif',
-    'Id Provincia',
-    'Provincia',
-    'Id Población',
-    'Población',
-    'CP',
-    'Dirección',
-    'Teléfono 1',
-    'Teléfono 2',
-    'Email',
-    'Segmentacion 1',
-    'Segmentacion 2',
-    'Segmentacion 3',
-  ];
-  camposCustomersReales: string[] = [
-    'customer_ERP_id',
-    'name',
-    'tax_name',
-    'cif',
-    'province_ERP_id',
-    'province',
-    'city_ERP_id',
-    'city',
-    'pc',
-    'adress',
-    'phone_1',
-    'phone_2',
-    'email',
-    'segmentation_1',
-    'segmentation_2',
-    'segmentation_3',
-  ];
-
-  camposSalesmen: string[] = ['Id Vendedor', 'Nombre', 'Teléfono', 'Email'];
-  camposSalesmenObligatorios: string[] = [
-    'Id Vendedor',
-    'Nombre',
-    'Teléfono',
-    'Email',
-  ];
-  camposSalesmenReales: string[] = [
-    'salesman_ERP_id',
-    'name',
-    'phone',
-    'email',
-  ];
-
-  camposRechazos: string[] = [
-    'Estado',
-    'Poblacion',
-    'Provincia',
-    'Id Cliente',
-    'Producto',
-    'Tipo Rechazo',
-  ];
-  camposRechazosObligatorios: string[] = [];
-  camposRechazosReales: string[] = [
-    'id_estado',
-    'id_poblacion',
-    'id_provincia',
-    'id_cliente',
-    'id_producto',
-    'id_tipo_rechazo',
-  ];
-
-  camposTablaSeleccionada: string[] = [];
+  camposTablaSeleccionada: any[] = [];
   camposTablaSeleccionadaObligatorios: string[] = [];
   camposTablaRealSeleccionada: string[] = [];
   ExcelData: any[] = [];
   selectedSheet: any = null;
-  dropdownVisible: { [key: string]: boolean }; // Objeto para rastrear la visibilidad del menú desplegable por hoja
+  dropdownVisible: { [key: string]: boolean };
   isSheetEmpty: boolean = false;
-
-
   listaDeEmparejamientoDeCampos: IPareja[] = [];
 
   constructor(
@@ -124,17 +38,38 @@ export class ExcelImportComponent {
     private _excelImportServices: ImportExcelService,
     private _notifactionService: NotificationService
   ) {
-    this.tablaActiva = -1;
-    route.params.subscribe((params) => {
-      if (params['tabla'] !== undefined) {
-        this.tablaActiva = Number(params['tabla']);
-      } else {
-        this.tablaActiva = -1; // Valor predeterminado
-      }
+    this.route.params.subscribe((params) => {
+      this.tablaActiva = params['tabla'] ? Number(params['tabla']) : -1;
     });
     this.cambiarTablaCabecera();
     this.dropdownVisible = {};
   }
+
+  ngOnInit(): void {
+    this.loadTables();
+    if (this.tablaActiva >= 0) {
+      this.cambiarTablaCabecera();
+    }
+  }
+
+  loadTables() {
+    this._excelImportServices.getTablesName().subscribe(
+      (data) => {
+        console.log('Tablas recibidas:', data);
+        this.tablasMobentis = data;
+      },
+      (error) => {
+        console.error('Error al cargar los nombres de tablas', error);
+      }
+    );
+  }
+
+  onTableSelect(tableId: number): void {
+    console.log('Tabla seleccionada con ID:', tableId);
+    this.tablaActiva = tableId;
+    this.cambiarTablaCabecera(tableId);
+  }
+
   /// Para lograr el arrastreado de archivos excel a la pagina
   onDragOver(event: DragEvent): void {
     event.preventDefault();
@@ -269,50 +204,32 @@ export class ExcelImportComponent {
     this.dropdownVisible[sheetName] = visible;
   }
 
-  cambiarTablaCabecera() {
-    const tablaActiva = Number(this.tablaActiva); // Convertir a número si es una cadena
-    switch (tablaActiva) {
-      case -1:
-        console.log('No se ha seleccionado ninguna tabla.');
-        this.camposTablaSeleccionada = [];
-        this.camposTablaSeleccionadaObligatorios = [];
-        this.camposTablaRealSeleccionada = [];
-        break;
-      case 0:
-        this.camposTablaSeleccionada = this.camposCustomers;
-        this.camposTablaSeleccionadaObligatorios =
-          this.camposCustomersObligatorios;
-        this.camposTablaRealSeleccionada = this.camposCustomersReales;
-        console.log(
-          'Campos seleccionados (Customers):',
-          this.camposTablaSeleccionada
-        );
-        break;
-      case 1:
-        this.camposTablaSeleccionada = this.camposSalesmen;
-        this.camposTablaSeleccionadaObligatorios =
-          this.camposSalesmenObligatorios;
-        this.camposTablaRealSeleccionada = this.camposSalesmenReales;
-        console.log(
-          'Campos seleccionados (Salesmen):',
-          this.camposTablaSeleccionada
-        );
-        break;
-      case 2:
-        this.camposTablaSeleccionada = this.camposRechazos;
-        this.camposTablaSeleccionadaObligatorios =
-          this.camposRechazosObligatorios;
-        this.camposTablaRealSeleccionada = this.camposRechazosReales;
-        console.log(
-          'Campos seleccionados (Rechazos):',
-          this.camposTablaSeleccionada
-        );
-        break;
-      default:
-        console.log('Valor de tablaActiva no coincide con ningún caso');
+  cambiarTablaCabecera(tablaId?: number): void {
+    const id = tablaId !== undefined ? tablaId : this.tablaActiva;
+    const tablaSeleccionada = this.tablasMobentis.find((tabla) => +tabla.id === +id);
+  
+    if (!tablaSeleccionada) {
+      console.warn('No se ha seleccionado una tabla válida.');
+      this.camposTablaSeleccionada = [];
+      this.camposTablaSeleccionadaObligatorios = [];
+      this.camposTablaRealSeleccionada = [];
+      return;
     }
-    this.resetListaDeEmparejamientoDeCampos();
+  
+    this._excelImportServices.getImportTableField(id).subscribe(
+      (data) => {
+        this.camposTablaSeleccionada = data;
+        console.log(
+          `Campos seleccionados (Tabla: ${tablaSeleccionada.show_table_name}):`,
+          this.camposTablaSeleccionada
+        );
+      },
+      (error) => {
+        console.error('Error al cargar los campos de la tabla:', error);
+      }
+    );
   }
+  
 
   importar() {
     let columnasObligatoriasNoSeleccionadas =
@@ -420,15 +337,8 @@ export class ExcelImportComponent {
   }
 
   columnasObligatoriasNoSeleccionadas() {
-    let columnasObligatorioasNoSeleccionadas: string[] = [];
-    let camposDestinoSeleccionados = this.destinosSeleccionados();
-
-    for (let campoObligatorio of this.camposTablaSeleccionadaObligatorios) {
-      if (!camposDestinoSeleccionados.includes(campoObligatorio)) {
-        columnasObligatorioasNoSeleccionadas.push(campoObligatorio);
-      }
-    }
-    return columnasObligatorioasNoSeleccionadas;
+    const camposDestinoSeleccionados = this.listaDeEmparejamientoDeCampos.map((pareja) => pareja.destino);
+    return this.camposTablaSeleccionadaObligatorios.filter((campo) => !camposDestinoSeleccionados.includes(campo));
   }
 
   destinosSeleccionados() {
