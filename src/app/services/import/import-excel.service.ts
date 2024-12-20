@@ -52,26 +52,26 @@ export class ImportExcelService {
   }
 
   /* funcion para importar excel (update) */
-  importExcel(recarga: any) {
+  importExcel(tableName: string, data: any[]): Observable<any>{
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
         `Bearer ${this._loginServices.getToken()}`
       ),
     };
-    /*
+
     return this._http
       .post(
-        `${this.baseUrl}:${this.puerto_integracion}/api/input`,
-        recarga,
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/importar/import`,
+        { tableName, data },
         options
       )
       .pipe(
-        map((data: any) => {
-          // Aquí puedes realizar cualquier transformación necesaria en los datos
-          return data.status;
+        map((response: any) => {
+          console.log('Respuesta del servidor:', response);
+          return response;
         })
       );
-      */
+
   }
 }

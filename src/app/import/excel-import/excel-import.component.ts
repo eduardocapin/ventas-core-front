@@ -26,6 +26,7 @@ export class ExcelImportComponent {
   camposTablaSeleccionada: any[] = [];
   camposTablaSeleccionadaObligatorios: string[] = [];
   camposTablaRealSeleccionada: string[] = [];
+  nombreTablaRealSeleccionada: string = '';
   ExcelData: any[] = [];
   selectedSheet: any = null;
   dropdownVisible: { [key: string]: boolean };
@@ -213,9 +214,12 @@ export class ExcelImportComponent {
       this.camposTablaSeleccionada = [];
       this.camposTablaSeleccionadaObligatorios = [];
       this.camposTablaRealSeleccionada = [];
+      this.nombreTablaRealSeleccionada = '';
       return;
     }
-  
+
+    this.nombreTablaRealSeleccionada = tablaSeleccionada.real_table_name;
+
     this._excelImportServices.getImportTableField(id).subscribe(
       (data) => {
         this.camposTablaSeleccionada = data;
@@ -223,6 +227,14 @@ export class ExcelImportComponent {
           `Campos seleccionados (Tabla: ${tablaSeleccionada.show_table_name}):`,
           this.camposTablaSeleccionada
         );
+        this.camposTablaSeleccionadaObligatorios = data
+          .filter((campo: ImportTableField) => campo.required)
+          .map((campo: ImportTableField) => campo.real_field_name);
+
+        // Restablecer el valor de destino en cada emparejamiento
+        this.listaDeEmparejamientoDeCampos.forEach((emparejamiento) => {
+          emparejamiento.destino = "-1"; // Restablecer a valor predeterminado
+        });
       },
       (error) => {
         console.error('Error al cargar los campos de la tabla:', error);
@@ -232,13 +244,16 @@ export class ExcelImportComponent {
   
 
   importar() {
-    let columnasObligatoriasNoSeleccionadas =
-      this.columnasObligatoriasNoSeleccionadas();
-
+    let columnasObligatoriasNoSeleccionadas = this.columnasObligatoriasNoSeleccionadas();
+  
     if (columnasObligatoriasNoSeleccionadas.length <= 0) {
       let values: {}[] = [];
+      let jsonResult: any[] = []; /* array donde se almacenará el json generado */
+  
       this.selectedSheet.sheetName.forEach((linea: any) => {
         let data: any = {};
+        let jsonEntry: any = {}; /* se almacenará las claves */
+  
         this.listaDeEmparejamientoDeCampos.forEach((emparejamiento) => {
           if (emparejamiento.destino) {
             let nombreCampoReal =
@@ -246,45 +261,44 @@ export class ExcelImportComponent {
                 this.camposTablaSeleccionada.indexOf(emparejamiento.destino)
               ];
             data[nombreCampoReal] = linea[emparejamiento.origen];
+            /* Se agrega al json con el formato */
+            jsonEntry[emparejamiento.destino] = linea[emparejamiento.origen];
           }
         });
+  
         let datoRecarga = {
           id: Object.values(linea)[0],
           data: data,
         };
         values.push(datoRecarga);
+        jsonResult.push(jsonEntry); /* añade el objeto al array */
       });
-      console.log(values);
-      console.log('T' + Date.now());
-
-      let recarga = {
-        schema: localStorage.getItem('schema'),
-        apikey: 'test',
-        table: this.tablasMobentisReales[this.tablaActiva],
-        primary_key: 'internal_id',
-        process_id: 'P' + Date.now(),
-        process_type: 'Parcial',
-        values: values,
-      };
-
-      console.log(JSON.stringify(recarga));
-      console.log('Update realizada con exito');
-      this.router.navigateByUrl('/mobentis/configuracion/global');
-      this._notifactionService.showSuccess(
-        'Los datos se han importado correctamente'
+  
+      /* Llamar al servicio */
+      if (!this.nombreTablaRealSeleccionada) {
+        this._notifactionService.showError(
+          'Error: No se encontró el nombre de la tabla activa.'
+        );
+        return;
+      }
+  
+      this._excelImportServices.importExcel(this.nombreTablaRealSeleccionada, jsonResult).subscribe(
+        (response) => {
+          console.log('Respuesta del servidor:', response);
+          this._notifactionService.showSuccess(
+            'Los datos se han importado correctamente'
+          );
+          this.router.navigateByUrl('/mobentis/configuracion/global');
+        },
+        (error) => {
+          console.error('Error al importar los datos:', error);
+          this._notifactionService.showError(
+            'Error al importar los datos. Por favor, inténtalo nuevamente.'
+          );
+        }
       );
-      /*
-      this._excelImportServices
-        .importExcel(
-          recarga
-        )
-        .subscribe((data) => {
-          if (data === 'Success') {
-            
-          }
-        });
-        */
     } else {
+      /* si no está seleccionado el campo requerido saldrá esta alerta */
       let mensajeError = 'Error, debes seleccionar los siguientes campos: ';
       columnasObligatoriasNoSeleccionadas.forEach((columna, index) => {
         mensajeError += columna;
@@ -314,17 +328,7 @@ export class ExcelImportComponent {
       }
     }
   }
-
-  volverAConfig() {
-    this.router.navigateByUrl('/mobentis/configuracion/global');
-  }
-
-  resetListaDeEmparejamientoDeCampos() {
-    this.listaDeEmparejamientoDeCampos.forEach((pareja) => {
-      pareja.destino = '';
-    });
-  }
-
+  /* se encarga de que los campos seleccionados no sean similiares y no coincidan */
   borrarSeleccionesSimilares(parejaSeleccionada: IPareja) {
     this.listaDeEmparejamientoDeCampos.forEach((pareja) => {
       if (
@@ -335,20 +339,18 @@ export class ExcelImportComponent {
       }
     });
   }
-
+  
   columnasObligatoriasNoSeleccionadas() {
-    const camposDestinoSeleccionados = this.listaDeEmparejamientoDeCampos.map((pareja) => pareja.destino);
-    return this.camposTablaSeleccionadaObligatorios.filter((campo) => !camposDestinoSeleccionados.includes(campo));
+    const camposDestinoSeleccionados = this.listaDeEmparejamientoDeCampos.map((pareja) => pareja.destino)
+    .filter((destino) => !!destino);
+
+    return this.camposTablaSeleccionadaObligatorios.filter(
+      (campo) => !camposDestinoSeleccionados.includes(campo)
+    );
   }
-
-  destinosSeleccionados() {
-    let camposDestinoSeleccionados: string[] = [];
-    this.listaDeEmparejamientoDeCampos.forEach((pareja) => {
-      if (pareja.destino) {
-        camposDestinoSeleccionados.push(pareja.destino);
-      }
-    });
-
-    return camposDestinoSeleccionados;
+  
+  /* funcion que regresa a la pagina de configuraciones */
+  volverAConfig() {
+    this.router.navigateByUrl('/mobentis/configuracion/global');
   }
 }

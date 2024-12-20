@@ -69,7 +69,7 @@
           <th *ngFor="let emparejamientoDeCampo of listaDeEmparejamientoDeCampos" class="p-1">
             <select class="form-select w-100" [(ngModel)]="emparejamientoDeCampo.destino"
               (change)="borrarSeleccionesSimilares(emparejamientoDeCampo)" [disabled]="tablaActiva === -1 || camposTablaSeleccionada.length === 0">
-              <option value="" disabled hidden selected>-- Selecciona el campo --</option>
+              <option [value]="-1" disabled hidden>-- Selecciona el campo --</option>
               <option *ngFor="let campo of camposTablaSeleccionada" [value]="campo.real_field_name">{{ campo.show_field_name }}</option>
             </select>
           </th>
