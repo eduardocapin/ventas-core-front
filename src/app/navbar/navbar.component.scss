@@ -1,85 +1,56 @@
 @import "src/styles.scss";
 
+/* Navbar horizontal (solo para tablets y móviles) */
 .header {
   background-color: #353e40;
-}
 
-.navbar-brand:hover {
-  background-color: #44484981;
-  color: #fff;
-  border-radius: 2px;
-}
-
-.navbar-brand {
-  margin-right: 0;
-}
-
-.navbar-toggler {
-  display: none;
-  font-size: 24px;
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-}
-
-.navbar-toggler-icon {
-  display: inline-block;
-  width: 1.5em;
-  height: 1em;
-  vertical-align: middle;
-  background-image: var(--bs-navbar-toggler-icon-bg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100%;
-}
-
-.avatar.active {
-  border: 2px solid #007bff; /* Opcional: resaltado cuando el menú está abierto */
-}
-
-.name {
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px;
-  letter-spacing: 0.2px;
-  padding: 0;
-}
-.cargo {
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 16px;
-  letter-spacing: 0.25px;
-}
-
-ul.list-style {
-  list-style: none;
-}
-
-.btn-profile {
-  padding-left: 8px;
-  padding-right: 5px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  cursor: pointer;
-}
-
-.btn-profile:hover {
-  background-color: #44484981;
-}
-.dropdown-toggle::after {
-  display: none;
-}
-
-@media (max-width: 991.98px) {
   .navbar-toggler {
     display: block;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .navbar-toggler-icon {
+    display: inline-block;
+    width: 1.5em;
+    height: 1em;
+    background-image: var(--bs-navbar-toggler-icon-bg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+  }
+
+  .navbar-brand {
+    margin-right: 0;
+
+    &:hover {
+      background-color: #44484981;
+      color: #fff;
+      border-radius: 2px;
+    }
+  }
+
+  ul.list-style {
+    list-style: none;
+  }
+
+  .btn-profile {
+    cursor: pointer;
+
+    &:hover {
+      background-color: #44484981;
+    }
+  }
+
+  .dropdown-toggle::after {
+    display: none;
   }
 }
-/* Estilo del navbar vertical */
 
+/* Navbar vertical (solo para pantallas grandes) */
 #sidebar-wrapper {
   width: 60px;
   position: fixed;
@@ -90,7 +61,6 @@ ul.list-style {
   color: #fff;
   z-index: 16;
   transition: width 0.3s ease;
-  overflow-x: none;
 
   &[aria-expanded="true"] {
     width: 250px;
@@ -99,32 +69,11 @@ ul.list-style {
     .sidebar-nav li a.navLink span {
       opacity: 1;
       visibility: visible;
-      overflow: visible;
-      overflow: hidden;
-      transition: opacity 0.3s ease, visibility 0s ease 0.3s;
     }
 
     .sidebar-brand img {
       margin-right: 0.5rem;
     }
-    overflow: visible;
-  }
-
-  &.hovering {
-    width: 250px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); // Opcional, para destacar el hover
-  }
-
-  .sidebar-brand h4,
-  .sidebar-nav li a.navLink span {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-  }
-
-  .sidebar-brand img {
-    margin-right: 0;
-    transition: margin-right 0.3s ease;
   }
 
   .sidebar-nav {
@@ -132,21 +81,17 @@ ul.list-style {
     padding: 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     height: 100%;
+    justify-content: space-between;
 
     .sidebar-brand {
       font-size: 1.5rem;
       padding: 1rem 1.2rem;
       display: flex;
       align-items: center;
-      flex-shrink: 0; /* Evita que el texto se encoja */
-      overflow: hidden;
-      text-overflow: ellipsis;
 
       .title-navbar {
         text-decoration: none;
-        justify-content: center;
         display: flex;
       }
 
@@ -193,7 +138,6 @@ ul.list-style {
   border: 1px solid #ddd;
   transition: left 0.2s ease, opacity 0.5s ease;
   opacity: 0;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
 
   &[aria-expanded="true"] {
     left: 235px;
@@ -211,38 +155,31 @@ ul.list-style {
   }
 }
 
-/* estilo del contenido de la pagina */
-#page-content-wrapper {
-  margin-left: 60px; // Margen por defecto cuando el navbar está comprimido
-  transition: margin-left 0.2s ease;
-  min-height: 100vh;
-  &[aria-expanded="true"] {
-    margin-left: 250px; // Margen cuando el navbar está expandido
+/* Contenido de la página */
+@media (min-width: 992px) {
+  #page-content-wrapper {
+    margin-left: 60px;
+    transition: margin-left 0.2s ease;
+    min-height: 100vh;
+
+    &[aria-expanded="true"] {
+      margin-left: 250px;
+    }
   }
 }
 
-/* Estilo para el dropdown */
-.nav-item.dropdown.dropend {
-  position: relative;
-}
-
+/* Dropdown */
 .dropdown-menu {
-  background-color: #343a40; /* Fondo oscuro para el dropdown */
-  border: none; /* Elimina el borde */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Agrega sombra */
-}
+  background-color: #343a40;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
-.dropdown-item {
-  color: #fff; /* Texto blanco para los elementos */
-  padding: 10px 20px;
-}
+  .dropdown-item {
+    color: #fff;
+    padding: 10px 20px;
 
-.dropdown-item:hover {
-  background-color: #495057; /* Color de fondo al pasar el ratón */
-}
-
-/* Asegura que el dropdown se abra hacia el lado */
-.navbar-nav .nav-item.dropdown.dropend .dropdown-menu {
-  left: 100%; /* Alinea el dropdown a la derecha */
-  top: 0;
+    &:hover {
+      background-color: #495057;
+    }
+  }
 }

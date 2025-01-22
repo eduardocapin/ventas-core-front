@@ -36,10 +36,8 @@ export class NavbarComponent {
     }
   }
   onMouseLeave() {
-    if (!this.isToggled && this.isButtonHovered == false) {
-      this.isHovered = false;
-      this.updateNavbarState();
-    }
+    this.isHovered = false;
+    this.updateNavbarState();
   }
   /** Maneja cuando el mouse entra al botón */
   onButtonMouseEnter() {

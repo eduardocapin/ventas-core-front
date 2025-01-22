@@ -1,6 +1,47 @@
 <div class="">
+  <!-- contenedor del navbar horizontal para tablet -->
+  <nav class="d-block d-lg-none navbar navbar-expand-lg navbar-dark header">
+    <div class="container-fluid d-flex flex-lg-nowrap">
+        <!-- Botón de toggler para pantallas pequeñas (a la izquierda del logo) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center p-1 order-lg-1" [routerLink]="['/']">
+            <img src="../../assets/images/mobentisLogo.png" alt="logo" width="30" height="30" class="d-inline-block align-text-top" />
+        </a>
+        
+        <!-- Sección del perfil de usuario, manteniéndose a la derecha -->
+        <ul class="m-0 list-style order-lg-3">
+            <li class="dropdown">
+                <a class="nav-link dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="assets/images/user.png" alt="Perfil" width="35" height="35" class="avatar" />
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="profileDropdown">
+                    <h3 class="name m-0">{{_loginServices.user}}</h3>
+                    <p class="cargo no-padding">{{_loginServices.cargo}}</p>
+                    <li> <a class="dropdown-item" (click)="openProfileEditPopup()"><i class="bi bi-person-fill"></i> Mi Perfil</a></li>
+                    <li><a class="dropdown-item" (click)="logout()"><i class="bi bi-box-arrow-in-left"></i>Desconectar</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- Menú de navegación -->
+        <div class="collapse navbar-collapse order-lg-2" id="navbarNav" #navbarNav>
+            <ul class="navbar-nav p-2">
+                <app-menu-item
+                    *ngFor="let item of menuItems"
+                    [item]="item"
+                    (click)="closeNavbar()"
+                ></app-menu-item>
+            </ul> 
+        </div>
+    </div>
+  </nav>
+
   <!-- contendor de navbar vertical -->
-  <div class="">
+  <div class="d-none d-lg-block">
     <!-- navbar vertical -->
     <div
       id="sidebar-wrapper"
