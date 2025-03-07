@@ -61,7 +61,7 @@ export class AuthComponent {
         },
         (error) => {
           this.errorLogin = true;
-          this.messageError = error.error.msg;
+          this.messageError = error.error.message;
         }
       );
     }

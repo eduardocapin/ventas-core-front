@@ -67,12 +67,14 @@ export class LoginService {
       })
       .pipe(
         map((data: any) => {
+          console.log(data)
           localStorage.setItem('dir', 'db_rechazos');
           localStorage.setItem('email', credential.email);
           this.setToken(data.token);
           localStorage.setItem('user', data.name);
           localStorage.setItem('lastname', data.lastname)
           localStorage.setItem('cargo', data.cargo)
+          localStorage.setItem('user_id', data.id)
           this.user = data.name;
           this.lastname = data.lastname;
           this.cargo = data.cargo;
@@ -83,9 +85,9 @@ export class LoginService {
 
   /* Para modificar datos del usuario */
   getUserInfo() {
-    let schema = localStorage.getItem('schema');
     let baseUrl = localStorage.getItem('baseUrl');
     let port = localStorage.getItem('port');
+    let id = localStorage.getItem('user_id');
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
@@ -93,16 +95,14 @@ export class LoginService {
       ),
     };
     return this.http
-      .post(
-        `${baseUrl}:${port}/api/users/info`,
-        {
-          schema: schema,
-          email: localStorage.getItem('email'),
-        },
+      .get(
+        `${baseUrl}:${port}/api/users/${id}`,
+
         options
       )
       .pipe(
         map((data: any) => {
+          console.log(data)
           return data.fecha_insert;
         })
       );
@@ -144,7 +144,8 @@ export class LoginService {
       })
       .pipe(
         map((data: any) => {
-          return data[0];
+          console.log(data)
+          return data;
         })
 
       );
@@ -162,8 +163,8 @@ export class LoginService {
       ),
     };
     return this.http
-      .post(
-        `${ip}:${puerto}/api/users/update`,
+      .patch(
+        `${ip}:${puerto}/api/users/`,
         {
           email: localStorage.getItem('email'),
           user: user,
@@ -190,8 +191,8 @@ export class LoginService {
       ),
     };
     return this.http
-      .post(
-        `${ip}:${puerto}/api/users/change-password`,
+      .patch(
+        `${ip}:${puerto}/api/users/`,
         {
           email: localStorage.getItem('email'),
           oldpass: Md5.hashStr(oldpass),
@@ -201,7 +202,8 @@ export class LoginService {
       )
       .pipe(
         map((data: any) => {
-          return data.status;
+          console.log(data)
+          return data;
         })
       );
   }

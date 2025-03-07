@@ -1,4 +1,4 @@
-IP;https://desarrollorechazos.mobentis.com
-PUERTO_API;5002
+IP;http://localhost
+PUERTO_API;3000
 PUERTO_ARCHIVOS;5004
 PUERTO_INTEGRACION;5006

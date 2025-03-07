@@ -9,11 +9,11 @@ import { IEstadosRechazoCount } from 'src/app/models/count.model';
   providedIn: 'root',
 })
 export class RechazadosService {
-  
+
   constructor(
     private _http: HttpClient,
     private _loginServices: LoginService
-  ) {}
+  ) { }
 
   getRechazos(
     selectedFilters: { [key: string]: any },
@@ -29,18 +29,22 @@ export class RechazadosService {
         `Bearer ${this._loginServices.getToken()}`
       ),
     };
-    console.log(searchTerm);
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      searchTerm,
+      currentPage,
+      itemsPerPage,
+      sortColumn,
+      sortDirection,
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
     return this._http
       .post<IRechazo[]>(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rechazo`,
-        {
-          selectedFilters,
-          searchTerm,
-          currentPage,
-          itemsPerPage,
-          sortColumn,
-          sortDirection,
-        },
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/list`,
+        
+          requestBody
+        ,
         options
       )
       .pipe(
@@ -51,20 +55,9 @@ export class RechazadosService {
       );
   }
 
-  countEstadosRechazos(): Observable<IEstadosRechazoCount[]> {
-    let options = {
-      headers: new HttpHeaders().set(
-        'Authorization',
-        `Bearer ${this._loginServices.getToken()}`
-      ),
-    };
-    return this._http.get<IEstadosRechazoCount[]>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rechazo/count`,
-      options
-    );
-  }
+
   /* nueva funcion para actualizar rechazos */
-  updateRechazo(rechazo: IRechazo ) {
+  updateRechazo(rechazo: IRechazo) {
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
@@ -73,15 +66,15 @@ export class RechazadosService {
     };
     console.log(rechazo);
     return this._http
-      .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rechazo/update/${rechazo.id}`,
+      .patch(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/${rechazo.id}`,
         {
           status: rechazo.status,
           status_id: rechazo.status_id,
           reason_rejection: rechazo.reason_rejection,
           reason_rejection_id: rechazo.reason_rejection_id,
           competitor_id: rechazo.competitor_id,
-          competitor_name: rechazo.competitor_name ,
+          competitor_name: rechazo.competitor_name,
           corrective_action_value: rechazo.corrective_action_value,
           corrective_action_symbol_id: rechazo.corrective_action_symbol_id,
           corrective_action_symbol: rechazo.corrective_action_symbol,
@@ -97,7 +90,7 @@ export class RechazadosService {
       );
   }
 
-  updateEstadoAccionCorrectora(newStatus: { statusId: number; statusText: string; }, id_rechazo:number) {
+  updateEstadoAccionCorrectora(newStatus: { statusId: number; statusText: string; }, id_rechazo: number) {
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
@@ -106,8 +99,8 @@ export class RechazadosService {
     };
     console.log(id_rechazo)
     return this._http
-      .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rechazo/corrective-action/update/${id_rechazo}`,
+      .patch(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/corrective-action/${id_rechazo}`,
         {
           corrective_action_status_id: newStatus.statusId,
           corrective_action_status: newStatus.statusText
@@ -122,5 +115,5 @@ export class RechazadosService {
       );
   }
 
-  
+
 }

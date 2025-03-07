@@ -100,13 +100,14 @@ export class ReasonsRejectionsComponent {
 
     this._motivoRechazoService.insertReason(newReason).subscribe(
       (data) => {
+        console.log(data)
         if (data.status === 'Success') {
           this._notifactionService.showSuccess('Motivo de rechazo añadido con éxito');
           this.cargaRechazos();  
           this.clearNewRechazo();
           if (this.data.autoClose) {
             this.dialogRef.close({
-              id: data.data.insertId,
+              id: data.data.id,
               name: newReason.name,
             });
           }
@@ -206,7 +207,8 @@ export class ReasonsRejectionsComponent {
       .subscribe((confirmado: Boolean) => {
         if (confirmado) {
           this._motivoRechazoService.deleteReason(id).subscribe((data) => {
-            if (data === 'Success') {
+            console.log(data)
+            if (data.status === 'Success') {
               this.cargaRechazos();
               this.mensajeExito();
             }

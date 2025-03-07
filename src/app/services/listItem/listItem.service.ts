@@ -57,8 +57,13 @@ export class ListItemService {
       ),
     };
     return this._http.get<ConfigurationContainer[]>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/lista-navegable/configuracion`,
+      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/nav-lists/configuracion`,
       options
+    ).pipe(
+      map((data: any) => {
+        console.log(data)
+        return data;
+      })
     );
   }
 }

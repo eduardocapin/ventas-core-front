@@ -26,7 +26,7 @@ export class ImportExcelService {
     };
     console.log(this._loginServices.getToken());
     return this._http
-      .get<ImportTableName[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/importar/`, options)
+      .get<ImportTableName[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/import/`, options)
       .pipe(
         map((data: any) =>{
           return data;
@@ -43,7 +43,7 @@ export class ImportExcelService {
       ),
     };
     return this._http
-      .get<ImportTableField[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/importar/field/${id}`, options)
+      .get<ImportTableField[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/import/field/${id}`, options)
       .pipe(
         map((data) =>{
           return data;

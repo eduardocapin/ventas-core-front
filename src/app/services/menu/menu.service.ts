@@ -24,6 +24,6 @@ export class MenuService {
         `Bearer ${this._loginServices.getToken()}`
       ),
     };
-    return this._http.get<MenuItem[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/menu/${id}/${language}`, options)
+    return this._http.get<MenuItem[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/menus/${id}/${language}`, options)
   }
 }

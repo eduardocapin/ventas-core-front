@@ -29,9 +29,8 @@ export class ClientContactService {
       ),
     };
     return this._http
-      .post<Contact[]>(
+      .get<Contact[]>(
         `${this.baseUrl}:${this.port}/api/clients/contacts/${id}`,
-        {},
         options
       )
       .pipe(
@@ -49,14 +48,13 @@ export class ClientContactService {
       ),
     };
     return this._http
-      .post<Contact>(
+      .get<Contact>(
         `${this.baseUrl}:${this.port}/api/clients/contact/${id}`,
-        {},
         options
       )
       .pipe(
         map((data: any) => {
-          return data[0];
+          return data;
         })
       );
   }

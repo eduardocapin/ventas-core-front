@@ -168,7 +168,7 @@ export class ProfileEditPopupComponent {
           .changePassword(currentPassword!, newPassword!)
           .subscribe(
             (data) => {
-              if (data === 'Success') {
+              if (data.status === 'Success') {
                 this.errorChangePass = false;
                 this.messageError = '';
                 this.passForm.patchValue({
@@ -184,7 +184,7 @@ export class ProfileEditPopupComponent {
             },
             (error) => {
               this.errorChangePass = true;
-              this.messageError = error.error.msg;
+              this.messageError = error.error.message;
               this._notifactionService.showError(this.messageError);
             }
           );

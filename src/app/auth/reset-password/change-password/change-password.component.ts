@@ -77,8 +77,8 @@ export class ChangePasswordComponent {
           },
           (error) => {
             this.errorChangePass = true;
-            this.messageError = error.error.msg;
-            console.log(error.error.msg);
+            this.messageError = error.error.message;
+            console.log(error.error.message);
             console.error('Error al asignar el dataSource:', error);
           }
         );

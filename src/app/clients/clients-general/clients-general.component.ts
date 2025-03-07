@@ -32,8 +32,8 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
   dataSource: { data: IClient[] } = { data: [] };
 
   //paginacion
-  currentPage = 1;
-  itemsPerPage = 10;
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
   totalItems: number = 0;
 
   //selector

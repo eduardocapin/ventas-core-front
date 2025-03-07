@@ -22,7 +22,6 @@ export class PopupClientDetailComponent {
   inactivo: boolean = false;
   tieneAppInWhats: boolean = true;
   pedidoValorado: boolean = true;
-  contacts: number = 0;
   cliente?: IClient;
   cargando: boolean = false;
 
@@ -59,10 +58,9 @@ export class PopupClientDetailComponent {
       .pipe(timeout(20000))
       .subscribe(
         (data: any) => {
-          const clientsData: any[] = data;
-          this.cliente = clientsData[0];
-          this.inactivo = clientsData[0].deleted;
-          this.contacts = clientsData[0].contacts;
+          const clientsData: IClient = data;
+          this.cliente = clientsData;
+          this.inactivo = clientsData.deleted;
           this.cargando = false;
         },
         (error) => {

@@ -11,7 +11,7 @@ import { Contact } from 'src/app/models/clientContact.model';
 })
 export class ClientsService {
 
-  constructor(private _http: HttpClient, private _loginServices: LoginService) {}
+  constructor(private _http: HttpClient, private _loginServices: LoginService) { }
 
   //Obtenemos la lista de clientes
   getClients(
@@ -22,36 +22,44 @@ export class ClientsService {
     sortColumn: string,
     sortDirection: string
   ): Observable<IClient[]> {
-    console.log(selectedFilters)
+    console.log("Filtros seleccionados:", selectedFilters);
+  
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
         `Bearer ${this._loginServices.getToken()}`
       ),
     };
+  
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      searchTerm,
+      currentPage,
+      itemsPerPage,
+      sortColumn,
+      sortDirection,
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+  
+    
+  
+    console.log("Body enviado:", requestBody);
+  
     return this._http
       .post<IClient[]>(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/clients`,
-        {
-          selectedFilters,
-          searchTerm,
-          currentPage,
-          itemsPerPage,
-          sortColumn,
-          sortDirection,
-        },
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/clients/list`,
+        requestBody, 
         options
       )
       .pipe(
         map((data: any) => {
-          // Aquí puedes realizar cualquier transformación necesaria en los datos
+          console.log("Respuesta recibida:", data);
           return data;
         })
       );
   }
-
   //Obtenemos los datos de un solo cliente
-  getOneClient(id: number): Observable<IClient[]> {
+  getOneClient(id: number): Observable<IClient> {
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
@@ -59,13 +67,13 @@ export class ClientsService {
       ),
     };
     return this._http
-      .post<IClient[]>(
+      .get<IClient[]>(
         `${this._loginServices.baseUrl}:${this._loginServices.port}/api/clients/${id}`,
-        {},
         options
       )
       .pipe(
         map((data: any) => {
+          console.log(data)
           // Aquí puedes realizar cualquier transformación necesaria en los datos
           return data;
         })
@@ -80,9 +88,8 @@ export class ClientsService {
       ),
     };
     return this._http
-      .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/clients/contacts/:id${id}`,
-        {},
+      .get(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/clients/contacts/${id}`,
         options
       )
       .pipe(

@@ -31,7 +31,7 @@ export class FilterService {
       ),
     };
     return this._http
-      .get(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filtro/${componentId}`, options)
+      .get(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/${componentId}`, options)
       .pipe(
         map((data: any) => {
           return data;
@@ -40,8 +40,6 @@ export class FilterService {
   }
 
   getSavedFilters(componentId: string): Observable<any> {
-
-    let email = localStorage.getItem('email');
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
@@ -49,7 +47,7 @@ export class FilterService {
       ),
     };
     return this._http
-    .post(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filtro/guardados/${componentId}`,{email}, options)
+    .get(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/saved/${componentId}`, options)
       .pipe(
         map((data: any) => {
           return data;
@@ -58,17 +56,17 @@ export class FilterService {
   }
 
   saveFilter(componentId:string, nombre: string, filtros: any[]): Observable<any> {
-
-    let email = localStorage.getItem('email');
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
         `Bearer ${this._loginServices.getToken()}`
       ),
     };
+    console.log(filtros)
+    console.log(typeof(filtros))
     return this._http.post<any>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filtro/guardados/add/${componentId}`,
-      { nombre, filtros ,email},
+      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/saved/${componentId}`,
+      { nombre, filtros },
       options
     );
   }
@@ -82,7 +80,7 @@ export class FilterService {
       ),
     };
     return this._http.delete<any>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filtro/guardados/delete/${id}`,
+      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/saved/${id}`,
       options
     );
   }
@@ -96,7 +94,7 @@ export class FilterService {
       ),
     };
     return this._http
-      .get(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filtro/${endpoint}`, options)
+      .get(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/${endpoint}`, options)
       .pipe(
         map((data: any) => {
           return data;
@@ -113,7 +111,7 @@ export class FilterService {
       ),
     };
     return this._http
-      .get<IProvincia[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filtro/provincias`, options)
+      .get<IProvincia[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/provinces`, options)
       .pipe(
         map((data: any) => {
           return data;
@@ -128,12 +126,8 @@ export class FilterService {
       ),
     };
     return this._http
-      .get<IPoblacion[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filtro/poblaciones`, options)
-      .pipe(
-        map((data: any) => {
-          return data;
-        })
-      );
+      .get<IPoblacion[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/cities`, options)
+      
   }
 
   getEstados(): Observable<IEstado[]> {
@@ -144,8 +138,12 @@ export class FilterService {
       ),
     };
     return this._http.get<IEstado[]>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filtro/estados`,
+      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/status`,
       options
+    ).pipe(
+      map((data: any) => {
+        return data;
+      })
     );
   }
   /* eliminar esta funcion porque se repite en competidores.service.ts */
@@ -157,7 +155,7 @@ export class FilterService {
       ),
     };
     return this._http.get<ICompetidor[]>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filtro/competidores`,
+      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/competitors`,
       options
     );
   }
@@ -170,8 +168,13 @@ export class FilterService {
       ),
     };
     return this._http.get<ISimbolo[]>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filtro/simbolos`,
+      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/symbol`,
       options
+    ).pipe(
+      map((data: any) => {
+        console.log(data)
+        return data;
+      })
     );
   }
 
@@ -183,36 +186,17 @@ export class FilterService {
       ),
     };
     return this._http.get<IMotivoRechazo[]>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filtro/motivos-rechazo`,
+      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/reasons-rejection`,
       options
+    ).pipe(
+      map((data: any) => {
+        console.log(data)
+        return data;
+      })
     );
   }
 
-  /* llamada  a la consulta para familia */
-  getFamilias(): Observable<IFamilia[]> {
-    let options = {
-      headers: new HttpHeaders().set(
-        'Authorization',
-        `Bearer ${this._loginServices.getToken()}`
-      ),
-    };
-    return this._http.get<IFamilia[]>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filtro/familias`,
-      options
-    );
-  }
 
-  /* llamada  a la consulta para familia */
-  getSubFamilias(): Observable<ISubFamilia[]> {
-    let options = {
-      headers: new HttpHeaders().set(
-        'Authorization',
-        `Bearer ${this._loginServices.getToken()}`
-      ),
-    };
-    return this._http.get<ISubFamilia[]>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filtro/subfamilias`,
-      options
-    );
-  }
+
+  
 }

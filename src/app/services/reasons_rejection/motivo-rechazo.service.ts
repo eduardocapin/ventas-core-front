@@ -25,7 +25,7 @@ export class MotivoRechazoService {
     };
     return this._http
       .get<IMotivoRechazo[]>(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/motivos-rechazo`,
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/reasons-rejection`,
         options
       )
       .pipe(
@@ -43,7 +43,7 @@ export class MotivoRechazoService {
     };
     return this._http
       .get<IMotivoRechazo>(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/motivos-rechazo/${id}`,
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/reasons-rejection/${id}`,
         options
       )
       .pipe(
@@ -61,8 +61,8 @@ export class MotivoRechazoService {
       ),
     };
     return this._http
-      .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/motivos-rechazo/update/${motivoRechazo.id}`,
+      .patch(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/reasons-rejection/${motivoRechazo.id}`,
         {
           codigo: motivoRechazo.rejection_code,
           nombre: motivoRechazo.name,
@@ -87,7 +87,7 @@ export class MotivoRechazoService {
     };
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/motivos-rechazo/add`,
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/reasons-rejection/`,
         {
           codigo: motivoRechazo.rejection_code,
           nombre: motivoRechazo.name,
@@ -108,15 +108,14 @@ export class MotivoRechazoService {
       ),
     };
     return this._http
-      .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/motivos-rechazo/delete/${id}`,
-        {},
+      .delete(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/reasons-rejection/${id}`,
         options
       )
       .pipe(
         map((data: any) => {
           /* Aqui puedes realizar cualquier transformacion neesaria en los datos */
-          return data.status;
+          return data;
         })
       );
   }

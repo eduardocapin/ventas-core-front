@@ -23,8 +23,8 @@ export class codeGuard implements CanMatch {
 
     private checkOutStatus(code: any): Observable<boolean | UrlTree> {
         return this._loginServices.checkCode(code).pipe(
-          map((data: boolean) => {
-            if (!data) {
+          map((data: any) => {
+            if (data.status != "Success") {
               return this.router.parseUrl('/reset-password');
             } else {
               return true;
