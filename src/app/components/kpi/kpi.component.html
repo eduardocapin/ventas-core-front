@@ -6,19 +6,18 @@
         </div>
         <!-- El primer div que tiene scroll horizontal y quiero que funcione con la rueda del rato o arrastrando de izquierda a derecha  -->
         <div #graficasIzquierda class="d-flex gap-3 min-w-reasonReject py-1">
-            <app-progress-circle [total]="66860" [value]="23136" [color]="'#ff419a'"
-                [text]="'Packaging'"></app-progress-circle>
-            <app-progress-circle [total]="66860" [value]="18136" [color]="'#ff419a'"
-                [text]="'Mala calidad'"></app-progress-circle>
-            <app-progress-circle [total]="66860" [value]="17224" [color]="'#ff419a'"
-                [text]="'Precio'"></app-progress-circle>
-            <app-progress-circle [total]="66860" [value]="8130" [color]="'#ff419a'"
-                [text]="'No Aplica'"></app-progress-circle>
+            <app-progress-circle 
+                *ngFor="let reason of kpiData.rejectionByReason"
+                [total]="kpiData.totalRejections" 
+                [value]="reason.count" 
+                [color]="'#ff419a'"
+                [text]="reason.reason">
+            </app-progress-circle>
         </div>
         <div
             class="text-center rounded-3 d-flex padding-rechazos-kpi justify-content-evenly align-items-center gap-2 px-2">
             <div class="d-flex flex-column m-1 dark-gray">
-                <h3 class="m-0 fw-bold"> {{'66860' | bigInt}}</h3>
+                <h3 class="m-0 fw-bold">{{ kpiData.totalRejections | bigInt }}</h3>
                 <span class="smaller">Rechazos</span>
             </div>
         </div>
@@ -36,14 +35,14 @@
         </div>
         <div class=" text-center rounded-3 d-flex justify-content-evenly align-items-center gap-2 px-2">
             <div class="d-flex flex-column m-1 orange">
-                <h3 class="m-0 fw-bold">{{73| bigInt}}</h3>
+                <h3 class="m-0 fw-bold">{{kpiData.pendingRejections| bigInt}}</h3>
                 <span class="smaller">Conversiones Pendientes</span>
             </div>
             <div class="d-flex align-items-center my-2" style="height: 45px;">
                 <i class="bi bi-caret-right-fill gray"></i>
             </div>
             <div class="d-flex flex-column m-1 color-primary">
-                <h3 class="m-0 fw-bold">{{248| bigInt}}</h3>
+                <h3 class="m-0 fw-bold">{{kpiData.opportunityRejections| bigInt}}</h3>
                 <span class="smaller">Oportunidades Activas</span>
             </div>
         </div>
@@ -61,20 +60,19 @@
         <div
             class="text-center rounded-3 d-flex padding-rechazos-kpi justify-content-evenly align-items-center gap-2 px-2 ">
             <div class="d-flex flex-column m-1 dark-gray">
-                <h3 class="m-0 fw-bold"> {{'58760' | bigInt}}</h3>
+                <h3 class="m-0 fw-bold"> {{kpiData.totalGroupedConversions | bigInt}}</h3>
                 <span class="smaller">Oportunidades</span>
             </div>
         </div>
         <!-- El segundo div que tiene scroll horizontal y quiero que funcione con la rueda del rato o arrastrando de izquierda a derecha  -->
         <div #graficasDerecha class="d-flex gap-3 min-w-convertidor">
-            <app-progress-circle [total]="58760" [value]="4321" [color]="'#17a6ff'"
-                [text]="'No Aplica'"></app-progress-circle>
-            <app-progress-circle [total]="58760" [value]="11210" [color]="'#17a6ff'"
-                [text]="'Rechazado'"></app-progress-circle>
-            <app-progress-circle [total]="58760" [value]="15005" [color]="'#17a6ff'"
-                [text]="'Aceptado'"></app-progress-circle>
-            <app-progress-circle [total]="58760" [value]="28201" [color]="'#17a6ff'"
-                [text]="'Vendido'"></app-progress-circle>
+            <app-progress-circle 
+                *ngFor="let status of kpiData.conversionsByStatus"
+                [total]="kpiData.totalGroupedConversions" 
+                [value]="status.count" 
+                [color]="'#17a6ff'"
+                [text]="status.status">
+            </app-progress-circle>
         </div>
     </div>
 </div>

@@ -18,6 +18,7 @@ import { AddCompetitorComponent } from 'src/app/configuration/configuration-gene
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { CompetidoresService } from 'src/app/services/competitors/competidores.service';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
+import { css } from 'jquery';
 
 
 @Component({
@@ -72,7 +73,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   tooltipText: string | null = null;
   selectedFilters: { [key: string]: any } = [
     {
-      id: 'status_id',
+      id: 'r.status_id',
       nombre: 'Estados',
       valor: [
         {
@@ -212,7 +213,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
   private loadCompetidores() {
     this.dataSource.forEach((row) => {
-      this._competidoresService.getCompetidoresPorFamilia(row.family_id).subscribe((competitors) => {
+      this._competidoresService.getCompetidoresPorFamilia(row.family_id ?? -1).subscribe((competitors) => {
         row.competitors = competitors;
       });
     });
@@ -683,7 +684,8 @@ selectReject(rowId: number) {
   //Funcion filtros
   onFiltersChanged(selectedFilters: { [key: string]: any }) {
     console.log('Filtros seleccionados:', selectedFilters);
-    this.selectedFilters = selectedFilters;
+    this.selectedFilters = Object.values(selectedFilters);
+    console.log(selectedFilters)
     this.currentPage = 1;
     this.loadRechazos();
   }

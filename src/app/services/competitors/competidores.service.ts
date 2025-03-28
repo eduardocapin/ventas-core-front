@@ -90,7 +90,7 @@ export class CompetidoresService {
       );
   }
 
-  updateCompetitorsSegmentations(id:number,product_segmentation_ids:number[] ) {
+  updateCompetitorsSegmentations(id:number,product_segmentation_ids:string[] ) {
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
@@ -113,7 +113,7 @@ export class CompetidoresService {
       );
   }
 
-  insertCompetitor(competidores: ICompetidor, product_segmentation_ids:number[]) {
+  insertCompetitor(competidores: ICompetidor, product_segmentation_ids:string[]) {
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',

@@ -42,8 +42,40 @@ export class RechazadosService {
     return this._http
       .post<IRechazo[]>(
         `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/list`,
-        
-          requestBody
+
+        requestBody
+        ,
+        options
+      )
+      .pipe(
+        map((data: any) => {
+          console.log(data);
+          return data;
+        })
+      );
+  }
+
+
+  getKPIs(
+    selectedFilters: { [key: string]: any },
+    searchTerm: string
+  ) {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      searchTerm,
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
+    return this._http
+      .post<IRechazo[]>(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/KPIs`,
+        requestBody
         ,
         options
       )

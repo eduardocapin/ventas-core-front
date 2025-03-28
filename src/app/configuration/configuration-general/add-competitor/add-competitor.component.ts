@@ -188,7 +188,7 @@ export class AddCompetitorComponent {
         name: this.newCompetitonName,
         segmentation_value_ids: '',
       };
-      this.competitorsService.insertCompetitor(newCompetitor, [-1]).subscribe(
+      this.competitorsService.insertCompetitor(newCompetitor, ['-1']).subscribe(
         (data) => {
           if (data.status === 'Success') {
             this._notifactionService.showSuccess(
@@ -267,17 +267,19 @@ export class AddCompetitorComponent {
     }
   }
 
-  getSelectedFamiliesIds(competitor_id: number) {
+  getSelectedFamiliesIds(competitor_id: number): string[] {
     const selectedFamiliesForCompetitor: { [key: string]: boolean } =
       this.selectedFamiliesMap[competitor_id] || {};
+
     let selectedFamilyIds = Object.keys(selectedFamiliesForCompetitor)
-      .filter((familyId: string) => selectedFamiliesForCompetitor[familyId])
-      .map((familyId) => parseInt(familyId, 10));
+      .filter((familyId: string) => selectedFamiliesForCompetitor[familyId]);
+
     if (selectedFamilyIds.length === this.familyList.length) {
-      selectedFamilyIds = [-1];
+      selectedFamilyIds = ['-1'];
     }
-    return selectedFamilyIds
-  }
+
+    return selectedFamilyIds;
+}
 
   updateSgmentatios(competitor_id: number) {
     let selectedFamilyIds = this.getSelectedFamiliesIds(competitor_id)
