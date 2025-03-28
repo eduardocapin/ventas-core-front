@@ -1,22 +1,31 @@
 <li class="dropend">
-  <a class="dropdown-item dropdown-toggle cursor" data-bs-toggle="dropdown" aria-expanded="false">{{ title }}</a>
+  <a class="dropdown-item dropdown-toggle cursor" data-bs-toggle="dropdown" 
+     aria-expanded="false" (click)="onDropdownOpen()">{{ title }}</a>
+  
   <div class="dropdown-menu p-1">
     <div class="d-flex align-items-center gap-1 search-style">
       <div class="input-group input-group-sm">
-        <input type="text" class="form-control border border-end-0" placeholder="Buscar..." [(ngModel)]="searchTerm"
-          (keydown.enter)="onSearchChange($event)" (input)="oninputChange($event)">
-        <button class="btn border border-start-0" type="button" id="button-addon2" (click)="onSearchChange($event)"><i
-            class="bi bi-search"></i></button>
+        <input type="text" class="form-control border border-end-0" 
+               placeholder="Buscar..." [(ngModel)]="searchTerm"
+               (input)="oninputChange()">
+        <button class="btn border border-start-0" type="button">
+          <i class="bi bi-search"></i>
+        </button>
       </div>
     </div>
-    <ul class="p-2 w-max h-max">
-      <li *ngFor="let option of filteredOptions" class="cursor d-flex align-items-center">
-        <!-- Checkbox -->
-        <input type="checkbox" class="card border-left-primary" [(ngModel)]="option.selected" (change)="onCheckboxChange(option)">
-        <!-- Opción clickable para selección única -->
+
+    <ul class="p-2 w-max h-max" (scroll)="onScroll($event)">
+      <li *ngFor="let option of displayedOptions" class="cursor d-flex align-items-center">
+        <input type="checkbox" class="card border-left-primary" [(ngModel)]="option.selected" 
+               (change)="toggleSelection(option)">
         <a class="dropdown-item" (click)="toggleSelection(option)">{{ option.name || 'Vacío' }}</a>
       </li>
     </ul>
 
+    <div class="text-center" *ngIf="loading">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
   </div>
 </li>
