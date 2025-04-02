@@ -172,14 +172,14 @@ export class FilterContainerComponent implements OnInit {
     const filterInfo = this.filters.find((filter) => filter.id === filterId);
 
     if (existingFilter) {
-      console.log('Filtro existente: ', existingFilter.valor);
-
+      console.log('Filtro existente: ', existingFilter);
+      console.log('Filtro existente(valor): ', existingFilter.valor);
       if (existingFilter.tipo === 'date' && value.startDate && value.endDate) {
         existingFilter.valor = {
           startDate: value.startDate,
           endDate: value.endDate,
         };
-      } else if (existingFilter.valor.length > 0) {
+      } else if (value.length > 0) {
         existingFilter.valor = value;
       } else {
         delete this.selectedFilters[existingFilter.id];

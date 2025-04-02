@@ -99,6 +99,7 @@ export class MultiSelectFilterComponent {
       this.selectedOptions.set(option.id, option);
       option.selected = true;
     }
+    console.log( Array.from(this.selectedOptions.values()))
     this.selectionChange.emit(Array.from(this.selectedOptions.values()));
   }
 
@@ -143,7 +144,8 @@ export class MultiSelectFilterComponent {
   
     // Solo emitir si se especifica o si hubo cambios
     if (emitChange && hasChanged) {
-      this.selectionChange.emit(Array.from(this.selectedOptions.values()));
+      console.log( Array.from(this.selectedOptions.values()))
+      this.selectionChange.emit(  this.selectedOptions.size > 0? Array.from(this.selectedOptions.values()): []);
     }
   }
 
