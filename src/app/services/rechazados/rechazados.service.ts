@@ -49,7 +49,7 @@ export class RechazadosService {
       )
       .pipe(
         map((data: any) => {
-          data.items.map((rejection : any) => {
+          data.items.map((rejection: any) => {
             rejection.longitude = Number(rejection.longitude);
             rejection.latitude = Number(rejection.latitude);
           });
@@ -77,7 +77,7 @@ export class RechazadosService {
     };
     console.log("Body enviado:", requestBody);
     return this._http
-      .post<IRechazo[]>(
+      .post(
         `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/KPIs`,
         requestBody
         ,
@@ -85,12 +85,390 @@ export class RechazadosService {
       )
       .pipe(
         map((data: any) => {
-          
+
           return data;
         })
       );
   }
 
+
+  getRejectionGroupByReasons(
+    selectedFilters: { [key: string]: any },
+  ) {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
+    return this._http
+      .post(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/group-by-reasons`,
+        requestBody
+        ,
+        options
+      )
+      .pipe(
+        map((data: any) => {
+
+          return data;
+        })
+      );
+  }
+
+  getRejectionGroupByFamily(
+    selectedFilters: { [key: string]: any }, topN:number
+  ) {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
+    return this._http
+      .post(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/group-by-family/${topN}`,
+        requestBody
+        ,
+        options
+      )
+      .pipe(
+        map((data: any) => {
+
+          return data;
+        })
+      );
+  }
+
+  getRejectionGroupByProduct(
+    selectedFilters: { [key: string]: any }, topN:number
+  ) {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
+    return this._http
+      .post(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/group-by-product/${topN}`,
+        requestBody
+        ,
+        options
+      )
+      .pipe(
+        map((data: any) => {
+
+          return data;
+        })
+      );
+  }
+
+  getRejectionGroupByCustomerSegmentation(
+    selectedFilters: { [key: string]: any }, n:number
+  ) {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
+    return this._http
+      .post(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/group-by-segmentation/${n}`,
+        requestBody
+        ,
+        options
+      )
+      .pipe(
+        map((data: any) => {
+
+          return data;
+        })
+      );
+  }
+
+  getRejectionGroupByMonth(
+    selectedFilters: { [key: string]: any }
+  ) {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
+    return this._http
+      .post(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/group-by-month`,
+        requestBody
+        ,
+        options
+      )
+      .pipe(
+        map((data: any) => {
+
+          return data;
+        })
+      );
+  }
+
+
+  getRejectionGroupByDayOfWeek(
+    selectedFilters: { [key: string]: any }
+  ) {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
+    return this._http
+      .post(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/group-by-day-of-week`,
+        requestBody
+        ,
+        options
+      )
+      .pipe(
+        map((data: any) => {
+
+          return data;
+        })
+      );
+  }
+
+  getClientsWithRejections(
+    selectedFilters: { [key: string]: any }
+  ) {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
+    return this._http
+      .post(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/clients-with-rejections`,
+        requestBody
+        ,
+        options
+      )
+      .pipe(
+        map((data: any) => {
+
+          return data;
+        })
+      );
+  }
+
+  getRejectionSummaryGroupByCustomerSegmentation(
+    selectedFilters: { [key: string]: any }, n:number
+  ) {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
+    return this._http
+      .post(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/summary/group-by-segmentation/${n}`,
+        requestBody
+        ,
+        options
+      )
+      .pipe(
+        map((data: any) => {
+
+          return data;
+        })
+      );
+  }
+
+  getRejectionSummaryGroupByCustomer(
+    selectedFilters: { [key: string]: any }
+  ) {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
+    return this._http
+      .post(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/summary/group-by-customer`,
+        requestBody
+        ,
+        options
+      )
+      .pipe(
+        map((data: any) => {
+
+          return data;
+        })
+      );
+  }
+
+  getRejectionSummaryGroupByCity(
+    selectedFilters: { [key: string]: any }
+  ) {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
+    return this._http
+      .post(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/summary/group-by-city`,
+        requestBody
+        ,
+        options
+      )
+      .pipe(
+        map((data: any) => {
+
+          return data;
+        })
+      );
+  }
+
+  getRejectionSummaryGroupByProvince(
+    selectedFilters: { [key: string]: any }
+  ) {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
+    return this._http
+      .post(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/summary/group-by-province`,
+        requestBody
+        ,
+        options
+      )
+      .pipe(
+        map((data: any) => {
+
+          return data;
+        })
+      );
+  }
+
+  getRejectionSummaryGroupByFamily(
+    selectedFilters: { [key: string]: any }
+  ) {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
+    return this._http
+      .post(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/summary/group-by-family`,
+        requestBody
+        ,
+        options
+      )
+      .pipe(
+        map((data: any) => {
+
+          return data;
+        })
+      );
+  }
+
+  getRejectionSummaryGroupBySalesman(
+    selectedFilters: { [key: string]: any }
+  ) {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this._loginServices.getToken()}`
+      ),
+    };
+    // Construcción del body sin valores vacíos
+    let requestBody: any = {
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+    };
+    console.log("Body enviado:", requestBody);
+    return this._http
+      .post(
+        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/summary/group-by-salesman`,
+        requestBody
+        ,
+        options
+      )
+      .pipe(
+        map((data: any) => {
+
+          return data;
+        })
+      );
+  }
 
   /* nueva funcion para actualizar rechazos */
   updateRechazo(rechazo: IRechazo) {
