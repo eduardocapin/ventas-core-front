@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "mobentis_rechazos": {
+    "converter": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/mobentis_rechazos",
+            "outputPath": "dist/converter",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -67,10 +67,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "mobentis_rechazos:build:production"
+              "browserTarget": "converter:build:production"
             },
             "development": {
-              "browserTarget": "mobentis_rechazos:build:development"
+              "browserTarget": "converter:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -78,7 +78,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "mobentis_rechazos:build"
+            "browserTarget": "converter:build"
           }
         },
         "test": {
