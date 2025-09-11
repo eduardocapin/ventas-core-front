@@ -41,6 +41,8 @@ import { SearchInputComponent } from '../components/search-input/search-input.co
 import { MessageUpdateComponent } from '../components/message-update/message-update.component';
 import { CorrectiveActionStatusComponent } from '../components/corrective-action-status/corrective-action-status.component';
 import { PageTitleComponent } from '../components/page-title/page-title.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 
 @NgModule({
@@ -90,6 +92,8 @@ import { PageTitleComponent } from '../components/page-title/page-title.componen
     GoogleMapsModule,
     NgbTooltipModule, 
     MatDialogModule,
+    MatProgressSpinnerModule,
+
 
   ],
   exports: [

@@ -1,4 +1,6 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, SimpleChanges, Input } from '@angular/core';
+import { RejectionKPIs } from 'src/app/models/RejectionKPI.model';
+import { RechazadosService } from 'src/app/services/rechazados/rechazados.service';
 
 @Component({
   selector: 'app-kpi',
@@ -8,6 +10,48 @@ import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 export class KPIComponent implements AfterViewInit {
   @ViewChild('graficasIzquierda') graficasIzquierda!: ElementRef;
   @ViewChild('graficasDerecha') graficasDerecha!: ElementRef;
+  kpiData: RejectionKPIs = {
+    totalRejections: 0,
+    rejectionByReason: [],
+    pendingRejections: 0,
+    opportunityRejections: 0,
+    totalGroupedConversions: 0,
+    conversionsByStatus: []
+  };
+  @Input() selectedFilters!: { [key: string]: any };
+  @Input() searchTerm!: string;
+
+constructor(
+    private rejectionService: RechazadosService,
+   
+  ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Cuando los filtros o el término de búsqueda cambian, actualiza los KPIs
+    if (changes['selectedFilters'] || changes['searchTerm']) {
+      this.loadKPIs();
+    }
+  }
+
+  loadKPIs(){
+    this.rejectionService
+          .getKPIs(
+            this.selectedFilters,
+            this.searchTerm
+          )
+          .subscribe((data: any) => {
+            console.log('KPIS cargados:', data);
+            this.kpiData = data;
+    
+            
+    
+           
+          });
+  }
+  
+  ngOnInit(){
+    this.loadKPIs();
+  }
 
   ngAfterViewInit(): void {
     this.enableHorizontalScroll(this.graficasIzquierda.nativeElement);

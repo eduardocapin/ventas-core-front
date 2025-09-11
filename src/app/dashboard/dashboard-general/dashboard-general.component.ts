@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ITablaDashboard } from 'src/app/models/tablaDashboard.model';
+import { RechazadosService } from 'src/app/services/rechazados/rechazados.service';
+import { forkJoin } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-general',
@@ -11,22 +14,48 @@ export class DashboardGeneralComponent {
   //Filtros
   selectedFilters: { [key: string]: any } = {};
 
-  constructor() {
+  constructor(private rechazadosService: RechazadosService, private cdr: ChangeDetectorRef) {
+
     this.data = this.valoresTablas[0];
   }
 
+
+  cargando_grafica_clientes: boolean = true;
+  datos_grafica_clientes: any = null;
+  cargando_grafica_motivos: boolean = true;
+  datos_grafica_motivos: any = null;
+  cargando_grafica_familias: boolean = true;
+  datos_grafica_familias: any = null;
+  cargando_grafica_productos: boolean = true;
+  datos_grafica_productos: any = null;
+  cargando_grafica_mes: boolean = true;
+  datos_grafica_mes: any = null;
+  cargando_grafica_semana: boolean = true;
+  datos_grafica_semana: any = null;
+  cargando_grafica_s1: boolean = true;
+  datos_grafica_s1: any = null;
+  cargando_grafica_s2: boolean = true;
+  datos_grafica_s2: any = null;
+  cargando_grafica_s3: boolean = true;
+  datos_grafica_s3: any = null;
+
   cargandoDatostabla: boolean = true;
   tablaActiva: number = 0;
+
+  nombre_s1: string = 'Potencialidad 1'
+  nombre_s2: string = 'Tipología 2'
+  nombre_s3: string = 'Imagen 3'
   nombresTablas: string[] = [
-    'Potencialidad',
-    'Tipología',
-    'Imagen',
+    this.nombre_s1,
+    this.nombre_s2,
+    this.nombre_s3,
     'Clientes',
     'Provincias',
     'Poblaciones',
     'Familias',
     'Vendedores',
   ];
+  /*
   valoresTablas: ITablaDashboard[][] = [
     [
       {
@@ -424,7 +453,8 @@ export class DashboardGeneralComponent {
         },
       },
     ],
-  ];
+  ];*/
+  valoresTablas: ITablaDashboard[][] = [[], [], [], [], [], [], [], []]
   columnasDinamicas: string[] = ['nombre', 'total']; // Columnas por defecto
   columnasRechazos: string[] = []; // Columnas por defecto
   data: ITablaDashboard[] = [
@@ -472,20 +502,195 @@ export class DashboardGeneralComponent {
     this.dataSource.data = this.data;
   }
 
-  cargarGraficos() {
-    // Carga KPI
-
-    this.totalClientes = 1;
-    this.attCliente = 2;
-    this.totalPedidos = 3;
-    this.pedidosDia = 4;
-    this.ventasDia = Math.floor(5);
-    this.totalVentas = Math.floor(6);
+  async cargarGraficos() {
 
     // Carga Grafica Clientes
+    this.cargando_grafica_clientes = true;
+    this.rechazadosService
+      .getClientsWithRejections(this.selectedFilters)
+      .subscribe(
+        (data) => {
+          this.cargando_grafica_clientes = false;
+          this.datos_grafica_clientes = data;
+        },
+        (error) => {
+          console.error('Error al asignar el dataSource:', error);
+          this.cargando_grafica_clientes = false;
+        }
+      );
+
+    this.cargando_grafica_motivos = true;
+    this.rechazadosService
+      .getRejectionGroupByReasons(this.selectedFilters)
+      .subscribe(
+        (data) => {
+          this.cargando_grafica_motivos = false;
+          this.datos_grafica_motivos = data;
+        },
+        (error) => {
+          console.error('Error al asignar el dataSource:', error);
+          this.cargando_grafica_motivos = false;
+        }
+      );
+
+    this.cargando_grafica_familias = true;
+    this.rechazadosService
+      .getRejectionGroupByFamily(this.selectedFilters, 6)
+      .subscribe(
+        (data) => {
+          this.cargando_grafica_familias = false;
+          this.datos_grafica_familias = data;
+        },
+        (error) => {
+          console.error('Error al asignar el dataSource:', error);
+          this.cargando_grafica_familias = false;
+        }
+      );
+
+    this.cargando_grafica_productos = true;
+    this.rechazadosService
+      .getRejectionGroupByProduct(this.selectedFilters, 10)
+      .subscribe(
+        (data) => {
+          this.cargando_grafica_productos = false;
+          this.datos_grafica_productos = data;
+        },
+        (error) => {
+          console.error('Error al asignar el dataSource:', error);
+          this.cargando_grafica_productos = false;
+        }
+      );
+
+    this.cargando_grafica_mes = true;
+    this.rechazadosService
+      .getRejectionGroupByMonth(this.selectedFilters)
+      .subscribe(
+        (data) => {
+          this.cargando_grafica_mes = false;
+          this.datos_grafica_mes = data;
+        },
+        (error) => {
+          console.error('Error al asignar el dataSource:', error);
+          this.cargando_grafica_mes = false;
+        }
+      );
+
+    this.cargando_grafica_semana = true;
+    this.rechazadosService
+      .getRejectionGroupByDayOfWeek(this.selectedFilters)
+      .subscribe(
+        (data) => {
+          this.cargando_grafica_semana = false;
+          this.datos_grafica_semana = data;
+        },
+        (error) => {
+          console.error('Error al asignar el dataSource:', error);
+          this.cargando_grafica_semana = false;
+        }
+      );
+
+    this.cargando_grafica_s1 = true;
+    this.rechazadosService
+      .getRejectionGroupByCustomerSegmentation(this.selectedFilters, 1)
+      .subscribe(
+        (data) => {
+          this.cargando_grafica_s1 = false;
+          this.datos_grafica_s1 = data;
+        },
+        (error) => {
+          console.error('Error al asignar el dataSource:', error);
+          this.cargando_grafica_s1 = false;
+        }
+      );
+
+    this.cargando_grafica_s2 = true;
+    this.rechazadosService
+      .getRejectionGroupByCustomerSegmentation(this.selectedFilters, 2)
+      .subscribe(
+        (data) => {
+          this.cargando_grafica_s2 = false;
+          this.datos_grafica_s2 = data;
+        },
+        (error) => {
+          console.error('Error al asignar el dataSource:', error);
+          this.cargando_grafica_s2 = false;
+        }
+      );
+
+    this.cargando_grafica_s3 = true;
+    this.rechazadosService
+      .getRejectionGroupByCustomerSegmentation(this.selectedFilters, 3)
+      .subscribe(
+        (data) => {
+          this.cargando_grafica_s3 = false;
+          this.datos_grafica_s3 = data;
+        },
+        (error) => {
+          console.error('Error al asignar el dataSource:', error);
+          this.cargando_grafica_s3 = false;
+        }
+      );
   }
 
-  loadTableData() {
+
+  async cargarTablas() {
+    try {
+      const resultados = await firstValueFrom(
+        forkJoin({
+          s1: this.rechazadosService.getRejectionSummaryGroupByCustomerSegmentation(this.selectedFilters, 1),
+          s2: this.rechazadosService.getRejectionSummaryGroupByCustomerSegmentation(this.selectedFilters, 1),
+          s3: this.rechazadosService.getRejectionSummaryGroupByCustomerSegmentation(this.selectedFilters, 1),
+          clientes: this.rechazadosService.getRejectionSummaryGroupByCustomer(this.selectedFilters),
+          poblaciones: this.rechazadosService.getRejectionSummaryGroupByCity(this.selectedFilters),
+          provincias: this.rechazadosService.getRejectionSummaryGroupByProvince(this.selectedFilters),
+          familias: this.rechazadosService.getRejectionSummaryGroupByFamily(this.selectedFilters),
+          vendedores: this.rechazadosService.getRejectionSummaryGroupBySalesman(this.selectedFilters),
+        })
+      );
+  
+      console.log('Resultados de todas las peticiones:', resultados);
+  
+      // Asignar los datos obtenidos
+      this.nombre_s1 = resultados.s1.nombre_segmentacion;
+      this.valoresTablas[0] = resultados.s1.valores;
+      this.nombresTablas[0] = this.nombre_s1;
+  
+      this.nombre_s2 = resultados.s2.nombre_segmentacion;
+      this.valoresTablas[1] = resultados.s2.valores;
+      this.nombresTablas[1] = this.nombre_s2;
+  
+      this.nombre_s3 = resultados.s3.nombre_segmentacion;
+      this.valoresTablas[2] = resultados.s3.valores;
+      this.nombresTablas[2] = this.nombre_s3;
+  
+      this.valoresTablas[3] = resultados.clientes;
+      this.valoresTablas[4] = resultados.poblaciones;
+      this.valoresTablas[5] = resultados.provincias;
+      this.valoresTablas[6] = resultados.familias;
+      this.valoresTablas[7] = resultados.vendedores;
+    } catch (error) {
+      console.error('Error al cargar las tablas:', error);
+    }
+  }
+
+
+  async loadTableData() {
+    this.cargandoDatostabla = true;
+    await this.cargarTablas()
+    this.cargandoDatostabla = false;
+
+    // Verifica si la tabla activa tiene valores. Si no tiene, asigna el índice de la primera tabla con valores.
+    if (this.valoresTablas[this.tablaActiva].length === 0) {
+      console.log('aaaa')
+      // Encuentra el índice de la primera tabla con valores
+      const indexConDatos = this.valoresTablas.findIndex(tabla => tabla.length > 0);
+      console.log(indexConDatos)
+      // Si se encuentra un índice válido, actualiza tablaActiva
+      if (indexConDatos !== -1) {
+        this.tablaActiva = indexConDatos;
+      }
+    }
+
     console.log(`Tabla activa seleccionada: ${this.tablaActiva}`);
     console.log(
       `Datos de la tabla seleccionada:`,
@@ -536,8 +741,11 @@ export class DashboardGeneralComponent {
 
   onFiltersChanged(selectedFilters: { [key: string]: any }) {
     console.log('Filtros seleccionados:', selectedFilters);
-    this.selectedFilters = selectedFilters;
+    this.selectedFilters = Object.values(selectedFilters);
     this.currentPage = 1;
     this.loadTableData();
+    this.cargarGraficos();
   }
+
+
 }

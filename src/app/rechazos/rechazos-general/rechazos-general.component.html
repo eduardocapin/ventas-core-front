@@ -4,7 +4,7 @@
     <app-page-title [icon]="'columns-gap'" [isBootstrapIcon]="true" [title]="'Rechazos'"></app-page-title>
     <!-- Info Rechazos -->
     <div class="max-w-kpi">
-      <app-kpi></app-kpi>
+      <app-kpi [selectedFilters]="selectedFilters" [searchTerm]="searchTerm"></app-kpi>
     </div>
     <!-- END Info Rechazos -->
   </div>
@@ -175,7 +175,7 @@
                   <!-- campo de estado -->
                   <div class=" d-flex align-items-center justify-self-center">
                     <app-corrective-action-status [statusId]="row.corrective_action_status_id"
-                      [statusText]="row.corrective_action_status" [rejectionId]="row.id" 
+                      [statusText]="row.corrective_action_status" [rejectionId]="row.id"
                       (statusChange)="onStatusChange($event, row)" [correctiveActionValue]="row.corrective_action_value"
                       [correctiveActionSymbolId]="row.corrective_action_symbol_id"
                       [correctiveActionText]="row.corrective_action_text"></app-corrective-action-status>

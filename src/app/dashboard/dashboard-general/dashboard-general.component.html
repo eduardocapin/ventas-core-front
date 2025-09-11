@@ -3,7 +3,7 @@
     <!-- titulo y icono -->
     <app-page-title [icon]="'assets/images/iconos/dashboard-icon-dark.svg'" [title]="'Dashboard'"></app-page-title>
     <div class="max-w-kpi">
-      <app-kpi></app-kpi>
+      <app-kpi [selectedFilters]="selectedFilters"></app-kpi>
     </div>
   </div>
   <!-- apartado de las graficas -->
@@ -22,17 +22,21 @@
           <!-- Primera fila de gráficas -->
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
-              <app-grafica-pastel [titulo]="'Clientes'" [datos]="[{ value: 1324, name: 'Con rechazos' }, { value: 570, name: 'Sin rechazos' }]" [elementoId]="'graficoClientes'"></app-grafica-pastel>
+              <!-- <app-grafica-pastel [titulo]="'Clientes'" [datos]="[{ value: 1324, name: 'Con rechazos' }, { value: 570, name: 'Sin rechazos' }]" [elementoId]="'graficoClientes'"></app-grafica-pastel> -->
+              <app-grafica-pastel [titulo]="'Clientes'" [datos]="datos_grafica_clientes" [elementoId]="'graficoClientes'" ></app-grafica-pastel>
+              
             </div>
           </div>
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
-              <app-grafica-semi-circulo [titulo]="'Motivos de Rechazo'" [valores]="[{ value: 23136, name: 'Packaging' }, { value: 18370, name: 'Mala calidad' }, { value: 17224, name: 'Precio' }, { value: 8130, name: 'No aplica' }]" [elementoId]="'motivos-rechazo'"></app-grafica-semi-circulo>
+              <!-- <app-grafica-semi-circulo [titulo]="'Motivos de Rechazo'" [valores]="[{ value: 23136, name: 'Packaging' }, { value: 18370, name: 'Mala calidad' }, { value: 17224, name: 'Precio' }, { value: 8130, name: 'No aplica' }]" [elementoId]="'motivos-rechazo'"></app-grafica-semi-circulo>-->
+              <app-grafica-semi-circulo [titulo]="'Motivos de Rechazo'" [valores]="datos_grafica_motivos" [elementoId]="'motivos-rechazo'"></app-grafica-semi-circulo>
             </div>
           </div>
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
-              <app-grafica-barra-horizontal [titulo]="'Familias de productos'" [categorias]="['Conservas', 'Verduras', 'Congelados', 'Vinos', 'Carnes', 'Frutas']" [valores]="[11600, 18460, 12300, 7200, 7100, 10200]" [elementoId]="'rechazos-familias'"></app-grafica-barra-horizontal>
+             <!-- <app-grafica-barra-horizontal [titulo]="'Familias de productos'" [categorias]="['Conservas', 'Verduras', 'Congelados', 'Vinos', 'Carnes', 'Frutas']" [valores]="[11600, 18460, 12300, 7200, 7100, 10200]" [elementoId]="'rechazos-familias'"></app-grafica-barra-horizontal> -->
+             <app-grafica-barra-horizontal [titulo]="'Familias de productos'" [categorias]="datos_grafica_familias?.categorias" [valores]="datos_grafica_familias?.valores" [elementoId]="'rechazos-familias'"></app-grafica-barra-horizontal>
             </div>
           </div>
         </div>
@@ -41,17 +45,20 @@
           <!-- Segunda fila de gráficas -->
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
-              <app-grafica-barra-horizontal [titulo]="'Potencialidad'" [categorias]="['D', 'C', 'B', 'A']" [valores]="[11210, 8123, 32522, 15005]" [elementoId]="'rechazos-segmentacion-1'"></app-grafica-barra-horizontal>
+              <!--<app-grafica-barra-horizontal [titulo]="'Potencialidad'" [categorias]="['D', 'C', 'B', 'A']" [valores]="[11210, 8123, 32522, 15005]" [elementoId]="'rechazos-segmentacion-1'"></app-grafica-barra-horizontal> -->
+              <app-grafica-barra-horizontal [titulo]="datos_grafica_s1?.titulo" [categorias]="datos_grafica_s1?.categorias" [valores]="datos_grafica_s1?.valores" [elementoId]="'rechazos-segmentacion-1'"></app-grafica-barra-horizontal>
             </div>
           </div>
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
-              <app-grafica-barra-horizontal [titulo]="'Tipología'" [categorias]="['Tienda Alimentación Minorista', 'Personal Empresa', 'OCIO', 'Mayoristas', 'Bar/Tapas']" [valores]="[10700, 15300, 6010, 24700, 10530]" [elementoId]="'rechazos-segmentacion-2'"></app-grafica-barra-horizontal>
+              <!-- <app-grafica-barra-horizontal [titulo]="'Tipología'" [categorias]="['Tienda Alimentación Minorista', 'Personal Empresa', 'OCIO', 'Mayoristas', 'Bar/Tapas']" [valores]="[10700, 15300, 6010, 24700, 10530]" [elementoId]="'rechazos-segmentacion-2'"></app-grafica-barra-horizontal>-->
+              <app-grafica-barra-horizontal [titulo]="datos_grafica_s2?.titulo" [categorias]="datos_grafica_s2?.categorias" [valores]="datos_grafica_s2?.valores" [elementoId]="'rechazos-segmentacion-2'"></app-grafica-barra-horizontal>
             </div>
           </div>
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
-              <app-grafica-barra-horizontal [titulo]="'Imagen'" [categorias]="['Tradicional', 'Moderna', 'Emblemática']" [valores]="[24680, 22000, 20000]" [elementoId]="'rechazos-segmentacion-3'"></app-grafica-barra-horizontal>
+              <!-- <app-grafica-barra-horizontal [titulo]="'Imagen'" [categorias]="['Tradicional', 'Moderna', 'Emblemática']" [valores]="[24680, 22000, 20000]" [elementoId]="'rechazos-segmentacion-3'"></app-grafica-barra-horizontal>-->
+              <app-grafica-barra-horizontal [titulo]="datos_grafica_s3?.titulo" [categorias]="datos_grafica_s3?.categorias" [valores]="datos_grafica_s3?.valores" [elementoId]="'rechazos-segmentacion-3'"></app-grafica-barra-horizontal>
             </div>
           </div>
         </div>
@@ -60,17 +67,20 @@
           <!-- Tercera fila de gráficas -->
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
-              <app-grafica-barra-horizontal [titulo]="'Top de productos'" [categorias]="['Aceite de oliva Arbequina', 'Miel de azahar', 'Lentejas Las Charras', 'Loctite 243', 'Bombones La Despensa de Palacio', 'Leche Pascual Semidesnatada', 'Mermelada plátano Román', 'Barbacoa', 'Pattex 120', 'Naturfresh Italiana']" [valores]="[6686, 1500, 12058, 7500, 6686, 6686, 6686, 6686, 6686, 6686]" [elementoId]="'rechazos-producto'"></app-grafica-barra-horizontal>
+              <!-- <app-grafica-barra-horizontal [titulo]="'Top de productos'" [categorias]="['Aceite de oliva Arbequina', 'Miel de azahar', 'Lentejas Las Charras', 'Loctite 243', 'Bombones La Despensa de Palacio', 'Leche Pascual Semidesnatada', 'Mermelada plátano Román', 'Barbacoa', 'Pattex 120', 'Naturfresh Italiana']" [valores]="[6686, 1500, 12058, 7500, 6686, 6686, 6686, 6686, 6686, 6686]" [elementoId]="'rechazos-producto'"></app-grafica-barra-horizontal>-->
+              <app-grafica-barra-horizontal [titulo]="'Top de productos'" [categorias]="datos_grafica_productos?.categorias" [valores]="datos_grafica_productos?.valores" [elementoId]="'rechazos-producto'"></app-grafica-barra-horizontal>
             </div>
           </div>
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
-              <app-grafica-barra-vertical [titulo]="'Por mes'" [categorias]="['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']" [valores]="[0, 0, 0, 0, 5860, 18000, 43000]" [elementoId]="'rechazos-mes'"></app-grafica-barra-vertical>
+              <!--<app-grafica-barra-vertical [titulo]="'Por mes'" [categorias]="['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']" [valores]="[0, 0, 0, 0, 5860, 18000, 43000]" [elementoId]="'rechazos-mes'"></app-grafica-barra-vertical>-->
+              <app-grafica-barra-vertical [titulo]="'Por mes'" [categorias]="datos_grafica_mes?.categorias" [valores]="datos_grafica_mes?.valores" [elementoId]="'rechazos-mes'"></app-grafica-barra-vertical>
             </div>
           </div>
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
-              <app-grafica-barra-vertical [titulo]="'Por día de la semana'" [categorias]="['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']" [valores]="[12346, 15035, 9120, 6500, 6303, 9350, 8206]" [elementoId]="'rechazos-dia'"></app-grafica-barra-vertical>
+              <!-- <app-grafica-barra-vertical [titulo]="'Por día de la semana'" [categorias]="['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']" [valores]="[12346, 15035, 9120, 6500, 6303, 9350, 8206]" [elementoId]="'rechazos-dia'"></app-grafica-barra-vertical>-->
+              <app-grafica-barra-vertical [titulo]="'Por día de la semana'" [categorias]="datos_grafica_semana?.categorias" [valores]="datos_grafica_semana?.valores" [elementoId]="'rechazos-dia'"></app-grafica-barra-vertical>
             </div>
           </div>
         </div>
@@ -84,9 +94,11 @@
     <div>
       <div class="form-group col-3">
         <select id="tablaActiva" class="form-select form-select-sm" [(ngModel)]="tablaActiva" (change)="select($event)">
-          <option *ngFor="let nombre of nombresTablas; let i = index" [value]="i">
-            {{ nombre }}
-          </option>
+          <ng-container *ngFor="let nombre of nombresTablas; let i = index">
+            <option *ngIf="valoresTablas[i].length > 0" [value]="i">
+              {{ nombre }}
+            </option>
+          </ng-container>
         </select>
       </div>
       <div>
