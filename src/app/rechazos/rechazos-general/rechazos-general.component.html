@@ -147,9 +147,9 @@
               <!-- Checkbox Column -->
               <td class="text-center px-2">
                 <div class=" d-flex align-items-center justify-self-center">
-                   <!-- <input type="checkbox" (click)="$event.stopPropagation()" (change)="onRowToggle(row)"[checked]="isSelected(row)" [disabled]="isCheckboxDisabled(row)"> -->
                   <input type="checkbox" (click)="$event.stopPropagation()" (change)="onRowToggle(row)"
-                    [checked]="isSelected(row)" >
+                    [checked]="isSelected(row)" [disabled]="isCheckboxDisabled(row)">
+
                 </div>
               </td>
               <!-- Acción Correctora Column -->

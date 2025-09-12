@@ -336,11 +336,13 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   }
 
   isCheckboxDisabled(row: any): boolean {
+    /*
     return (
       !row.latitude ||
       !row.longitude ||
       (row.latitude === 0 && row.longitude === 0)
-    );
+    );*/
+    return false;
   }
 
   private updateSelectionFromCurrentPage() {
@@ -354,25 +356,25 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   }
 
   verEnMapa() {
-  if (!this.canVerEnMapa()) {
-    this._notifactionService.showWarning(
-      'Debe seleccionar al menos 1 rechazo con coordenadas antes de ver en el mapa.'
-    );
-    return;
+    if (!this.canVerEnMapa()) {
+      this._notifactionService.showWarning(
+        'Debe seleccionar al menos 1 rechazo con coordenadas antes de ver en el mapa.'
+      );
+      return;
+    }
+
+    const dialogRef = this.dialog.open(PopupMapComponent, {
+      width: '80%',
+      height: '75%',
+      data: { selectedRows: this.selectedRechazos.filter(row => row.latitude && row.longitude) },
+    });
   }
 
-  const dialogRef = this.dialog.open(PopupMapComponent, {
-    width: '80%',
-    height: '75%',
-    data: { selectedRows: this.selectedRechazos.filter(row => row.latitude && row.longitude) },
-  });
-}
-
   canVerEnMapa(): boolean {
-  return this.selectedRechazos.some(
-    row => row.latitude && row.longitude && !(row.latitude === 0 && row.longitude === 0)
-  );
-}
+    return this.selectedRechazos.some(
+      row => row.latitude && row.longitude && !(row.latitude === 0 && row.longitude === 0)
+    );
+  }
 
   /* popup-rechazo-detail */
   viewRechazo(id_Cliente?: any) {
