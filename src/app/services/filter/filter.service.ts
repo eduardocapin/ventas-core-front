@@ -10,13 +10,15 @@ import { ICompetidor } from 'src/app/models/competidor.model';
 import { IMotivoRechazo } from 'src/app/models/motivoRechazo.model';
 import { IFamilia } from 'src/app/models/familia.mode';
 import { ISubFamilia } from 'src/app/models/subFamilia.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FilterService {
 
-
+  private apiUrl = environment.apiUrl;
+  
   constructor(
     private _http: HttpClient,
     private _loginServices: LoginService
@@ -31,7 +33,7 @@ export class FilterService {
       ),
     };
     return this._http
-      .get(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/${componentId}`, options)
+      .get(`${this.apiUrl}/api/filters/${componentId}`, options)
       .pipe(
         map((data: any) => {
           return data;
@@ -47,7 +49,7 @@ export class FilterService {
       ),
     };
     return this._http
-    .get(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/saved/${componentId}`, options)
+    .get(`${this.apiUrl}/api/filters/saved/${componentId}`, options)
       .pipe(
         map((data: any) => {
           return data;
@@ -65,7 +67,7 @@ export class FilterService {
     console.log(filtros)
     console.log(typeof(filtros))
     return this._http.post<any>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/saved/${componentId}`,
+      `${this.apiUrl}/api/filters/saved/${componentId}`,
       { nombre, filtros },
       options
     );
@@ -80,7 +82,7 @@ export class FilterService {
       ),
     };
     return this._http.delete<any>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/saved/${id}`,
+      `${this.apiUrl}/api/filters/saved/${id}`,
       options
     );
   }
@@ -94,7 +96,7 @@ export class FilterService {
       ),
     };
     return this._http
-      .get(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/${endpoint}`, options)
+      .get(`${this.apiUrl}/api/filters/${endpoint}`, options)
       .pipe(
         map((data: any) => {
           return data;
@@ -111,7 +113,7 @@ export class FilterService {
       ),
     };
     return this._http
-      .get<IProvincia[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/provinces`, options)
+      .get<IProvincia[]>(`${this.apiUrl}/api/filters/provinces`, options)
       .pipe(
         map((data: any) => {
           return data;
@@ -126,7 +128,7 @@ export class FilterService {
       ),
     };
     return this._http
-      .get<IPoblacion[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/cities`, options)
+      .get<IPoblacion[]>(`${this.apiUrl}/api/filters/cities`, options)
       
   }
 
@@ -138,7 +140,7 @@ export class FilterService {
       ),
     };
     return this._http.get<IEstado[]>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/status`,
+      `${this.apiUrl}/api/filters/status`,
       options
     ).pipe(
       map((data: any) => {
@@ -155,7 +157,7 @@ export class FilterService {
       ),
     };
     return this._http.get<ICompetidor[]>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/competitors`,
+      `${this.apiUrl}/api/filters/competitors`,
       options
     );
   }
@@ -168,7 +170,7 @@ export class FilterService {
       ),
     };
     return this._http.get<ISimbolo[]>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/symbol`,
+      `${this.apiUrl}/api/filters/symbol`,
       options
     ).pipe(
       map((data: any) => {
@@ -186,7 +188,7 @@ export class FilterService {
       ),
     };
     return this._http.get<IMotivoRechazo[]>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/filters/reasons-rejection`,
+      `${this.apiUrl}/api/filters/reasons-rejection`,
       options
     ).pipe(
       map((data: any) => {

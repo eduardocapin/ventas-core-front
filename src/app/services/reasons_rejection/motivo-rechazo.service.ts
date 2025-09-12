@@ -4,13 +4,15 @@ import { map } from 'rxjs';
 import { Observable } from 'rxjs';
 import { IMotivoRechazo } from 'src/app/models/motivoRechazo.model';
 import { LoginService } from '../auth/login.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MotivoRechazoService {
 
-
+  private apiUrl = environment.apiUrl;
+  
   constructor(
     private _http: HttpClient,
     private _loginServices: LoginService
@@ -25,7 +27,7 @@ export class MotivoRechazoService {
     };
     return this._http
       .get<IMotivoRechazo[]>(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/reasons-rejection`,
+        `${this.apiUrl}/api/reasons-rejection`,
         options
       )
       .pipe(
@@ -43,7 +45,7 @@ export class MotivoRechazoService {
     };
     return this._http
       .get<IMotivoRechazo>(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/reasons-rejection/${id}`,
+        `${this.apiUrl}/api/reasons-rejection/${id}`,
         options
       )
       .pipe(
@@ -62,7 +64,7 @@ export class MotivoRechazoService {
     };
     return this._http
       .patch(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/reasons-rejection/${motivoRechazo.id}`,
+        `${this.apiUrl}/api/reasons-rejection/${motivoRechazo.id}`,
         {
           codigo: motivoRechazo.rejection_code,
           nombre: motivoRechazo.name,
@@ -87,7 +89,7 @@ export class MotivoRechazoService {
     };
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/reasons-rejection/`,
+        `${this.apiUrl}/api/reasons-rejection/`,
         {
           codigo: motivoRechazo.rejection_code,
           nombre: motivoRechazo.name,
@@ -109,7 +111,7 @@ export class MotivoRechazoService {
     };
     return this._http
       .delete(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/reasons-rejection/${id}`,
+        `${this.apiUrl}/api/reasons-rejection/${id}`,
         options
       )
       .pipe(

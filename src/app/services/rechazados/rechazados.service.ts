@@ -4,11 +4,13 @@ import { LoginService } from '../auth/login.service';
 import { Observable, map } from 'rxjs';
 import { IRechazo } from 'src/app/models/rechazos.model';
 import { IEstadosRechazoCount } from 'src/app/models/count.model';
-
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class RechazadosService {
+  
+  private apiUrl = environment.apiUrl;
 
   constructor(
     private _http: HttpClient,
@@ -41,7 +43,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post<IRechazo[]>(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/list`,
+        `${this.apiUrl}/api/rejects/list`,
 
         requestBody
         ,
@@ -78,7 +80,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/KPIs`,
+        `${this.apiUrl}/api/rejects/KPIs`,
         requestBody
         ,
         options
@@ -108,7 +110,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/group-by-reasons`,
+        `${this.apiUrl}/api/rejects/group-by-reasons`,
         requestBody
         ,
         options
@@ -137,7 +139,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/group-by-family/${topN}`,
+        `${this.apiUrl}/api/rejects/group-by-family/${topN}`,
         requestBody
         ,
         options
@@ -166,7 +168,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/group-by-product/${topN}`,
+        `${this.apiUrl}/api/rejects/group-by-product/${topN}`,
         requestBody
         ,
         options
@@ -195,7 +197,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/group-by-segmentation/${n}`,
+        `${this.apiUrl}/api/rejects/group-by-segmentation/${n}`,
         requestBody
         ,
         options
@@ -224,7 +226,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/group-by-month`,
+        `${this.apiUrl}/api/rejects/group-by-month`,
         requestBody
         ,
         options
@@ -254,7 +256,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/group-by-day-of-week`,
+        `${this.apiUrl}/api/rejects/group-by-day-of-week`,
         requestBody
         ,
         options
@@ -283,7 +285,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/clients-with-rejections`,
+        `${this.apiUrl}/api/rejects/clients-with-rejections`,
         requestBody
         ,
         options
@@ -312,7 +314,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/summary/group-by-segmentation/${n}`,
+        `${this.apiUrl}/api/rejects/summary/group-by-segmentation/${n}`,
         requestBody
         ,
         options
@@ -341,7 +343,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/summary/group-by-customer`,
+        `${this.apiUrl}/api/rejects/summary/group-by-customer`,
         requestBody
         ,
         options
@@ -370,7 +372,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/summary/group-by-city`,
+        `${this.apiUrl}/api/rejects/summary/group-by-city`,
         requestBody
         ,
         options
@@ -399,7 +401,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/summary/group-by-province`,
+        `${this.apiUrl}/api/rejects/summary/group-by-province`,
         requestBody
         ,
         options
@@ -428,7 +430,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/summary/group-by-family`,
+        `${this.apiUrl}/api/rejects/summary/group-by-family`,
         requestBody
         ,
         options
@@ -457,7 +459,7 @@ export class RechazadosService {
     console.log("Body enviado:", requestBody);
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/summary/group-by-salesman`,
+        `${this.apiUrl}/api/rejects/summary/group-by-salesman`,
         requestBody
         ,
         options
@@ -481,7 +483,7 @@ export class RechazadosService {
     console.log(rechazo);
     return this._http
       .patch(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/${rechazo.id}`,
+        `${this.apiUrl}/api/rejects/${rechazo.id}`,
         {
           status: rechazo.status,
           status_id: rechazo.status_id,
@@ -514,7 +516,7 @@ export class RechazadosService {
     console.log(id_rechazo)
     return this._http
       .patch(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/rejects/corrective-action/${id_rechazo}`,
+        `${this.apiUrl}/api/rejects/corrective-action/${id_rechazo}`,
         {
           corrective_action_status_id: newStatus.statusId,
           corrective_action_status: newStatus.statusText

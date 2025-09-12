@@ -5,11 +5,14 @@ import { Observable } from 'rxjs';
 import { LoginService } from '../auth/login.service';
 import { ImportTableName } from 'src/app/models/importTableName.model';
 import { ImportTableField } from 'src/app/models/importTableField.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImportExcelService {
+
+  private apiUrl = environment.apiUrl;
 
   constructor(
     private _http: HttpClient,
@@ -26,7 +29,7 @@ export class ImportExcelService {
     };
     console.log(this._loginServices.getToken());
     return this._http
-      .get<ImportTableName[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/import/`, options)
+      .get<ImportTableName[]>(`${this.apiUrl}/api/import/`, options)
       .pipe(
         map((data: any) =>{
           return data;
@@ -43,7 +46,7 @@ export class ImportExcelService {
       ),
     };
     return this._http
-      .get<ImportTableField[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/import/field/${id}`, options)
+      .get<ImportTableField[]>(`${this.apiUrl}/api/import/field/${id}`, options)
       .pipe(
         map((data) =>{
           return data;
@@ -62,7 +65,7 @@ export class ImportExcelService {
 
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/importar/import`,
+        `${this.apiUrl}/api/importar/import`,
         { tableName, data },
         options
       )

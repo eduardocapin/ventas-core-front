@@ -5,12 +5,15 @@ import { map } from 'rxjs/operators';
 import { IClient } from 'src/app/models/clients.model';
 import { LoginService } from '../auth/login.service';
 import { Contact } from 'src/app/models/clientContact.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClientsService {
 
+  private apiUrl = environment.apiUrl;
+  
   constructor(private _http: HttpClient, private _loginServices: LoginService) { }
 
   //Obtenemos la lista de clientes
@@ -47,7 +50,7 @@ export class ClientsService {
   
     return this._http
       .post<IClient[]>(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/clients/list`,
+        `${this.apiUrl}/api/clients/list`,
         requestBody, 
         options
       )
@@ -72,7 +75,7 @@ export class ClientsService {
     };
     return this._http
       .get<IClient[]>(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/clients/${id}`,
+        `${this.apiUrl}/api/clients/${id}`,
         options
       )
       .pipe(
@@ -95,7 +98,7 @@ export class ClientsService {
     };
     return this._http
       .get(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/clients/contacts/${id}`,
+        `${this.apiUrl}/api/clients/contacts/${id}`,
         options
       )
       .pipe(

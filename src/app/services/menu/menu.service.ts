@@ -4,12 +4,13 @@ import { map } from 'rxjs/operators';
 import { LoginService } from '../auth/login.service';
 import { Observable } from 'rxjs';
 import { MenuItem }  from 'src/app/models/menuItem.model';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class MenuService {
 
-
+  private apiUrl = environment.apiUrl;
 
   constructor(
     private _http: HttpClient,
@@ -24,6 +25,6 @@ export class MenuService {
         `Bearer ${this._loginServices.getToken()}`
       ),
     };
-    return this._http.get<MenuItem[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/menus/${id}/${language}`, options)
+    return this._http.get<MenuItem[]>(`${this.apiUrl}/api/menus/${id}/${language}`, options)
   }
 }

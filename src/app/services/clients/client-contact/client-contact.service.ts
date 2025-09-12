@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-
+import { environment } from 'src/environments/environment';
 import { LoginService } from '../../auth/login.service';
 import { Contact } from 'src/app/models/clientContact.model';
 
@@ -9,16 +9,11 @@ import { Contact } from 'src/app/models/clientContact.model';
   providedIn: 'root',
 })
 export class ClientContactService {
-
-  private baseUrl = "";
-  private port = "";
-
+  private apiUrl = environment.apiUrl;
   constructor(
     private _http: HttpClient,
     private _loginServices: LoginService
   ) {
-    this.baseUrl = String(localStorage.getItem('baseUrl'));
-    this.port = String(localStorage.getItem('port'));
   }
 
   getContacts(id: number): Observable<Contact[]> {
@@ -30,7 +25,7 @@ export class ClientContactService {
     };
     return this._http
       .get<Contact[]>(
-        `${this.baseUrl}:${this.port}/api/clients/contacts/${id}`,
+        `${this.apiUrl}/api/clients/contacts/${id}`,
         options
       )
       .pipe(
@@ -49,7 +44,7 @@ export class ClientContactService {
     };
     return this._http
       .get<Contact>(
-        `${this.baseUrl}:${this.port}/api/clients/contact/${id}`,
+        `${this.apiUrl}/api/clients/contact/${id}`,
         options
       )
       .pipe(

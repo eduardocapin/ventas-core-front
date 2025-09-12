@@ -8,16 +8,19 @@ import { ProfileEditPopupComponent } from 'src/app/configuration/configuration-g
 import { ReasonsRejectionsComponent } from 'src/app/configuration/configuration-general/reasons-rejections/reasons-rejections.component';
 import { ConfigurationContainer } from 'src/app/models/configurationContainer.model';
 import { AddCompetitorComponent } from 'src/app/configuration/configuration-general/add-competitor/add-competitor.component';
-
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class ListItemService {
+
+  private apiUrl = environment.apiUrl;
+
   constructor(
     private _http: HttpClient,
     private _loginServices: LoginService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   private functionRegistry: { [key: string]: () => void } = {
     openProfileEditPopup: () => {
@@ -57,7 +60,7 @@ export class ListItemService {
       ),
     };
     return this._http.get<ConfigurationContainer[]>(
-      `${this._loginServices.baseUrl}:${this._loginServices.port}/api/nav-lists/configuracion`,
+      `${this.apiUrl}/api/nav-lists/configuracion`,
       options
     ).pipe(
       map((data: any) => {

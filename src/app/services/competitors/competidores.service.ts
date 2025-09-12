@@ -4,11 +4,14 @@ import { map } from 'rxjs';
 import { Observable } from 'rxjs';
 import { ICompetidor } from 'src/app/models/competidor.model';
 import { LoginService } from '../auth/login.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CompetidoresService {
+
+  private apiUrl = environment.apiUrl;
 
   constructor(private _http: HttpClient, private _loginServices: LoginService) {}
 
@@ -21,7 +24,7 @@ export class CompetidoresService {
       ),
     };
     return this._http
-      .get<ICompetidor[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/competitors/`, options)
+      .get<ICompetidor[]>(`${this.apiUrl}/api/competitors/`, options)
       .pipe(
         map((data: any) => {
           console.log("COMPETIDOOOOOOREEEEEEEEES")
@@ -40,7 +43,7 @@ export class CompetidoresService {
     };
     return this._http
       .get<ICompetidor>(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/competitors/${id}`,
+        `${this.apiUrl}/api/competitors/${id}`,
         options
       )
       .pipe(
@@ -58,7 +61,7 @@ export class CompetidoresService {
       ),
     };
     return this._http
-      .get<ICompetidor[]>(`${this._loginServices.baseUrl}:${this._loginServices.port}/api/competitors/family/${family_id}`, options)
+      .get<ICompetidor[]>(`${this.apiUrl}/api/competitors/family/${family_id}`, options)
       .pipe(
         map((data: any) => {
           return data;
@@ -76,7 +79,7 @@ export class CompetidoresService {
     console.log(competidores);
     return this._http
       .patch(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/competitors/${competidores.id}`,
+        `${this.apiUrl}/api/competitors/${competidores.id}`,
         {
           name: competidores.name,
         },
@@ -99,7 +102,7 @@ export class CompetidoresService {
     };
     return this._http
       .patch(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/competitors/${id}`,
+        `${this.apiUrl}/api/competitors/${id}`,
         {
           product_segmentation_ids: product_segmentation_ids
         },
@@ -122,7 +125,7 @@ export class CompetidoresService {
     };
     return this._http
       .post(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/competitors/`,
+        `${this.apiUrl}/api/competitors/`,
         {
           nombre: competidores.name,
           product_segmentation_ids: product_segmentation_ids,
@@ -144,7 +147,7 @@ export class CompetidoresService {
     };
     return this._http
       .delete(
-        `${this._loginServices.baseUrl}:${this._loginServices.port}/api/competitors/${id}`,
+        `${this.apiUrl}/api/competitors/${id}`,
         options
       )
       .pipe(

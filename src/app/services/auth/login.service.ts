@@ -12,11 +12,14 @@ import { User } from './user';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Md5 } from 'ts-md5'
 import { ConfigurationService } from 'src/app/configuration/configuration.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
+
+ private apiUrl = environment.apiUrl;
 
   currentUserLoginOn: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(
     false
@@ -30,9 +33,6 @@ export class LoginService {
     cargo: '',
   });
 
-  public baseUrl = "";
-  public port = "";
-  private puerto_archivos = "";
 
 
   user: string | null = localStorage.getItem('user');
@@ -42,26 +42,19 @@ export class LoginService {
 
   constructor(
     private http: HttpClient,
-    private configurationService: ConfigurationService,
   ) {
     this.user = localStorage.getItem('user');
     this.lastname = localStorage.getItem('lastname');
     this.cargo = localStorage.getItem('cargo');
-    this.inicializar();
+
   }
 
 
-  /* funcion de inicializacion */
-  async inicializar() {
-    await this.configurationService.loadConfig();
-    this.baseUrl = String(localStorage.getItem('baseUrl'));
-    this.port = String(localStorage.getItem('port'));
-    this.puerto_archivos = String(localStorage.getItem('puerto_archivos'));
-  }
+
 
   login(credential: LoginRequest): Observable<User> {
     return this.http
-      .post<User>(`${this.baseUrl}:${this.port}/api/users/login`, {
+      .post<User>(`${this.apiUrl}/api/users/login`, {
         email: credential.email,
         password: Md5.hashStr(credential.password),
       })
@@ -84,8 +77,6 @@ export class LoginService {
 
   /* Para modificar datos del usuario */
   getUserInfo() {
-    let baseUrl = localStorage.getItem('baseUrl');
-    let port = localStorage.getItem('port');
     let id = localStorage.getItem('user_id');
     let options = {
       headers: new HttpHeaders().set(
@@ -95,7 +86,7 @@ export class LoginService {
     };
     return this.http
       .get(
-        `${baseUrl}:${port}/api/users/${id}`,
+        `${this.apiUrl}/api/users/${id}`,
 
         options
       )
@@ -109,7 +100,7 @@ export class LoginService {
 
   resetPassword(email: string) {
     return this.http
-      .post<User>(`${this.baseUrl}:${this.port}/api/users/reset-password`, {
+      .post<User>(`${this.apiUrl}/api/users/reset-password`, {
         email: email,
       })
       .pipe(
@@ -120,10 +111,8 @@ export class LoginService {
   }
 
   addNewPassword(email: string, newpass: string) {
-    let baseUrl = localStorage.getItem('baseUrl');
-    let port = localStorage.getItem('port');
     return this.http
-      .post(`${baseUrl}:${port}/api/users/new-password`, {
+      .post(`${this.apiUrl}/api/users/new-password`, {
         email: email,
         newpass: Md5.hashStr(newpass),
       })
@@ -135,10 +124,8 @@ export class LoginService {
   }
 
   checkCode(code: string) {
-    let ip = String(localStorage.getItem('baseUrl'))
-    let puerto = String(localStorage.getItem('port'))
     return this.http
-      .post(`${ip}:${puerto}/api/users/check-code`, {
+      .post(`${this.apiUrl}/api/users/check-code`, {
         code: code,
       })
       .pipe(
@@ -153,8 +140,6 @@ export class LoginService {
   updateUserInfo(user: string, cargo: string) {
     this.user = user;
     this.cargo = cargo;
-    let ip = String(localStorage.getItem('baseUrl'))
-    let puerto = String(localStorage.getItem('port'))
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
@@ -163,7 +148,7 @@ export class LoginService {
     };
     return this.http
       .patch(
-        `${ip}:${puerto}/api/users/`,
+        `${this.apiUrl}/api/users/`,
         {
           email: localStorage.getItem('email'),
           user: user,
@@ -180,9 +165,6 @@ export class LoginService {
   }
 
   changePassword(oldpass: string, newpass: string) {
-
-    let ip = String(localStorage.getItem('baseUrl'))
-    let puerto = String(localStorage.getItem('port'))
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
@@ -191,7 +173,7 @@ export class LoginService {
     };
     return this.http
       .patch(
-        `${ip}:${puerto}/api/users/`,
+        `${this.apiUrl}/api/users/`,
         {
           email: localStorage.getItem('email'),
           oldpass: Md5.hashStr(oldpass),
