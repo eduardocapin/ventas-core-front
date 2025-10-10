@@ -23,7 +23,9 @@ export class RechazadosService {
     currentPage: number,
     itemsPerPage: number,
     sortColumn: string,
-    sortDirection: string
+    sortDirection: string,
+    selectedEmpresa: number | 'all' //Añado parametro de empresa
+
   ): Observable<IRechazo[]> {
     let options = {
       headers: new HttpHeaders().set(
@@ -38,7 +40,9 @@ export class RechazadosService {
       itemsPerPage,
       sortColumn,
       sortDirection,
-      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters }),
+      ...(selectedEmpresa !== 'all' && { selectedEmpresa }) // Añadir selectedEmpresa al body
+
     };
     console.log("Body enviado:", requestBody);
     return this._http

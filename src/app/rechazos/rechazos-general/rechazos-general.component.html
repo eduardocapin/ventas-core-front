@@ -17,6 +17,21 @@
           <app-search-input [searchTerm]="searchTerm" (searchChange)="onSearch($event)"
             (errorDeCaracteres)="mostrarError = $event"></app-search-input>
         </div>
+
+        <!-- Dropdown Empresa -->
+            <div class="d-flex align-items-center">
+              <label class="me-2 mb-0 color-primary">Empresa</label>
+              <select class="form-select form-select-sm w-auto" id="idEmpresa" 
+                      [(ngModel)]="selectedEmpresa" 
+                      (change)="onEmpresaChange()">
+                <option value="all">Todas</option>
+                <option [value]="1">Empresa 1</option>
+                <option [value]="2">Empresa 2</option>
+                <option [value]="3">Empresa 3</option>
+              </select>
+            </div>
+
+            
         <!-- boton de filtros aplicados o limpiar -->
         <app-filter-container [componentId]="'rechazos-general'" [selectedFilters]="selectedFilters"
           (filtersChanged)="onFiltersChanged($event)">

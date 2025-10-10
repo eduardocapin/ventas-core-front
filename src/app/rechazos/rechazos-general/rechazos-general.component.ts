@@ -19,6 +19,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { CompetidoresService } from 'src/app/services/competitors/competidores.service';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { css } from 'jquery';
+import { EmpresaStateService } from 'src/app/services/empresa-state/empresa-state.service';
 
 
 @Component({
@@ -91,6 +92,9 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   sortColumn: string = 'r.last_rejection_date';
   sortDirection: string = 'desc';
 
+  // Filtro local de Empresa (1-3 o 'all')
+  selectedEmpresa: number | 'all' = 'all';
+
   // Añadir motivos y competidores
   private previousReasonId?: number;
   private previousCompetitorId?: number;
@@ -118,6 +122,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     private _notifactionService: NotificationService,
     private _competidoresService: CompetidoresService,
     private cdr: ChangeDetectorRef,
+    private empresaStateService: EmpresaStateService // ← AGREGAR
+
   ) { }
 
   ngOnInit() {
@@ -129,6 +135,15 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     this.loadTiposRechazo();
     this.loadPoblacion();
     this.cargando = true;
+    this.empresaStateService.selectedEmpresa$.subscribe(empresa => {
+      // Actualiza el estado local
+      this.selectedEmpresa = empresa === 'all' ? 'all' : Number(empresa);
+      // Aplica/quita el filtro de empresa globalmente y recarga
+      this.applyEmpresaFilter();
+      this.currentPage = 1;
+      this.loadRechazos();
+    });
+
 
     this.dataSource = this.dataSource.map(row => ({ ...row, modified: false }));
 
@@ -140,6 +155,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
       this.documentClickListener(); // elimina el listener
     }
   }
+
+
 
   onDocumentClick(event: MouseEvent) {
     if (!this.tablaRechazos.nativeElement.contains(event.target)) {
@@ -177,7 +194,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
         this.currentPage,
         this.itemsPerPage,
         this.sortColumn,
-        this.sortDirection
+        this.sortDirection,
+        this.selectedEmpresa
       )
       .subscribe((data: any) => {
         console.log('Rechazos cargados:', data.items);
@@ -710,9 +728,50 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     console.log('Filtros seleccionados:', selectedFilters);
     this.selectedFilters = Object.values(selectedFilters);
     console.log(selectedFilters)
+  // Garantiza que el filtro de empresa se mantenga cuando cambian otros filtros
+  this.applyEmpresaFilter();
+  // Fuerza nueva referencia para notificar a hijos (ej. KPI)
+  this.selectedFilters = Array.isArray(this.selectedFilters) ? [...this.selectedFilters] : Object.values(this.selectedFilters || {});
     this.currentPage = 1;
     this.loadRechazos();
   }
+
+
+  onEmpresaChange() {
+    // Propaga el cambio de empresa de forma global
+    this.empresaStateService.setSelectedEmpresa(this.selectedEmpresa.toString());
+    // El resto (aplicar filtro y recargar) se gestiona en la suscripción del estado
+  }
+
+  // Añade o elimina el filtro de empresa dentro de selectedFilters para que aplique en TODAS las consultas
+  private applyEmpresaFilter(): void {
+    // Normaliza selectedFilters como array
+    const filters = Array.isArray(this.selectedFilters) ? [...this.selectedFilters] : Object.values(this.selectedFilters || {});
+
+    // El id de columna en SQL para empresa es r.empresa_id (idEmpresa)
+    const EMPRESA_FILTER_ID = 'r.empresa_id';
+
+    // Elimina cualquier filtro previo de empresa
+    const withoutEmpresa = filters.filter((f: any) => f?.id !== EMPRESA_FILTER_ID);
+
+    if (this.selectedEmpresa !== 'all') {
+      // Inserta el filtro de empresa en formato multi-select esperado por el backend
+      withoutEmpresa.push({
+        id: EMPRESA_FILTER_ID,
+        nombre: 'Empresa',
+        tipo: 'multi-select',
+        valor: [
+          {
+            id: Number(this.selectedEmpresa),
+            name: `Empresa ${this.selectedEmpresa}`
+          }
+        ]
+      });
+    }
+
+    this.selectedFilters = withoutEmpresa;
+  }
+
   /* logica para que aparezca tooltip cuando el texto es muy grande */
   isTextTruncated(element: HTMLElement): boolean {
     return element.offsetWidth < element.scrollWidth;
@@ -816,6 +875,8 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   trackByFn(item: any) {
     return item.value;
   }
+
+
 
 
 }
