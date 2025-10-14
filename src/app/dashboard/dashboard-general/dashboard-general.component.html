@@ -16,8 +16,24 @@
       <div class="col-10">
         <div class="my-3">
           <!-- boton de filtros aplicados o limpiar -->
-          <app-filter-container [componentId]="'dashboard-general'" (filtersChanged)="onFiltersChanged($event)"></app-filter-container>
+          <div class="d-flex justify-content-between align-items-center">
+            <app-filter-container [componentId]="'dashboard-general'" (filtersChanged)="onFiltersChanged($event)"></app-filter-container>
+
+            <!-- Dropdown Empresa -->
+            <div class="d-flex align-items-center">
+              <label class="me-2 mb-0 color-primary">Empresa</label>
+              <select class="form-select form-select-sm w-auto" id="idEmpresa" 
+                      [(ngModel)]="selectedEmpresa" 
+                      (change)="onEmpresaChange()">
+                <option value="all">Todas</option>
+                <option [value]="1">Sarigabo</option>
+                <option [value]="2">Coca Cola</option>
+                <option [value]="3">Mercadona</option>
+              </select>
+            </div>
+          </div>
         </div>
+
         <div class="row ">
           <!-- Primera fila de gráficas -->
           <div class="col-md-4 mb-3">
@@ -67,8 +83,7 @@
           <!-- Tercera fila de gráficas -->
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
-              <!-- <app-grafica-barra-horizontal [titulo]="'Top de productos'" [categorias]="['Aceite de oliva Arbequina', 'Miel de azahar', 'Lentejas Las Charras', 'Loctite 243', 'Bombones La Despensa de Palacio', 'Leche Pascual Semidesnatada', 'Mermelada plátano Román', 'Barbacoa', 'Pattex 120', 'Naturfresh Italiana']" [valores]="[6686, 1500, 12058, 7500, 6686, 6686, 6686, 6686, 6686, 6686]" [elementoId]="'rechazos-producto'"></app-grafica-barra-horizontal>-->
-              <app-grafica-barra-horizontal [titulo]="'Top de productos'" [categorias]="datos_grafica_productos?.categorias" [valores]="datos_grafica_productos?.valores" [elementoId]="'rechazos-producto'"></app-grafica-barra-horizontal>
+              <!-- <app-grafica-barra-horizontal [titulo]="'Top de productos'" [categorias]="['Aceite de oliva Arbequina', 'Miel de azahar', 'Lentejas Las Charras', 'Loctite 243', 'Bombones La Despensa de
             </div>
           </div>
           <div class="col-md-4 mb-3">

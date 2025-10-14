@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ITablaDashboard } from 'src/app/models/tablaDashboard.model';
 import { RechazadosService } from 'src/app/services/rechazados/rechazados.service';
+import { EmpresaStateService } from 'src/app/services/empresa-state/empresa-state.service';
 import { forkJoin } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
 
@@ -14,11 +15,20 @@ export class DashboardGeneralComponent {
   //Filtros
   selectedFilters: { [key: string]: any } = {};
 
-  constructor(private rechazadosService: RechazadosService, private cdr: ChangeDetectorRef) {
-
+  constructor(
+    private rechazadosService: RechazadosService,
+    private cdr: ChangeDetectorRef,
+    private empresaStateService: EmpresaStateService
+  ) {
     this.data = this.valoresTablas[0];
-  }
 
+    // Suscribirse a los cambios de empresa seleccionada
+    this.empresaStateService.selectedEmpresa$.subscribe((empresa) => {
+      this.selectedEmpresa = empresa === 'all' ? 'all' : Number(empresa);
+      this.applyEmpresaFilter();
+      this.loadDashboardData();
+    });
+  }
 
   cargando_grafica_clientes: boolean = true;
   datos_grafica_clientes: any = null;
@@ -747,5 +757,41 @@ export class DashboardGeneralComponent {
     this.cargarGraficos();
   }
 
+  selectedEmpresa: string | number = 'all';
 
+  onEmpresaChange() {
+    this.empresaStateService.setSelectedEmpresa(this.selectedEmpresa.toString());
+    // Recargar las gráficas y tablas relevantes
+    this.cargarGraficos();
+    this.loadTableData();
+  }
+
+  private applyEmpresaFilter(): void {
+    const EMPRESA_FILTER_ID = 'r.empresa_id';
+    const filters = Array.isArray(this.selectedFilters)
+      ? [...this.selectedFilters]
+      : Object.values(this.selectedFilters || {});
+
+    const withoutEmpresa = filters.filter((f: any) => f?.id !== EMPRESA_FILTER_ID);
+
+    if (this.selectedEmpresa !== 'all') {
+      withoutEmpresa.push({
+        id: EMPRESA_FILTER_ID,
+        nombre: 'Empresa',
+        tipo: 'multi-select',
+        valor: [
+          {
+            id: Number(this.selectedEmpresa),
+            name: `Empresa ${this.selectedEmpresa}`,
+          },
+        ],
+      });
+    }
+
+    this.selectedFilters = withoutEmpresa;
+  }
+
+  private loadDashboardData(): void {
+    // Implementar la lógica para recargar los datos del dashboard
+  }
 }
