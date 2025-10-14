@@ -33,10 +33,6 @@
     <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
       <i class="bi bi-currency-exchange me-1"></i> Cobros
     </button>
-
-    <button ngbTooltip="Ver en Mapa" class="btn btn-sm btn-outline-secondary me-2 mb-2" (click)="verEnMapa()">
-      <i class="bi bi-geo-alt me-1"></i>
-    </button>
   </div>
 </div>
 <mat-dialog-content class="container pt-0">
@@ -58,6 +54,10 @@
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="crm-tab" data-bs-toggle="tab" data-bs-target="#crm" type="button"
         role="tab">CRM</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="mapa-tab" data-bs-toggle="tab" data-bs-target="#mapa" type="button"
+        role="tab">Mapa</button>
     </li>
   </ul>
 
@@ -93,6 +93,17 @@
     </div>
     <div class="tab-pane fade" id="crm" role="tabpanel">
       <p>Contenido de CRM</p>
+    </div>
+    <div class="tab-pane fade" id="mapa" role="tabpanel">
+      <div class="map-container" style="height: 400px;" *ngIf="mapCenter && markersData.length > 0">
+        <app-map [center]="mapCenter" [zoom]="15" [markersData]="markersData"></app-map>
+      </div>
+      <div *ngIf="!mapCenter || markersData.length === 0" class="d-flex justify-content-center align-items-center" style="height: 400px;">
+        <div class="text-muted">
+          <i class="bi bi-geo-alt-fill me-2"></i>
+          No hay coordenadas disponibles para mostrar el mapa
+        </div>
+      </div>
     </div>
   </div>
 </mat-dialog-content>

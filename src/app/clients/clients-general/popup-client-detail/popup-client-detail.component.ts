@@ -11,6 +11,7 @@ import { timeout } from 'rxjs';
 import { IClient } from 'src/app/models/clients.model';
 import { ClientsService } from 'src/app/services/clients/clients.service';
 import { PopupMapClientsComponent } from '../popup-map-clients/popup-map-clients.component';
+import { MapData } from 'src/app/models/mapData.model';
 @Component({
   selector: 'app-popup-client-detail',
   templateUrl: './popup-client-detail.component.html',
@@ -24,6 +25,10 @@ export class PopupClientDetailComponent {
   pedidoValorado: boolean = true;
   cliente?: IClient;
   cargando: boolean = false;
+  
+  // Propiedades para el mapa
+  mapCenter: { lat: number; lng: number } | undefined;
+  markersData: MapData[] = [];
 
   constructor(
     public dialog: MatDialog,
@@ -62,6 +67,9 @@ export class PopupClientDetailComponent {
           this.cliente = clientsData;
           this.inactivo = clientsData.deleted;
           this.cargando = false;
+          
+          // Configurar datos del mapa
+          this.setupMapData();
         },
         (error) => {
           console.error('Error al asignar el dataSource:', error);
@@ -92,5 +100,33 @@ export class PopupClientDetailComponent {
         clients: [this.cliente],
       },
     });
+  }
+
+  setupMapData() {
+    console.log('Cliente datos:', this.cliente);
+    if (this.cliente && this.cliente.latitude && this.cliente.longitude) {
+      console.log('Configurando mapa con coordenadas:', this.cliente.latitude, this.cliente.longitude);
+      this.mapCenter = {
+        lat: this.cliente.latitude,
+        lng: this.cliente.longitude,
+      };
+
+      this.markersData = [{
+        latitude: this.cliente.latitude,
+        longitude: this.cliente.longitude,
+        title: this.cliente.name || 'Cliente',
+        infoContent: `
+          <div>
+            <h6>${this.cliente.name || 'Cliente'}</h6>
+            <p>${this.cliente.city || ''}, ${this.cliente.province || ''}</p>
+            <p>${this.cliente.pc || ''}</p>
+          </div>
+        `,
+      }];
+      console.log('MapCenter:', this.mapCenter);
+      console.log('MarkersData:', this.markersData);
+    } else {
+      console.log('No hay coordenadas válidas para el cliente');
+    }
   }
 }
