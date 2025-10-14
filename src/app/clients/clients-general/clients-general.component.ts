@@ -141,7 +141,8 @@ export class ClientsGeneralComponent implements AfterViewInit, OnInit {
 
   editClient(id_Cliente?: number) {
     const dialogRef = this.dialog.open(PopupClientDetailComponent, {
-      /* width: '1120px', */
+      width: '1120px',
+      height: '700px',
       disableClose: false,
       data: { id: id_Cliente },
     });

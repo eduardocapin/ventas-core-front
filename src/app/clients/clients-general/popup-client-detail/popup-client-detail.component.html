@@ -1,14 +1,14 @@
 <div>
   <app-popup-header [title]="'Cliente'" [icon]="'/assets/images/iconos/clientes-icon-dark.svg'"
     (close)="cerrarPopup()"></app-popup-header>
-  <div class="d-flex justify-content-start mb-2 flex-wrap py-1 px-4">
-    <!-- <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
+ <!-- <div class="d-flex justify-content-start mb-2 flex-wrap py-1 px-4">
+     <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
         <i class="bi bi-x-circle me-1"></i> Cerrar
       </button>
       <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
         <i class="bi bi-save me-1"></i> Guardar
       </button> 
-      -->
+      
     <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
       <i class="bi bi-bar-chart-line me-1"></i> Estadísticas
     </button>
@@ -35,6 +35,7 @@
     </button>
   </div>
 </div>
+-->
 <mat-dialog-content class="container pt-0">
 
   <!-- Tabs -->
@@ -95,10 +96,10 @@
       <p>Contenido de CRM</p>
     </div>
     <div class="tab-pane fade" id="mapa" role="tabpanel">
-      <div class="map-container" style="height: 400px;" *ngIf="mapCenter && markersData.length > 0">
+      <div class="map-container" *ngIf="mapCenter && markersData.length > 0">
         <app-map [center]="mapCenter" [zoom]="15" [markersData]="markersData"></app-map>
       </div>
-      <div *ngIf="!mapCenter || markersData.length === 0" class="d-flex justify-content-center align-items-center" style="height: 400px;">
+      <div *ngIf="!mapCenter || markersData.length === 0" class="d-flex justify-content-center align-items-center h-100">
         <div class="text-muted">
           <i class="bi bi-geo-alt-fill me-2"></i>
           No hay coordenadas disponibles para mostrar el mapa

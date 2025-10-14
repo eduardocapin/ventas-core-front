@@ -25,10 +25,43 @@
 
 .tab-pane {
   display: none; /* Oculta todas las pestañas por defecto */
+  height: 520px; /* Altura fija para mantener el tamaño del popup */
+  overflow-y: auto; /* Scroll si el contenido es más grande */
+  padding: 10px 0;
 }
 
 .tab-pane.show.active {
   display: block; /* Muestra solo la pestaña activa */
+}
+
+mat-dialog-content {
+  height: auto; /* Altura automática controlada por el diálogo */
+  max-height: none;
+  overflow: hidden; /* Sin scroll en el contenedor principal */
+  padding: 16px !important;
+}
+
+.tab-content {
+  height: 520px; /* Altura fija igual a tab-pane */
+  margin-top: 10px;
+}
+
+.map-container {
+  height: 100% !important; /* El mapa ocupa todo el alto disponible */
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  
+  app-map {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+// Para la pestaña del mapa, ajustar padding
+#mapa {
+  padding: 0 !important;
 }
 
 
