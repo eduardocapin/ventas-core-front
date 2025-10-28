@@ -12,6 +12,8 @@ export interface Empresa {
   styleUrls: ['./empresa-dropdown.component.scss']
 })
 export class EmpresaDropdownComponent {
+  //que cargue oninit, que aqui no haya un array y que venga directamente del r.empresasId y que la base de datos
+  //Pillar empresas de la dbo.empresas
   @Input() empresas: Empresa[] = [];
   @Output() empresasChange = new EventEmitter<Empresa[]>();
 
