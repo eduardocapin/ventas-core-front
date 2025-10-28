@@ -1,4 +1,4 @@
- .modal-content {
+.modal-content {
   border-color: #3f51b5;
 }
 
@@ -35,6 +35,7 @@
 }
 
 mat-dialog-content {
+  min-width: 1080px; /* Ancho mínimo para el contenido del diálogo */
   height: auto; /* Altura automática controlada por el diálogo */
   max-height: none;
   overflow: hidden; /* Sin scroll en el contenedor principal */
@@ -42,6 +43,7 @@ mat-dialog-content {
 }
 
 .tab-content {
+  width: 100%; /* Ocupa el 100% del ancho del mat-dialog-content */
   height: 520px; /* Altura fija igual a tab-pane */
   margin-top: 10px;
 }

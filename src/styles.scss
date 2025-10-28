@@ -204,3 +204,8 @@ $color-content-ficha-client: #fafbfc;
   height: 15px !important;
   margin: 0 !important;
 }
+
+.custom-dialog-container .mat-dialog-container {
+  width: 1120px !important;
+  max-width: 1120px !important;
+}
