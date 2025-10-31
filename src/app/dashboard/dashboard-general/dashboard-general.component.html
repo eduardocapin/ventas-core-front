@@ -21,7 +21,6 @@
               <!-- Selector de Empresas (Dropdown) -->
               <app-empresa-dropdown 
                 *ngIf="isEmpresaDropdownVisible"
-                [empresas]="empresasList" 
                 (empresasChange)="onEmpresasChange($event)">
               </app-empresa-dropdown>
 

@@ -19,13 +19,10 @@
         </div>
 
         <!-- Selector de Empresas (Dropdown) -->
-        <app-empresa-dropdown 
-          *ngIf="isEmpresaDropdownVisible"
-          [empresas]="empresasList" 
-          (empresasChange)="onEmpresasChange($event)">
-        </app-empresa-dropdown>
-
-            
+          <app-empresa-dropdown 
+            *ngIf="isEmpresaDropdownVisible"
+            (empresasChange)="onEmpresasChange($event)">
+          </app-empresa-dropdown>            
         <!-- boton de filtros aplicados o limpiar -->
         <app-filter-container [componentId]="'rechazos-general'" [selectedFilters]="selectedFilters"
           (filtersChanged)="onFiltersChanged($event)">
