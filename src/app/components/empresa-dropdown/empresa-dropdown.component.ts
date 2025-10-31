@@ -19,6 +19,7 @@ export class EmpresaDropdownComponent implements OnInit {
 
   isOpen = false;
   showDropdown = false;
+  private storageKey = 'selectedEmpresas';
 
   constructor(
     private elementRef: ElementRef,
@@ -48,17 +49,35 @@ export class EmpresaDropdownComponent implements OnInit {
   loadEmpresas(): void {
     this.empresasService.getEmpresas().subscribe({
       next: (data) => {
+        const savedSelection = this.getSelectionFromStorage();
         this.empresas = data.map(empresa => ({
           id: empresa.idEmpresa,
           name: empresa.Nombre,
-          selected: true // Por defecto todas seleccionadas
+          selected: savedSelection ? savedSelection.includes(empresa.idEmpresa) : true
         }));
+
+        // Si ninguna empresa queda seleccionada (p.ej. las guardadas ya no existen), seleccionar todas
+        if (!this.algunaSeleccionada()) {
+          this.empresas.forEach(e => e.selected = true);
+        }
+        
         this.empresasChange.emit(this.empresas);
+        this.saveSelectionToStorage();
       },
       error: (error) => {
         console.error('Error al cargar las empresas:', error);
       }
     });
+  }
+
+  private saveSelectionToStorage(): void {
+    const selectedIds = this.empresas.filter(e => e.selected).map(e => e.id);
+    localStorage.setItem(this.storageKey, JSON.stringify(selectedIds));
+  }
+
+  private getSelectionFromStorage(): number[] | null {
+    const saved = localStorage.getItem(this.storageKey);
+    return saved ? JSON.parse(saved) : null;
   }
 
   // Cerrar dropdown al hacer click fuera
@@ -70,6 +89,7 @@ export class EmpresaDropdownComponent implements OnInit {
         if (!this.algunaSeleccionada()) {
           this.empresas.forEach(e => e.selected = true);
           this.empresasChange.emit(this.empresas);
+          this.saveSelectionToStorage();
         }
         this.isOpen = false;
       }
@@ -83,6 +103,7 @@ export class EmpresaDropdownComponent implements OnInit {
     if (this.isOpen && !this.algunaSeleccionada()) {
       this.empresas.forEach(e => e.selected = true);
       this.empresasChange.emit(this.empresas);
+      this.saveSelectionToStorage();
     }
     this.isOpen = !this.isOpen;
   }
@@ -91,12 +112,14 @@ export class EmpresaDropdownComponent implements OnInit {
     event.stopPropagation();
     empresa.selected = !empresa.selected;
     this.empresasChange.emit(this.empresas);
+    this.saveSelectionToStorage();
   }
 
   seleccionarTodas(event: Event): void {
     event.stopPropagation();
     this.empresas.forEach(e => e.selected = true);
     this.empresasChange.emit(this.empresas);
+    this.saveSelectionToStorage();
   }
 
   // Obtener etiqueta para el botón
