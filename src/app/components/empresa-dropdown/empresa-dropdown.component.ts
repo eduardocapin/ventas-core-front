@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, ElementRef, HostListener, OnInit } from '@angular/core';
 import { ConfigurationService } from 'src/app/services/configuration.service';
 import { EmpresasService } from 'src/app/services/empresas.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 export interface Empresa {
   id: number;
@@ -24,7 +25,8 @@ export class EmpresaDropdownComponent implements OnInit {
   constructor(
     private elementRef: ElementRef,
     private configurationService: ConfigurationService,
-    private empresasService: EmpresasService
+    private empresasService: EmpresasService,
+    private notificationService: NotificationService
     ) {}
 
   ngOnInit(): void {
@@ -85,12 +87,6 @@ export class EmpresaDropdownComponent implements OnInit {
   onDocumentClick(event: MouseEvent): void {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       if (this.isOpen) {
-        // Si se cierra sin ninguna empresa seleccionada, seleccionar todas
-        if (!this.algunaSeleccionada()) {
-          this.empresas.forEach(e => e.selected = true);
-          this.empresasChange.emit(this.empresas);
-          this.saveSelectionToStorage();
-        }
         this.isOpen = false;
       }
     }
@@ -98,18 +94,18 @@ export class EmpresaDropdownComponent implements OnInit {
 
   toggleDropdown(event: Event): void {
     event.stopPropagation();
-    // Si se está abriendo, no hacer nada especial
-    // Si se está cerrando y no hay selección, seleccionar todas
-    if (this.isOpen && !this.algunaSeleccionada()) {
-      this.empresas.forEach(e => e.selected = true);
-      this.empresasChange.emit(this.empresas);
-      this.saveSelectionToStorage();
-    }
     this.isOpen = !this.isOpen;
   }
 
   toggleEmpresa(empresa: Empresa, event: Event): void {
     event.stopPropagation();
+    const seleccionadasCount = this.getSelectedCount();
+
+    if (empresa.selected && seleccionadasCount === 1) {
+      this.notificationService.showWarning('Debes seleccionar al menos una empresa.');
+      return;
+    }
+    
     empresa.selected = !empresa.selected;
     this.empresasChange.emit(this.empresas);
     this.saveSelectionToStorage();
