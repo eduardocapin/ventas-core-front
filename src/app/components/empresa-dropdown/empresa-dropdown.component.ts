@@ -28,7 +28,7 @@ export class EmpresaDropdownComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    this.configurationService.getConfigurationByName('aiwEMPRESA_DROPDOWN_ACTIVO').subscribe({
+    this.configurationService.getConfigurationByName('converterEMPRESA_DROPDOWN_ACTIVO').subscribe({
       next: (config) => {
         if (config && config.Valor !== undefined && config.Valor !== null) {
           this.showDropdown = config.Valor === true || config.Valor === 'true' || config.Valor === 'True';
