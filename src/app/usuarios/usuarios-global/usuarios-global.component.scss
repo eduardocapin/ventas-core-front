@@ -134,10 +134,15 @@
 
         .role-chip {
           background-color: #e3f2fd;
+          color: #1976d2;
           
           &.chip-selected {
             background-color: #2196f3;
             color: white;
+            
+            ::ng-deep .mdc-evolution-chip__text-label {
+              color: white;
+            }
           }
         }
 

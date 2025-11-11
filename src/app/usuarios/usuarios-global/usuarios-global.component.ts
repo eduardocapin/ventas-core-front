@@ -118,9 +118,10 @@ export class UsuariosGlobalComponent implements OnInit {
         this.snackBar.open(
           `Rol ${hasRole ? 'removido' : 'asignado'} correctamente`,
           'Cerrar',
-          { duration: 3000 }
+          { duration: 2000 }
         );
-        this.loadUsuarios();
+        // Actualizar solo el usuario específico
+        this.updateSingleUser(usuario.id);
       },
       error: (error) => {
         console.error('Error al modificar rol:', error);
@@ -233,13 +234,37 @@ export class UsuariosGlobalComponent implements OnInit {
     // Usar forkJoin para ejecutar todas las operaciones en paralelo
     forkJoin(operations).subscribe({
       next: () => {
-        this.snackBar.open('Permisos actualizados correctamente', 'Cerrar', { duration: 3000 });
-        this.loadUsuarios();
+        this.snackBar.open('Permisos actualizados correctamente', 'Cerrar', { duration: 2000 });
+        // En lugar de recargar toda la lista, solo actualizamos el usuario específico
+        this.updateSingleUser(usuario.id);
       },
       error: (error) => {
         console.error('Error al actualizar permisos:', error);
         this.snackBar.open('Error al actualizar permisos', 'Cerrar', { duration: 3000 });
-        this.loadUsuarios();
+        this.updateSingleUser(usuario.id);
+      }
+    });
+  }
+
+  /**
+   * Actualiza solo un usuario específico sin recargar toda la lista
+   */
+  private updateSingleUser(userId: number): void {
+    this.usuariosService.getUsuarios().subscribe({
+      next: (usuarios) => {
+        const updatedUser = usuarios.find(u => u.id === userId);
+        if (updatedUser) {
+          const index = this.usuarios.findIndex(u => u.id === userId);
+          if (index !== -1) {
+            // Actualizar solo el usuario específico
+            this.usuarios[index] = updatedUser;
+            // Forzar detección de cambios
+            this.usuarios = [...this.usuarios];
+          }
+        }
+      },
+      error: (error) => {
+        console.error('Error al actualizar usuario:', error);
       }
     });
   }
