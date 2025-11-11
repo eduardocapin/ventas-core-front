@@ -32,7 +32,7 @@ export class CorrectiveActionStatusComponent {
     // Validar los tres campos necesarios
     if (this.isRowComplete()) {
       if (this.statusId === 1) {
-        const newStatus = { statusId: 2, statusText: 'Enviado' };
+        const newStatus = { statusId: 2, statusText: 'Pendiente' };
         this.updateStatus(newStatus);
       } else {
         this._notifactionService.showWarning('El estado actual no permite cambios.');
