@@ -47,6 +47,25 @@ export class UsuariosService {
     });
   }
 
+  getUsuariosPaginated(
+    searchTerm: string = '',
+    currentPage: number = 1,
+    itemsPerPage: number = 10,
+    sortColumn: string = '',
+    sortDirection: string = 'asc'
+  ): Observable<any> {
+    const body = {
+      searchTerm,
+      currentPage,
+      itemsPerPage,
+      sortColumn,
+      sortDirection
+    };
+    return this.http.post<any>(`${this.apiUrl}/api/users/list`, body, {
+      headers: this.getHeaders()
+    });
+  }
+
   getAllPermissions(): Observable<Permission[]> {
     return this.http.get<Permission[]>(`${this.apiUrl}/api/authorization/permissions`, {
       headers: this.getHeaders()

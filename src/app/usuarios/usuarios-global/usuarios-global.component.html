@@ -1,117 +1,179 @@
-<div class="usuarios-container">
-  <h1>Gestión de Usuarios</h1>
-
-  <div class="loading-spinner" *ngIf="loading">
-    <mat-spinner></mat-spinner>
+<div class="background-light-gray screen">
+  <div class="p-3">
+    <h1 class="page-title">
+      <i class="bi bi-people-fill me-2"></i>
+      Gestión de Usuarios
+    </h1>
   </div>
+  
+  <div class="p-3">
+    <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
+      <!-- Buscador -->
+      <div class="buscador">
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Buscar por nombre, email o cargo..." 
+          [(ngModel)]="searchTerm"
+          (keyup.enter)="onSearch(searchTerm)"
+          (input)="searchTerm.length === 0 && onSearch('')">
+      </div>
+    </div>
 
-  <div class="table-container" *ngIf="!loading">
-    <table mat-table [dataSource]="usuarios" class="usuarios-table">
-      
-      <!-- Columna Nombre -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Nombre</th>
-        <td mat-cell *matCellDef="let usuario">{{ usuario.name }}</td>
-      </ng-container>
-
-      <!-- Columna Email -->
-      <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef>Email</th>
-        <td mat-cell *matCellDef="let usuario">{{ usuario.email }}</td>
-      </ng-container>
-
-      <!-- Columna Cargo -->
-      <ng-container matColumnDef="position_company">
-        <th mat-header-cell *matHeaderCellDef>Cargo</th>
-        <td mat-cell *matCellDef="let usuario">{{ usuario.position_company || 'N/A' }}</td>
-      </ng-container>
-
-      <!-- Columna Roles -->
-      <ng-container matColumnDef="roles">
-        <th mat-header-cell *matHeaderCellDef>Roles</th>
-        <td mat-cell *matCellDef="let usuario">
-          <div class="roles-container">
-            <mat-chip-set>
-              <mat-chip 
-                *ngFor="let role of allRoles"
-                (click)="toggleRole(usuario, role.id)"
-                [disabled]="!canAssignRoles"
-                [ngClass]="{'chip-selected': hasRole(usuario, role.id)}"
-                class="role-chip"
-                [matTooltip]="role.description">
-                {{ role.name }}
-              </mat-chip>
-            </mat-chip-set>
-          </div>
-        </td>
-      </ng-container>
-
-      <!-- Columna Permisos -->
-      <ng-container matColumnDef="permissions">
-        <th mat-header-cell *matHeaderCellDef>Permisos</th>
-        <td mat-cell *matCellDef="let usuario">
-          <div class="permissions-container">
-            <mat-form-field appearance="outline" class="permissions-select">
-              <mat-label>Seleccionar permisos</mat-label>
-              <mat-select 
-                multiple
-                [value]="getSelectedPermissions(usuario)"
-                (selectionChange)="onPermissionsChange(usuario, $event.value)"
-                [disabled]="!canAssignPermissions">
-                <mat-option 
-                  *ngFor="let permission of allPermissions" 
-                  [value]="permission.id"
-                  [disabled]="isPermissionFromRole(usuario, permission.id)">
-                  <div class="permission-option">
-                    <span [class.permission-from-role]="isPermissionFromRole(usuario, permission.id)">
-                      {{ permission.description }}
-                      <mat-icon 
-                        *ngIf="isPermissionFromRole(usuario, permission.id)" 
-                        class="role-indicator"
-                        matTooltip="Heredado del rol">
-                        security
-                      </mat-icon>
-                    </span>
+    <!-- Tabla -->
+    <div class="table-responsive" [class.d-none]="loading">
+      <table class="table table-hover table-sm w-100">
+        <thead>
+          <tr class="w-100">
+            <th scope="col" class="cursor row_column_md" (click)="sortData('name')">
+              Nombre
+              <i *ngIf="sortColumn === 'name'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+            </th>
+            <th scope="col" class="cursor row_column_lg" (click)="sortData('email')">
+              Email
+              <i *ngIf="sortColumn === 'email'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+            </th>
+            <th scope="col" class="cursor row_column_md" (click)="sortData('position_company')">
+              Cargo
+              <i *ngIf="sortColumn === 'position_company'" class="bi"
+                [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+            </th>
+            <th scope="col" class="row_column_lg">Roles</th>
+            <th scope="col" class="row_column_xl">Permisos</th>
+            <th scope="col" class="text-center row_ficha">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="w-100">
+          <ng-container *ngFor="let usuario of usuarios">
+            <tr>
+              <td>{{ usuario.name }}</td>
+              <td>{{ usuario.email }}</td>
+              <td>{{ usuario.position_company || 'N/A' }}</td>
+              <td>
+                <div class="roles-container">
+                  <div class="dropdown">
+                    <button 
+                      class="btn btn-sm btn-outline-primary dropdown-toggle w-100" 
+                      type="button" 
+                      [id]="'dropdownRoles' + usuario.id"
+                      data-bs-toggle="dropdown" 
+                      aria-expanded="false"
+                      [disabled]="!canAssignRoles">
+                      Roles ({{ getSelectedRolesCount(usuario) }})
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-roles" [attr.aria-labelledby]="'dropdownRoles' + usuario.id" (click)="$event.stopPropagation()">
+                      <li *ngFor="let role of allRoles" (click)="$event.stopPropagation()">
+                        <div class="dropdown-item-wrapper" (click)="onRoleItemClick(usuario, role.id, $event)">
+                          <div class="form-check">
+                            <input 
+                              class="form-check-input" 
+                              type="checkbox" 
+                              [id]="'role_' + usuario.id + '_' + role.id"
+                              [checked]="hasRole(usuario, role.id)"
+                              [disabled]="hasRole(usuario, role.id) && usuario.roles.length === 1"
+                              (change)="toggleRoleCheckbox(usuario, role.id, $event)">
+                            <label 
+                              class="form-check-label" 
+                              [for]="'role_' + usuario.id + '_' + role.id"
+                              [title]="role.description"
+                              [class.text-muted]="hasRole(usuario, role.id) && usuario.roles.length === 1"
+                              (click)="$event.stopPropagation()">
+                              {{ role.name }}
+                              <span *ngIf="hasRole(usuario, role.id) && usuario.roles.length === 1" class="ms-1" title="Se requiere al menos un rol">
+                                <i class="bi bi-shield-lock-fill text-warning"></i>
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
                   </div>
-                </mat-option>
-              </mat-select>
-              <mat-hint *ngIf="canAssignPermissions">Los permisos con candado vienen del rol</mat-hint>
-            </mat-form-field>
-          </div>
-        </td>
-      </ng-container>
+                </div>
+              </td>
+              <td>
+                <div class="permissions-container">
+                  <div class="dropdown">
+                    <button 
+                      class="btn btn-sm btn-outline-secondary dropdown-toggle w-100" 
+                      type="button" 
+                      [id]="'dropdownPermissions' + usuario.id"
+                      data-bs-toggle="dropdown" 
+                      aria-expanded="false"
+                      [disabled]="!canAssignPermissions">
+                      Permisos adicionales ({{ getSelectedPermissionsCount(usuario) }})
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-permissions" [attr.aria-labelledby]="'dropdownPermissions' + usuario.id" (click)="$event.stopPropagation()">
+                      <li *ngFor="let permission of allPermissions" (click)="$event.stopPropagation()">
+                        <div class="dropdown-item-wrapper">
+                          <div class="form-check">
+                            <input 
+                              class="form-check-input" 
+                              type="checkbox" 
+                              [id]="'perm_' + usuario.id + '_' + permission.id"
+                              [checked]="hasPermission(usuario, permission.id)"
+                              [disabled]="isPermissionFromRole(usuario, permission.id)"
+                              (change)="togglePermission(usuario, permission.id, $event)">
+                            <label 
+                              class="form-check-label" 
+                              [for]="'perm_' + usuario.id + '_' + permission.id"
+                              [class.text-muted]="isPermissionFromRole(usuario, permission.id)"
+                              (click)="$event.stopPropagation()">
+                              {{ permission.description }}
+                              <i *ngIf="isPermissionFromRole(usuario, permission.id)" class="bi bi-lock-fill ms-1 text-primary" title="Heredado del rol"></i>
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </td>
+              <td class="text-center">
+                <button 
+                  class="btn btn-sm btn-outline-danger"
+                  [disabled]="!isAdmin || usuario.deleted"
+                  (click)="deleteUser(usuario)"
+                  [title]="usuario.deleted ? 'Usuario ya eliminado' : 'Eliminar usuario'">
+                  <i class="bi" [ngClass]="usuario.deleted ? 'bi-trash-fill' : 'bi-trash'"></i>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+          <tr *ngIf="usuarios.length === 0">
+            <td colspan="6" class="text-center">
+              No hay usuarios disponibles
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-      <!-- Columna Acciones -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef class="actions-header">Acciones</th>
-        <td mat-cell *matCellDef="let usuario" class="actions-cell">
-          <button 
-            mat-icon-button 
-            class="delete-btn"
-            [disabled]="!isAdmin || usuario.deleted"
-            (click)="deleteUser(usuario)"
-            [matTooltip]="usuario.deleted ? 'Usuario ya eliminado' : 'Eliminar usuario'">
-            <mat-icon>{{ usuario.deleted ? 'delete_forever' : 'delete' }}</mat-icon>
-          </button>
-        </td>
-      </ng-container>
+    <!-- Spinner de carga -->
+    <div class="d-flex justify-content-center" [class.d-none]="!loading">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Cargando...</span>
+      </div>
+    </div>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </div>
+    <!-- Paginación -->
+    <app-pagination 
+      [class.d-none]="loading"
+      [totalItems]="totalItems" 
+      [itemsPerPage]="itemsPerPage"
+      [currentPage]="currentPage" 
+      (pageChange)="onPageChange($event)"
+      (itemsPerPageChanged)="onItemsPerPageChanged($event)">
+    </app-pagination>
 
-  <div class="info-panel" *ngIf="!loading && usuarios.length > 0">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>Información</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p><strong>Total de usuarios:</strong> {{ usuarios.length }}</p>
-        <p *ngIf="canAssignRoles"><mat-icon>info</mat-icon> Puedes asignar/quitar roles haciendo clic en ellos.</p>
-        <p *ngIf="canAssignPermissions"><mat-icon>info</mat-icon> Usa el selector para asignar permisos. Los permisos con candado <mat-icon class="inline-icon">security</mat-icon> vienen del rol y no se pueden desmarcar</p>
-        <p *ngIf="!canAssignRoles && !canAssignPermissions"><mat-icon>warning</mat-icon> No tienes permisos para modificar roles o permisos</p>
-      </mat-card-content>
-    </mat-card>
+    <!-- Panel de información -->
+    <div class="info-panel mt-3" *ngIf="!loading && usuarios.length > 0">
+      <div class="alert alert-info">
+        <p *ngIf="canAssignRoles"><i class="bi bi-info-circle"></i> Haz clic en los roles para asignar/quitar</p>
+        <p *ngIf="canAssignPermissions"><i class="bi bi-info-circle"></i> Los permisos con 🔒 vienen del rol</p>
+        <p *ngIf="!canAssignRoles && !canAssignPermissions"><i class="bi bi-exclamation-triangle"></i> Sin permisos para modificar</p>
+      </div>
+    </div>
   </div>
 </div>

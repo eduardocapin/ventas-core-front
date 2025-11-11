@@ -1,265 +1,302 @@
-.usuarios-container {
-  padding: 16px;
-  max-width: 1600px;
-  margin: 0 auto;
+.background-light-gray {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
 
-  h1 {
-    color: #333;
-    margin-bottom: 16px;
-    font-size: 24px;
+.screen {
+  padding-bottom: 20px;
+}
+
+.page-title {
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.buscador {
+  min-width: 300px;
+  max-width: 500px;
+  
+  .form-control {
+    font-size: 14px;
+    border-radius: 4px;
   }
+}
 
-  .loading-spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 300px;
-  }
+.table-responsive {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  margin-bottom: 16px;
+}
 
-  .table-container {
-    overflow-x: auto;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 16px;
+.table {
+  margin-bottom: 0;
+  font-size: 13px;
 
-    .usuarios-table {
-      width: 100%;
-      font-size: 13px;
-
-      th {
-        background-color: #f5f5f5;
-        font-weight: 600;
-        color: #333;
-        font-size: 13px;
-      }
-
-      td, th {
-        padding: 8px 12px;
-      }
-
-      .roles-container,
-      .permissions-container {
-        min-width: 200px;
-        max-width: 350px;
-        
-        .permissions-select {
-          width: 100%;
-          font-size: 13px;
-          
-          ::ng-deep .mat-mdc-form-field-wrapper {
-            padding-bottom: 0;
-            margin-bottom: 0;
-          }
-
-          ::ng-deep .mat-mdc-text-field-wrapper {
-            padding: 4px 0;
-          }
-          
-          ::ng-deep .mat-mdc-form-field-infix {
-            padding: 12px 8px;
-            min-height: 44px;
-            display: flex;
-            align-items: center;
-          }
-
-          ::ng-deep .mat-mdc-select {
-            font-size: 13px;
-          }
-
-          ::ng-deep .mat-mdc-select-value {
-            font-size: 13px;
-            line-height: 20px;
-          }
-
-          ::ng-deep .mat-mdc-select-value-text {
-            line-height: 20px;
-          }
-
-          ::ng-deep .mat-mdc-select-trigger {
-            display: flex;
-            align-items: center;
-            height: 100%;
-          }
-
-          ::ng-deep .mat-mdc-form-field-subscript-wrapper {
-            display: none;
-          }
-        }
-
-        .permission-option {
-          display: flex;
-          flex-direction: column;
-          padding: 8px 12px;
-          font-size: 13px;
-          line-height: 1.4;
-          min-height: 40px;
-          
-          .permission-from-role {
-            color: #1976d2;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            
-            .role-indicator {
-              font-size: 16px;
-              width: 16px;
-              height: 16px;
-              vertical-align: middle;
-            }
-          }
-        }
-        
-        mat-chip-list, mat-chip-set {
-          display: flex;
-          flex-wrap: wrap;
-        }
-
-        .role-chip,
-        .permission-chip {
-          margin: 2px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-
-          &:hover:not([disabled]) {
-            transform: scale(1.05);
-          }
-
-          &[disabled] {
-            opacity: 0.6;
-            cursor: not-allowed;
-          }
-        }
-
-        .role-chip {
-          background-color: #e3f2fd;
-          color: #1976d2;
-          
-          &.chip-selected {
-            background-color: #2196f3;
-            color: white;
-            
-            ::ng-deep .mdc-evolution-chip__text-label {
-              color: white;
-            }
-          }
-        }
-
-        .permission-chip {
-          background-color: #fff3e0;
-          
-          &.chip-selected {
-            background-color: #ff9800;
-            color: white;
-          }
-        }
-      }
-    }
-
-    tr.mat-row:hover {
-      background-color: #f5f5f5;
-    }
-
-    // Estilos para la columna de acciones
-    .actions-header {
-      text-align: center !important;
-    }
-
-    .actions-cell {
-      text-align: center;
+  thead {
+    background-color: #f8f9fa;
+    
+    th {
+      font-weight: 600;
+      color: #495057;
+      border-bottom: 2px solid #dee2e6;
+      padding: 12px;
       vertical-align: middle;
-      
-      .delete-btn {
-        width: 36px;
-        height: 36px;
-        line-height: 36px;
-        padding: 0;
-        min-width: 36px;
-        border-radius: 4px;
-        border-color: #bdbdbd;
-        transition: all 0.2s ease;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
 
-        &:not(:disabled) {
-          background-color: transparent;
-          color: #757575;
+      &.cursor {
+        cursor: pointer;
+        user-select: none;
 
-          &:hover {
-            background-color: rgba(0, 0, 0, 0.04);
-            color: #424242;
-            transform: scale(1.05);
-          }
-
-          &:active {
-            transform: scale(0.95);
-          }
+        &:hover {
+          background-color: #e9ecef;
         }
+      }
+
+      i.bi {
+        margin-left: 4px;
+        font-size: 12px;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: #f8f9fa;
+      }
+
+      td {
+        padding: 10px 12px;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+.row_column_sm {
+  width: 80px;
+  min-width: 80px;
+}
+
+.row_column_md {
+  width: 150px;
+  min-width: 150px;
+}
+
+.row_column_lg {
+  width: 200px;
+  min-width: 200px;
+}
+
+.row_column_xl {
+  width: 250px;
+  min-width: 250px;
+}
+
+.row_ficha {
+  width: 100px;
+  min-width: 100px;
+  text-align: center;
+}
+
+.roles-container {
+  position: relative;
+
+  .dropdown-toggle {
+    text-align: left;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 150px;
+  }
+
+  .dropdown-menu-roles {
+    max-height: 250px;
+    overflow-y: auto;
+    min-width: 220px;
+    padding: 8px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+
+    li {
+      margin: 0;
+      padding: 0;
+    }
+
+    .dropdown-item-wrapper {
+      padding: 6px 16px;
+      cursor: pointer;
+      
+      &:hover {
+        background-color: #f8f9fa;
+      }
+    }
+
+    .form-check {
+      margin: 0;
+      padding-left: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .form-check-input {
+        margin: 0;
+        cursor: pointer;
+        flex-shrink: 0;
 
         &:disabled {
-          background-color: transparent;
-          color: #bdbdbd;
           cursor: not-allowed;
           opacity: 0.5;
         }
-
-        mat-icon {
-          font-size: 20px;
-          width: 20px;
-          height: 20px;
-          line-height: 20px;
-        }
-      }
-    }
-  }
-
-  .info-panel {
-    mat-card {
-      background-color: #e8f5e9;
-
-      mat-card-header {
-        margin-bottom: 16px;
       }
 
-      p {
+      .form-check-label {
+        font-size: 13px;
+        cursor: pointer;
+        margin: 0;
         display: flex;
         align-items: center;
-        gap: 8px;
-        margin: 8px 0;
+        flex: 1;
 
-        mat-icon {
-          font-size: 18px;
-          width: 18px;
-          height: 18px;
+        &.text-muted {
+          cursor: not-allowed;
         }
 
-        .inline-icon {
-          font-size: 16px;
-          width: 16px;
-          height: 16px;
-          vertical-align: middle;
+        i.bi-shield-lock-fill {
+          font-size: 12px;
+          flex-shrink: 0;
         }
       }
     }
   }
+}
 
-  // Eliminado - estilos movidos dentro de .usuarios-table
+.permissions-container {
+  position: relative;
+
+  .dropdown-toggle {
+    text-align: left;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 180px;
+  }
+
+  .dropdown-menu-permissions {
+    max-height: 300px;
+    overflow-y: auto;
+    min-width: 280px;
+    padding: 8px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+
+    li {
+      margin: 0;
+      padding: 0;
+    }
+
+    .dropdown-item-wrapper {
+      padding: 6px 16px;
+      
+      &:hover {
+        background-color: #f8f9fa;
+      }
+    }
+
+    .form-check {
+      margin: 0;
+      padding-left: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .form-check-input {
+        margin: 0;
+        cursor: pointer;
+        flex-shrink: 0;
+
+        &:disabled {
+          cursor: not-allowed;
+        }
+      }
+
+      .form-check-label {
+        font-size: 13px;
+        cursor: pointer;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        flex: 1;
+
+        &.text-muted {
+          color: #6c757d !important;
+        }
+
+        i.bi-lock-fill {
+          font-size: 11px;
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+}
+
+.btn-outline-danger {
+  font-size: 14px;
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  margin: 50px 0;
+}
+
+.info-panel {
+  .alert {
+    margin-bottom: 0;
+    font-size: 13px;
+    
+    p {
+      margin: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    i.bi {
+      font-size: 16px;
+    }
+  }
 }
 
 @media (max-width: 768px) {
-  .usuarios-container {
-    padding: 10px;
+  .buscador {
+    min-width: 100%;
+  }
 
-    .table-container {
-      .usuarios-table {
-        font-size: 12px;
+  .table {
+    font-size: 11px;
 
-        td, th {
-          padding: 8px;
-        }
-      }
+    thead th,
+    tbody td {
+      padding: 8px;
     }
+  }
+
+  .roles-container .role-chip {
+    font-size: 10px;
+    padding: 2px 8px;
   }
 }
