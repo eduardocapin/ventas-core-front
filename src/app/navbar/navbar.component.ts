@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProfileEditPopupComponent } from '../configuration/configuration-general/profile-edit-popup/profile-edit-popup.component'; // Ajusta la ruta
 import { MenuService } from '../services/menu/menu.service';
 import { MenuItem } from 'src/app/models/menuItem.model';
+import { AuthorizationService } from '../services/auth/authorization.service';
 
 @Component({
   selector: 'app-navbar',
@@ -67,6 +68,7 @@ export class NavbarComponent {
   constructor(
     public _loginServices: LoginService,
     public _menuService: MenuService,
+    public authorizationService: AuthorizationService,
     private router: Router,
     public dialog: MatDialog
   ) { }
@@ -94,12 +96,28 @@ export class NavbarComponent {
       (item) => item.parent_menu_id === parentId
     );
 
-    // Recursión para submenús
-    return filteredItems.map((item) => ({
-      ...item,
-      isSubmenuOpen: false,
-      submenuItems: this.mapItems(items, item.id),
-    }));
+    // Recursión para submenús con filtrado por roles
+    return filteredItems
+      .filter(item => this.shouldShowMenuItem(item))
+      .map((item) => ({
+        ...item,
+        isSubmenuOpen: false,
+        submenuItems: this.mapItems(items, item.id),
+      }));
+  }
+
+  /**
+   * Determinar si se debe mostrar un item del menú basándose en roles y permisos
+   */
+  shouldShowMenuItem(item: any): boolean {
+    // Si es el item de configuración, verificar roles O permisos
+    if (item.route && (item.route.includes('configuracion') || item.label === 'Configuración')) {
+      return this.authorizationService.isAdminOrEditor() || 
+             this.authorizationService.hasPermission('VISUALIZADO_CONFIGURACION');
+    }
+    
+    // Por defecto, mostrar el item
+    return true;
   }
 
   profilePicSize() {

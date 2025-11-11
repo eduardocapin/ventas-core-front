@@ -43,6 +43,8 @@ import { CorrectiveActionStatusComponent } from '../components/corrective-action
 import { PageTitleComponent } from '../components/page-title/page-title.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EmpresaDropdownComponent } from '../components/empresa-dropdown/empresa-dropdown.component';
+import { HasRoleDirective } from './directives/has-role.directive';
+import { HasPermissionDirective } from './directives/has-permission.directive';
 
 
 
@@ -84,6 +86,8 @@ import { EmpresaDropdownComponent } from '../components/empresa-dropdown/empresa
     CorrectiveActionStatusComponent,
     PageTitleComponent,
     EmpresaDropdownComponent,
+    HasRoleDirective,
+    HasPermissionDirective,
   ],
   imports: [
     NgbModule,
@@ -134,6 +138,8 @@ import { EmpresaDropdownComponent } from '../components/empresa-dropdown/empresa
     CorrectiveActionStatusComponent,
     PageTitleComponent,
     EmpresaDropdownComponent,
+    HasRoleDirective,
+    HasPermissionDirective,
   ]
 })
 export class SharedModule { }

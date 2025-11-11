@@ -6,6 +6,7 @@ import {
   BehaviorSubject,
   map,
   of,
+  switchMap,
 } from 'rxjs';
 import { LoginRequest } from './login.request';
 import { User } from './user';
@@ -13,6 +14,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Md5 } from 'ts-md5'
 import { ConfigurationService } from 'src/app/configuration/configuration.service';
 import { environment } from 'src/environments/environment';
+import { AuthorizationService } from './authorization.service';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +44,7 @@ export class LoginService {
 
   constructor(
     private http: HttpClient,
+    private authorizationService: AuthorizationService
   ) {
     this.user = localStorage.getItem('user');
     this.lastname = localStorage.getItem('lastname');
@@ -59,7 +62,7 @@ export class LoginService {
         password: Md5.hashStr(credential.password),
       })
       .pipe(
-        map((data: any) => {
+        switchMap((data: any) => {
           console.log(data);
           this.setToken(data.token);
           localStorage.setItem('dir', 'db_rechazos');
@@ -70,7 +73,15 @@ export class LoginService {
           localStorage.setItem('cargo', data.cargo != null ? data.cargo : '');
           localStorage.setItem('lastname', data.lastname != null ? data.lastname : '');
 
-          return data;
+          // Cargar roles y permisos
+          const token = this.getToken();
+          if (token) {
+            return this.authorizationService.loadAuthorizationInfo(token).pipe(
+              map(() => data)
+            );
+          }
+          
+          return of(data);
         })
       );
   }
@@ -222,6 +233,7 @@ export class LoginService {
   }
   logout() {
     this.deleteToken();
+    this.authorizationService.clearAuthorization();
     localStorage.clear();
   }
   isAuthenticated(): Observable<boolean> {
