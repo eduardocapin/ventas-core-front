@@ -143,4 +143,19 @@ export class AuthorizationService {
     });
     return this.http.get<any[]>(`${this.apiUrl}/api/authorization/roles`, { headers });
   }
+
+  /**
+   * Obtener información del usuario actual desde el backend
+   */
+  getCurrentUserInfo(): Observable<any> {
+    let token = localStorage.getItem('token');
+    if (token) {
+      token = JSON.parse(token);
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.get<any>(`${this.apiUrl}/api/authorization/me`, { headers });
+  }
 }

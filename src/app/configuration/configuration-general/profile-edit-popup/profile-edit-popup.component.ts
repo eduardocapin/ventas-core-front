@@ -89,21 +89,52 @@ export class ProfileEditPopupComponent {
     this.email = localStorage.getItem('email') || '';
     this.img = localStorage.getItem('img');
     
-    // Cargar roles
+    // Cargar roles desde localStorage
     this.userRoles = this._authorizationService.getRoles();
     
-    // Cargar permisos con descripciones desde el backend
+    // Obtener permisos del usuario actual desde el backend
     const userPermissionNames = this._authorizationService.getPermissions();
+    
+    console.log('Nombres de permisos desde localStorage:', userPermissionNames);
+    
+    // Cargar todos los permisos con sus descripciones
     this._usersService.getAllPermissions().subscribe({
       next: (allPermissions: Permission[]) => {
         this.allPermissions = allPermissions;
+        
+        console.log('Todos los permisos disponibles:', allPermissions.map(p => ({name: p.name, desc: p.description})));
+        
         // Filtrar solo los permisos que el usuario tiene
-        this.userPermissions = allPermissions.filter(p => 
-          userPermissionNames.includes(p.name)
-        );
+        // Comparamos por el campo 'name' (nombre técnico como RECHAZOS_EDICION_MOTIVOS)
+        this.userPermissions = allPermissions.filter(p => {
+          // Comparación exacta y case-insensitive
+          const hasPermission = userPermissionNames.some(upn => 
+            upn.toUpperCase() === p.name.toUpperCase()
+          );
+          
+          if (hasPermission) {
+            console.log('Permiso encontrado:', p.name, '->', p.description);
+          }
+          
+          return hasPermission;
+        });
+        
+        console.log('Total permisos filtrados del usuario:', this.userPermissions.length);
+        
+        // Si no se encontraron permisos pero hay nombres en localStorage, mostrar advertencia
+        if (this.userPermissions.length === 0 && userPermissionNames.length > 0) {
+          console.warn('No se pudieron mapear los permisos. Nombres en localStorage:', userPermissionNames);
+          console.warn('Nombres disponibles en backend:', allPermissions.map(p => p.name));
+        }
       },
       error: (err) => {
-        console.error('Error al cargar permisos:', err);
+        console.error('Error al cargar permisos desde el backend:', err);
+        // Si hay error, mostrar los nombres desde localStorage como descripción
+        this.userPermissions = userPermissionNames.map(name => ({
+          id: 0,
+          name: name,
+          description: name.replace(/_/g, ' ') // Reemplazar guiones bajos por espacios
+        }));
       }
     });
   }
