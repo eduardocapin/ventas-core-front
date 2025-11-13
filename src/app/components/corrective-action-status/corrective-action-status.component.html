@@ -3,10 +3,13 @@
   [ngClass]="{
     'status-not-sent': statusId === 1,
     'status-pending': statusId === 2,
-    'status-sent': statusId === 3
+    'status-sent': statusId === 3,
+    'status-disabled': !canEnviar
   }"
   (click)="handleStatusClick()"
-  ngbTooltip="{{ statusText }}"
+  [ngbTooltip]="canEnviar ? statusText : 'Sin permisos para enviar'"
   placement="left"
+  [style.cursor]="canEnviar ? 'pointer' : 'not-allowed'"
+  [style.opacity]="canEnviar ? '1' : '0.5'"
 ></div>
 

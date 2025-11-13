@@ -20,6 +20,7 @@ import { CompetidoresService } from 'src/app/services/competitors/competidores.s
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { css } from 'jquery';
 import { Empresa } from 'src/app/components/empresa-dropdown/empresa-dropdown.component';
+import { AuthorizationService } from 'src/app/services/auth/authorization.service';
 
 
 @Component({
@@ -137,6 +138,13 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
 
   private documentClickListener!: () => void;
 
+  // Permisos para edición de rechazos
+  canEditMotivos: boolean = false;
+  canEditEstado: boolean = false;
+  canEditCompetidor: boolean = false;
+  canEditAccionCorrectora: boolean = false;
+  canEnviarAccionCorrectora: boolean = false;
+
   constructor(
     private renderer: Renderer2,
     public dialog: MatDialog,
@@ -146,10 +154,14 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     private _notifactionService: NotificationService,
     private _competidoresService: CompetidoresService,
     private cdr: ChangeDetectorRef,
+    private authService: AuthorizationService
 
   ) { }
 
   ngOnInit() {
+    // Verificar permisos del usuario
+    this.checkUserPermissions();
+
     // Obtener la configuración de filtros desde el backend
     this.filterService.getFilterConfig('rechazos-general').subscribe(
       (config) => {
@@ -178,6 +190,21 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     this.dataSource = this.dataSource.map(row => ({ ...row, modified: false }));
 
     this.documentClickListener = this.renderer.listen('document', 'click', (event) => this.onDocumentClick(event));
+  }
+
+  /**
+   * Verificar permisos del usuario para editar rechazos
+   */
+  checkUserPermissions(): void {
+    // Verificar si es Admin o Editor
+    const isAdminOrEditor = this.authService.isAdminOrEditor();
+    
+    // Verificar permisos específicos
+    this.canEditMotivos = isAdminOrEditor || this.authService.hasPermission('RECHAZOS_EDICION_MOTIVOS');
+    this.canEditEstado = isAdminOrEditor || this.authService.hasPermission('RECHAZOS_EDICION_ESTADO');
+    this.canEditCompetidor = isAdminOrEditor || this.authService.hasPermission('RECHAZOS_EDICION_COMPETIDOR');
+    this.canEditAccionCorrectora = isAdminOrEditor || this.authService.hasPermission('RECHAZOS_EDICION_ACCION_CORRECTORA');
+    this.canEnviarAccionCorrectora = isAdminOrEditor || this.authService.hasPermission('RECHAZOS_ENVIADO_ACCION_CORRECTORA');
   }
 
   ngOnDestroy() {
