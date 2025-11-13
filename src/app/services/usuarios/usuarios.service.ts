@@ -93,4 +93,8 @@ export class UsuariosService {
   deleteUser(userId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/api/users/${userId}`, { headers: this.getHeaders() });
   }
+
+  createUser(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/users`, userData, { headers: this.getHeaders() });
+  }
 }

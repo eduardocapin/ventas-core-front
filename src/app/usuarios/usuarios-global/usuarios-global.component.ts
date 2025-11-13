@@ -5,6 +5,7 @@ import { UsuariosService } from '../../services/usuarios/usuarios.service';
 import { AuthorizationService } from '../../services/auth/authorization.service';
 import { NotificationService } from '../../services/notification/notification.service';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
+import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dialog.component';
 
 interface Usuario {
   id: number;
@@ -68,6 +69,10 @@ export class UsuariosGlobalComponent implements OnInit {
     this.isAdmin = this.authService.hasRole('Admin');
     this.loadUsuarios();
     this.loadPermissions();
+  }
+
+  get canCreateUser(): boolean {
+    return this.isAdmin || this.authService.hasPermission('VISUALIZADO_USUARIOS');
   }
 
   loadUsuarios(): void {
@@ -329,5 +334,25 @@ export class UsuariosGlobalComponent implements OnInit {
   private updateSingleUser(userId: number): void {
     // Recargar la página actual después de actualizar un usuario
     this.loadUsuarios();
+  }
+
+  openCreateUserDialog(): void {
+    if (!this.canCreateUser) {
+      this.notification.showWarning('No tienes permisos para crear usuarios');
+      return;
+    }
+
+    const dialogRef = this.dialog.open(CreateUserDialogComponent, {
+      width: '600px',
+      disableClose: true,
+      panelClass: 'custom-dialog-container'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Usuario creado exitosamente, recargar la lista
+        this.loadUsuarios();
+      }
+    });
   }
 }

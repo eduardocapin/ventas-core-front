@@ -128,4 +128,19 @@ export class AuthorizationService {
     localStorage.removeItem('roles');
     localStorage.removeItem('permissions');
   }
+
+  /**
+   * Obtener todos los roles disponibles desde el backend
+   */
+  getAllRoles(): Observable<any[]> {
+    let token = localStorage.getItem('token');
+    if (token) {
+      token = JSON.parse(token);
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.get<any[]>(`${this.apiUrl}/api/authorization/roles`, { headers });
+  }
 }

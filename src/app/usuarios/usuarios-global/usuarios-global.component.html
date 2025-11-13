@@ -28,6 +28,18 @@
           </button>
         </div>
       </div>
+
+      <!-- Botón Crear Usuario -->
+      <div>
+        <button 
+          class="btn btn-primary"
+          (click)="openCreateUserDialog()"
+          [disabled]="!canCreateUser"
+          title="Crear nuevo usuario">
+          <i class="bi bi-person-plus-fill me-2"></i>
+          Nuevo Usuario
+        </button>
+      </div>
     </div>
 
     <!-- Tabla -->

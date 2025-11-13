@@ -1,0 +1,201 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2 class="dialog-title">
+      <i class="bi bi-person-plus-fill me-2"></i>
+      Crear Nuevo Usuario
+    </h2>
+    <button type="button" class="btn-close" (click)="onCancel()" [disabled]="loading"></button>
+  </div>
+
+  <div class="dialog-body">
+    <form (ngSubmit)="onSubmit()">
+      <!-- Imagen de perfil -->
+      <div class="form-section mb-4">
+        <label class="form-label">Foto de perfil (opcional)</label>
+        <div class="image-upload-container">
+          <div class="image-preview" *ngIf="imagePreview">
+            <img [src]="imagePreview" alt="Vista previa">
+            <button type="button" class="btn-remove-image" (click)="removeImage()" title="Eliminar imagen">
+              <i class="bi bi-x-circle-fill"></i>
+            </button>
+          </div>
+          <div class="upload-placeholder" *ngIf="!imagePreview">
+            <i class="bi bi-person-circle"></i>
+            <p>Seleccionar imagen</p>
+          </div>
+          <input 
+            type="file" 
+            accept="image/*" 
+            (change)="onFileSelected($event)"
+            class="form-control mt-2"
+            [disabled]="loading">
+        </div>
+      </div>
+
+      <!-- Nombre -->
+      <div class="form-section mb-3">
+        <label for="name" class="form-label required">Nombre completo</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          id="name"
+          [(ngModel)]="name"
+          name="name"
+          placeholder="Nombre del usuario"
+          [disabled]="loading"
+          required>
+      </div>
+
+      <!-- Email -->
+      <div class="form-section mb-3">
+        <label for="email" class="form-label required">Email</label>
+        <input 
+          type="email" 
+          class="form-control" 
+          id="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="correo@ejemplo.com"
+          [disabled]="loading"
+          [class.is-invalid]="email.length > 0 && !isValidEmail(email)"
+          required>
+        <div class="invalid-feedback" *ngIf="email.length > 0 && !isValidEmail(email)">
+          Por favor ingresa un email válido
+        </div>
+      </div>
+
+      <!-- Cargo -->
+      <div class="form-section mb-3">
+        <label for="position" class="form-label">Cargo</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          id="position"
+          [(ngModel)]="positionCompany"
+          name="position"
+          placeholder="Cargo en la empresa"
+          [disabled]="loading">
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-section mb-3">
+        <label for="password" class="form-label required">Contraseña</label>
+        <div class="input-group">
+          <input 
+            [type]="showPassword ? 'text' : 'password'" 
+            class="form-control" 
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            placeholder="Mínimo 6 caracteres"
+            [disabled]="loading"
+            [class.is-invalid]="password.length > 0 && password.length < 6"
+            required>
+          <button 
+            class="btn btn-outline-secondary" 
+            type="button"
+            (click)="showPassword = !showPassword"
+            [disabled]="loading">
+            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+          </button>
+        </div>
+        <div class="invalid-feedback d-block" *ngIf="password.length > 0 && password.length < 6">
+          La contraseña debe tener al menos 6 caracteres
+        </div>
+      </div>
+
+      <!-- Confirmar Contraseña -->
+      <div class="form-section mb-3">
+        <label for="confirmPassword" class="form-label required">Confirmar contraseña</label>
+        <div class="input-group">
+          <input 
+            [type]="showConfirmPassword ? 'text' : 'password'" 
+            class="form-control" 
+            id="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            name="confirmPassword"
+            placeholder="Repite la contraseña"
+            [disabled]="loading"
+            [class.is-invalid]="confirmPassword.length > 0 && !passwordsMatch()"
+            required>
+          <button 
+            class="btn btn-outline-secondary" 
+            type="button"
+            (click)="showConfirmPassword = !showConfirmPassword"
+            [disabled]="loading">
+            <i class="bi" [ngClass]="showConfirmPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+          </button>
+        </div>
+        <div class="invalid-feedback d-block" *ngIf="confirmPassword.length > 0 && !passwordsMatch()">
+          Las contraseñas no coinciden
+        </div>
+      </div>
+
+      <!-- Roles -->
+      <div class="form-section mb-3">
+        <label class="form-label required">Rol inicial</label>
+        <div class="selection-list">
+          <div class="form-check" *ngFor="let role of allRoles">
+            <input 
+              class="form-check-input" 
+              type="checkbox" 
+              [id]="'role_' + role.id"
+              [checked]="hasRole(role.id)"
+              (change)="toggleRole(role.id)"
+              [disabled]="loading || (hasRole(role.id) && selectedRoleIds.length === 1)">
+            <label 
+              class="form-check-label" 
+              [for]="'role_' + role.id"
+              [title]="role.description">
+              {{ role.name }}
+              <span *ngIf="hasRole(role.id) && selectedRoleIds.length === 1" class="ms-1 text-warning" title="Se requiere al menos un rol">
+                <i class="bi bi-shield-lock-fill"></i>
+              </span>
+            </label>
+          </div>
+        </div>
+        <small class="text-muted">Debe seleccionar al menos un rol</small>
+      </div>
+
+      <!-- Permisos adicionales -->
+      <div class="form-section mb-3">
+        <label class="form-label">Permisos adicionales (opcional)</label>
+        <div class="selection-list">
+          <div class="form-check" *ngFor="let permission of allPermissions">
+            <input 
+              class="form-check-input" 
+              type="checkbox" 
+              [id]="'perm_' + permission.id"
+              [checked]="hasPermission(permission.id)"
+              (change)="togglePermission(permission.id)"
+              [disabled]="loading">
+            <label 
+              class="form-check-label" 
+              [for]="'perm_' + permission.id">
+              {{ permission.description }}
+            </label>
+          </div>
+        </div>
+        <small class="text-muted">Los permisos del rol se asignarán automáticamente</small>
+      </div>
+    </form>
+  </div>
+
+  <div class="dialog-footer">
+    <button 
+      type="button" 
+      class="btn btn-secondary"
+      (click)="onCancel()"
+      [disabled]="loading">
+      Cancelar
+    </button>
+    <button 
+      type="button" 
+      class="btn btn-primary"
+      (click)="onSubmit()"
+      [disabled]="!isFormValid() || loading">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+      {{ loading ? 'Creando...' : 'Crear Usuario' }}
+    </button>
+  </div>
+</div>
