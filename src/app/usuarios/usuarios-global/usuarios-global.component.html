@@ -10,13 +10,23 @@
     <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
       <!-- Buscador -->
       <div class="buscador">
-        <input 
-          type="text" 
-          class="form-control" 
-          placeholder="Buscar por nombre, email o cargo..." 
-          [(ngModel)]="searchTerm"
-          (keyup.enter)="onSearch(searchTerm)"
-          (input)="searchTerm.length === 0 && onSearch('')">
+        <div class="search-input-wrapper">
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Buscar por nombre, email o cargo..." 
+            [(ngModel)]="searchTerm"
+            (keyup.enter)="onSearch(searchTerm)"
+            (input)="searchTerm.length === 0 && onSearch('')">
+          <button 
+            *ngIf="searchTerm.length > 0" 
+            class="clear-search-btn"
+            type="button"
+            (click)="clearSearch()"
+            title="Limpiar búsqueda">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -167,7 +177,8 @@
       (itemsPerPageChanged)="onItemsPerPageChanged($event)">
     </app-pagination>
 
-    <!-- Panel de información -->
+   
+     <!-- Panel de información -->
     <div class="info-panel mt-3" *ngIf="!loading && usuarios.length > 0">
       <div class="alert alert-info">
         <p *ngIf="canAssignRoles"><i class="bi bi-info-circle"></i> Haz clic en los roles para asignar/quitar</p>

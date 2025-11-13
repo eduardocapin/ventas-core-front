@@ -20,9 +20,45 @@
   min-width: 300px;
   max-width: 500px;
   
+  .search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
   .form-control {
     font-size: 14px;
     border-radius: 4px;
+    padding-right: 40px; // Espacio para el botón de limpiar
+  }
+
+  .clear-search-btn {
+    position: absolute;
+    right: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    color: #6c757d;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+      color: #495057;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    i {
+      font-size: 16px;
+    }
   }
 }
 
@@ -32,18 +68,22 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 0;
   margin-bottom: 16px;
+  overflow: visible; // Permitir que los dropdowns salgan del contenedor
 }
 
 .table {
   margin-bottom: 0;
   font-size: 13px;
+  overflow: visible; // Permitir que los dropdowns salgan de la tabla
 
   thead {
     background-color: #f8f9fa;
+    position: relative;
+    z-index: 1;
     
     th {
       font-weight: 600;
-      color: #495057;
+      color: #5591cd; // Azul oscuro
       border-bottom: 2px solid #dee2e6;
       padding: 12px;
       vertical-align: middle;
@@ -67,6 +107,7 @@
   tbody {
     tr {
       transition: background-color 0.2s ease;
+      position: relative; // Permitir posicionamiento de dropdowns
 
       &:hover {
         background-color: #f8f9fa;
@@ -75,6 +116,7 @@
       td {
         padding: 10px 12px;
         vertical-align: middle;
+        overflow: visible; // Permitir que los dropdowns salgan de la celda
       }
     }
   }
@@ -107,7 +149,11 @@
 }
 
 .roles-container {
-  position: relative;
+  position: static; // Cambiar de relative a static para que el dropdown no se corte
+
+  .dropdown {
+    position: relative; // El dropdown usa position relative
+  }
 
   .dropdown-toggle {
     text-align: left;
@@ -124,6 +170,8 @@
     min-width: 220px;
     padding: 8px 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    position: absolute; // Asegurar posición absoluta
+    z-index: 1050; // z-index alto para que aparezca sobre otros elementos
 
     li {
       margin: 0;
@@ -179,7 +227,11 @@
 }
 
 .permissions-container {
-  position: relative;
+  position: static; // Cambiar de relative a static para que el dropdown no se corte
+
+  .dropdown {
+    position: relative; // El dropdown usa position relative
+  }
 
   .dropdown-toggle {
     text-align: left;
@@ -196,6 +248,8 @@
     min-width: 280px;
     padding: 8px 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    position: absolute; // Asegurar posición absoluta
+    z-index: 1050; // z-index alto para que aparezca sobre otros elementos
 
     li {
       margin: 0;
