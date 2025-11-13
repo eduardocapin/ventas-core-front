@@ -297,17 +297,100 @@
     width: 100%;
   }
 
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .table {
-    font-size: 11px;
+    font-size: 10px;
+    min-width: 700px; // Forzar scroll horizontal en móvil
 
     thead th,
     tbody td {
-      padding: 8px;
+      padding: 6px 4px;
+      white-space: nowrap;
     }
+  }
+
+  // Reducir anchos de columnas en móvil
+  .row_column_sm {
+    width: 60px;
+    min-width: 60px;
+  }
+
+  .row_column_md {
+    width: 100px;
+    min-width: 100px;
+  }
+
+  .row_column_lg {
+    width: 120px;
+    min-width: 120px;
+  }
+
+  .row_column_xl {
+    width: 140px;
+    min-width: 140px;
+  }
+
+  .row_ficha {
+    width: 80px;
+    min-width: 80px;
+  }
+
+  // Ajustar dropdowns en móvil
+  .dropdown {
+    .form-select {
+      font-size: 10px;
+      padding: 0.25rem 0.5rem;
+    }
+  }
+
+  .btn-primary {
+    font-size: 12px;
+    padding: 0.375rem 0.75rem;
+    
+    i {
+      font-size: 14px;
+    }
+  }
+
+  .btn-outline-danger {
+    font-size: 11px;
+    padding: 0.25rem 0.5rem;
   }
 
   .roles-container .role-chip {
     font-size: 10px;
     padding: 2px 8px;
+  }
+}
+
+// Para pantallas muy pequeñas (móviles en vertical)
+@media (max-width: 576px) {
+  .page-title {
+    font-size: 18px;
+    letter-spacing: 0.1em;
+  }
+
+  .d-flex.align-items-center.justify-content-between {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 1rem !important;
+  }
+
+  .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .table {
+    font-size: 9px;
+    min-width: 650px;
+  }
+
+  .dropdown-menu {
+    font-size: 11px;
   }
 }
