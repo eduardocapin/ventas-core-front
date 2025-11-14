@@ -256,9 +256,17 @@ table {
   top: 0;
   z-index: 3;
   /* Fija el encabezado en la parte superior */
+  user-select: none;
+  /* Evita que el texto se seleccione al hacer clic(en los encabezados de columnas) */
+  -webkit-user-select: none;
+  /* Evita seleccion en Safari */
+  -moz-user-select: none;
+  /* Evita seleccion en Firefox */
+  -ms-user-select: none;
+  /* Evita seleccion en IE/Edge */
 }
 
-/* Estilo para la columna fija de los checkboxes */
+/* Columna fija de los checkboxes */
 .table-responsive table thead th:first-child,
 .table-responsive table tbody td:first-child {
   position: sticky;

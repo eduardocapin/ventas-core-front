@@ -95,7 +95,7 @@
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Motivo Column -->
-            <th scope="col" (click)="sortData('reason_rejection')" class="cursor row_motivo color-primary">
+            <th scope="col" (click)="sortData('reason_rejection')" class="cursor row_motivo color-primary text-center">
               Motivo
               <i *ngIf="sortColumn === 'reason_rejection'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
@@ -196,12 +196,12 @@
               </td>
 
               <!-- Estado Column -->
-              <td class="text-center">
+              <td class="">
                 <!-- Mostrar como dropdown si tiene permisos -->
-                <div *ngIf="canEditEstado" class="d-flex align-items-center gap-1 justify-content-center">
+                <div *ngIf="canEditEstado" class="d-flex align-items-center gap-1">
                   <img [src]="getOptionImage(row.status_id)" alt="{{ getEstado(row.status_id) }} Image"
                     class="option-image">
-                  <select (change)="changeEstado($event, row)" class="form-select form-select-sm "
+                  <select (change)="changeEstado($event, row)" class="form-select form-select-sm text-center"
                     [(ngModel)]="row.status_id">
                     <option *ngFor="let estado of estados" [value]="estado.id">
                       {{ estado.name }}
@@ -209,10 +209,10 @@
                   </select>
                 </div>
                 <!-- Mostrar como texto plano si NO tiene permisos -->
-                <div *ngIf="!canEditEstado" class="d-flex align-items-center gap-1 justify-content-center">
+                <div *ngIf="!canEditEstado" class="d-flex align-items-center gap-1">
                   <img [src]="getOptionImage(row.status_id)" alt="{{ getEstado(row.status_id) }} Image"
                     class="option-image">
-                  <span>{{ getEstado(row.status_id) }}</span>
+                  <span class="text-center flex-grow-1">{{ getEstado(row.status_id) }}</span>
                 </div>
               </td>
               <!-- Primer Rechazo Column -->
