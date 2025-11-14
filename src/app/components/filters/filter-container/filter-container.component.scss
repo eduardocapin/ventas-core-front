@@ -8,8 +8,8 @@
     border-radius: 0.25rem; 
 }
 ::ng-deep ngb-datepicker.dropdown-menu {
-    margin: 0 0 0 -9px !important;
-    max-width: 355px !important;
+    margin: 0 0 0 -9px ;
+    max-width: 355px ;
     font-size: small;
 }
 
@@ -18,9 +18,9 @@
 }
 
 ::ng-deep .custom-day{
-    width: -webkit-fill-available !important;
+    width: -webkit-fill-available ;
 }
 ::ng-deep .ngb-dp-month:last-child .ngb-dp-week{
-    padding-right: 0 !important;
-    padding-left: 0.5rem !important;
+    padding-right: 0;
+    padding-left: 0.5rem;
 }

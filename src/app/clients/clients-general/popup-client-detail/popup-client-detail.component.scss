@@ -24,9 +24,9 @@
 }
 
 .tab-pane {
-  display: none; /* Oculta todas las pestañas por defecto */
-  height: 520px; /* Altura fija para mantener el tamaño del popup */
-  overflow-y: auto; /* Scroll si el contenido es más grande */
+  display: none; 
+  height: 520px;
+  overflow-y: auto;
   padding: 10px 0;
 }
 
@@ -35,21 +35,21 @@
 }
 
 mat-dialog-content {
-  min-width: 1080px; /* Ancho mínimo para el contenido del diálogo */
-  height: auto; /* Altura automática controlada por el diálogo */
+  min-width: 1080px; 
+  height: auto; 
   max-height: none;
-  overflow: hidden; /* Sin scroll en el contenedor principal */
-  padding: 16px !important;
+  overflow: hidden; 
+  padding: 16px ;
 }
 
 .tab-content {
-  width: 100%; /* Ocupa el 100% del ancho del mat-dialog-content */
-  height: 520px; /* Altura fija igual a tab-pane */
+  width: 100%; 
+  height: 520px; 
   margin-top: 10px;
 }
 
 .map-container {
-  height: 100% !important; /* El mapa ocupa todo el alto disponible */
+  height: 100% ; /* El mapa ocupa todo el alto disponible */
   width: 100%;
   padding: 0;
   margin: 0;
@@ -63,7 +63,7 @@ mat-dialog-content {
 
 // Para la pestaña del mapa, ajustar padding
 #mapa {
-  padding: 0 !important;
+  padding: 0;
 }
 
 

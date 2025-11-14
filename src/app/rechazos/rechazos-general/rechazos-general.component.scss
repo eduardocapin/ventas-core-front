@@ -27,7 +27,7 @@ table {
 }
 
 .header-correctora {
-  color: white !important;
+  color: white;
   min-width: 267px;
   width: 267px;
 }
@@ -225,8 +225,9 @@ table {
 }
 
 .row_propuesta_agente {
-  min-width: 35px !important;
-  width: 35px !important;
+  min-width: 35px;
+  width: 35px;
+  
 }
 
 .row_client {
@@ -235,7 +236,7 @@ table {
 
 .row_expand{
   width: 60px;
-}
+}about:blank#blocked
 
 .table-responsive {
   height: calc(100vh - 220px - 85px);
@@ -283,30 +284,29 @@ table {
   position: sticky;
   right: 0;
   z-index: 2;
-  /* Asegura que el encabezado esté sobre el contenido */
+  /* Encabezado sobre el contenido */
   background-color: white;
-  /* Mantiene el fondo blanco para la columna fija */
 }
 
 /* Ajustes adicionales para las celdas de datos */
 .table-responsive table tbody td:first-child {
   z-index: 1;
-  /* Asegura que el contenido esté debajo del encabezado */
+  /* El contenido esté debajo del encabezado */
 }
 
 .table-responsive table thead th:first-child {
   z-index: 4;
-  /* Asegura que el encabezado esté encima del contenido */
+  /* El encabezado esté encima del contenido */
 }
 
 .table-responsive table tbody td:last-child {
   z-index: 0;
-  /* Asegura que el contenido esté debajo del encabezado */
+  /* El contenido esté debajo del encabezado */
 }
 
 .table-responsive table thead th:last-child {
   z-index: 3;
-  /* Asegura que el encabezado esté encima del contenido */
+  /* El encabezado esté encima del contenido */
 }
 
 .modal-header {
@@ -339,13 +339,12 @@ table {
 
 /* color de la columna accion correctora */
 .fondo_azul {
-  background-color: #4e62d1 !important;
-  /* Color de fondo */
+  background-color: #4e62d1;
   color: white;
 }
 
 .fondo_accionCorrectora {
-  background-color: #dfe2f2 !important;
+  background-color: #dfe2f2;
   color: white;
 }
 
@@ -361,20 +360,13 @@ input[type="number"]::-webkit-inner-spin-button {
   margin: 0;
 }
 
-/* Para Firefox */
-/* input[type="number"] {
-  -moz-appearance: textfield;
-  text-align: right;
-} */
 
-/* estilo para que aparezca el tooltip al pasar el mouse si es muy grande el texto */
 .truncate-text {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
   max-width: 100%;
-  /* O ajusta según el tamaño de la columna */
 }
 
 .truncate-select {
@@ -382,10 +374,24 @@ input[type="number"]::-webkit-inner-spin-button {
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;
-  width: 100%; /* Ajusta el ancho según necesites */
+  width: 100%; 
 }
 
+// Estilos para campos deshabilitados - fondo más claro y texto más oscuro
+.form-control:disabled,
+.form-select:disabled {
+  background-color: #f5f5f5; 
+  color: #2c3e50; 
+  opacity: 1;
+  cursor: not-allowed;
+}
 
+.accion_correctora_precio:disabled,
+.accion_correctora_simbolo:disabled {
+  background-color: #f5f5f5;
+  color: #2c3e50;
+  opacity: 1;
+}
 
 @media (min-width: 1200px) {
   .max-w-kpi {

@@ -164,15 +164,13 @@
                   <!-- Campo para precio de promoción -->
                   <input type="number" class="form-control form-control-sm accion_correctora_precio color-primary"
                     [(ngModel)]="row.corrective_action_value" placeholder="0" min="0"
-                    (input)="changeNumber($event, row)" 
-                    [disabled]="!canEditAccionCorrectora"
-                    [title]="!canEditAccionCorrectora ? 'Sin permisos para editar' : ''" />
+                    (input)="changeNumber($event, row)"
+                    [disabled]="!canEditAccionCorrectora" />
 
                   <!-- Campo para símbolo de promoción -->
                   <select class="form-select form-select-sm accion_correctora_simbolo"
                     [(ngModel)]="row.corrective_action_symbol_id" (change)="changeSymbol($event, row)"
-                    [disabled]="!canEditAccionCorrectora"
-                    [title]="!canEditAccionCorrectora ? 'Sin permisos para editar' : ''">
+                    [disabled]="!canEditAccionCorrectora">
                     <option *ngFor="let simbolo of simbolos" [value]="simbolo.id">
                       {{ simbolo.symbol }}
                     </option>
@@ -183,9 +181,9 @@
                     [(ngModel)]="row.corrective_action_text" maxlength="50" placement="top" placeholder="Promoción"
                     (ngModelChange)="changeText($event, row)" [ngbTooltip]="tooltipText"
                     (mouseover)="applyTooltipIfTruncated($event, row.corrective_action_text)"
-                    [disabled]="!canEditAccionCorrectora"
-                    [title]="!canEditAccionCorrectora ? 'Sin permisos para editar' : ''" />
-                  <!-- campo de estado -->
+                    [disabled]="!canEditAccionCorrectora" />
+
+                  <!-- campo de estado (siempre visible) -->
                   <div class=" d-flex align-items-center justify-self-center">
                     <app-corrective-action-status [statusId]="row.corrective_action_status_id"
                       [statusText]="row.corrective_action_status" [rejectionId]="row.id"
@@ -199,17 +197,22 @@
 
               <!-- Estado Column -->
               <td class="text-center">
-                <div class="d-flex align-items-center gap-1 justify-content-center">
+                <!-- Mostrar como dropdown si tiene permisos -->
+                <div *ngIf="canEditEstado" class="d-flex align-items-center gap-1 justify-content-center">
                   <img [src]="getOptionImage(row.status_id)" alt="{{ getEstado(row.status_id) }} Image"
                     class="option-image">
                   <select (change)="changeEstado($event, row)" class="form-select form-select-sm "
-                    [(ngModel)]="row.status_id"
-                    [disabled]="!canEditEstado"
-                    [title]="!canEditEstado ? 'Sin permisos para editar' : ''">
+                    [(ngModel)]="row.status_id">
                     <option *ngFor="let estado of estados" [value]="estado.id">
                       {{ estado.name }}
                     </option>
                   </select>
+                </div>
+                <!-- Mostrar como texto plano si NO tiene permisos -->
+                <div *ngIf="!canEditEstado" class="d-flex align-items-center gap-1 justify-content-center">
+                  <img [src]="getOptionImage(row.status_id)" alt="{{ getEstado(row.status_id) }} Image"
+                    class="option-image">
+                  <span>{{ getEstado(row.status_id) }}</span>
                 </div>
               </td>
               <!-- Primer Rechazo Column -->
@@ -232,18 +235,21 @@
               </td>
               <!-- Motivo Column -->
               <td class="text-center">
-                <select (change)="changeMotivo($event, row)" (mousedown)="capturePreviousValueReasonId(row)"
+                <!-- Mostrar como dropdown si tiene permisos -->
+                <select *ngIf="canEditMotivos" (change)="changeMotivo($event, row)" (mousedown)="capturePreviousValueReasonId(row)"
                   class="form-select form-select-sm column_motivo select_rechazo color-quaternary truncate-select"
                   [(ngModel)]="row.reason_rejection_id" [ngbTooltip]="tooltipText"
                   (mouseenter)="showTooltipForSelect($event, motivos_rechazo, 'id', 'name')"
-                  (mouseleave)="tooltipText = null" #selectElement
-                  [disabled]="!canEditMotivos"
-                  [title]="!canEditMotivos ? 'Sin permisos para editar' : ''">
+                  (mouseleave)="tooltipText = null" #selectElement>
                   <option *ngFor="let motivo of motivos_rechazo;trackBy: trackByFn" [value]="motivo.id">
                     {{ motivo.name }}
                   </option>
-                  <option [value]="0" *ngIf="canEditMotivos">Añadir Motivo</option>
+                  <option [value]="0">Añadir Motivo</option>
                 </select>
+                <!-- Mostrar como texto plano si NO tiene permisos -->
+                <span *ngIf="!canEditMotivos" [ngbTooltip]="getReasonName(row.reason_rejection_id)" class="truncate-text">
+                  {{ getReasonName(row.reason_rejection_id) }}
+                </span>
               </td>
               <!-- Fecha Interés Column -->
               <td class="text-success centrado_column row_fecha_interes">
@@ -265,23 +271,29 @@
               </td>
               <!-- Competidor Column -->
               <td>
-                <select (change)="changeCompetidor($event, row)" (mousedown)="capturePreviousValueCompetitorId(row)"
+                <!-- Mostrar como dropdown si tiene permisos -->
+                <select *ngIf="canEditCompetidor" (change)="changeCompetidor($event, row)" (mousedown)="capturePreviousValueCompetitorId(row)"
                   class="form-select form-select-sm row_select_competidor truncate-select"
                   [(ngModel)]="row.competitor_id" [ngbTooltip]="tooltipText"
                   (mouseenter)="showTooltipForSelect($event, row.competitors, 'id', 'name')"
-                  (mouseleave)="tooltipText = null"
-                  [disabled]="!canEditCompetidor"
-                  [title]="!canEditCompetidor ? 'Sin permisos para editar' : ''">
+                  (mouseleave)="tooltipText = null">
                   <option *ngFor="let competidor of row.competitors; trackBy: trackByFn" [value]="competidor.id">{{
                     competidor.name }}
                   </option>
-                  <option value="0" *ngIf="canEditCompetidor">Añadir Competidor</option>
+                  <option value="0">Añadir Competidor</option>
                 </select>
+                <!-- Mostrar como texto plano si NO tiene permisos -->
+                <span *ngIf="!canEditCompetidor" [ngbTooltip]="getCompetitorName(row.competitor_id, row.competitors)" class="truncate-text">
+                  {{ getCompetitorName(row.competitor_id, row.competitors) }}
+                </span>
               </td>
               <!-- Propuesta Agente Column -->
               <td class="row_propuesta_agente">
-                <i *ngIf="row.salesman_proposal" [ngbTooltip]="row.salesman_proposal" placement="top"
-                  class="bi bi-card-text"></i>
+                <div class="propuesta-icon-wrapper">
+                  <i *ngIf="row.salesman_proposal" [ngbTooltip]="row.salesman_proposal" 
+                    placement="left" container="body"
+                    class="bi bi-card-text"></i>
+                </div>
               </td>
 
               <!-- Expand Column -->

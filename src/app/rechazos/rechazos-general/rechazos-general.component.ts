@@ -338,6 +338,21 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     return estado ? estado.name : 'No encontrado';
   }
 
+  getReasonName(id: number): string {
+    const reason = this.motivos_rechazo.find((r) => r.id == id);
+    return reason ? reason.name : 'No encontrado';
+  }
+
+  getCompetitorName(id: number, competitors: any[]): string {
+    const competitor = competitors.find((c) => c.id == id);
+    return competitor ? competitor.name : 'No encontrado';
+  }
+
+  getSymbolText(id: number): string {
+    const symbol = this.simbolos.find((s) => s.id == id);
+    return symbol ? symbol.symbol : '';
+  }
+
   ngAfterViewInit() {
     // Placeholder for further initialization if needed
   }
