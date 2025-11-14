@@ -45,7 +45,7 @@
                                             <i *ngIf="editingCompetitorId === row.id" (click)="saveChanges(row)"
                                                 class="bi bi-check-lg btnSave fs-5 px-0" ngbTooltip="Guardar"></i>
                                             <app-btn-icon-delete
-                                                *ngIf="editingCompetitorId !== row.id && row.id !== undefined"
+                                                *ngIf="editingCompetitorId !== row.id && row.id !== undefined && canDeleteCompetitors"
                                                 (btnClicked)="deleteCompetidor(row.id)"></app-btn-icon-delete>
                                             <i *ngIf="editingCompetitorId === row.id" (click)="cancelEdit()"
                                                 class="bi bi-x-lg btnClear color-quaternary fs-5 px-0"
@@ -56,7 +56,7 @@
                                 <tr *ngIf="!cargando && filteredCompetitorList.length === 0">
                                     <td colspan="2" class="text-center">No se han encontrado datos</td>
                                 </tr>
-                                <tr class="sticky-footer">
+                                <tr class="sticky-footer" *ngIf="canCreateCompetitors">
                                     <td>
                                         <input type="text" class="form-control form-control-sm"
                                             [(ngModel)]="newCompetitonName" placeholder="Nombre" (keyup.enter)="insertCompetitor()"/>

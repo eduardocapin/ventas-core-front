@@ -10,6 +10,7 @@ import { timeout } from 'rxjs';
 import { MotivoRechazoService } from 'src/app/services/reasons_rejection/motivo-rechazo.service';
 import { IMotivoRechazo } from 'src/app/models/motivoRechazo.model';
 import { NotificationService } from 'src/app/services/notification/notification.service';
+import { AuthorizationService } from 'src/app/services/auth/authorization.service';
 
 @Component({
   selector: 'app-reasons-rejections',
@@ -36,17 +37,43 @@ export class ReasonsRejectionsComponent {
   currentPage = 1;
   itemsPerPage = 10;
 
+  // Permisos
+  isAdmin: boolean = false;
+  canDeleteReasons: boolean = false;
+  canCreateReasons: boolean = false;
+
   constructor(
     private _motivoRechazoService: MotivoRechazoService,
     public dialogRef: MatDialogRef<ReasonsRejectionsComponent>,
     public dialog: MatDialog,
     private _notifactionService: NotificationService,
+    private _authorizationService: AuthorizationService,
     @Inject(MAT_DIALOG_DATA) public data: { autoClose: boolean }
   ) {
   }
 
   ngOnInit(): void {
+    this.checkUserPermissions();
     this.cargaRechazos();
+  }
+
+  checkUserPermissions(): void {
+    const userRoles = this._authorizationService.getRoles();
+    const userPermissions = this._authorizationService.getPermissions();
+    
+    // Verificar si es Admin
+    this.isAdmin = userRoles.some(role => 
+      role.toUpperCase() === 'ADMIN' || role.toUpperCase() === 'ADMINISTRADOR'
+    );
+    
+    // Verificar permisos específicos
+    this.canDeleteReasons = this.isAdmin || userPermissions.some(p => 
+      p.toUpperCase() === 'CONFIGURACION_BORRADO_MOTIVOS'
+    );
+    
+    this.canCreateReasons = this.isAdmin || userPermissions.some(p => 
+      p.toUpperCase() === 'CONFIGURACION_CREACION_MOTIVOS'
+    );
   }
 
   cargaRechazos(): void {

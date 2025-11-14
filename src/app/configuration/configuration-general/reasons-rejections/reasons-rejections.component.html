@@ -36,7 +36,7 @@
               <i *ngIf="editingReasonId === row.id" (click)="saveChanges(row)" class="bi bi-check-lg btnSave fs-5 px-0"
                 ngbTooltip="Guardar"></i>
 
-              <app-btn-icon-delete *ngIf="editingReasonId !== row.id && row.id !== undefined"
+              <app-btn-icon-delete *ngIf="editingReasonId !== row.id && row.id !== undefined && canDeleteReasons"
                 (btnClicked)="deleteRechazo(row.id)"></app-btn-icon-delete>
               <i *ngIf="editingReasonId === row.id" (click)="cancelEdit()" class="bi bi-x-lg btnClear color-quaternary fs-5 px-0"
                 ngbTooltip="Cancelar"></i>
@@ -48,7 +48,7 @@
           <td colspan="3" class="text-center">No se han encontrado datos</td>
         </tr>
 
-        <tr class="sticky-footer ">
+        <tr class="sticky-footer" *ngIf="canCreateReasons">
           <td>
             <input type="text" class="form-control form-control-sm" [(ngModel)]="newRejectionCode" placeholder="Código">
             <div *ngIf="showNewCodeError" class="text-danger mt-1">

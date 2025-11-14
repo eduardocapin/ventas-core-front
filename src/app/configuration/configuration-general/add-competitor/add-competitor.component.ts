@@ -10,6 +10,7 @@ import { CompetidoresService } from 'src/app/services/competitors/competidores.s
 import { timeout } from 'rxjs';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { NotificationService } from 'src/app/services/notification/notification.service';
+import { AuthorizationService } from 'src/app/services/auth/authorization.service';
 
 @Component({
   selector: 'app-add-competitor',
@@ -53,6 +54,10 @@ export class AddCompetitorComponent {
   //mostrar boton de guardar si hay algun cambio al seleccionar un checkbox
   hasUnsavedChanges: boolean = false;
 
+  // Permisos
+  isAdmin: boolean = false;
+  canDeleteCompetitors: boolean = false;
+  canCreateCompetitors: boolean = false;
 
   constructor(
     private renderer: Renderer2,
@@ -61,11 +66,32 @@ export class AddCompetitorComponent {
     public dialogRef: MatDialogRef<AddCompetitorComponent>,
     public dialog: MatDialog,
     private _notifactionService: NotificationService,
+    private _authorizationService: AuthorizationService,
     @Inject(MAT_DIALOG_DATA) public data: { autoClose: boolean }
   ) { }
 
   ngOnInit(): void {
+    this.checkUserPermissions();
     this.loadData();
+  }
+
+  checkUserPermissions(): void {
+    const userRoles = this._authorizationService.getRoles();
+    const userPermissions = this._authorizationService.getPermissions();
+    
+    // Verificar si es Admin
+    this.isAdmin = userRoles.some(role => 
+      role.toUpperCase() === 'ADMIN' || role.toUpperCase() === 'ADMINISTRADOR'
+    );
+    
+    // Verificar permisos específicos
+    this.canDeleteCompetitors = this.isAdmin || userPermissions.some(p => 
+      p.toUpperCase() === 'CONFIGURACION_BORRADO_COMPETIDORES'
+    );
+    
+    this.canCreateCompetitors = this.isAdmin || userPermissions.some(p => 
+      p.toUpperCase() === 'CONFIGURACION_CREACION_COMPETIDORES'
+    );
   }
 
   /* metodo para que se ejecute bien las familias */
