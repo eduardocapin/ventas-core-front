@@ -30,7 +30,7 @@ interface User {
 }
 
 @Component({
-  selector: 'app-user-form-dialog',
+  selector: 'mobentis-user-form-dialog',
   templateUrl: './user-form-dialog.component.html',
   styleUrls: ['./user-form-dialog.component.scss']
 })

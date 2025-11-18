@@ -39,7 +39,7 @@ type EChartsOption = echarts.ComposeOption<
 >;
 
 @Component({
-  selector: 'app-grafica-semi-circulo',
+  selector: 'mobentis-grafica-semi-circulo',
   templateUrl: './grafica-semi-circulo.component.html',
   styleUrls: ['./grafica-semi-circulo.component.css']
 })

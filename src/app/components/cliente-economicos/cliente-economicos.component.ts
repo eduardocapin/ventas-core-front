@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { IClient } from 'src/app/models/clients.model';
 
 @Component({
-  selector: 'app-cliente-economicos',
+  selector: 'mobentis-cliente-economicos',
   templateUrl: './cliente-economicos.component.html',
   styleUrls: ['./cliente-economicos.component.scss']
 })

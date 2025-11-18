@@ -9,7 +9,7 @@ import { ImportTableName } from 'src/app/models/importTableName.model';
 import { ImportTableField } from 'src/app/models/importTableField.model';
 
 @Component({
-  selector: 'app-excel-import',
+  selector: 'mobentis-excel-import',
   templateUrl: './excel-import.component.html',
   styleUrls: ['./excel-import.component.scss'],
 })

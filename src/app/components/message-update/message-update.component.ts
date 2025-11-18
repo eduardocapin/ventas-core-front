@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-message-update',
+  selector: 'mobentis-message-update',
   templateUrl: './message-update.component.html',
   styleUrls: ['./message-update.component.scss']
 })

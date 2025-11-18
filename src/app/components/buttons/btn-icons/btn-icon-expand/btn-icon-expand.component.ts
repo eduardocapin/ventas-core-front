@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-btn-icon-expand',
+  selector: 'mobentis-btn-icon-expand',
   templateUrl: './btn-icon-expand.component.html',
   styleUrls: ['./btn-icon-expand.component.scss']
 })

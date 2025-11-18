@@ -10,7 +10,7 @@ import { LoginService } from 'src/app/services/auth/login.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-reset-password',
+  selector: 'mobentis-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
 })

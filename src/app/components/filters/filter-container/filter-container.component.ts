@@ -17,7 +17,7 @@ import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.comp
 import { MatDialog } from '@angular/material/dialog';
 declare const bootstrap: any;
 @Component({
-  selector: 'app-filter-container',
+  selector: 'mobentis-filter-container',
   templateUrl: './filter-container.component.html',
   styleUrls: ['./filter-container.component.scss'],
 })

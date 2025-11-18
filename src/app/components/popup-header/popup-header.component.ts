@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-popup-header',
+  selector: 'mobentis-popup-header',
   templateUrl: './popup-header.component.html',
   styleUrls: ['./popup-header.component.scss']
 })

@@ -13,7 +13,7 @@ import { ClientsService } from 'src/app/services/clients/clients.service';
 import { PopupMapClientsComponent } from '../popup-map-clients/popup-map-clients.component';
 import { MapData } from 'src/app/models/mapData.model';
 @Component({
-  selector: 'app-popup-client-detail',
+  selector: 'mobentis-popup-client-detail',
   templateUrl: './popup-client-detail.component.html',
   styleUrls: ['./popup-client-detail.component.scss'],
 })

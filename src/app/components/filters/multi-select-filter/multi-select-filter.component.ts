@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/
 import { FilterService } from 'src/app/services/filter/filter.service';
 
 @Component({
-  selector: 'app-multi-select-filter',
+  selector: 'mobentis-multi-select-filter',
   templateUrl: './multi-select-filter.component.html',
   styleUrls: ['./multi-select-filter.component.scss'],
 })

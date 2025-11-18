@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-change-image',
+  selector: 'mobentis-change-image',
   templateUrl: './change-image.component.html',
   styleUrls: ['./change-image.component.css']
 })

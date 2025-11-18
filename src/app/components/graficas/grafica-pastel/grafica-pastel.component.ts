@@ -38,7 +38,7 @@ type EChartsOption = echarts.ComposeOption<
   | PieSeriesOption
 >;
 @Component({
-  selector: 'app-grafica-pastel',
+  selector: 'mobentis-grafica-pastel',
   templateUrl: './grafica-pastel.component.html',
   styleUrls: ['./grafica-pastel.component.css'],
 })

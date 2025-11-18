@@ -1,13 +1,13 @@
 <div class="screen">
   <div class="p-3">
-    <app-page-title [icon]="'wrench'" [isBootstrapIcon]="true" [title]="'Configuración'"></app-page-title>
+    <mobentis-page-title [icon]="'wrench'" [isBootstrapIcon]="true" [title]="'Configuración'"></mobentis-page-title>
   </div>
   
   <div class="container">
     <div class="row">
       <div class="col-lg-4 col-md-6 col-sm-12 align-items-stretch my-3 px-0" *ngFor="let container of containers">
-        <app-configuration-list-item-container [title]="container.title"
-          [items]="container.items"></app-configuration-list-item-container>
+        <mobentis-configuration-list-item-container [title]="container.title"
+          [items]="container.items"></mobentis-configuration-list-item-container>
       </div>
     </div>
   </div>

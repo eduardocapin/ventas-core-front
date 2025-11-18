@@ -9,7 +9,7 @@ echarts.use([GridComponent, BarChart, CanvasRenderer]);
 type EChartsOption = echarts.ComposeOption<GridComponentOption | BarSeriesOption>;
 
 @Component({
-  selector: 'app-grafica-barra-vertical',
+  selector: 'mobentis-grafica-barra-vertical',
   templateUrl: './grafica-barra-vertical.component.html',
   styleUrls: ['./grafica-barra-vertical.component.css'],
 })

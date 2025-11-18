@@ -1,19 +1,19 @@
 <div class="background-light-gray screen">
   <div class="p-3">
-    <app-page-title [icon]="'assets/images/iconos/clientes-icon-dark.svg'" [title]="'Clientes'"></app-page-title>
+    <mobentis-page-title [icon]="'assets/images/iconos/clientes-icon-dark.svg'" [title]="'Clientes'"></mobentis-page-title>
   </div>
   <div class="p-3">
     <div class="d-flex align-items-center justify-content-between gap-5">
       <div class="d-flex gap-3 align-items-center">
         <!-- buscador -->
         <div class="buscador">
-          <app-search-input [searchTerm]="searchTerm" (searchChange)="onSearch($event)" (errorDeCaracteres)="mostrarError = $event"></app-search-input>
+          <mobentis-search-input [searchTerm]="searchTerm" (searchChange)="onSearch($event)" (errorDeCaracteres)="mostrarError = $event"></mobentis-search-input>
         </div>
         
 
         <!-- boton de filtros aplicados o limpiar -->
-        <app-filter-container [componentId]="'clients-general'" (filtersChanged)="onFiltersChanged($event)">
-        </app-filter-container>
+        <mobentis-filter-container [componentId]="'clients-general'" (filtersChanged)="onFiltersChanged($event)">
+        </mobentis-filter-container>
       </div>
 
       
@@ -117,7 +117,7 @@
                 </span>
               </td>
               <td class="text-center">
-                <app-btn-icon-file (btnClicked)="editClient(row.id)"></app-btn-icon-file>
+                <mobentis-btn-icon-file (btnClicked)="editClient(row.id)"></mobentis-btn-icon-file>
               </td>
             </tr>
 
@@ -137,10 +137,10 @@
     </div>
 
     <!-- Componente de paginación externo -->
-    <app-pagination class="{{cargando?'d-none':''}}" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage"
+    <mobentis-pagination class="{{cargando?'d-none':''}}" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage"
       [currentPage]="currentPage" (pageChange)="onPageChange($event)"
       (itemsPerPageChanged)="onItemsPerPageChanged($event)">
-    </app-pagination>
+    </mobentis-pagination>
 
   </div>
 </div>

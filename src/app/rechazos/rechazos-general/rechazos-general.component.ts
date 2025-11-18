@@ -24,7 +24,7 @@ import { AuthorizationService } from 'src/app/services/auth/authorization.servic
 
 
 @Component({
-  selector: 'app-rechazos-general',
+  selector: 'mobentis-rechazos-general',
   templateUrl: './rechazos-general.component.html',
   styleUrls: ['./rechazos-general.component.scss'],
 })

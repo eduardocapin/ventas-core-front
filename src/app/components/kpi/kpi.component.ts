@@ -3,7 +3,7 @@ import { RejectionKPIs } from 'src/app/models/RejectionKPI.model';
 import { RechazadosService } from 'src/app/services/rechazados/rechazados.service';
 
 @Component({
-  selector: 'app-kpi',
+  selector: 'mobentis-kpi',
   templateUrl: './kpi.component.html',
   styleUrls: ['./kpi.component.scss']
 })

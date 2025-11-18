@@ -1,7 +1,7 @@
 
     <div>
-        <app-popup-header [title]="'Competidores'" [icon]="'/assets/images/iconos/configuracion-icon-dark.svg'"
-            (close)="cerrarPopup()"></app-popup-header>
+        <mobentis-popup-header [title]="'Competidores'" [icon]="'/assets/images/iconos/configuracion-icon-dark.svg'"
+            (close)="cerrarPopup()"></mobentis-popup-header>
     </div>
     
     <mat-dialog-content class="mat-typography py-1">
@@ -11,8 +11,8 @@
                 <div class=" background-light-gray py-2 px-3 w-100">
                     <!-- buscado -->
                     <div class="input-group">
-                        <app-search-input [searchTerm]="searchTermCompetitor"
-                            (searchChange)="onSearchCompetitor($event)"></app-search-input>
+                        <mobentis-search-input [searchTerm]="searchTermCompetitor"
+                            (searchChange)="onSearchCompetitor($event)"></mobentis-search-input>
                     </div>
 
                     <div class="table-responsive w-100 my-3">
@@ -40,13 +40,13 @@
                                     </td>
                                     <td [ngClass]="{'selected-row': selectedCompetitor?.id === row.id}">
                                         <div class="d-flex justify-content-center gap-1">
-                                            <app-btn-icon-edit *ngIf="editingCompetitorId !== row.id && row.id"
-                                                (btnClicked)="toggleEdit(row.id)"></app-btn-icon-edit>
+                                            <mobentis-btn-icon-edit *ngIf="editingCompetitorId !== row.id && row.id"
+                                                (btnClicked)="toggleEdit(row.id)"></mobentis-btn-icon-edit>
                                             <i *ngIf="editingCompetitorId === row.id" (click)="saveChanges(row)"
                                                 class="bi bi-check-lg btnSave fs-5 px-0" ngbTooltip="Guardar"></i>
-                                            <app-btn-icon-delete
+                                            <mobentis-btn-icon-delete
                                                 *ngIf="editingCompetitorId !== row.id && row.id !== undefined && canDeleteCompetitors"
-                                                (btnClicked)="deleteCompetidor(row.id)"></app-btn-icon-delete>
+                                                (btnClicked)="deleteCompetidor(row.id)"></mobentis-btn-icon-delete>
                                             <i *ngIf="editingCompetitorId === row.id" (click)="cancelEdit()"
                                                 class="bi bi-x-lg btnClear color-quaternary fs-5 px-0"
                                                 ngbTooltip="Cancelar"></i>
@@ -101,10 +101,10 @@
                     <!-- buscado -->
                     <div class="d-flex w-100 gap-2 justify-content-center align-items-center">
                         <div class="input-group" *ngIf="selectedCompetitor">
-                            <app-search-input [searchTerm]="searchTermFamily"
-                                (searchChange)="onSearchFamily($event)"></app-search-input>
+                            <mobentis-search-input [searchTerm]="searchTermFamily"
+                                (searchChange)="onSearchFamily($event)"></mobentis-search-input>
                         </div>
-                        <app-message-update [isVisible]="hasUnsavedChanges" (saveChanges)="guardarCambios()" [buttonText]="'Guardar'"></app-message-update>
+                        <mobentis-message-update [isVisible]="hasUnsavedChanges" (saveChanges)="guardarCambios()" [buttonText]="'Guardar'"></mobentis-message-update>
                     </div>
                     <div class="table-responsive w-100 my-3" *ngIf="selectedCompetitor" #familyTableContainer>
                         <table class="table table-sm m-0 table-hover">

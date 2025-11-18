@@ -1,7 +1,7 @@
 <div>
-  <app-popup-header [title]="'Mapa Clientes'" [icon]="'geo-alt'" [isBootstrapIcon]="true"
-  (close)="close()"></app-popup-header>
+  <mobentis-popup-header [title]="'Mapa Clientes'" [icon]="'geo-alt'" [isBootstrapIcon]="true"
+  (close)="close()"></mobentis-popup-header>
 </div>
 <mat-dialog-content class="map-container">
-  <app-map [center]="center" [zoom]="12" [markersData]="markersData"></app-map>
+  <mobentis-map [center]="center" [zoom]="12" [markersData]="markersData"></mobentis-map>
 </mat-dialog-content>

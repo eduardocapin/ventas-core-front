@@ -13,7 +13,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { AuthorizationService } from 'src/app/services/auth/authorization.service';
 
 @Component({
-  selector: 'app-reasons-rejections',
+  selector: 'mobentis-reasons-rejections',
   templateUrl: './reasons-rejections.component.html',
   styleUrls: ['./reasons-rejections.component.scss'],
 })

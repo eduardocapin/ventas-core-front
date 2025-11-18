@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-cliente-direcciones',
+  selector: 'mobentis-cliente-direcciones',
   templateUrl: './cliente-direcciones.component.html',
   styleUrls: ['./cliente-direcciones.component.css']
 })

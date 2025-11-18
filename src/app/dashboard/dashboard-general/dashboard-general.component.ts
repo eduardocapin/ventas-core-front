@@ -8,7 +8,7 @@ import { firstValueFrom } from 'rxjs';
 import { Empresa } from 'src/app/components/empresa-dropdown/empresa-dropdown.component';
 
 @Component({
-  selector: 'app-dashboard-general',
+  selector: 'mobentis-dashboard-general',
   templateUrl: './dashboard-general.component.html',
   styleUrls: ['./dashboard-general.component.scss'],
 })

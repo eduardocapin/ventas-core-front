@@ -1,10 +1,10 @@
 <div class="background-light-gray d-flex flex-column">
   <div class="d-flex flex-column gap-2 justify-content-between align-items-center p-2 titulo bg-white ">
     <!-- titulo y icono -->
-    <app-page-title [icon]="'columns-gap'" [isBootstrapIcon]="true" [title]="'Rechazos'"></app-page-title>
+    <mobentis-page-title [icon]="'columns-gap'" [isBootstrapIcon]="true" [title]="'Rechazos'"></mobentis-page-title>
     <!-- Info Rechazos -->
     <div class="max-w-kpi">
-      <app-kpi [selectedFilters]="selectedFilters" [searchTerm]="searchTerm"></app-kpi>
+      <mobentis-kpi [selectedFilters]="selectedFilters" [searchTerm]="searchTerm"></mobentis-kpi>
     </div>
     <!-- END Info Rechazos -->
   </div>
@@ -14,19 +14,19 @@
       <div class="d-flex flex-column flex-lg-row gap-3 align-items-center">
         <!-- buscado -->
         <div class="input-group">
-          <app-search-input [searchTerm]="searchTerm" (searchChange)="onSearch($event)"
-            (errorDeCaracteres)="mostrarError = $event"></app-search-input>
+          <mobentis-search-input [searchTerm]="searchTerm" (searchChange)="onSearch($event)"
+            (errorDeCaracteres)="mostrarError = $event"></mobentis-search-input>
         </div>
 
         <!-- Selector de Empresas (Dropdown) -->
-          <app-empresa-dropdown 
+          <mobentis-empresa-dropdown 
             *ngIf="isEmpresaDropdownVisible"
             (empresasChange)="onEmpresasChange($event)">
-          </app-empresa-dropdown>            
+          </mobentis-empresa-dropdown>            
         <!-- boton de filtros aplicados o limpiar -->
-        <app-filter-container [componentId]="'rechazos-general'" [selectedFilters]="selectedFilters"
+        <mobentis-filter-container [componentId]="'rechazos-general'" [selectedFilters]="selectedFilters"
           (filtersChanged)="onFiltersChanged($event)">
-        </app-filter-container>
+        </mobentis-filter-container>
       </div>
       <!-- boton de exportar y mapa -->
       <div class="d-flex align-items-center gap-2">
@@ -36,9 +36,9 @@
           </div>
         </div>
         <!-- Mensaje para actualizar -->
-        <app-message-update [isVisible]="hasUnsavedChanges" (saveChanges)="guardarCambios()"></app-message-update>
+        <mobentis-message-update [isVisible]="hasUnsavedChanges" (saveChanges)="guardarCambios()"></mobentis-message-update>
         <!-- boton de exportar -->
-        <app-btn-export (formatSelected)="exportData($event)"></app-btn-export>
+        <mobentis-btn-export (formatSelected)="exportData($event)"></mobentis-btn-export>
         <button class="btn btn-primary d-flex justify-content-center align-items-center" (click)="verEnMapa()">
           <i class="bi bi-geo-alt-fill"></i>
         </button>
@@ -183,12 +183,12 @@
 
                   <!-- campo de estado (siempre visible) -->
                   <div class="d-flex align-items-center justify-self-center">
-                    <app-corrective-action-status [statusId]="row.corrective_action_status_id"
+                    <mobentis-corrective-action-status [statusId]="row.corrective_action_status_id"
                       [statusText]="row.corrective_action_status" [rejectionId]="row.id"
                       (statusChange)="onStatusChange($event, row)" [correctiveActionValue]="row.corrective_action_value"
                       [correctiveActionSymbolId]="row.corrective_action_symbol_id"
                       [correctiveActionText]="row.corrective_action_text"
-                      [canEnviar]="canEnviarAccionCorrectora"></app-corrective-action-status>
+                      [canEnviar]="canEnviarAccionCorrectora"></mobentis-corrective-action-status>
                   </div>
                 </div>
 
@@ -321,9 +321,9 @@
               <!-- Expand Column -->
               <td class="">
                 <div class="d-flex gap-2 align-items-center justify-content-center">
-                  <app-btn-icon-file (btnClicked)="viewRechazo(row.customer_id)"></app-btn-icon-file>
-                  <app-btn-icon-expand [isExpanded]="expandedElement === row"
-                    (toggle)="expandedElement = (expandedElement === row ? null : row)"></app-btn-icon-expand>
+                  <mobentis-btn-icon-file (btnClicked)="viewRechazo(row.customer_id)"></mobentis-btn-icon-file>
+                  <mobentis-btn-icon-expand [isExpanded]="expandedElement === row"
+                    (toggle)="expandedElement = (expandedElement === row ? null : row)"></mobentis-btn-icon-expand>
                 </div>
               </td>
             </tr>
@@ -372,9 +372,9 @@
       </div>
     </div>
     <!-- Paginador -->
-    <app-pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
+    <mobentis-pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
       (pageChange)="onPageChange($event)" (itemsPerPageChanged)="onItemsPerPageChanged($event)">
-    </app-pagination>
+    </mobentis-pagination>
   </div>
   <!-- END TABLA -->
 </div>

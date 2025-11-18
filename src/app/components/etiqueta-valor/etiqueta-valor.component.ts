@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-etiqueta-valor',
+  selector: 'mobentis-etiqueta-valor',
   templateUrl: './etiqueta-valor.component.html',
   styleUrls: ['./etiqueta-valor.component.scss'],
 })

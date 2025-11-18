@@ -3,7 +3,7 @@ import { ConfigurationContainer } from 'src/app/models/configurationContainer.mo
 import { ListItemService } from 'src/app/services/listItem/listItem.service';
 
 @Component({
-  selector: 'app-configuration-general',
+  selector: 'mobentis-configuration-general',
   templateUrl: './configuration-general.component.html',
   styleUrls: ['./configuration-general.component.scss'],
 })

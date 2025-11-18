@@ -19,7 +19,7 @@ interface Permission {
 }
 
 @Component({
-  selector: 'app-profile-edit-popup',
+  selector: 'mobentis-profile-edit-popup',
   templateUrl: './profile-edit-popup.component.html',
   styleUrls: ['./profile-edit-popup.component.scss'],
 })

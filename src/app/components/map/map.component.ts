@@ -3,7 +3,7 @@ import { GoogleMap } from '@angular/google-maps';
 import { MapData } from 'src/app/models/mapData.model';
 
 @Component({
-  selector: 'app-map',
+  selector: 'mobentis-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
 })

@@ -4,7 +4,7 @@ import { Contact } from 'src/app/models/clientContact.model';
 import { timeout } from 'rxjs';
 
 @Component({
-  selector: 'app-cliente-contactos',
+  selector: 'mobentis-cliente-contactos',
   templateUrl: './cliente-contactos.component.html',
   styleUrls: ['./cliente-contactos.component.css']
 })

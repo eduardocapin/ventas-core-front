@@ -14,7 +14,7 @@ import { timeout } from 'rxjs';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
-  selector: 'app-clients-general',
+  selector: 'mobentis-clients-general',
   templateUrl: './clients-general.component.html',
   styleUrls: ['./clients-general.component.scss'],
 })

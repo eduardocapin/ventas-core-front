@@ -3,7 +3,7 @@ import { ListItem } from 'src/app/models/listItem.model';
 import { ListItemService } from 'src/app/services/listItem/listItem.service';
 
 @Component({
-  selector: 'app-list-item',
+  selector: 'mobentis-list-item',
   templateUrl: './list-item.component.html',
   styleUrls: ['./list-item.component.scss'],
 })

@@ -4,7 +4,7 @@ import { MapData } from 'src/app/models/mapData.model';
 import { IRechazo } from 'src/app/models/rechazos.model';
 
 @Component({
-  selector: 'app-popup-map',
+  selector: 'mobentis-popup-map',
   templateUrl: './popup-map-rechazos.component.html',
   styleUrls: ['./popup-map-rechazos.component.css']
 })

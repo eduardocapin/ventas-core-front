@@ -1,6 +1,6 @@
 <div>
-  <app-popup-header [title]="'Motivos de Rechazo'" [icon]="'/assets/images/iconos/configuracion-icon-dark.svg'"
-    (close)="cerrarPopup()"></app-popup-header>
+  <mobentis-popup-header [title]="'Motivos de Rechazo'" [icon]="'/assets/images/iconos/configuracion-icon-dark.svg'"
+    (close)="cerrarPopup()"></mobentis-popup-header>
 </div>
 
 <mat-dialog-content class="mat-typography py-0">
@@ -31,13 +31,13 @@
           </td>
           <td>
             <div class="d-flex justify-content-center gap-3">
-              <app-btn-icon-edit *ngIf="editingReasonId !== row.id && row.id !== undefined"
-                (btnClicked)="toogleEdit(row.id)"></app-btn-icon-edit>
+              <mobentis-btn-icon-edit *ngIf="editingReasonId !== row.id && row.id !== undefined"
+                (btnClicked)="toogleEdit(row.id)"></mobentis-btn-icon-edit>
               <i *ngIf="editingReasonId === row.id" (click)="saveChanges(row)" class="bi bi-check-lg btnSave fs-5 px-0"
                 ngbTooltip="Guardar"></i>
 
-              <app-btn-icon-delete *ngIf="editingReasonId !== row.id && row.id !== undefined && canDeleteReasons"
-                (btnClicked)="deleteRechazo(row.id)"></app-btn-icon-delete>
+              <mobentis-btn-icon-delete *ngIf="editingReasonId !== row.id && row.id !== undefined && canDeleteReasons"
+                (btnClicked)="deleteRechazo(row.id)"></mobentis-btn-icon-delete>
               <i *ngIf="editingReasonId === row.id" (click)="cancelEdit()" class="bi bi-x-lg btnClear color-quaternary fs-5 px-0"
                 ngbTooltip="Cancelar"></i>
             </div>
@@ -82,6 +82,6 @@
       </tbody>
     </table>
   </div>
-  <app-pagination [totalItems]="rejectList.length" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
-    (pageChange)="onPageChange($event)" (itemsPerPageChanged)="onItemsPerPageChanged($event)"></app-pagination>
+  <mobentis-pagination [totalItems]="rejectList.length" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
+    (pageChange)="onPageChange($event)" (itemsPerPageChanged)="onItemsPerPageChanged($event)"></mobentis-pagination>
 </mat-dialog-content>

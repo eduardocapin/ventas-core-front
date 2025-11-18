@@ -16,10 +16,10 @@
     class="dropdown-menu"
     [ngClass]="{'show': item.isSubmenuOpen}"
   >
-    <app-menu-item
+    <mobentis-menu-item
       *ngFor="let subItem of item.submenuItems"
       [item]="subItem"
       [menuOpen]="menuOpen"
-    ></app-menu-item>
+    ></mobentis-menu-item>
   </ul>
 </li>

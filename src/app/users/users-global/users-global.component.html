@@ -31,11 +31,11 @@
         </div>
 
         <!-- Contenedor de Filtros -->
-        <app-filter-container 
+        <mobentis-filter-container 
           [componentId]="'users-global'"
           [selectedFilters]="selectedFilters"
           (filtersChanged)="onFiltersChanged($event)">
-        </app-filter-container>
+        </mobentis-filter-container>
       </div>
 
       <!-- Botón Crear user -->
@@ -153,14 +153,14 @@
               </td>
               <td class="text-center">
                 <div class="d-flex justify-content-center gap-2">
-                  <app-btn-icon-edit 
+                  <mobentis-btn-icon-edit 
                     *ngIf="(isAdmin || canCreateUser) && !user.deleted"
                     (btnClicked)="openEditUserDialog(user)">
-                  </app-btn-icon-edit>
-                  <app-btn-icon-delete 
+                  </mobentis-btn-icon-edit>
+                  <mobentis-btn-icon-delete 
                     *ngIf="isAdmin && !user.deleted"
                     (btnClicked)="deleteUser(user)">
-                  </app-btn-icon-delete>
+                  </mobentis-btn-icon-delete>
                 </div>
               </td>
             </tr>
@@ -182,14 +182,14 @@
     </div>
 
     <!-- Paginación -->
-    <app-pagination 
+    <mobentis-pagination 
       [class.d-none]="loading"
       [totalItems]="totalItems" 
       [itemsPerPage]="itemsPerPage"
       [currentPage]="currentPage" 
       (pageChange)="onPageChange($event)"
       (itemsPerPageChanged)="onItemsPerPageChanged($event)">
-    </app-pagination>
+    </mobentis-pagination>
 
   </div>
 </div>

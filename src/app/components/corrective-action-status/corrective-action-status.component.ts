@@ -4,7 +4,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { RechazadosService } from 'src/app/services/rechazados/rechazados.service';
 
 @Component({
-  selector: 'app-corrective-action-status',
+  selector: 'mobentis-corrective-action-status',
   templateUrl: './corrective-action-status.component.html',
   styleUrls: ['./corrective-action-status.component.scss'],
 })

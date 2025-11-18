@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-btn-icon-delete',
+  selector: 'mobentis-btn-icon-delete',
   templateUrl: './btn-icon-delete.component.html',
   styleUrls: ['./btn-icon-delete.component.scss']
 })

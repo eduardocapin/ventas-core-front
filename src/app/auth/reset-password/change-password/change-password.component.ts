@@ -7,7 +7,7 @@ import { timeout } from 'rxjs';
 
 
 @Component({
-  selector: 'app-change-password',
+  selector: 'mobentis-change-password',
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.scss']
 })

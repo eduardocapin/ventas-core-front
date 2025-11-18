@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-company-selector-config',
+  selector: 'mobentis-company-selector-config',
   templateUrl: './company-selector-config.component.html',
   styleUrls: ['./company-selector-config.component.scss']
 })

@@ -12,7 +12,7 @@ import { IClient } from 'src/app/models/clients.model'; // Actualizar esta líne
 import { MapData } from 'src/app/models/mapData.model';
 
 @Component({
-  selector: 'app-popup-map-clients',
+  selector: 'mobentis-popup-map-clients',
   templateUrl: './popup-map-clients.component.html',
   styleUrls: ['./popup-map-clients.component.scss'],
 })

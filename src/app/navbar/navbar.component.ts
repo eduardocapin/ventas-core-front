@@ -8,7 +8,7 @@ import { MenuItem } from 'src/app/models/menuItem.model';
 import { AuthorizationService } from '../services/auth/authorization.service';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'mobentis-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })

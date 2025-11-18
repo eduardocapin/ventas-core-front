@@ -6,7 +6,7 @@ import { LoginRequest } from 'src/app/services/auth/login.request';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-auth',
+  selector: 'mobentis-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })

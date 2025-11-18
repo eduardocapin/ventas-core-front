@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-range-filter',
+  selector: 'mobentis-range-filter',
   templateUrl: './range-filter.component.html',
   styleUrls: ['./range-filter.component.scss']
 })

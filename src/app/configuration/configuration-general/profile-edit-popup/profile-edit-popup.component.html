@@ -1,6 +1,6 @@
 <div>
-  <app-popup-header [title]="'Perfil'" [icon]="'person-fill'" [isBootstrapIcon]="true"
-    (close)="cancelar()"></app-popup-header>
+  <mobentis-popup-header [title]="'Perfil'" [icon]="'person-fill'" [isBootstrapIcon]="true"
+    (close)="cancelar()"></mobentis-popup-header>
 </div>
 <mat-dialog-content class="custom-dialog-content">
   <div class="container-fluid py-0">
@@ -10,8 +10,8 @@
         <div class="col-12 col-lg-3">
           <div class="background-light-gray p-3 h-100">
             <div class="profile-image-container">
-              <app-change-image [defaultImage]="'assets/images/user.png'" [preview]="img" (upload)="handleUpload($event)"
-                (fileSelected)="onFileSelected($event)"></app-change-image>
+              <mobentis-change-image [defaultImage]="'assets/images/user.png'" [preview]="img" (upload)="handleUpload($event)"
+                (fileSelected)="onFileSelected($event)"></mobentis-change-image>
             </div>
             
             <!-- Roles del usuario -->
@@ -61,7 +61,7 @@
                 </div>
                 <div class="row g-2">
                   <div class="col-12 col-md-7">
-                    <app-etiqueta-valor-vertical [etiqueta]="'Email'" [valor]="email"></app-etiqueta-valor-vertical>
+                    <mobentis-etiqueta-valor-vertical [etiqueta]="'Email'" [valor]="email"></mobentis-etiqueta-valor-vertical>
                   </div>
                   <div class="col-12 col-md-5 d-flex align-items-end justify-content-end">
                     <button type="submit" class="btn btn-primary btn-sm" *ngIf="form.dirty">Guardar cambios</button>

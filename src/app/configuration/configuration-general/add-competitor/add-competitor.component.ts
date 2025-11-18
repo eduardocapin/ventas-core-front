@@ -13,7 +13,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { AuthorizationService } from 'src/app/services/auth/authorization.service';
 
 @Component({
-  selector: 'app-add-competitor',
+  selector: 'mobentis-add-competitor',
   templateUrl: './add-competitor.component.html',
   styleUrls: ['./add-competitor.component.scss'],
 })

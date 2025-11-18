@@ -9,7 +9,7 @@ echarts.use([GridComponent, BarChart, CanvasRenderer]);
 type EChartsOption = echarts.ComposeOption<GridComponentOption | BarSeriesOption>;
 
 @Component({
-  selector: 'app-grafica-barra-horizontal',
+  selector: 'mobentis-grafica-barra-horizontal',
   templateUrl: './grafica-barra-horizontal.component.html',
   styleUrls: ['./grafica-barra-horizontal.component.css']
 })

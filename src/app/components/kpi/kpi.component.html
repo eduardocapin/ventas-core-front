@@ -6,13 +6,13 @@
         </div>
         <!-- El primer div que tiene scroll horizontal y quiero que funcione con la rueda del rato o arrastrando de izquierda a derecha  -->
         <div #graficasIzquierda class="d-flex gap-3 min-w-reasonReject py-1">
-            <app-progress-circle 
+            <mobentis-progress-circle 
                 *ngFor="let reason of kpiData.rejectionByReason"
                 [total]="kpiData.totalRejections" 
                 [value]="reason.count" 
                 [color]="'#ff419a'"
                 [text]="reason.reason">
-            </app-progress-circle>
+            </mobentis-progress-circle>
         </div>
         <div
             class="text-center rounded-3 d-flex padding-rechazos-kpi justify-content-evenly align-items-center gap-2 px-2">
@@ -66,13 +66,13 @@
         </div>
         <!-- El segundo div que tiene scroll horizontal y quiero que funcione con la rueda del rato o arrastrando de izquierda a derecha  -->
         <div #graficasDerecha class="d-flex gap-3 min-w-convertidor">
-            <app-progress-circle 
+            <mobentis-progress-circle 
                 *ngFor="let status of kpiData.conversionsByStatus"
                 [total]="kpiData.totalGroupedConversions" 
                 [value]="status.count" 
                 [color]="'#17a6ff'"
                 [text]="status.status">
-            </app-progress-circle>
+            </mobentis-progress-circle>
         </div>
     </div>
 </div>

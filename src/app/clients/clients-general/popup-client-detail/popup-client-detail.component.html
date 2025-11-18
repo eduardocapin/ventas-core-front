@@ -1,6 +1,6 @@
 <div>
-  <app-popup-header [title]="'Cliente'" [icon]="'/assets/images/iconos/clientes-icon-dark.svg'"
-    (close)="cerrarPopup()"></app-popup-header>
+  <mobentis-popup-header [title]="'Cliente'" [icon]="'/assets/images/iconos/clientes-icon-dark.svg'"
+    (close)="cerrarPopup()"></mobentis-popup-header>
  <!-- <div class="d-flex justify-content-start mb-2 flex-wrap py-1 px-4">
      <button class="btn btn-sm btn-outline-secondary me-2 mb-2">
         <i class="bi bi-x-circle me-1"></i> Cerrar
@@ -68,13 +68,13 @@
     <div class="tab-pane fade show active" id="datos" role="tabpanel">
       <div class="d-flex flex-column">
         <div>
-          <app-cliente-datos-generales [cliente]="this.cliente"></app-cliente-datos-generales>
+          <mobentis-cliente-datos-generales [cliente]="this.cliente"></mobentis-cliente-datos-generales>
         </div>
         <div>
-          <app-cliente-economicos [cliente]="this.cliente"></app-cliente-economicos>
+          <mobentis-cliente-economicos [cliente]="this.cliente"></mobentis-cliente-economicos>
         </div>
         <div>
-          <app-cliente-mas-info [cliente]="this.cliente"></app-cliente-mas-info>
+          <mobentis-cliente-mas-info [cliente]="this.cliente"></mobentis-cliente-mas-info>
         </div>
       </div>
 
@@ -86,10 +86,10 @@
     </div>
     <div class="tab-pane fade" id="contactos" role="tabpanel">
       <div>
-        <app-cliente-contactos [id_cliente]="this.id_cliente"></app-cliente-contactos>
+        <mobentis-cliente-contactos [id_cliente]="this.id_cliente"></mobentis-cliente-contactos>
       </div>
       <div>
-        <app-cliente-direcciones [id_cliente]="this.id_cliente"></app-cliente-direcciones>
+        <mobentis-cliente-direcciones [id_cliente]="this.id_cliente"></mobentis-cliente-direcciones>
       </div>
     </div>
     <div class="tab-pane fade" id="crm" role="tabpanel">
@@ -97,7 +97,7 @@
     </div>
     <div class="tab-pane fade" id="mapa" role="tabpanel">
       <div class="map-container" *ngIf="mapCenter && markersData.length > 0">
-        <app-map [center]="mapCenter" [zoom]="15" [markersData]="markersData"></app-map>
+        <mobentis-map [center]="mapCenter" [zoom]="15" [markersData]="markersData"></mobentis-map>
       </div>
       <div *ngIf="!mapCenter || markersData.length === 0" class="d-flex justify-content-center align-items-center h-100">
         <div class="text-muted">

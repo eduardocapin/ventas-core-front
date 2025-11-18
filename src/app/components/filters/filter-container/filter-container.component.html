@@ -37,8 +37,8 @@
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered custom-modal">
                     <div class="modal-content">
-                        <app-popup-header [title]=" 'Guardar filtro como plantilla'" [icon]="'bookmark-plus-fill'"
-                            [isBootstrapIcon]="true" (close)=" onClose()"></app-popup-header>
+                        <mobentis-popup-header [title]=" 'Guardar filtro como plantilla'" [icon]="'bookmark-plus-fill'"
+                            [isBootstrapIcon]="true" (close)=" onClose()"></mobentis-popup-header>
                         <div class="modal-body">
                             <div>
                                 <div class="bordes-redondeados background-light-gray p-2">
@@ -82,18 +82,18 @@
                         <hr class="my-1"/>
                     </div>
                     <div *ngFor="let filter of filters">
-                        <app-date-filter *ngIf="filter.type === 'date'" [title]="filter.title" [id]="filter.id"
-                            (dateSelection)="handleFilterChange(filter.id, $event)"></app-date-filter>
+                        <mobentis-date-filter *ngIf="filter.type === 'date'" [title]="filter.title" [id]="filter.id"
+                            (dateSelection)="handleFilterChange(filter.id, $event)"></mobentis-date-filter>
     
-                        <app-search-filter *ngIf="filter.type === 'search'" [title]="filter.title" [id]="filter.id"
-                            (searchChange)="handleFilterChange(filter.id, $event)"></app-search-filter>
+                        <mobentis-search-filter *ngIf="filter.type === 'search'" [title]="filter.title" [id]="filter.id"
+                            (searchChange)="handleFilterChange(filter.id, $event)"></mobentis-search-filter>
     
-                        <app-multi-select-filter *ngIf="filter.type === 'multi-select'" [title]="filter.title"
+                        <mobentis-multi-select-filter *ngIf="filter.type === 'multi-select'" [title]="filter.title"
                             [endpoint]="filter.optionsEndpoint" [id]="filter.id"
-                            (selectionChange)="handleFilterChange(filter.id, $event)"></app-multi-select-filter>
+                            (selectionChange)="handleFilterChange(filter.id, $event)"></mobentis-multi-select-filter>
     
-                        <app-range-filter *ngIf="filter.type === 'range'" [id]="filter.id"
-                            (rangeSelected)="handleFilterChange(filter.id, $event)"></app-range-filter>
+                        <mobentis-range-filter *ngIf="filter.type === 'range'" [id]="filter.id"
+                            (rangeSelected)="handleFilterChange(filter.id, $event)"></mobentis-range-filter>
                     </div>
                 </ul>
             </div>

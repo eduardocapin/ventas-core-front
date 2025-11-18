@@ -26,7 +26,7 @@ interface Permission {
 }
 
 @Component({
-  selector: 'app-users-global',
+  selector: 'mobentis-users-global',
   templateUrl: './users-global.component.html',
   styleUrls: ['./users-global.component.scss']
 })

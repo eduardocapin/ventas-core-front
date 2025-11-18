@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Color } from 'chart.js';
 
 @Component({
-  selector: 'app-progress-circle',
+  selector: 'mobentis-progress-circle',
   templateUrl: './progress-circle.component.html',
   styleUrls: ['./progress-circle.component.scss'],
 })

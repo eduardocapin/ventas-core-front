@@ -10,7 +10,7 @@ export interface Empresa {
 }
 
 @Component({
-  selector: 'app-empresa-dropdown',
+  selector: 'mobentis-empresa-dropdown',
   templateUrl: './empresa-dropdown.component.html',
   styleUrls: ['./empresa-dropdown.component.scss']
 })
