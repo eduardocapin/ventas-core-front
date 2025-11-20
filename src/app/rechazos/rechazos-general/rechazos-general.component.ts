@@ -251,7 +251,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
         this.currentPage,
         this.itemsPerPage,
         this.sortColumn,
-        this.sortDirection
+        this.sortDirection,
       )
       .subscribe((data: any) => {
         console.log('Rechazos cargados:', data.items);

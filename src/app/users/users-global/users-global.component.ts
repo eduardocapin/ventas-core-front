@@ -193,6 +193,12 @@ export class UsersGlobalComponent implements OnInit {
     return user.roles.length > 0 ? user.roles[0].name : 'Sin rol';
   }
 
+  getEmptyRows(): number[] {
+    const currentRows = this.users.length;
+    const emptyRowsCount = Math.max(0, this.itemsPerPage - currentRows);
+    return Array(emptyRowsCount).fill(0);
+  }
+
   hasPermission(user: User, permissionId: number): boolean {
     const hasDirectPermission = user.permissions.some(p => p.id === permissionId);
     const hasRolePermission = user.rolePermissions ? user.rolePermissions.some(p => p.id === permissionId) : false;

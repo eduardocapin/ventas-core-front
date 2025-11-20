@@ -170,6 +170,17 @@
               </td>
             </tr>
           </ng-container>
+          
+          <!-- Filas vacías para mantener altura constante -->
+          <tr *ngFor="let emptyRow of getEmptyRows()" class="empty-row">
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          
           <tr *ngIf="users.length === 0">
             <td colspan="6" class="text-center">
               No hay users disponibles
