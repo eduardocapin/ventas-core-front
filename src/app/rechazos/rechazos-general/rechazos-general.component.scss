@@ -1,5 +1,7 @@
 @import "src/styles.scss";
 
+
+
 .input-group {
   width: 200px;
 }
@@ -246,7 +248,8 @@ table {
   margin: 0 auto;
   /* Centra la tabla en el contenedor */
   margin-top: 17px;
-
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 .table thead th {
@@ -254,7 +257,7 @@ table {
   /* Para Safari */
   position: sticky;
   top: 0;
-  z-index: 3;
+  z-index: 1;
   /* Fija el encabezado en la parte superior */
   user-select: none;
   /* Evita que el texto se seleccione al hacer clic(en los encabezados de columnas) */
@@ -277,7 +280,7 @@ table {
 .table-responsive table thead th:nth-child(2) {
   position: sticky;
   left: 29px;
-  z-index: 4;
+  z-index: 2;
 }
 
 .table-responsive table tbody td:nth-child(2) {
@@ -303,7 +306,7 @@ table {
 }
 
 .table-responsive table thead th:first-child {
-  z-index: 4;
+  z-index: 2;
   /* El encabezado esté encima del contenido */
 }
 
@@ -313,7 +316,7 @@ table {
 }
 
 .table-responsive table thead th:last-child {
-  z-index: 3;
+  z-index: 2;
   /* El encabezado esté encima del contenido */
 }
 
@@ -412,13 +415,14 @@ input[type="number"]::-webkit-inner-spin-button {
   border-radius: 4px;
   font-size: 0.875rem;
   color: #495057;
+  width: 60px;
   min-width: 60px;
+  max-width: 60px;
   flex-shrink: 0;
   
   strong {
     color: #2a4054;
     font-weight: 500;
-    
   }
 }
 
@@ -428,12 +432,14 @@ input[type="number"]::-webkit-inner-spin-button {
   border-radius: 4px;
   font-size: 0.875rem;
   color: #495057;
-  flex: 1;
-  min-width: 100px;
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 
 .accion-correctora-status {
@@ -442,7 +448,9 @@ input[type="number"]::-webkit-inner-spin-button {
   font-size: 0.75rem;
   font-weight: 500;
   white-space: nowrap;
+  width: 70px;
   min-width: 70px;
+  max-width: 70px;
   text-align: center;
   flex-shrink: 0;
   
