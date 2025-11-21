@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UsersService } from '../../services/users/users.service';
 import { AuthorizationService } from '../../services/auth/authorization.service';
 import { NotificationService } from '../../services/notification/notification.service';
+import { EmpresasService } from '../../services/empresas.service';
 import { Md5 } from 'ts-md5';
 
 interface Role {
@@ -18,6 +19,11 @@ interface Permission {
   description: string;
 }
 
+interface Empresa {
+  id: number;
+  nombre: string;
+}
+
 interface User {
   id?: number;
   name: string;
@@ -26,6 +32,7 @@ interface User {
   image: string;
   roles: Role[];
   permissions: Permission[];
+  empresas: Empresa[];
   rolePermissions?: Permission[];
 }
 
@@ -44,10 +51,12 @@ export class UserFormDialogComponent implements OnInit {
   image: string = '';
   selectedRoleIds: number[] = [];
   selectedPermissionIds: number[] = [];
+  selectedEmpresaIds: number[] = [];
 
   // Available options
   allRoles: Role[] = [];
   allPermissions: Permission[] = [];
+  allEmpresas: Empresa[] = [];
 
   // UI state
   loading: boolean = false;
@@ -66,7 +75,8 @@ export class UserFormDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { user?: User },
     private usersService: UsersService,
     private authorizationService: AuthorizationService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private empresasService: EmpresasService
   ) {}
 
   ngOnInit(): void {
@@ -98,6 +108,9 @@ export class UserFormDialogComponent implements OnInit {
     this.selectedPermissionIds = user.permissions
       .filter(p => !this.wasPermissionFromRole(user, p.id))
       .map(p => p.id);
+    
+    // Cargar empresas seleccionadas
+    this.selectedEmpresaIds = user.empresas?.map(e => e.id) || [];
   }
 
   // Verifica si un permiso estaba heredado del rol en el usuario original (solo para carga inicial)
@@ -123,6 +136,20 @@ export class UserFormDialogComponent implements OnInit {
       error: (error: any) => {
         console.error('Error cargando permisos:', error);
         this.notificationService.showError('Error al cargar los permisos');
+      }
+    });
+
+    this.empresasService.getEmpresas().subscribe({
+      next: (empresas: any[]) => {
+        // Mapear para usar la estructura consistente con id y nombre
+        this.allEmpresas = empresas.map(e => ({
+          id: e.idEmpresa,
+          nombre: e.Nombre
+        }));
+      },
+      error: (error: any) => {
+        console.error('Error cargando empresas:', error);
+        this.notificationService.showError('Error al cargar las empresas');
       }
     });
   }
@@ -152,12 +179,25 @@ export class UserFormDialogComponent implements OnInit {
     }
   }
 
+  toggleEmpresa(empresaId: number): void {
+    const index = this.selectedEmpresaIds.indexOf(empresaId);
+    if (index > -1) {
+      this.selectedEmpresaIds.splice(index, 1);
+    } else {
+      this.selectedEmpresaIds.push(empresaId);
+    }
+  }
+
   hasRole(roleId: number): boolean {
     return this.selectedRoleIds.includes(roleId);
   }
 
   hasPermission(permissionId: number): boolean {
     return this.selectedPermissionIds.includes(permissionId);
+  }
+
+  hasEmpresa(empresaId: number): boolean {
+    return this.selectedEmpresaIds.includes(empresaId);
   }
 
   // Verifica si el permiso está heredado de alguno de los roles ACTUALMENTE seleccionados
@@ -275,7 +315,8 @@ export class UserFormDialogComponent implements OnInit {
       position_company: this.positionCompany.trim() || null,
       image: this.image || null,
       roleIds: this.selectedRoleIds,
-      permissionIds: this.selectedPermissionIds
+      permissionIds: this.selectedPermissionIds,
+      empresaIds: this.selectedEmpresaIds
     };
 
     this.usersService.createUser(userData).subscribe({
@@ -300,7 +341,8 @@ export class UserFormDialogComponent implements OnInit {
       position_company: this.positionCompany.trim() || null,
       image: this.image || null,
       roleIds: this.selectedRoleIds,
-      permissionIds: this.selectedPermissionIds
+      permissionIds: this.selectedPermissionIds,
+      empresaIds: this.selectedEmpresaIds
     };
 
     // Solo incluir password si se cambió

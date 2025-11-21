@@ -412,7 +412,7 @@ export class UsersGlobalComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: `¿Está seguro de que desea eliminar al User "${user.name}"? Esta acción marcará al User como eliminado.`
+      data: `¿Está seguro de que desea eliminar al usuario "${user.name}"? Esta acción es irreversible.`
     });
 
     dialogRef.afterClosed().subscribe(confirmed => {

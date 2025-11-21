@@ -3,6 +3,7 @@
 .custom-dialog-content {
   padding: 1.5rem;
   min-height: 500px;
+  max-height: 80vh;
   overflow-y: auto;
   
   // Las columnas inician en la parte superior sin estirarse
@@ -10,21 +11,52 @@
     align-items: flex-start;
   }
   
-  // Columna izquierda
+  // Columna izquierda - STICKY
   .col-12.col-lg-4 {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    max-height: 80vh;
+    overflow-y: auto;
+    
     > .background-light-gray {
       display: flex;
       flex-direction: column;
-      position: sticky;
-      top: 0;
+    }
+    
+    // Scrollbar personalizado para la columna sticky
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 3px;
+
+      &:hover {
+        background: var(--text-muted);
+      }
     }
   }
   
-  // Columna derecha
+  // Columna derecha - permite scroll independiente
   .col-12.col-lg-8 {
     > .d-flex.flex-column {
       display: flex;
       flex-direction: column;
+    }
+  }
+  
+  // En móvil, desactivar sticky
+  @media (max-width: 991px) {
+    .col-12.col-lg-4 {
+      position: static;
+      max-height: none;
+      overflow-y: visible;
     }
   }
   
