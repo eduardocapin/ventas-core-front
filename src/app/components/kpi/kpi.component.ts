@@ -20,6 +20,7 @@ export class KPIComponent implements AfterViewInit {
   };
   @Input() selectedFilters!: { [key: string]: any };
   @Input() searchTerm!: string;
+  @Input() empresasList: any[] = []; // Lista de empresas del dropdown
 
 constructor(
     private rejectionService: RechazadosService,
@@ -27,17 +28,30 @@ constructor(
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Cuando los filtros o el término de búsqueda cambian, actualiza los KPIs
-    if (changes['selectedFilters'] || changes['searchTerm']) {
+    // Cuando los filtros, el término de búsqueda o las empresas cambian, actualiza los KPIs
+    if (changes['selectedFilters'] || changes['searchTerm'] || changes['empresasList']) {
       this.loadKPIs();
     }
   }
 
   loadKPIs(){
+    // Determinar selectedEmpresa basado en las empresas seleccionadas en el dropdown
+    let selectedEmpresa: number | 'all' = 'all';
+    const empresasSeleccionadas = this.empresasList.filter((e: any) => e.selected);
+    
+    // Si solo hay una empresa seleccionada, enviar su ID
+    if (empresasSeleccionadas.length === 1) {
+      selectedEmpresa = empresasSeleccionadas[0].id;
+    } else if (empresasSeleccionadas.length > 1 || empresasSeleccionadas.length === 0) {
+      // Si hay múltiples o ninguna, enviar 'all' y el backend filtrará por las del usuario
+      selectedEmpresa = 'all';
+    }
+    
     this.rejectionService
           .getKPIs(
             this.selectedFilters,
-            this.searchTerm
+            this.searchTerm,
+            selectedEmpresa // Añadir parámetro selectedEmpresa
           )
           .subscribe((data: any) => {
             console.log('KPIS cargados:', data);

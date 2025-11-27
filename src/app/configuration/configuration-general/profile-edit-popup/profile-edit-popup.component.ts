@@ -18,6 +18,11 @@ interface Permission {
   description: string;
 }
 
+interface Empresa {
+  id: number;
+  nombre: string;
+}
+
 @Component({
   selector: 'mobentis-profile-edit-popup',
   templateUrl: './profile-edit-popup.component.html',
@@ -57,6 +62,8 @@ export class ProfileEditPopupComponent {
   userRoles: string[] = [];
   userPermissions: Permission[] = [];
   allPermissions: Permission[] = [];
+  userEmpresas: Empresa[] = [];
+  permissionsExpanded: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<ProfileEditPopupComponent>,
@@ -92,17 +99,26 @@ export class ProfileEditPopupComponent {
     // Cargar roles desde localStorage
     this.userRoles = this._authorizationService.getRoles();
     
+    // Cargar empresas del usuario desde el perfil
+    this._usersService.getCurrentUserProfile().subscribe({
+      next: (profile) => {
+        this.userEmpresas = profile.empresas || [];
+      },
+      error: (err) => {
+        console.error('Error al cargar empresas del usuario:', err);
+        this.userEmpresas = [];
+      }
+    });
+    
     // Obtener permisos del usuario actual desde el backend
     const userPermissionNames = this._authorizationService.getPermissions();
     
-    console.log('Nombres de permisos desde localStorage:', userPermissionNames);
     
     // Cargar todos los permisos con sus descripciones
     this._usersService.getAllPermissions().subscribe({
       next: (allPermissions: Permission[]) => {
         this.allPermissions = allPermissions;
         
-        console.log('Todos los permisos disponibles:', allPermissions.map(p => ({name: p.name, desc: p.description})));
         
         // Filtrar solo los permisos que el usuario tiene
         // Comparamos por el campo 'name' (nombre técnico como RECHAZOS_EDICION_MOTIVOS)
@@ -113,7 +129,6 @@ export class ProfileEditPopupComponent {
           );
           
           if (hasPermission) {
-            console.log('Permiso encontrado:', p.name, '->', p.description);
           }
           
           return hasPermission;

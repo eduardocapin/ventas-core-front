@@ -4,7 +4,7 @@
     <mobentis-page-title [icon]="'columns-gap'" [isBootstrapIcon]="true" [title]="'Rechazos'"></mobentis-page-title>
     <!-- Info Rechazos -->
     <div class="max-w-kpi">
-      <mobentis-kpi [selectedFilters]="selectedFilters" [searchTerm]="searchTerm"></mobentis-kpi>
+      <mobentis-kpi [selectedFilters]="selectedFilters" [searchTerm]="searchTerm" [empresasList]="empresasList"></mobentis-kpi>
     </div>
     <!-- END Info Rechazos -->
   </div>
@@ -20,8 +20,6 @@
 
         <!-- Selector de Empresas (Dropdown) -->
           <mobentis-empresa-dropdown 
-            *ngIf="shouldShowEmpresaDropdown"
-            [empresasList]="empresasList"
             (empresasChange)="onEmpresasChange($event)">
           </mobentis-empresa-dropdown>            
         <!-- boton de filtros aplicados o limpiar -->

@@ -16,22 +16,56 @@
             
             <!-- Roles del usuario -->
             <div class="mt-3" *ngIf="userRoles.length > 0">
-              <h3 class="section-title">Roles</h3>
+              <h3 class="section-title">Rol/Roles</h3>
               <div class="badges-container">
                 <span class="badge bg-primary me-1 mb-1" *ngFor="let role of userRoles">{{role}}</span>
               </div>
             </div>
             
-            <!-- Permisos del usuario - Lista scrollable -->
-            <div class="mt-3" *ngIf="userPermissions.length > 0">
-              <h3 class="section-title">
+            <!-- Permisos del usuario - Botón para bocadillo -->
+            <div class="mt-3 permissions-trigger-container" *ngIf="userPermissions.length > 0">
+              <h3 class="section-title collapsible-header" (click)="permissionsExpanded = !permissionsExpanded">
                 <i class="bi bi-shield-lock-fill me-2"></i>Permisos ({{userPermissions.length}})
+                <i class="bi ms-auto" [ngClass]="permissionsExpanded ? 'bi-eye' : 'bi-eye-slash'"></i>
               </h3>
-              <div class="permissions-scrollable">
-                <div class="permission-item" *ngFor="let permission of userPermissions">
-                  <i class="bi bi-check-circle-fill me-2"></i>
-                  <span>{{permission.description}}</span>
+              
+              <!-- Bocadillo flotante de permisos -->
+              <div class="permissions-popover" *ngIf="permissionsExpanded">
+                <div class="permissions-popover-header">
+                  <h4><i class="bi bi-shield-lock-fill me-2"></i>Permisos del Usuario</h4>
+                  <button class="btn-close-popover" (click)="permissionsExpanded = false">
+                    <i class="bi bi-x-lg"></i>
+                  </button>
                 </div>
+                <div class="permissions-popover-content">
+                  <div class="permission-item" *ngFor="let permission of userPermissions">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <span>{{permission.description}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Empresas asignadas -->
+            <div class="mt-3" *ngIf="userEmpresas.length > 0">
+              <h3 class="section-title">
+                <i class="bi bi-building me-2"></i>Empresas ({{userEmpresas.length}})
+              </h3>
+              <div class="badges-container">
+                <span class="badge bg-info text-dark me-1 mb-1" *ngFor="let empresa of userEmpresas">
+                  <i class="bi bi-building-fill me-1"></i>{{empresa.nombre}}
+                </span>
+              </div>
+            </div>
+
+            <!-- Mensaje si no tiene empresas -->
+            <div class="mt-3" *ngIf="userEmpresas.length === 0">
+              <h3 class="section-title">
+                <i class="bi bi-building me-2"></i>Empresas
+              </h3>
+              <div class="alert alert-warning alert-sm p-2" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <small>No tienes empresas asignadas. Contacta con el administrador.</small>
               </div>
             </div>
           </div>

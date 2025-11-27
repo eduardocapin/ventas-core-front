@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, ElementRef, HostListener, OnIni
 import { ConfigurationService } from 'src/app/services/configuration.service';
 import { EmpresasService } from 'src/app/services/empresas.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
+import { UsersService } from 'src/app/services/users/users.service';
 
 export interface Empresa {
   id: number;
@@ -27,17 +28,19 @@ export class EmpresaDropdownComponent implements OnInit {
     private elementRef: ElementRef,
     private configurationService: ConfigurationService,
     private empresasService: EmpresasService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private usersService: UsersService
     ) {}
 
   ngOnInit(): void {
+    // Primero verificar la configuración global del dropdown
     this.configurationService.getConfigurationByName('converterEMPRESA_DROPDOWN_ACTIVO').subscribe({
       next: (config) => {
-        if (config && config.Valor !== undefined && config.Valor !== null) {
-          this.showDropdown = config.Valor === true || config.Valor === 'true' || config.Valor === 'True';
-          if (this.showDropdown) {
-            this.loadEmpresas();
-          }
+        const isDropdownEnabled = config && (config.Valor === true || config.Valor === 'true' || config.Valor === 'True');
+        
+        if (isDropdownEnabled) {
+          // Si está habilitado globalmente, cargar empresas del usuario
+          this.loadUserEmpresasAndDetermineVisibility();
         } else {
           this.showDropdown = false;
         }
@@ -47,6 +50,69 @@ export class EmpresaDropdownComponent implements OnInit {
         this.showDropdown = false;
       }
     });
+  }
+
+  /**
+   * Cargar empresas del usuario y determinar si mostrar el dropdown
+   */
+  loadUserEmpresasAndDetermineVisibility(): void {
+    this.usersService.getCurrentUserProfile().subscribe({
+      next: (userProfile) => {
+        const userEmpresas = userProfile.empresas || [];
+        
+        // Si el usuario no tiene empresas asignadas, no mostrar dropdown ni datos
+        if (userEmpresas.length === 0) {
+          this.showDropdown = false;
+          this.empresas = [];
+          this.empresasChange.emit(this.empresas);
+          return;
+        }
+        
+        // Si tiene solo 1 empresa, ocultar dropdown pero cargar datos
+        if (userEmpresas.length === 1) {
+          this.showDropdown = false;
+          this.empresas = [{
+            id: userEmpresas[0].id,
+            name: userEmpresas[0].nombre,
+            selected: true
+          }];
+          this.empresasChange.emit(this.empresas);
+          return;
+        }
+        
+        // Si tiene 2 o más empresas, mostrar dropdown con solo sus empresas
+        this.showDropdown = true;
+        this.loadEmpresasFilteredByUser(userEmpresas);
+      },
+      error: (error) => {
+        console.error('Error al cargar empresas del usuario:', error);
+        // Si hay error, no mostrar dropdown
+        this.showDropdown = false;
+        this.empresas = [];
+        this.empresasChange.emit(this.empresas);
+      }
+    });
+  }
+
+  /**
+   * Cargar empresas filtradas por las asignadas al usuario
+   */
+  loadEmpresasFilteredByUser(userEmpresas: { id: number; nombre: string }[]): void {
+    const savedSelection = this.getSelectionFromStorage();
+    
+    this.empresas = userEmpresas.map(empresa => ({
+      id: empresa.id,
+      name: empresa.nombre,
+      selected: savedSelection ? savedSelection.includes(empresa.id) : true
+    }));
+
+    // Si ninguna empresa está seleccionada, seleccionar todas
+    if (!this.algunaSeleccionada()) {
+      this.empresas.forEach(e => e.selected = true);
+    }
+    
+    this.empresasChange.emit(this.empresas);
+    this.saveSelectionToStorage();
   }
 
   loadEmpresas(): void {

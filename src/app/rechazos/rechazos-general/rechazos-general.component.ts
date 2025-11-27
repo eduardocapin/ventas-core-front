@@ -21,7 +21,6 @@ import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confir
 import { css } from 'jquery';
 import { Empresa } from 'src/app/components/empresa-dropdown/empresa-dropdown.component';
 import { AuthorizationService } from 'src/app/services/auth/authorization.service';
-import { UsersService } from 'src/app/services/users/users.service';
 
 
 @Component({
@@ -100,23 +99,9 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
   // Campo dinámico de empresa, obtiene de backend filters.controller.ts
   empresaFieldName: string = 'r.empresa_id'; // valor por defecto
 
-  // Controlar visibilidad del dropdown de empresas
-  get isEmpresaDropdownVisible(): boolean {
-    const enabled = localStorage.getItem('empresaDropdownEnabled');
-    return enabled !== null ? enabled === 'true' : true;
-  }
-
   // Lista de empresas para el selector múltiple (dropdown)
-  empresasList: Empresa[] = [
-    { id: 1, name: 'Sarigabo', selected: true },
-    { id: 2, name: 'Coca Cola', selected: true },
-    { id: 3, name: 'Mercadona', selected: true }
-  ];
-
-  // Empresas asignadas al usuario actual
-  userEmpresas: { id: number; nombre: string }[] = [];
-  // Control de visibilidad del dropdown según empresas del usuario
-  shouldShowEmpresaDropdown: boolean = true;
+  // El dropdown maneja automáticamente las empresas del usuario
+  empresasList: Empresa[] = [];
 
   // Método que se ejecuta cuando cambian las empresas seleccionadas
   onEmpresasChange(empresas: Empresa[]): void {
@@ -160,16 +145,15 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     private _notifactionService: NotificationService,
     private _competidoresService: CompetidoresService,
     private cdr: ChangeDetectorRef,
-    private authService: AuthorizationService,
-    private usersService: UsersService
+    private authService: AuthorizationService
   ) { }
 
   ngOnInit() {
     // Verificar permisos del usuario
     this.checkUserPermissions();
 
-    // Cargar empresas del usuario actual primero
-    this.loadUserEmpresas();
+    // Obtener configuración de filtros y cargar rechazos
+    this.loadFilterConfigAndRechazos();
 
     this.loadEstados();
     this.loadProvincias();
@@ -198,43 +182,6 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     this.canEditCompetidor = isAdminOrEditor || this.authService.hasPermission('RECHAZOS_EDICION_COMPETIDOR');
     this.canEditAccionCorrectora = isAdminOrEditor || this.authService.hasPermission('RECHAZOS_EDICION_ACCION_CORRECTORA');
     this.canEnviarAccionCorrectora = isAdminOrEditor || this.authService.hasPermission('RECHAZOS_ENVIADO_ACCION_CORRECTORA');
-  }
-
-  /**
-   * Cargar empresas asignadas al usuario actual
-   */
-  loadUserEmpresas(): void {
-    this.usersService.getCurrentUserProfile().subscribe({
-      next: (userProfile) => {
-        this.userEmpresas = userProfile.empresas || [];
-        
-        // Si el usuario tiene empresas asignadas, filtrar el dropdown
-        if (this.userEmpresas.length > 0) {
-          // Filtrar empresasList para mostrar solo las asignadas
-          this.empresasList = this.empresasList.filter(empresa => 
-            this.userEmpresas.some(userEmp => userEmp.id === empresa.id)
-          );
-
-          // Si solo tiene una empresa, ocultar el dropdown y aplicar filtro directo
-          if (this.userEmpresas.length === 1) {
-            this.shouldShowEmpresaDropdown = false;
-            this.empresasList = [{
-              id: this.userEmpresas[0].id,
-              name: this.userEmpresas[0].nombre,
-              selected: true
-            }];
-          }
-        }
-
-        // Continuar con la carga de filtros y rechazos
-        this.loadFilterConfigAndRechazos();
-      },
-      error: (error) => {
-        console.error('Error al cargar empresas del usuario:', error);
-        // Si hay error, continuar con todas las empresas
-        this.loadFilterConfigAndRechazos();
-      }
-    });
   }
 
   /**
@@ -293,6 +240,19 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
     } else {
       this.cargando_filtros = true;
     }
+    
+    // Determinar selectedEmpresa basado en las empresas seleccionadas en el dropdown
+    let selectedEmpresa: number | 'all' = 'all';
+    const empresasSeleccionadas = this.empresasList.filter(e => e.selected);
+    
+    // Si solo hay una empresa seleccionada, enviar su ID
+    if (empresasSeleccionadas.length === 1) {
+      selectedEmpresa = empresasSeleccionadas[0].id;
+    } else if (empresasSeleccionadas.length > 1 || empresasSeleccionadas.length === 0) {
+      // Si hay múltiples o ninguna, enviar 'all' y el backend filtrará por las del usuario
+      selectedEmpresa = 'all';
+    }
+    
     this.rechazadosService
       .getRechazos(
         this.selectedFilters,
@@ -301,6 +261,7 @@ export class RechazosGeneralComponent implements AfterViewInit, OnInit {
         this.itemsPerPage,
         this.sortColumn,
         this.sortDirection,
+        selectedEmpresa // Añadir el parámetro selectedEmpresa
       )
       .subscribe((data: any) => {
         console.log('Rechazos cargados:', data.items);

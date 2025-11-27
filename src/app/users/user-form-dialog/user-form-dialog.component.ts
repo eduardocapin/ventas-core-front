@@ -253,7 +253,8 @@ export class UserFormDialogComponent implements OnInit {
       this.name.trim() !== '' &&
       this.email.trim() !== '' &&
       this.isValidEmail(this.email) &&
-      this.selectedRoleIds.length > 0;
+      this.selectedRoleIds.length > 0 &&
+      this.selectedEmpresaIds.length > 0; // Al menos una empresa es obligatoria
 
     // Si es modo creación, la contraseña es obligatoria
     if (!this.isEditMode) {
@@ -290,6 +291,12 @@ export class UserFormDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
+    // Validación específica de empresas
+    if (this.selectedEmpresaIds.length === 0) {
+      this.notificationService.showWarning('Debe seleccionar al menos una empresa para el usuario');
+      return;
+    }
+
     if (!this.isFormValid()) {
       this.notificationService.showError('Por favor completa todos los campos requeridos correctamente');
       return;

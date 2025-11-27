@@ -40,9 +40,8 @@ export class RechazadosService {
       itemsPerPage,
       sortColumn,
       sortDirection,
-      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters }),
-      ...(selectedEmpresa !== 'all' && { selectedEmpresa }) // Añadir selectedEmpresa al body
-
+      selectedEmpresa, // SIEMPRE incluir selectedEmpresa
+      ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
     };
     console.log("Body enviado:", requestBody);
     return this._http
@@ -68,7 +67,8 @@ export class RechazadosService {
 
   getKPIs(
     selectedFilters: { [key: string]: any },
-    searchTerm: string
+    searchTerm: string,
+    selectedEmpresa: number | 'all' = 'all' // Añadir parámetro de empresa
   ) {
     let options = {
       headers: new HttpHeaders().set(
@@ -79,6 +79,7 @@ export class RechazadosService {
     // Construcción del body sin valores vacíos
     let requestBody: any = {
       searchTerm,
+      selectedEmpresa, // SIEMPRE incluir selectedEmpresa
       ...(Object.keys(selectedFilters).length > 0 && { selectedFilters })
     };
     console.log("Body enviado:", requestBody);

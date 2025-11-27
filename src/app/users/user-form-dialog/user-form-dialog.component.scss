@@ -237,6 +237,39 @@ h2 {
   }
 }
 
+// Grid de empresas
+.empresas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  
+  .form-check {
+    margin-bottom: 0;
+  }
+
+  /* Custom scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--background-color);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+
+    &:hover {
+      background: var(--text-muted);
+    }
+  }
+}
+
 // Responsive adjustments
 @media (max-width: 991px) {
   .custom-dialog-content {
@@ -252,6 +285,10 @@ h2 {
   }
 
   .permissions-grid {
+    grid-template-columns: 1fr; // Una columna en móvil
+  }
+
+  .empresas-grid {
     grid-template-columns: 1fr; // Una columna en móvil
   }
 }
