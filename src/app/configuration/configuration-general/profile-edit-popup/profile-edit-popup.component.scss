@@ -4,7 +4,7 @@
 .custom-dialog-content {
   max-height: 75vh;
   overflow-y: auto;
-  padding: 16px !important;
+  padding: 16px;
 }
 
 .container-fluid {
@@ -84,8 +84,8 @@ h2 {
   
   ::ng-deep app-change-image {
     img {
-      max-width: 150px !important;
-      max-height: 150px !important;
+      max-width: 150px ;
+      max-height: 150px ;
     }
   }
 }
@@ -104,8 +104,8 @@ h2 {
   
   // Badge específico para empresas
   .bg-empresa {
-    background-color: #e9ecef !important;
-    color: #495057 !important;
+    background-color: #e9ecef ;
+    color: #495057 ;
   }
 }
 
