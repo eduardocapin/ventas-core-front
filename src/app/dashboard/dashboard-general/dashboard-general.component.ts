@@ -1,25 +1,40 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ITablaDashboard } from 'src/app/models/tablaDashboard.model';
 import { RechazadosService } from 'src/app/services/rechazados/rechazados.service';
 import { FilterService } from 'src/app/services/filter/filter.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
 import { Empresa } from 'src/app/components/empresa-dropdown/empresa-dropdown.component';
+import { LanguageService } from 'src/app/services/language/language.service';
+import { TranslationService } from 'src/app/i18n/translation.service';
 
 @Component({
   selector: 'mobentis-dashboard-general',
   templateUrl: './dashboard-general.component.html',
   styleUrls: ['./dashboard-general.component.scss'],
 })
-export class DashboardGeneralComponent {
+export class DashboardGeneralComponent implements OnDestroy {
   //Filtros
   selectedFilters: { [key: string]: any } = {};
+  private languageSubscription?: Subscription;
+
+  // Títulos traducidos
+  dashboardTitle: string = '';
+  clientsChartTitle: string = '';
+  rejectionReasonsTitle: string = '';
+  productFamiliesTitle: string = '';
+  byMonthTitle: string = '';
+  byWeekdayTitle: string = '';
+  tableTotal: string = '';
+  tableNoData: string = '';
 
   constructor(
     private rechazadosService: RechazadosService,
     private cdr: ChangeDetectorRef,
-    private filterService: FilterService
+    private filterService: FilterService,
+    private languageService: LanguageService,
+    private translationService: TranslationService
   ) {
     this.data = this.valoresTablas[0];
   }
@@ -480,6 +495,17 @@ export class DashboardGeneralComponent {
   dataSource = new MatTableDataSource<ITablaDashboard>(this.data);
 
   ngOnInit(): void {
+    // Inicializar traducciones inmediatamente
+    this.updateTranslations();
+    
+    // Suscribirse a cambios de idioma
+    this.languageSubscription = this.languageService.currentLanguage$.subscribe(() => {
+      this.updateTranslations();
+      // Forzar detección de cambios en toda la vista
+      this.cdr.markForCheck();
+      this.cdr.detectChanges();
+    });
+
     // Obtener la configuración de filtros desde el backend
     this.filterService.getFilterConfig('dashboard-general').subscribe(
       (config) => {
@@ -816,5 +842,22 @@ export class DashboardGeneralComponent {
     }
 
     this.selectedFilters = withoutEmpresa;
+  }
+
+  private updateTranslations(): void {
+    this.dashboardTitle = this.translationService.t('dashboard.title');
+    this.clientsChartTitle = this.translationService.t('chart.clients.title');
+    this.rejectionReasonsTitle = this.translationService.t('chart.rejectionReasons.title');
+    this.productFamiliesTitle = this.translationService.t('chart.productFamilies.title');
+    this.byMonthTitle = this.translationService.t('chart.byMonth.title');
+    this.byWeekdayTitle = this.translationService.t('chart.byWeekday.title');
+    this.tableTotal = this.translationService.t('table.total');
+    this.tableNoData = this.translationService.t('table.noData');
+  }
+
+  ngOnDestroy(): void {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 }

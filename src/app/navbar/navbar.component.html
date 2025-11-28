@@ -15,7 +15,28 @@
       </a>
 
       <!-- Sección del perfil de usuario, manteniéndose a la derecha -->
-      <ul class="m-0 list-style order-lg-3">
+      <ul class="m-0 list-style order-lg-3 d-flex align-items-center gap-2">
+        <!-- Dropdown de idiomas -->
+        <li class="dropdown language-selector-mobile">
+          <a class="nav-link dropdown-toggle" id="languageDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <span class="language-flag">{{ getSelectedLanguage()?.flag }}</span>
+            <span class="language-name-mobile">{{ getSelectedLanguage()?.shortName }}</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end language-dropdown" aria-labelledby="languageDropdown">
+            <li *ngFor="let lang of languages">
+              <a class="dropdown-item language-option" 
+                 (click)="changeLanguage(lang.code)"
+                 [class.active]="selectedLanguage === lang.code">
+                <span class="language-flag-option">{{ lang.flag }}</span>
+                <span class="language-text">{{ lang.longName }}</span>
+                <i class="bi bi-check-lg check-icon" *ngIf="selectedLanguage === lang.code"></i>
+              </a>
+            </li>
+          </ul>
+        </li>
+        
+        <!-- Perfil de usuario -->
         <li class="dropdown">
           <a class="nav-link dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
@@ -63,6 +84,27 @@
         </div>
         <div>
           <hr class="m-0" />
+          <!-- Dropdown de idiomas -->
+          <li class="nav-item dropdown dropend language-selector">
+            <a class="navLink dropdown-toggle" id="languageDropdownVertical" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <span class="language-flag">{{ getSelectedLanguage()?.flag }}</span>
+              <span class="language-name" *ngIf="!isToggled && !isHovered">{{ getSelectedLanguage()?.shortName }}</span>
+              <span class="language-name" *ngIf="isToggled || isHovered">{{ getSelectedLanguage()?.longName }}</span>
+            </a>
+            <ul class="dropdown-menu language-dropdown" aria-labelledby="languageDropdownVertical">
+              <li *ngFor="let lang of languages">
+                <a class="dropdown-item language-option" 
+                   (click)="changeLanguage(lang.code)"
+                   [class.active]="selectedLanguage === lang.code">
+                  <span class="language-flag-option">{{ lang.flag }}</span>
+                  <span class="language-text">{{ lang.longName }}</span>
+                  <i class="bi bi-check-lg check-icon" *ngIf="selectedLanguage === lang.code"></i>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- Perfil de usuario -->
           <li class="nav-item dropdown dropend">
             <a class="navLink dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown"
               [attr.aria-expanded]="profileMenuOpen">

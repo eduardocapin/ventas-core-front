@@ -2,7 +2,7 @@
   <div class="p-3">
     <h1 class="page-title">
       <i class="bi bi-people-fill me-2"></i>
-      Gestión de Usuarios
+      {{ 'users.title' | translate }}
     </h1>
   </div>
   
@@ -15,7 +15,7 @@
             <input 
               type="text" 
               class="form-control" 
-              placeholder="Buscar por nombre, email o cargo..." 
+              [placeholder]="'users.search.placeholder' | translate" 
               [(ngModel)]="searchTerm"
               (keyup.enter)="onSearch(searchTerm)"
               (input)="searchTerm.length === 0 && onSearch('')">

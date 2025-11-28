@@ -120,4 +120,16 @@ export class UsersService {
       headers: this.getHeaders()
     });
   }
+
+  /**
+   * Actualizar idioma del usuario actual
+   */
+  updateUserLanguage(idioma: string): Observable<any> {
+    console.log('Enviando actualización de idioma:', idioma);
+    console.log('URL:', `${this.apiUrl}/api/users/language`);
+    console.log('Headers:', this.getHeaders());
+    return this.http.patch(`${this.apiUrl}/api/users/language`, { idioma }, {
+      headers: this.getHeaders()
+    });
+  }
 }

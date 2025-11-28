@@ -46,6 +46,7 @@ import { EmpresaDropdownComponent } from '../components/empresa-dropdown/empresa
 import { HasRoleDirective } from './directives/has-role.directive';
 import { HasPermissionDirective } from './directives/has-permission.directive';
 import { LicenseBadgeComponent } from '../components/license-badge/license-badge.component';
+import { TranslatePipe } from '../i18n/translate.pipe';
 
 
 
@@ -90,6 +91,7 @@ import { LicenseBadgeComponent } from '../components/license-badge/license-badge
     HasRoleDirective,
     HasPermissionDirective,
     LicenseBadgeComponent,
+    TranslatePipe,
   ],
   imports: [
     NgbModule,
@@ -143,6 +145,7 @@ import { LicenseBadgeComponent } from '../components/license-badge/license-badge
     HasRoleDirective,
     HasPermissionDirective,
     LicenseBadgeComponent,
+    TranslatePipe,
   ]
 })
 export class SharedModule { }

@@ -1,7 +1,7 @@
 <div class="background-light-gray">
   <div class="d-flex flex-column gap-2 justify-content-between align-items-center p-2 titulo bg-white">
     <!-- titulo y icono -->
-    <mobentis-page-title [icon]="'assets/images/iconos/dashboard-icon-dark.svg'" [title]="'Dashboard'"></mobentis-page-title>
+    <mobentis-page-title [icon]="'assets/images/iconos/dashboard-icon-dark.svg'" [title]="'dashboard.title' | translate"></mobentis-page-title>
     <div class="max-w-kpi">
       <mobentis-kpi [selectedFilters]="selectedFilters"></mobentis-kpi>
     </div>
@@ -34,20 +34,20 @@
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
               <!-- <mobentis-grafica-pastel [titulo]="'Clientes'" [datos]="[{ value: 1324, name: 'Con rechazos' }, { value: 570, name: 'Sin rechazos' }]" [elementoId]="'graficoClientes'"></mobentis-grafica-pastel> -->
-              <mobentis-grafica-pastel [titulo]="'Clientes'" [datos]="datos_grafica_clientes" [elementoId]="'graficoClientes'" ></mobentis-grafica-pastel>
+              <mobentis-grafica-pastel [titulo]="'chart.clients.title' | translate" [datos]="datos_grafica_clientes" [elementoId]="'graficoClientes'" ></mobentis-grafica-pastel>
               
             </div>
           </div>
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
               <!-- <mobentis-grafica-semi-circulo [titulo]="'Motivos de Rechazo'" [valores]="[{ value: 23136, name: 'Packaging' }, { value: 18370, name: 'Mala calidad' }, { value: 17224, name: 'Precio' }, { value: 8130, name: 'No aplica' }]" [elementoId]="'motivos-rechazo'"></mobentis-grafica-semi-circulo>-->
-              <mobentis-grafica-semi-circulo [titulo]="'Motivos de Rechazo'" [valores]="datos_grafica_motivos" [elementoId]="'motivos-rechazo'"></mobentis-grafica-semi-circulo>
+              <mobentis-grafica-semi-circulo [titulo]="'chart.rejectionReasons.title' | translate" [valores]="datos_grafica_motivos" [elementoId]="'motivos-rechazo'"></mobentis-grafica-semi-circulo>
             </div>
           </div>
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
              <!-- <mobentis-grafica-barra-horizontal [titulo]="'Familias de productos'" [categorias]="['Conservas', 'Verduras', 'Congelados', 'Vinos', 'Carnes', 'Frutas']" [valores]="[11600, 18460, 12300, 7200, 7100, 10200]" [elementoId]="'rechazos-familias'"></mobentis-grafica-barra-horizontal> -->
-             <mobentis-grafica-barra-horizontal [titulo]="'Familias de productos'" [categorias]="datos_grafica_familias?.categorias" [valores]="datos_grafica_familias?.valores" [elementoId]="'rechazos-familias'"></mobentis-grafica-barra-horizontal>
+             <mobentis-grafica-barra-horizontal [titulo]="'chart.productFamilies.title' | translate" [categorias]="datos_grafica_familias?.categorias" [valores]="datos_grafica_familias?.valores" [elementoId]="'rechazos-familias'"></mobentis-grafica-barra-horizontal>
             </div>
           </div>
         </div>
@@ -84,13 +84,13 @@
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
               <!--<mobentis-grafica-barra-vertical [titulo]="'Por mes'" [categorias]="['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']" [valores]="[0, 0, 0, 0, 5860, 18000, 43000]" [elementoId]="'rechazos-mes'"></mobentis-grafica-barra-vertical>-->
-              <mobentis-grafica-barra-vertical [titulo]="'Por mes'" [categorias]="datos_grafica_mes?.categorias" [valores]="datos_grafica_mes?.valores" [elementoId]="'rechazos-mes'"></mobentis-grafica-barra-vertical>
+              <mobentis-grafica-barra-vertical [titulo]="'chart.byMonth.title' | translate" [categorias]="datos_grafica_mes?.categorias" [valores]="datos_grafica_mes?.valores" [elementoId]="'rechazos-mes'"></mobentis-grafica-barra-vertical>
             </div>
           </div>
           <div class="col-md-4 mb-3">
             <div class="contenedor-grafica-s background-white rounded-4">
               <!-- <mobentis-grafica-barra-vertical [titulo]="'Por día de la semana'" [categorias]="['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']" [valores]="[12346, 15035, 9120, 6500, 6303, 9350, 8206]" [elementoId]="'rechazos-dia'"></mobentis-grafica-barra-vertical>-->
-              <mobentis-grafica-barra-vertical [titulo]="'Por día de la semana'" [categorias]="datos_grafica_semana?.categorias" [valores]="datos_grafica_semana?.valores" [elementoId]="'rechazos-dia'"></mobentis-grafica-barra-vertical>
+              <mobentis-grafica-barra-vertical [titulo]="'chart.byWeekday.title' | translate" [categorias]="datos_grafica_semana?.categorias" [valores]="datos_grafica_semana?.valores" [elementoId]="'rechazos-dia'"></mobentis-grafica-barra-vertical>
             </div>
           </div>
         </div>
@@ -118,7 +118,7 @@
             <thead>
               <tr>
                 <th class="sticky-left">{{ nombresTablas[tablaActiva] }}</th>
-                <th class="text-end sticky-left">Total</th>
+                <th class="text-end sticky-left">{{ 'table.total' | translate }}</th>
 
                 <!-- Columnas dinámicas de tipos de rechazos -->
                 <th *ngFor="let columna of columnasRechazos" class="text-end column-rechazos"> {{ columna }} </th>
@@ -140,7 +140,7 @@
 
               <!-- Fila sin datos -->
               <tr *ngIf="paginadorData.length === 0">
-                <td colspan="4" class="text-center">No hay datos que mostrar</td>
+                <td colspan="4" class="text-center">{{ 'table.noData' | translate }}</td>
               </tr>
             </tbody>
           </table>

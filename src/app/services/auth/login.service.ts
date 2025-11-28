@@ -72,6 +72,10 @@ export class LoginService {
           this.user = data.name;
           localStorage.setItem('cargo', data.cargo != null ? data.cargo : '');
           localStorage.setItem('lastname', data.lastname != null ? data.lastname : '');
+          
+          // Guardar idioma del usuario (por defecto 'es' si es null)
+          const userLanguage = data.idioma || 'es';
+          localStorage.setItem('userLanguage', userLanguage);
 
           // Cargar roles y permisos
           const token = this.getToken();

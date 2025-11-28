@@ -10,6 +10,7 @@ import { ConfigurationContainer } from 'src/app/models/configurationContainer.mo
 import { AddCompetitorComponent } from 'src/app/configuration/configuration-general/add-competitor/add-competitor.component';
 import { CompanySelectorConfigComponent } from 'src/app/configuration/configuration-general/company-selector-config/company-selector-config.component';
 import { environment } from 'src/environments/environment';
+import { LanguageService } from '../language/language.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -20,7 +21,8 @@ export class ListItemService {
   constructor(
     private _http: HttpClient,
     private _loginServices: LoginService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private languageService: LanguageService
   ) { }
 
   private functionRegistry: { [key: string]: () => void } = {
@@ -60,6 +62,7 @@ export class ListItemService {
     }
   }
   getConfigContainers(): Observable<ConfigurationContainer[]> {
+    const idioma = this.languageService.getCurrentLanguage();
     let options = {
       headers: new HttpHeaders().set(
         'Authorization',
@@ -67,7 +70,7 @@ export class ListItemService {
       ),
     };
     return this._http.get<ConfigurationContainer[]>(
-      `${this.apiUrl}/api/nav-lists/configuracion`,
+      `${this.apiUrl}/api/nav-lists/configuracion?idioma=${idioma}`,
       options
     ).pipe(
       map((data: any) => {

@@ -1,7 +1,7 @@
 <div class="background-light-gray d-flex flex-column">
   <div class="d-flex flex-column gap-2 justify-content-between align-items-center p-2 titulo bg-white ">
     <!-- titulo y icono -->
-    <mobentis-page-title [icon]="'columns-gap'" [isBootstrapIcon]="true" [title]="'Rechazos'"></mobentis-page-title>
+    <mobentis-page-title [icon]="'columns-gap'" [isBootstrapIcon]="true" [title]="'rejections.title' | translate"></mobentis-page-title>
     <!-- Info Rechazos -->
     <div class="max-w-kpi">
       <mobentis-kpi [selectedFilters]="selectedFilters" [searchTerm]="searchTerm" [empresasList]="empresasList"></mobentis-kpi>
@@ -45,7 +45,7 @@
     </div>
     <!-- Mensaje de error fuera del componente search-input -->
     <div *ngIf="mostrarError" class="text-danger mt-1">
-      Caracteres no permitidos
+      {{ 'rejections.invalidCharacters' | translate }}
     </div>
     <!-- TABLA -->
     <div class="table-responsive mt-3 {{cargando?'d-none':''}}">
@@ -61,53 +61,52 @@
             </th>
             <!-- Acción Correctora Column -->
             <th scope="col" class="text-center row_accion_correctora header-correctora background-color-primary">
-              Convertir en oportunidad (% ó €
-              + Promo)</th>
+              {{ 'rejections.table.convertToOpportunity' | translate }}</th>
             <!-- Estado Column -->
             <th scope="col" class="text-center cursor select_estado color-primary " (click)="sortData('status')">
-              Estado
+              {{ 'rejections.table.status' | translate }}
               <i *ngIf="sortColumn === 'status'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Primer Rechazo Fecha Column -->
             <th scope="col" class="cursor row_fecha color-primary" (click)="sortData('r.last_rejection_date')">
-              Fecha
+              {{ 'rejections.table.date' | translate }}
               <i *ngIf="sortColumn === 'r.last_rejection_date'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Población Column -->
             <th scope="col" class="row_poblacion cursor color-primary" (click)="sortData('city')">
-              Población
+              {{ 'rejections.table.city' | translate }}
               <i *ngIf="sortColumn === 'city'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Cliente Column -->
             <th scope="col" (click)="sortData('customer_name')" class="cursor color-primary">
-              Cliente
+              {{ 'rejections.table.client' | translate }}
               <i *ngIf="sortColumn === 'customer_name'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Producto Column -->
             <th scope="col" (click)="sortData('product')" class="cursor color-primary">
-              Producto
+              {{ 'rejections.table.product' | translate }}
               <i *ngIf="sortColumn === 'product'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Motivo Column -->
             <th scope="col" (click)="sortData('reason_rejection')" class="cursor row_motivo color-primary text-center">
-              Motivo
+              {{ 'rejections.table.reason' | translate }}
               <i *ngIf="sortColumn === 'reason_rejection'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Interés Column -->
             <th scope="col" (click)="sortData('r.interest_date')" class="cursor row_interes color-primary">
-              <i class="bi bi-calendar-check" [ngbTooltip]="'Interés'" placement="left"></i>
+              <i class="bi bi-calendar-check" [ngbTooltip]="'rejections.table.interest' | translate" placement="left"></i>
               <i *ngIf="sortColumn === 'r.interest_date'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Precio Column -->
             <th scope="col" class="cursor row_precio_producto text-end color-primary" (click)="sortData('pvp')">
-              Mi Precio
+              {{ 'rejections.table.myPrice' | translate }}
               <i *ngIf="sortColumn === 'pvp'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
@@ -119,7 +118,7 @@
             </th>
             <!-- Competidor Column -->
             <th scope="col" class="text-end cursor color-primary" (click)="sortData('pvp_competitor')">
-              Su Precio
+              {{ 'rejections.table.theirPrice' | translate }}
               <i *ngIf="sortColumn === 'pvp_competitor'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
@@ -131,14 +130,14 @@
             </th>
             <!-- Competidor Column -->
             <th scope="col" (click)="sortData('competitor_id')" class="cursor row_select_competidor color-primary">
-              Competidor
+              {{ 'rejections.table.competitor' | translate }}
               <i *ngIf="sortColumn === 'competitor_id'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>
             <!-- Propuesta Agente Column -->
             <th scope="col" (click)="sortData('salesman_proposal')"
               class="cursor row_propuesta_agente pr-0 color-primary">
-              <i class="bi bi-card-text" [ngbTooltip]="'Propuesta Agente'" placement="left"></i>
+              <i class="bi bi-card-text" [ngbTooltip]="'rejections.table.salesmanProposal' | translate" placement="left"></i>
               <i *ngIf="sortColumn === 'salesman_proposal'" class="bi"
                 [ngClass]="sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </th>

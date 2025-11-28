@@ -2,10 +2,12 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/auth/login.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ProfileEditPopupComponent } from '../configuration/configuration-general/profile-edit-popup/profile-edit-popup.component'; // Ajusta la ruta
+import { ProfileEditPopupComponent } from '../configuration/configuration-general/profile-edit-popup/profile-edit-popup.component';
 import { MenuService } from '../services/menu/menu.service';
 import { MenuItem } from 'src/app/models/menuItem.model';
 import { AuthorizationService } from '../services/auth/authorization.service';
+import { LanguageService } from '../services/language/language.service';
+import { UsersService } from '../services/users/users.service';
 
 @Component({
   selector: 'mobentis-navbar',
@@ -24,11 +26,62 @@ export class NavbarComponent {
   isCollapsed = true; /* Indica si el navbar está colapsado */
   isHovering = false;
   isButtonHovered = false;
+  
+  // Idiomas disponibles
+  selectedLanguage: string = 'es';
+  languages = [
+    { code: 'es', shortName: 'ES', longName: 'Español', flag: '' },
+    { code: 'en', shortName: 'EN', longName: 'English', flag: '' },
+    { code: 'ca', shortName: 'CA', longName: 'Català', flag: '' }
+  ];
 
   handleToggleButton() {
     this.isToggled = !this.isToggled; /* Alterna entre fijo y comprimido */
     this.isHovered = false;
     this.updateNavbarState();
+  }
+
+  changeLanguage(langCode: string) {
+    this.selectedLanguage = langCode;
+    this.languageService.setLanguage(langCode);
+    
+    // Actualizar idioma en la base de datos
+    this.usersService.updateUserLanguage(langCode).subscribe({
+      next: (response) => {
+        console.log('Idioma actualizado en BD:', response);
+        // Recargar menús con el nuevo idioma
+        this.loadMenuItems(langCode);
+      },
+      error: (error) => {
+        console.error('Error al actualizar idioma:', error);
+        console.error('Detalles del error:', {
+          status: error.status,
+          statusText: error.statusText,
+          message: error.error?.message || error.message,
+          body: error.error
+        });
+      }
+    });
+  }
+
+  private loadMenuItems(language: string) {
+    this._menuService.getMenuItems(1, language).subscribe(
+      (items) => {
+        if (items && Array.isArray(items)) {
+          this.menuItems = this.mapItems(items, null);
+        } else {
+          this.menuItems = [];
+        }
+      },
+      (error) => {
+        console.error('Error al cargar menús:', error);
+        this.menuItems = [];
+      }
+    );
+  }
+
+  getSelectedLanguage() {
+    return this.languages.find(lang => lang.code === this.selectedLanguage);
   }
 
   onMouseEnter() {
@@ -70,25 +123,21 @@ export class NavbarComponent {
     public _menuService: MenuService,
     public authorizationService: AuthorizationService,
     private router: Router,
-    public dialog: MatDialog
-  ) { }
+    public dialog: MatDialog,
+    private languageService: LanguageService,
+    private usersService: UsersService
+  ) {
+    // Inicializar idioma desde localStorage
+    this.selectedLanguage = this.languageService.getCurrentLanguage();
+  }
   ngAfterViewInit() {
     this.closeNavbar();
   }
 
   ngOnInit(): void {
-    this._menuService.getMenuItems(1, 'es').subscribe(
-      (items) => {
-        if (items && Array.isArray(items)) {
-          this.menuItems = this.mapItems(items, null);
-        } else {
-          this.menuItems = [];
-        }
-      },
-      (error) => {
-        this.menuItems = [];
-      }
-    );
+    // Cargar menús con el idioma actual del usuario
+    const currentLanguage = this.languageService.getCurrentLanguage();
+    this.loadMenuItems(currentLanguage);
   }
 
   mapItems(items: any[], parentId: number | null): any[] {
