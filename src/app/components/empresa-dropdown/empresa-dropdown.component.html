@@ -18,10 +18,10 @@
         class="btn btn-sm btn-link text-primary p-0"
         (click)="seleccionarTodas($event)">
         <i class="bi bi-check-all me-1"></i>
-        Seleccionar todas
+        {{ 'empresaDropdown.selectAll' | translate }}
       </button>
       <span class="text-muted small ms-auto">
-        {{ getSelectedCount() }} de {{ empresas.length }}
+        {{ getSelectedCount() }} {{ 'empresaDropdown.of' | translate }} {{ empresas.length }}
       </span>
     </div>
 

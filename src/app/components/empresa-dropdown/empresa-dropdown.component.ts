@@ -3,6 +3,7 @@ import { ConfigurationService } from 'src/app/services/configuration.service';
 import { EmpresasService } from 'src/app/services/empresas.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { UsersService } from 'src/app/services/users/users.service';
+import { TranslationService } from 'src/app/i18n/translation.service';
 
 export interface Empresa {
   id: number;
@@ -29,7 +30,8 @@ export class EmpresaDropdownComponent implements OnInit {
     private configurationService: ConfigurationService,
     private empresasService: EmpresasService,
     private notificationService: NotificationService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private translationService: TranslationService
     ) {}
 
   ngOnInit(): void {
@@ -178,7 +180,7 @@ export class EmpresaDropdownComponent implements OnInit {
     const seleccionadasCount = this.getSelectedCount();
 
     if (empresa.selected && seleccionadasCount === 1) {
-      this.notificationService.showWarning('Debes seleccionar al menos una empresa.');
+      this.notificationService.showWarning(this.translationService.t('empresaDropdown.warning.minOneRequired'));
       return;
     }
     
@@ -198,13 +200,13 @@ export class EmpresaDropdownComponent implements OnInit {
   getLabel(): string {
     const seleccionadas = this.empresas.filter(e => e.selected);
     if (seleccionadas.length === this.empresas.length) {
-      return 'Todas las empresas';
+      return this.translationService.t('empresaDropdown.allCompanies');
     } else if (seleccionadas.length === 1) {
       return seleccionadas[0].name;
     } else if (seleccionadas.length > 1) {
-      return `${seleccionadas.length} empresas`;
+      return `${seleccionadas.length} ${this.translationService.t('empresaDropdown.companies')}`;
     } else {
-      return 'Ninguna empresa';
+      return this.translationService.t('empresaDropdown.noCompany');
     }
   }
 

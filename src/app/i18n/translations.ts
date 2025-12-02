@@ -39,7 +39,15 @@ export const dictionaries: { [lang: string]: Translations } = {
     'users.title': 'Gestión de Usuarios',
     'users.search.placeholder': 'Buscar por nombre, email o cargo...',
     'users.createUser': 'Crear Usuario',
-    'users.clearSearch': 'Limpiar búsqueda'
+    'users.clearSearch': 'Limpiar búsqueda',
+    
+    // Empresa Dropdown
+    'empresaDropdown.selectAll': 'Seleccionar todas',
+    'empresaDropdown.allCompanies': 'Todas las empresas',
+    'empresaDropdown.companies': 'empresas',
+    'empresaDropdown.noCompany': 'Ninguna empresa',
+    'empresaDropdown.of': 'de',
+    'empresaDropdown.warning.minOneRequired': 'Debes seleccionar al menos una empresa.'
   },
   en: {
     // Dashboard
@@ -77,7 +85,15 @@ export const dictionaries: { [lang: string]: Translations } = {
     'users.title': 'User Management',
     'users.search.placeholder': 'Search by name, email or position...',
     'users.createUser': 'Create User',
-    'users.clearSearch': 'Clear search'
+    'users.clearSearch': 'Clear search',
+    
+    // Company Dropdown
+    'empresaDropdown.selectAll': 'Select all',
+    'empresaDropdown.allCompanies': 'All companies',
+    'empresaDropdown.companies': 'companies',
+    'empresaDropdown.noCompany': 'No company',
+    'empresaDropdown.of': 'of',
+    'empresaDropdown.warning.minOneRequired': 'You must select at least one company.'
   },
   ca: {
     // Dashboard
@@ -115,6 +131,14 @@ export const dictionaries: { [lang: string]: Translations } = {
     'users.title': 'Gestió d\'Usuaris',
     'users.search.placeholder': 'Cercar per nom, email o càrrec...',
     'users.createUser': 'Crear Usuari',
-    'users.clearSearch': 'Netejar cerca'
+    'users.clearSearch': 'Netejar cerca',
+    
+    // Desplegable d'Empresa
+    'empresaDropdown.selectAll': 'Seleccionar totes',
+    'empresaDropdown.allCompanies': 'Totes les empreses',
+    'empresaDropdown.companies': 'empreses',
+    'empresaDropdown.noCompany': 'Cap empresa',
+    'empresaDropdown.of': 'de',
+    'empresaDropdown.warning.minOneRequired': 'Has de seleccionar almenys una empresa.'
   }
 };
