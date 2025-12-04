@@ -115,13 +115,13 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="profileDropdown">
               <li>
-                <a class="dropdown-item" (click)="openProfileEditPopup()">Editar perfil</a>
+                <a class="dropdown-item" (click)="openProfileEditPopup()">{{ 'navbar.editProfile' | translate }}</a>
               </li>
               <li>
                 <hr class="dropdown-divider m-1" />
               </li>
               <li>
-                <a class="dropdown-item" (click)="logout()">Cerrar sesión</a>
+                <a class="dropdown-item" (click)="logout()">{{ 'navbar.logout' | translate }}</a>
               </li>
             </ul>
           </li>

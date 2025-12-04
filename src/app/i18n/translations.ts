@@ -246,6 +246,42 @@ export const dictionaries: { [lang: string]: Translations } = {
     'dashboard.table.cities': 'Poblaciones',
     'dashboard.table.families': 'Familias',
     'dashboard.table.salespeople': 'Vendedores',
+    
+    // Perfil de Usuario
+    'profile.title': 'Perfil',
+    'profile.roles': 'Rol/Roles',
+    'profile.permissions': 'Permisos',
+    'profile.permissionsTitle': 'Permisos del Usuario',
+    'profile.companies': 'Empresas',
+    'profile.noCompanies': 'No tienes empresas asignadas. Contacta con el administrador.',
+    'profile.generalInfo': 'Información general',
+    'profile.user': 'Usuario',
+    'profile.position': 'Cargo',
+    'profile.email': 'Email',
+    'profile.saveChanges': 'Guardar cambios',
+    'profile.changePassword': 'Cambiar Contraseña',
+    'profile.currentPassword': 'Contraseña actual',
+    'profile.newPassword': 'Nueva Contraseña',
+    'profile.repeatNewPassword': 'Repetir Nueva Contraseña',
+    'profile.invalidCharacters': 'Caracteres no permitidos',
+    'profile.unsavedChanges': 'Hay cambios sin guardar, ¿deseas salir sin guardar?',
+    'profile.infoUpdated': 'Información actualizada',
+    'profile.updateError': 'No se ha podido actualizar la información',
+    'profile.passwordMismatch': 'La nueva contraseña no coincide.',
+    'profile.samePassword': 'La nueva contraseña no puede ser la misma que la actual.',
+    'profile.passwordChanged': 'Contraseña cambiada con éxito',
+    
+    // Navbar - Menú de Usuario
+    'navbar.editProfile': 'Editar perfil',
+    'navbar.logout': 'Cerrar sesión',
+    
+    // Cliente - Contactos y Direcciones
+    'clientContacts.title': 'Contactos',
+    'clientContacts.loading': 'Cargando...',
+    'clientContacts.noData': 'No hay datos para mostrar',
+    'clientAddresses.title': 'Direcciones',
+    'clientAddresses.loading': 'Cargando...',
+    'clientAddresses.noData': 'No hay datos para mostrar',
   },
   en: {
     // Dashboard
@@ -490,6 +526,42 @@ export const dictionaries: { [lang: string]: Translations } = {
     'dashboard.table.cities': 'Cities',
     'dashboard.table.families': 'Families',
     'dashboard.table.salespeople': 'Salespeople',
+    
+    // User Profile
+    'profile.title': 'Profile',
+    'profile.roles': 'Role/Roles',
+    'profile.permissions': 'Permissions',
+    'profile.permissionsTitle': 'User Permissions',
+    'profile.companies': 'Companies',
+    'profile.noCompanies': 'You have no assigned companies. Contact the administrator.',
+    'profile.generalInfo': 'General Information',
+    'profile.user': 'User',
+    'profile.position': 'Position',
+    'profile.email': 'Email',
+    'profile.saveChanges': 'Save Changes',
+    'profile.changePassword': 'Change Password',
+    'profile.currentPassword': 'Current Password',
+    'profile.newPassword': 'New Password',
+    'profile.repeatNewPassword': 'Repeat New Password',
+    'profile.invalidCharacters': 'Invalid characters',
+    'profile.unsavedChanges': 'There are unsaved changes, do you want to exit without saving?',
+    'profile.infoUpdated': 'Information updated',
+    'profile.updateError': 'Could not update information',
+    'profile.passwordMismatch': 'The new password does not match.',
+    'profile.samePassword': 'The new password cannot be the same as the current one.',
+    'profile.passwordChanged': 'Password changed successfully',
+    
+    // Navbar - User Menu
+    'navbar.editProfile': 'Edit Profile',
+    'navbar.logout': 'Logout',
+    
+    // Client - Contacts and Addresses
+    'clientContacts.title': 'Contacts',
+    'clientContacts.loading': 'Loading...',
+    'clientContacts.noData': 'No data to display',
+    'clientAddresses.title': 'Addresses',
+    'clientAddresses.loading': 'Loading...',
+    'clientAddresses.noData': 'No data to display',
   },
   ca: {
     // Dashboard
@@ -734,5 +806,41 @@ export const dictionaries: { [lang: string]: Translations } = {
     'dashboard.table.cities': 'Poblacions',
     'dashboard.table.families': 'Famílies',
     'dashboard.table.salespeople': 'Venedors',
+    
+    // Perfil d'Usuari
+    'profile.title': 'Perfil',
+    'profile.roles': 'Rol/Rols',
+    'profile.permissions': 'Permisos',
+    'profile.permissionsTitle': 'Permisos de l\'Usuari',
+    'profile.companies': 'Empreses',
+    'profile.noCompanies': 'No tens empreses assignades. Contacta amb l\'administrador.',
+    'profile.generalInfo': 'Informació general',
+    'profile.user': 'Usuari',
+    'profile.position': 'Càrrec',
+    'profile.email': 'Email',
+    'profile.saveChanges': 'Desar canvis',
+    'profile.changePassword': 'Canviar Contrasenya',
+    'profile.currentPassword': 'Contrasenya actual',
+    'profile.newPassword': 'Nova Contrasenya',
+    'profile.repeatNewPassword': 'Repetir Nova Contrasenya',
+    'profile.invalidCharacters': 'Caràcters no permesos',
+    'profile.unsavedChanges': 'Hi ha canvis sense desar, vols sortir sense desar?',
+    'profile.infoUpdated': 'Informació actualitzada',
+    'profile.updateError': 'No s\'ha pogut actualitzar la informació',
+    'profile.passwordMismatch': 'La nova contrasenya no coincideix.',
+    'profile.samePassword': 'La nova contrasenya no pot ser la mateixa que l\'actual.',
+    'profile.passwordChanged': 'Contrasenya canviada amb èxit',
+    
+    // Navbar - Menú d'Usuari
+    'navbar.editProfile': 'Editar perfil',
+    'navbar.logout': 'Tancar sessió',
+    
+    // Client - Contactes i Adreces
+    'clientContacts.title': 'Contactes',
+    'clientContacts.loading': 'Carregant...',
+    'clientContacts.noData': 'No hi ha dades per mostrar',
+    'clientAddresses.title': 'Adreces',
+    'clientAddresses.loading': 'Carregant...',
+    'clientAddresses.noData': 'No hi ha dades per mostrar',
   }
 };

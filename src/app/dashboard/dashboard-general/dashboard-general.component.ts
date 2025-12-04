@@ -472,7 +472,8 @@ export class DashboardGeneralComponent {
   ];*/
   valoresTablas: ITablaDashboard[][] = [[], [], [], [], [], [], [], []]
   columnasDinamicas: string[] = ['nombre', 'total']; // Columnas por defecto
-  columnasRechazos: string[] = []; // Columnas por defecto
+  columnasRechazos: string[] = []; // Columnas traducidas para mostrar
+  columnasRechazosOriginales: string[] = []; // Claves originales para acceder a los datos
   data: ITablaDashboard[] = [
     // más datos
   ];
@@ -529,9 +530,20 @@ export class DashboardGeneralComponent {
       }
     });
 
+    // Guardar las claves originales
+    this.columnasRechazosOriginales = Array.from(rechazosTipos);
+    
+    // Traducir los nombres de los tipos de rechazo para mostrar
+    const columnasTraducidas = this.columnasRechazosOriginales.map(tipo => {
+      const translationKey = `reason.${tipo}`;
+      const translated = this.translationService.t(translationKey);
+      // Solo usar la traducción si existe (no es igual a la clave)
+      return translated !== translationKey ? translated : tipo;
+    });
+
     // Añadir las columnas dinámicas basadas en los tipos de rechazos presentes
-    this.columnasDinamicas = ['nombre', 'total', ...Array.from(rechazosTipos)];
-    this.columnasRechazos = [...Array.from(rechazosTipos)];
+    this.columnasDinamicas = ['nombre', 'total', ...columnasTraducidas];
+    this.columnasRechazos = [...columnasTraducidas];
     this.dataSource.data = this.data;
   }
 

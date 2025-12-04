@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { TranslationService } from 'src/app/i18n/translation.service';
 
 @Component({
   selector: 'mobentis-cliente-direcciones',
@@ -10,4 +11,6 @@ export class ClienteDireccionesComponent {
 
   adressesList: any[] = [];
   cargando: boolean = false;
+
+  constructor(public translationService: TranslationService) {}
 }

@@ -133,8 +133,8 @@
                 <td class="sticky-left text-end">{{ element.total }}</td>
 
                 <!-- Celdas dinámicas de rechazos -->
-                <td class="text-end column-rechazos" *ngFor="let columna of columnasRechazos">
-                  {{ element.rechazos[columna] || 0 }}
+                <td class="text-end column-rechazos" *ngFor="let columna of columnasRechazos; let i = index">
+                  {{ element.rechazos[columnasRechazosOriginales[i]] || 0 }}
                 </td>
               </tr>
 

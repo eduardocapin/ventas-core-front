@@ -34,7 +34,8 @@ import { AppRoutingModule } from "../app-routing.module";
         RouterModule,
         MatExpansionModule,
         MatSnackBarModule,
-        AppRoutingModule, 
+        AppRoutingModule,
+        SharedModule,
         
     ],
 })

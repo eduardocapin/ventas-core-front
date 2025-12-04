@@ -11,6 +11,7 @@ import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confir
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { AuthorizationService } from 'src/app/services/auth/authorization.service';
 import { UsersService } from 'src/app/services/users/users.service';
+import { TranslationService } from 'src/app/i18n/translation.service';
 
 interface Permission {
   id: number;
@@ -74,7 +75,8 @@ export class ProfileEditPopupComponent {
     private _loginServices: LoginService,
     private _notifactionService: NotificationService,
     private _authorizationService: AuthorizationService,
-    private _usersService: UsersService
+    private _usersService: UsersService,
+    public translationService: TranslationService
   ) {
     this.form = this.fb.group({
       usuario: [''],
@@ -158,7 +160,7 @@ export class ProfileEditPopupComponent {
     if (this.form.dirty || this.imgSelected || this.passForm.dirty) {
       this.dialog
         .open(ConfirmDialogComponent, {
-          data: `Hay cambios sin guardar, ¿deseas salir sin guardar?`,
+          data: this.translationService.t('profile.unsavedChanges'),
         })
         .afterClosed()
         .subscribe((confirmado: boolean) => {
@@ -196,15 +198,15 @@ export class ProfileEditPopupComponent {
             if (data === 'Success') {
               localStorage.setItem('user', this.form.value.usuario);
               localStorage.setItem('cargo', this.form.value.cargo);
-              this._notifactionService.showSuccess('Información actualizada');
+              this._notifactionService.showSuccess(this.translationService.t('profile.infoUpdated'));
               console.log('Actualizado:', this.form.value);
               this.form.markAsPristine();
               this.mostrarErrorInfo = false;
             }
           },
           (error) => {
-            this._notifactionService.showSuccess(
-              'No se ha podido actualizar la información'
+            this._notifactionService.showError(
+              this.translationService.t('profile.updateError')
             );
           }
         );
@@ -235,12 +237,11 @@ export class ProfileEditPopupComponent {
         this.passForm.value;
       if (newPassword !== confirmNewPassword) {
         this.errorChangePass = true;
-        this.messageError = 'La nueva contraseña no coincide.';
+        this.messageError = this.translationService.t('profile.passwordMismatch');
         this._notifactionService.showError(this.messageError);
       } else if (newPassword === currentPassword) {
         this.errorChangePass = true;
-        this.messageError =
-          'La nueva contraseña no puede ser la misma que la actual.';
+        this.messageError = this.translationService.t('profile.samePassword');
         this._notifactionService.showError(this.messageError);
       } else {
         this._loginServices
@@ -257,7 +258,7 @@ export class ProfileEditPopupComponent {
                 });
                 this.passForm.markAsPristine();
                 this._notifactionService.showSuccess(
-                  'Contraseña cambiada con éxito'
+                  this.translationService.t('profile.passwordChanged')
                 );
               }
             },
