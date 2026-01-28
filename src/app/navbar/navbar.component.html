@@ -21,15 +21,15 @@
           <a class="nav-link dropdown-toggle" id="languageDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
             <span class="language-flag">{{ getSelectedLanguage()?.flag }}</span>
-            <span class="language-name-mobile">{{ getSelectedLanguage()?.shortName }}</span>
+            <span class="language-name-mobile">{{ getSelectedLanguage()?.code?.toUpperCase() }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end language-dropdown" aria-labelledby="languageDropdown">
-            <li *ngFor="let lang of languages">
+            <li *ngFor="let lang of availableLanguages">
               <a class="dropdown-item language-option" 
                  (click)="changeLanguage(lang.code)"
                  [class.active]="selectedLanguage === lang.code">
                 <span class="language-flag-option">{{ lang.flag }}</span>
-                <span class="language-text">{{ lang.longName }}</span>
+                <span class="language-text">{{ lang.name }}</span>
                 <i class="bi bi-check-lg check-icon" *ngIf="selectedLanguage === lang.code"></i>
               </a>
             </li>
@@ -89,16 +89,16 @@
             <a class="navLink dropdown-toggle" id="languageDropdownVertical" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
               <span class="language-flag">{{ getSelectedLanguage()?.flag }}</span>
-              <span class="language-name" *ngIf="!isToggled && !isHovered">{{ getSelectedLanguage()?.shortName }}</span>
-              <span class="language-name" *ngIf="isToggled || isHovered">{{ getSelectedLanguage()?.longName }}</span>
+              <span class="language-name" *ngIf="!isToggled && !isHovered">{{ getSelectedLanguage()?.code?.toUpperCase() }}</span>
+              <span class="language-name" *ngIf="isToggled || isHovered">{{ getSelectedLanguage()?.name }}</span>
             </a>
             <ul class="dropdown-menu language-dropdown" aria-labelledby="languageDropdownVertical">
-              <li *ngFor="let lang of languages">
+              <li *ngFor="let lang of availableLanguages">
                 <a class="dropdown-item language-option" 
                    (click)="changeLanguage(lang.code)"
                    [class.active]="selectedLanguage === lang.code">
                   <span class="language-flag-option">{{ lang.flag }}</span>
-                  <span class="language-text">{{ lang.longName }}</span>
+                  <span class="language-text">{{ lang.name }}</span>
                   <i class="bi bi-check-lg check-icon" *ngIf="selectedLanguage === lang.code"></i>
                 </a>
               </li>

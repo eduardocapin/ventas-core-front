@@ -213,6 +213,30 @@ export class LoginService {
     return this.currentUserLoginOn.asObservable();
   }
 
+  // Actualizar idioma del usuario
+  updateLanguage(lang: string): Observable<any> {
+    let options = {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${this.getToken()}`
+      ),
+    };
+    return this.http
+      .post(
+        `${this.apiUrl}/api/users/update-language`,
+        {
+          email: localStorage.getItem('email'),
+          lang: lang,
+        },
+        options
+      )
+      .pipe(
+        map((data: any) => {
+          return data;
+        })
+      );
+  }
+
   // STORE the token in localstore:
   setToken(token: string) {
     // First, serialize it (but just if token is not string type).

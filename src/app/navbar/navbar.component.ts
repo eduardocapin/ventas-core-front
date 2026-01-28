@@ -9,6 +9,7 @@ import { LanguageService } from '../core/services/language/language.service';
 import { LoginService } from '../core/services/auth/login.service';
 import { AuthorizationService } from '../core/services/auth/authorization.service';
 import { UsersService } from '../core/services/users/users.service';
+import { TranslationService } from '../core/services/i18n/translation.service';
 
 @Component({
   selector: 'mobentis-navbar',
@@ -30,11 +31,7 @@ export class NavbarComponent {
   
   // Idiomas disponibles
   selectedLanguage: string = 'es';
-  languages = [
-    { code: 'es', shortName: 'ES', longName: 'Español', flag: '' },
-    { code: 'en', shortName: 'EN', longName: 'English', flag: '' },
-    { code: 'ca', shortName: 'CA', longName: 'Català', flag: '' }
-  ];
+  availableLanguages: any[] = []; // Idiomas cargados desde BD
 
   handleToggleButton() {
     this.isToggled = !this.isToggled; /* Alterna entre fijo y comprimido */
@@ -82,7 +79,7 @@ export class NavbarComponent {
   }
 
   getSelectedLanguage() {
-    return this.languages.find(lang => lang.code === this.selectedLanguage);
+    return this.availableLanguages.find(lang => lang.code === this.selectedLanguage);
   }
 
   onMouseEnter() {
@@ -126,7 +123,8 @@ export class NavbarComponent {
     private router: Router,
     public dialog: MatDialog,
     private languageService: LanguageService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private translationService: TranslationService
   ) {
     // Inicializar idioma desde localStorage
     this.selectedLanguage = this.languageService.getCurrentLanguage();
@@ -136,6 +134,25 @@ export class NavbarComponent {
   }
 
   ngOnInit(): void {
+    // Cargar idioma guardado al iniciar
+    const savedLang = this.translationService.getCurrentLanguage();
+    this.selectedLanguage = savedLang;
+    
+    // Cargar idiomas disponibles desde la base de datos
+    this.translationService.getAvailableLanguages().subscribe({
+      next: (languages) => {
+        this.availableLanguages = languages;
+        console.log('🌍 Idiomas disponibles cargados desde BD:', languages);
+      },
+      error: (error) => {
+        console.error('❌ Error al cargar idiomas disponibles:', error);
+        // Si falla, usar español como fallback
+        this.availableLanguages = [
+          { code: 'es', name: 'Español', isDefault: 1, active: 1 }
+        ];
+      }
+    });
+    
     // Cargar menús con el idioma actual del usuario
     const currentLanguage = this.languageService.getCurrentLanguage();
     this.loadMenuItems(currentLanguage);

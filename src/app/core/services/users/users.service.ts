@@ -124,11 +124,10 @@ export class UsersService {
   /**
    * Actualizar idioma del usuario actual
    */
-  updateUserLanguage(idioma: string): Observable<any> {
-    console.log('Enviando actualización de idioma:', idioma);
-    console.log('URL:', `${this.apiUrl}/api/users/language`);
-    console.log('Headers:', this.getHeaders());
-    return this.http.patch(`${this.apiUrl}/api/users/language`, { idioma }, {
+  updateUserLanguage(lang: string): Observable<any> {
+    const email = localStorage.getItem('email');
+    console.log('Enviando actualización de idioma:', lang, 'para email:', email);
+    return this.http.post(`${this.apiUrl}/api/users/update-language`, { email, lang }, {
       headers: this.getHeaders()
     });
   }
