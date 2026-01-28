@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-import { dictionaries } from '../../../services/i18n/translations';
+import { translations } from './translations';
 import { LanguageService } from '../language/language.service';
 
 @Injectable({ providedIn: 'root' })
@@ -21,7 +21,10 @@ export class TranslationService {
     // Por defecto español hasta que se obtenga del usuario logueado
     console.log('🔵 TranslationService inicializando - Idioma por defecto: es');
     this.loadAvailableLanguageCodes();
-    this.currentLang.next('es');
+    
+    // Inicializar con el idioma del usuario si existe
+    const userLang = localStorage.getItem('userLanguage') || 'es';
+    this.currentLang.next(userLang);
   }
 
  
@@ -90,7 +93,7 @@ export class TranslationService {
   // Traduce una key al idioma actual
   t(key: string, params?: { [k: string]: any }): string {
     const lang = this.currentLang.value;
-    const dict = dictionaries[lang] || dictionaries['es'];
+    const dict = translations[lang] || translations['es'];
     let value = dict[key] || key;
     if (params) {
       Object.keys(params).forEach(p => {
@@ -98,6 +101,11 @@ export class TranslationService {
       });
     }
     return value;
+  }
+
+  // Método alias para compatibilidad con el pipe
+  translate(key: string): string {
+    return this.t(key);
   }
 
   // Inicializa el idioma desde la base de datos del usuario (NO recarga la página)
@@ -135,7 +143,7 @@ export class TranslationService {
 
   // Verificar si un idioma está disponible
   private isLanguageAvailable(lang: string): boolean {
-    return this.availableLanguageCodes.includes(lang) && dictionaries[lang] !== undefined;
+    return this.availableLanguageCodes.includes(lang) && translations[lang] !== undefined;
   }
 
   // Obtener idiomas disponibles desde la base de datos

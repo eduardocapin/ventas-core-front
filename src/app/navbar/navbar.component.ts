@@ -40,26 +40,11 @@ export class NavbarComponent {
   }
 
   changeLanguage(langCode: string) {
+    console.log('🌐 Cambiando idioma a:', langCode);
     this.selectedLanguage = langCode;
-    this.languageService.setLanguage(langCode);
     
-    // Actualizar idioma en la base de datos
-    this.usersService.updateUserLanguage(langCode).subscribe({
-      next: (response) => {
-        console.log('Idioma actualizado en BD:', response);
-        // Recargar la página para aplicar todas las traducciones
-        window.location.reload();
-      },
-      error: (error) => {
-        console.error('Error al actualizar idioma:', error);
-        console.error('Detalles del error:', {
-          status: error.status,
-          statusText: error.statusText,
-          message: error.error?.message || error.message,
-          body: error.error
-        });
-      }
-    });
+    // Usar el TranslationService que maneja todo el proceso
+    this.translationService.setLanguage(langCode);
   }
 
   private loadMenuItems(language: string) {
@@ -126,8 +111,13 @@ export class NavbarComponent {
     private usersService: UsersService,
     private translationService: TranslationService
   ) {
-    // Inicializar idioma desde localStorage
-    this.selectedLanguage = this.languageService.getCurrentLanguage();
+    // Inicializar idioma desde TranslationService
+    this.selectedLanguage = this.translationService.getCurrentLanguage();
+    
+    // Suscribirse a cambios de idioma
+    this.translationService.currentLang$.subscribe(lang => {
+      this.selectedLanguage = lang;
+    });
   }
   ngAfterViewInit() {
     this.closeNavbar();
