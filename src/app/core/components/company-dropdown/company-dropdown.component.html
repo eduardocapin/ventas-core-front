@@ -1,0 +1,48 @@
+<div class="company-dropdown-container" *ngIf="showDropdown">
+  <!-- Botón principal -->
+  <button 
+    type="button"
+    class="btn btn-outline-primary btn-sm"
+    (click)="toggleDropdown($event)">
+    <i class="bi bi-building"></i>
+    <span>{{ getLabel() }}</span>
+    <i class="bi bi-chevron-down ms-1" [ngClass]="{'rotate-up': isOpen}"></i>
+  </button>
+
+  <!-- Dropdown menu -->
+  <div class="dropdown-menu-custom" [class.show]="isOpen" (click)="$event.stopPropagation()">
+    <!-- Header con botón de seleccionar todas -->
+    <div class="dropdown-header-custom">
+      <button 
+        type="button" 
+        class="btn btn-sm btn-link text-primary p-0"
+        (click)="seleccionarTodas($event)">
+        <i class="bi bi-check-all me-1"></i>
+        Seleccionar todas
+      </button>
+      <span class="text-muted small ms-auto">
+        {{ getSelectedCount() }} de {{ companies.length }}
+      </span>
+    </div>
+
+    <!-- Separador -->
+    <div class="dropdown-divider"></div>
+
+    <!-- Lista de empresas -->
+    <div class="dropdown-items-container">
+      <div 
+        class="dropdown-item-custom" 
+        *ngFor="let company of companies"
+        (click)="toggleCompany(company, $event)">
+        <input 
+          type="checkbox" 
+          class="form-check-input me-2"
+          [checked]="company.selected"
+          (click)="toggleCompany(company, $event); $event.stopPropagation()">
+        <label class="mb-0">{{ company.name }}</label>
+      </div>
+    </div>
+
+  </div>
+</div>
+

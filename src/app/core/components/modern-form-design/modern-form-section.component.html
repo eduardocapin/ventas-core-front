@@ -1,0 +1,9 @@
+<div class="info-section" [style.margin-bottom]="marginBottom" [class.h-100]="fullHeight">
+    <div class="section-header" [style.background]="headerBackground">
+        <i *ngIf="icon" [class]="icon + ' section-icon'"></i>
+        <h6 class="section-title">{{ sectionTitle }}</h6>
+    </div>
+    <div class="section-content">
+        <ng-content></ng-content>
+    </div>
+</div>

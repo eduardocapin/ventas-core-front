@@ -4,23 +4,12 @@
     max-width: 400px;
     width: 100%;
 }
-.bordes-redondeados{
-    border-radius: 0.25rem; 
+
+.bordes-redondeados {
+    border-radius: 0.25rem;
 }
+
 ::ng-deep ngb-datepicker.dropdown-menu {
-    margin: 0 0 0 -9px ;
-    max-width: 355px ;
-    font-size: small;
-}
-
-::ng-deep .ngb-dp-month{
-    width: 50%;
-}
-
-::ng-deep .custom-day{
-    width: -webkit-fill-available ;
-}
-::ng-deep .ngb-dp-month:last-child .ngb-dp-week{
-    padding-right: 0;
-    padding-left: 0.5rem;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }

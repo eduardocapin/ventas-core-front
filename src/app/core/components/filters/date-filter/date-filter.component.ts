@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, inject, ViewChild} from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, inject, ViewChild } from '@angular/core';
 import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -16,18 +16,18 @@ export class DateFilterComponent implements OnInit {
   dateOptions: string[] = [];
   customStartDate: string = '';
   customEndDate: string = '';
-  
+
   // Variables para el rango personalizado
   calendar = inject(NgbCalendar);
   formatter = inject(NgbDateParserFormatter);
-  
+
   hoveredDate: NgbDate | null = null;
   startDate: NgbDate | null = this.calendar.getToday(); // Cambiado a NgbDate
   endDate: NgbDate | null = this.calendar.getNext(this.calendar.getToday(), 'd', 10); // Cambiado a NgbDate
-  
+
   constructor(
     private toastr: ToastrService,
-  ){}
+  ) { }
 
   @ViewChild('dropdown') dropdown!: NgbDropdown; // Referencia al dropdown
 
@@ -39,10 +39,10 @@ export class DateFilterComponent implements OnInit {
     const today = new Date();
     const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     const currentMonth = monthNames[today.getMonth()];
-    
+
     this.dateOptions = [
       'Hoy', 'Ayer', 'Semana anterior', 'Mes actual', 'Mes anterior',
-      'Últimos 3 meses', 'Últimos 6 meses', 'Año actual', 'Año anterior', 
+      'Últimos 3 meses', 'Últimos 6 meses', 'Año actual', 'Año anterior',
       `${currentMonth} ${today.getFullYear() - 1}`  // Actualiza esta opción
     ];
   }
@@ -174,44 +174,44 @@ export class DateFilterComponent implements OnInit {
     return new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
   }
   onDateSelection(date: NgbDate) {
-		if (!this.startDate && !this.endDate) {
-			this.startDate = date;
-		} else if (this.startDate && !this.endDate && date && date.after(this.startDate)) {
-			this.endDate = date;
-		} else {
-			this.endDate = null;
-			this.startDate = date;
-		}
-	}
+    if (!this.startDate && !this.endDate) {
+      this.startDate = date;
+    } else if (this.startDate && !this.endDate && date && date.after(this.startDate)) {
+      this.endDate = date;
+    } else {
+      this.endDate = null;
+      this.startDate = date;
+    }
+  }
 
   isHovered(date: NgbDate) {
-		return (
-			this.startDate && !this.endDate && this.hoveredDate && date.after(this.startDate) && date.before(this.hoveredDate)
-		);
-	}
+    return (
+      this.startDate && !this.endDate && this.hoveredDate && date.after(this.startDate) && date.before(this.hoveredDate)
+    );
+  }
   isInside(date: NgbDate) {
-		return this.startDate && date.after(this.startDate) && date.before(this.endDate);
-	}
+    return this.startDate && date.after(this.startDate) && date.before(this.endDate);
+  }
 
-	isRange(date: NgbDate) {
-		return (
-			date.equals(this.startDate) ||
-			(this.endDate && date.equals(this.endDate)) ||
-			this.isInside(date) ||
-			this.isHovered(date)
-		);
-	}
+  isRange(date: NgbDate) {
+    return (
+      date.equals(this.startDate) ||
+      (this.endDate && date.equals(this.endDate)) ||
+      this.isInside(date) ||
+      this.isHovered(date)
+    );
+  }
 
 
   validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
-		const parsed = this.formatter.parse(input);
-		return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
-	}
+    const parsed = this.formatter.parse(input);
+    return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
+  }
   getValue(event: Event): string {
     const target = event.target as HTMLInputElement;
     return target ? target.value : '';
   }
-  
+
 
   reset() {
     this.customStartDate = '';

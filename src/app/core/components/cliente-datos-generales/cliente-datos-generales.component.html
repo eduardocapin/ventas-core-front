@@ -1,0 +1,108 @@
+<div class="container-fluid p-3">
+  <div class="row g-3">
+    <!-- Columna Izquierda: Información y Otros -->
+    <div class="col-lg-6">
+      <!-- Sección Información -->
+      <mobentis-modern-form-section sectionTitle="Información" icon="bi bi-info-circle" marginBottom="1.5rem">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <mobentis-modern-form-field label="Código" icon="bi bi-hash">
+              <div class="form-control-modern">{{ cliente?.customer_ERP_id || '---' }}</div>
+            </mobentis-modern-form-field>
+          </div>
+          <div class="col-md-6">
+            <mobentis-modern-form-field label="CIF" icon="bi bi-card-text">
+              <div class="form-control-modern">{{ cliente?.cif || '---' }}</div>
+            </mobentis-modern-form-field>
+          </div>
+          <div class="col-12">
+            <mobentis-modern-form-field label="Nombre" icon="bi bi-person">
+              <div class="form-control-modern">{{ cliente?.name || '---' }}</div>
+            </mobentis-modern-form-field>
+          </div>
+          <div class="col-12">
+            <mobentis-modern-form-field label="Nombre Fiscal" icon="bi bi-building">
+              <div class="form-control-modern">{{ cliente?.tax_name || '---' }}</div>
+            </mobentis-modern-form-field>
+          </div>
+        </div>
+      </mobentis-modern-form-section>
+
+      <!-- Sección Otros -->
+      <mobentis-modern-form-section sectionTitle="Otros" icon="bi bi-plus-circle">
+        <div class="row g-3">
+          <div class="col-12">
+            <mobentis-modern-form-field label="Web" icon="bi bi-globe2">
+              <div class="form-control-modern">Sin especificar</div>
+            </mobentis-modern-form-field>
+          </div>
+          <div class="col-12">
+            <mobentis-modern-form-field label="Agencia" icon="bi bi-briefcase">
+              <div class="form-control-modern">Sin especificar</div>
+            </mobentis-modern-form-field>
+          </div>
+        </div>
+      </mobentis-modern-form-section>
+    </div>
+
+    <!-- Columna Derecha: Contacto y Dirección -->
+    <div class="col-lg-6">
+      <!-- Sección Contacto -->
+      <mobentis-modern-form-section sectionTitle="Contacto" icon="bi bi-telephone" marginBottom="1.5rem">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <mobentis-modern-form-field label="Teléfono 1" icon="bi bi-phone">
+              <div class="form-control-modern">{{ cliente?.phone_1 || '---' }}</div>
+            </mobentis-modern-form-field>
+          </div>
+          <div class="col-md-6">
+            <mobentis-modern-form-field label="Teléfono 2" icon="bi bi-phone-fill">
+              <div class="form-control-modern">{{ cliente?.phone_2 || '---' }}</div>
+            </mobentis-modern-form-field>
+          </div>
+          <div class="col-md-6">
+            <mobentis-modern-form-field label="Fax" icon="bi bi-printer">
+              <div class="form-control-modern">Sin especificar</div>
+            </mobentis-modern-form-field>
+          </div>
+          <div class="col-md-6">
+            <mobentis-modern-form-field label="Email" icon="bi bi-envelope">
+              <div class="form-control-modern">{{ cliente?.email || '---' }}</div>
+            </mobentis-modern-form-field>
+          </div>
+        </div>
+      </mobentis-modern-form-section>
+
+      <!-- Sección Dirección -->
+      <mobentis-modern-form-section sectionTitle="Dirección" icon="bi bi-geo-alt">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <mobentis-modern-form-field label="País" icon="bi bi-globe">
+              <div class="form-control-modern">ESPAÑA</div>
+            </mobentis-modern-form-field>
+          </div>
+          <div class="col-md-6">
+            <mobentis-modern-form-field label="Población" icon="bi bi-house">
+              <div class="form-control-modern">{{ cliente?.city || '---' }}</div>
+            </mobentis-modern-form-field>
+          </div>
+          <div class="col-md-6">
+            <mobentis-modern-form-field label="CP" icon="bi bi-pin-angle">
+              <div class="form-control-modern">{{ cliente?.pc || '---' }}</div>
+            </mobentis-modern-form-field>
+          </div>
+          <div class="col-md-6">
+            <mobentis-modern-form-field label="Provincia" icon="bi bi-map-fill">
+              <div class="form-control-modern">{{ cliente?.province || '---' }}</div>
+            </mobentis-modern-form-field>
+          </div>
+          <div class="col-12">
+            <mobentis-modern-form-field label="Dirección" icon="bi bi-map">
+              <div class="form-control-modern">{{ cliente?.address || '---' }}</div>
+            </mobentis-modern-form-field>
+          </div>
+        </div>
+      </mobentis-modern-form-section>
+    </div>
+  </div>
+</div>

@@ -38,8 +38,19 @@ export class GraficaBarraHorizontalComponent implements OnChanges, AfterViewInit
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['valores'] || changes['categorias']) {
+    // Si cambia el elementoId, destruir y recrear la gráfica
+    if (changes['elementoId'] && !changes['elementoId'].firstChange) {
+      this.destruirGrafica();
+      setTimeout(() => this.pintarGrafica(), 0);
+    } else if (changes['valores'] || changes['categorias']) {
       this.actualizarGrafica();
+    }
+  }
+
+  destruirGrafica() {
+    if (this.chart) {
+      this.chart.dispose();
+      this.chart = undefined;
     }
   }
 
@@ -47,6 +58,7 @@ export class GraficaBarraHorizontalComponent implements OnChanges, AfterViewInit
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
+    this.destruirGrafica();
   }
 
   resizeChart() {

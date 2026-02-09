@@ -7,15 +7,26 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class MenuItemComponent implements OnInit {
   @Input() item: any;
-  @Input() menuOpen: boolean = false;
+  @Input() isVertical: boolean = false;
+  @Input() isExpanded: boolean = false;
 
   constructor() {}
 
   ngOnInit(): void {}
 
-  toggleSubmenu(item: any) {
-    item.isSubmenuOpen = !item.isSubmenuOpen;
+  onMouseOver() {
+    if (this.item.submenuItems?.length > 0) {
+      // Para navbar horizontal siempre mostrar
+      // Para navbar vertical solo si está expandido
+      if (!this.isVertical || this.isExpanded) {
+        this.item.isSubmenuOpen = true;
+      }
+    }
   }
-  
 
+  onMouseOut() {
+    if (this.item.submenuItems?.length > 0) {
+      this.item.isSubmenuOpen = false;
+    }
+  }
 }

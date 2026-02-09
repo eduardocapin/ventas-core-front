@@ -1,13 +1,15 @@
  /* Header Styles */
 
-  .icon-title {
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-    color: #495057;
-  }
+ .icon-title {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px; 
+  color: white; 
+  font-size: 35px;
+}
   
-  .text-dark {
-    color: #495057 !important;
-  }
+
   
+  .bg-gradient{
+    background: linear-gradient(45deg, #2b1e5f, #6269b8) !important;
+  }

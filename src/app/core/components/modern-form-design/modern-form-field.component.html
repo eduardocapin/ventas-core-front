@@ -1,0 +1,18 @@
+<div class="form-group-modern">
+    <label class="form-label-modern" *ngIf="label">
+        <i *ngIf="icon" [class]="icon + ' label-icon'"></i>
+        {{ label }}
+        <span class="text-danger ms-1" *ngIf="required">*</span>
+        <span class="badge-editable" *ngIf="editable">Editable</span>
+    </label>
+
+    <div class="input-wrapper" [class.salary-input]="suffix" [class.date-input]="date" [class.editable]="editable"
+        [class.highlight]="highlight">
+        <ng-content></ng-content>
+        <span class="input-suffix" *ngIf="suffix">{{ suffix }}</span>
+    </div>
+
+    <small class="error-message" *ngIf="error">
+        <i class="bi bi-exclamation-triangle me-1"></i>{{ error }}
+    </small>
+</div>

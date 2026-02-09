@@ -26,6 +26,18 @@ export class SearchInputComponent {
     }
   }
 
+  onInputChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+  
+    // si está vacío (por la X o manualmente), avisamos al padre
+    if (!value) {
+      this.searchChange.emit(''); 
+    }
+  
+    // mantenemos la validación normal
+    this.onSearchTermChange();
+  }
+
   onSearchTermChange(): void {
     // Validar si se están usando caracteres prohibidos mientras se escribe
     if (this.hayCaracteresProhibidos(this.searchTerm)) {

@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
-import { MapData } from 'src/app/core/models/mapData.model';
+import { MapData } from 'src/app/models/mapData.model';
 
 @Component({
   selector: 'mobentis-map',

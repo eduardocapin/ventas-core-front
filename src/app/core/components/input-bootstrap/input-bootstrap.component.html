@@ -1,0 +1,150 @@
+<div class="custom-material-input">
+  <label
+    *ngIf="label"
+    class="col-form-label col-form-label-sm"
+    [ngClass]="{
+      'label-error':
+        control && control.invalid && (control.dirty || control.touched)
+    }"
+  >
+    {{ label }}<span *ngIf="isRequired">*</span>
+  </label>
+
+  <div
+    class="d-flex align-items-center rounded custom-input-wrapper"
+    [class.focused]="isFocused"
+    [class.readonly]="readonly"
+    [ngClass]="{
+        'input-success':
+          control &&
+          control.valid &&
+          (control.dirty || control.touched) &&
+          isFocused,
+        'input-error':
+          control && control.invalid && (control.dirty || control.touched),
+      }"
+    [ngClass]="wrapperClass"
+    [ngStyle]="wrapperStyle"
+  >
+    <!-- INPUT DE TIPO FILE -->
+    <!-- <ng-container *ngIf="type === 'file'; else checkTextarea">
+      <div class="input-group w-100">
+        <button
+          type="button"
+          class="btn"
+          (click)="fileInput.click()"
+          [style]="{ backgroundColor: '#3ab284', color: '#fff' }"
+        >
+          <i class="bi bi-paperclip"></i>
+        </button>
+        <input
+          [value]="fileName"
+          class="form-control form-control-sm border-0 shadow-none"
+          readonly
+          [attr.placeholder]="placeholder"
+          (click)="fileInput.click()"
+        />
+        <input
+          #fileInput
+          type="file"
+          hidden
+          (change)="onFileChange($event)"
+          [attr.multiple]="multiple ? '' : null"
+        />
+      </div>
+    </ng-container> -->
+
+    <!-- TEXTAREA -->
+    <!-- <ng-template #checkTextarea>
+      <ng-container *ngIf="type === 'textarea'; else inputTemplate">
+        <textarea
+          cdkTextareaAutosize
+          [cdkAutosizeMinRows]="minRows"
+          [cdkAutosizeMaxRows]="maxRows"
+          class="form-control form-control-sm border-0 shadow-none"
+          *ngIf="control; else standaloneTextarea"
+          [formControl]="control"
+          [readonly]="readonly"
+          [placeholder]="placeholder"
+          [attr.title]="tooltip"
+          (focus)="isFocused = true"
+          (blur)="isFocused = false"
+          (input)="input.emit($event)"
+          rows="3"
+        ></textarea>
+        <ng-template #standaloneTextarea>
+          <textarea
+            class="form-control form-control-sm border-0 shadow-none"
+            [value]="value"
+            [readonly]="readonly"
+            [placeholder]="placeholder"
+            [attr.title]="tooltip"
+            (focus)="isFocused = true"
+            (blur)="isFocused = false"
+            (input)="valueChange.emit($any($event.target).value)"
+            rows="3"
+          ></textarea>
+        </ng-template>
+      </ng-container>
+    </ng-template> -->
+
+    <!-- INPUT COMÚN -->
+    <ng-template #inputTemplate>
+      <input
+        [type]="inputType"
+        class="form-control form-control-sm border-0 shadow-none"
+        *ngIf="control; else standaloneInput"
+        [formControl]="control"
+        [readonly]="readonly"
+        [placeholder]="placeholder"
+        [attr.min]="min"
+        [attr.max]="max"
+        [attr.step]="step"
+        [attr.title]="tooltip"
+        (focus)="isFocused = true"
+        (blur)="isFocused = false"
+        (input)="input.emit($event)"
+      />
+      <ng-template #standaloneInput>
+        <input
+          [type]="inputType"
+          class="form-control form-control-sm border-0 shadow-none"
+          [value]="value"
+          [readonly]="readonly"
+          [placeholder]="placeholder"
+          [attr.min]="min"
+          [attr.max]="max"
+          [attr.step]="step"
+          [attr.title]="tooltip"
+          (focus)="isFocused = true"
+          (blur)="isFocused = false"
+          (input)="valueChange.emit($any($event.target).value)"
+        />
+      </ng-template>
+    </ng-template>
+
+    <!-- Botón mostrar/ocultar contraseña -->
+    <button
+      *ngIf="showToggle"
+      type="button"
+      class="btn btn-sm"
+      (click)="toggleVisibility()"
+    >
+      <i class="bi" [ngClass]="isHidden ? 'bi-eye-slash' : 'bi-eye'"></i>
+    </button>
+  </div>
+
+  <div
+    *ngIf="showErrors && errorMessageToShow"
+    class="error-text text-danger mt-1"
+  >
+    {{ errorMessageToShow }}
+  </div>
+
+  <i
+    *ngIf="iconRight && !showToggle"
+    class="bi ms-2"
+    [ngClass]="iconRight"
+    [attr.title]="tooltip"
+  ></i>
+</div>

@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { ReplaySubject } from 'rxjs';
 import { FilterService } from 'src/app/services/filter/filter.service';
 
 @Component({

@@ -1,18 +1,18 @@
 <div class="input-group">
-  <input 
-    class="form-control border border-end-0" 
-    type="search" 
-    placeholder="Buscar..." 
+  <input
+    class="form-control border border-end-0"
+    type="search"
+    placeholder="Buscar..."
     [(ngModel)]="searchTerm"
+    (input)="onInputChange($event)"
     (keyup.enter)="buscar(); $event.preventDefault()"
     (ngModelChange)="onSearchTermChange()"
   />
-  <button 
-    class="btn border border-start-0 bg-white" 
-    type="button" 
+  <button
+    class="btn border border-start-0 bg-white"
+    type="button"
     (click)="buscar()"
   >
     <i class="bi bi-search"></i>
   </button>
 </div>
-

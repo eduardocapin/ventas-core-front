@@ -38,8 +38,19 @@ export class GraficaBarraVerticalComponent implements OnChanges, AfterViewInit, 
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['valores'] || changes['categorias']) {
+    // Si cambia el elementoId, destruir y recrear la gráfica
+    if (changes['elementoId'] && !changes['elementoId'].firstChange) {
+      this.destruirGrafica();
+      setTimeout(() => this.pintarGrafica(), 0);
+    } else if (changes['valores'] || changes['categorias']) {
       this.actualizarGrafica();
+    }
+  }
+
+  destruirGrafica() {
+    if (this.chart) {
+      this.chart.dispose();
+      this.chart = undefined;
     }
   }
   
@@ -47,6 +58,7 @@ export class GraficaBarraVerticalComponent implements OnChanges, AfterViewInit, 
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
+    this.destruirGrafica();
   }
 
   resizeChart() {
@@ -76,6 +88,12 @@ export class GraficaBarraVerticalComponent implements OnChanges, AfterViewInit, 
         },
         tooltip: {
           trigger: 'item',
+          valueFormatter: (value: any) => {
+            if (typeof value === 'number') {
+              return value.toLocaleString('es-ES');
+            }
+            return value;
+          }
         },
         xAxis: {
           type: 'category',
@@ -88,6 +106,16 @@ export class GraficaBarraVerticalComponent implements OnChanges, AfterViewInit, 
               type: 'dotted',
             },
           },
+          axisLabel: {
+            formatter: (value: number) => {
+              if (value >= 1000000) {
+                return (value / 1000000).toFixed(1) + 'M';
+              } else if (value >= 1000) {
+                return (value / 1000).toFixed(0) + 'k';
+              }
+              return value.toString();
+            }
+          }
         },
         series: [
           {

@@ -1,0 +1,190 @@
+<div class="background-light-gray screen">
+  <div class="p-3">
+    <div class="d-flex align-items-center justify-content-between gap-5 mb-2">
+      <div class="d-flex gap-3 align-items-center">
+        <!-- Buscador -->
+        <div class="buscador" *ngIf="showSearch">
+          <mobentis-search-input [searchTerm]="searchTerm" (searchChange)="onSearch($event)"
+            (errorDeCaracteres)="mostrarError = $event">
+          </mobentis-search-input>
+        </div>
+
+        <!-- Agrupación -->
+        <mobentis-group-by *ngIf="showGroupBy" [title]="'Agrupar por'" [componentId]="config.componentId"
+          [defaultGroupBy]="config.defaultGroupBy" (groupByChanged)="onGroupByChange($event)">
+        </mobentis-group-by>
+
+        <!-- Filtros -->
+        <mobentis-filter-container *ngIf="showFilters" [componentId]="config.componentId"
+          (filtersChanged)="onFiltersChanged($event)">
+        </mobentis-filter-container>
+      </div>
+
+      <div class="boton-filtro d-flex gap-2  align-items-center">
+        <!-- Botones personalizados (slot) -->
+        <ng-content select="[customActions]"></ng-content>
+
+        <!-- Input de fecha y botón de facturar (solo aparece cuando hay elementos seleccionados) -->
+        <div *ngIf="showFacturar && selectedIds.length > 0" class="d-flex gap-2 align-items-center">
+          <div class="input-group" style="width: 200px;">
+            <input class="form-control form-control-sm" placeholder="Seleccionar fecha" [value]="getFormattedDate()"
+              readonly ngbDatepicker #datepicker="ngbDatepicker" [autoClose]="'outside'"
+              (dateSelect)="onFacturarDateChange($event)" (click)="datepicker.toggle()" container="body" />
+            <button class="btn btn-outline-secondary btn-sm" type="button" (click)="datepicker.toggle()">
+              <i class="bi bi-calendar3"></i>
+            </button>
+          </div>
+          <mobentis-btn-facturar [disabled]="!facturarDate" (facturarClick)="onFacturarClick()">
+          </mobentis-btn-facturar>
+        </div>
+
+        <mobentis-btn-export *ngIf="showExport" (formatSelected)="exportData($event)"></mobentis-btn-export>
+
+        <div *ngIf="cargando_filtros" class="d-flex justify-content-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="mostrarError" class="text-danger mt-1">
+      Caracteres no permitidos
+    </div>
+
+    <!-- Vista sin agrupación -->
+    <div *ngIf="!groupBy">
+      <!-- Tabla -->
+      <mobentis-table [data]="dataSource.data" [columns]="tableColumns" [selectedIds]="selectedIds"
+        [getId]="getId.bind(this)" [sortColumn]="sortColumn" [sortDirection]="sortDirection"
+        [showFooter]="config.showFooter || false" [totalFunctions]="config.totalFunctions"
+        [headerBackgroundColor]="config.headerBackgroundColor || '#3f51b5'"
+        [headerTextColor]="config.headerTextColor || 'white'" (selectionChange)="onSelectionChange($event)"
+        (sortChange)="onSortChange($event)" (action)="onTableAction($event)" class="{{ cargando ? 'd-none' : '' }}">
+      </mobentis-table>
+
+      <div class="d-flex justify-content-center {{ cargando ? '' : 'd-none' }}">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+
+      <!-- Paginación -->
+      <mobentis-pagination class="{{ cargando ? 'd-none' : '' }}" [totalItems]="totalItems"
+        [itemsPerPage]="itemsPerPage" [currentPage]="currentPage" [entityName]="config.entityName"
+        (pageChange)="onPageChange($event)" (itemsPerPageChanged)="onItemsPerPageChanged($event)">
+      </mobentis-pagination>
+    </div>
+
+    <!-- Vista con agrupación -->
+    <div *ngIf="groupBy">
+      <!-- Mensaje cuando no hay grupos -->
+      <div *ngIf="groups.length === 0 && !cargando && !cargando_filtros" class="text-center py-5">
+        <div class="text-muted">
+          <i class="bi bi-inbox fs-1"></i>
+          <p class="mt-2 mb-0">No hay grupos disponibles</p>
+        </div>
+      </div>
+
+      <!-- Acordeón por grupos -->
+      <div *ngIf="groups.length > 0" class="accordion d-flex flex-column" id="accordionGroups">
+        <div *ngFor="let group of groups; trackBy: trackByGroup" class="accordion-item">
+          <!-- Table Header para cada grupo -->
+          <mobentis-table-header [headers]="getGroupHeaders(group)" [_id]="'group' + group.__domId"
+            [parentAccordion]="'accordionGroups'" (click)="onGroupToggled(group)">
+          </mobentis-table-header>
+
+          <!-- CONTENIDO DEL ACORDEÓN (Sub-grupos O Table + Paginación) -->
+          <div [id]="'collapsegroup' + group.__domId" class="accordion-collapse collapse"
+            [attr.aria-labelledby]="'headinggroup' + group.__domId">
+            <div class="accordion-body p-0">
+              <!-- Si tiene childGroupBy configurado, SIEMPRE mostrar sub-acordeones (agentes) -->
+              <div *ngIf="groupBy?.childGroupBy">
+                <!-- Mensaje de carga mientras se obtienen los sub-grupos -->
+                <div *ngIf="!subGroups[group.__key]" class="text-center py-3">
+                  <div class="spinner-border" role="status">
+                    <span class="sr-only">Cargando agentes...</span>
+                  </div>
+                </div>
+
+                <!-- Mensaje si no hay sub-grupos -->
+                <div *ngIf="subGroups[group.__key] && subGroups[group.__key].length === 0" class="text-center py-3">
+                  <div class="text-muted">
+                    <i class="bi bi-inbox fs-1"></i>
+                    <p class="mt-2 mb-0">No hay agentes disponibles para este equipo</p>
+                  </div>
+                </div>
+
+                <!-- Sub-acordeones para cada sub-grupo (agentes dentro del equipo) -->
+                <div *ngIf="subGroups[group.__key] && subGroups[group.__key].length > 0"
+                  class="accordion d-flex flex-column ms-3 me-3 mt-2 mb-2" [id]="'subAccordion' + group.__domId">
+                  <div *ngFor="let subGroup of subGroups[group.__key]; trackBy: trackBySubGroup" class="accordion-item">
+                    <!-- Table Header para cada sub-grupo (agente) -->
+                    <mobentis-table-header [headers]="getSubGroupHeaders(group, subGroup)"
+                      [_id]="'subgroup' + subGroup.__domId" [parentAccordion]="'subAccordion' + group.__domId"
+                      (click)="onSubGroupToggled(group.__key, subGroup)">
+                    </mobentis-table-header>
+
+                    <!-- CONTENIDO DEL SUB-ACORDEÓN (Table + Paginación) -->
+                    <div [id]="'collapsesubgroup' + subGroup.__domId" class="accordion-collapse collapse"
+                      [attr.aria-labelledby]="'headingsubgroup' + subGroup.__domId">
+                      <div class="accordion-body p-0">
+                        <!-- Tabla para cada sub-grupo (agente) -->
+                        <mobentis-table [data]="(subGroupedData[group.__key] || {})[subGroup.__key] || []"
+                          [columns]="(subGroupedColumns[group.__key] || {})[subGroup.__key] || tableColumns"
+                          [_id]="'subgroup' + subGroup.__domId" [showFooter]="config.showFooter || false"
+                          [totalFunctions]="config.totalFunctions"
+                          [headerBackgroundColor]="config.headerBackgroundColor || '#3f51b5'"
+                          [headerTextColor]="config.headerTextColor || 'white'" [selectedIds]="selectedIds"
+                          [getId]="getId.bind(this)" [sortColumn]="sortColumn" [sortDirection]="sortDirection"
+                          (selectionChange)="onSubGroupSelectionChange(group.__key, subGroup.__key, $event)"
+                          (sortChange)="onSortChange($event)" (action)="onTableAction($event)">
+                        </mobentis-table>
+
+                        <!-- Paginación por sub-grupo DENTRO del sub-acordeón -->
+                        <div class="p-3 border-top bg-light">
+                          <mobentis-pagination
+                            [totalItems]="(subGroupedTotalItems[group.__key] || {})[subGroup.__key] || 0"
+                            [itemsPerPage]="(subGroupedItemsPerPage[group.__key] || {})[subGroup.__key] || itemsPerPage"
+                            [currentPage]="(subGroupedCurrentPage[group.__key] || {})[subGroup.__key] || 1"
+                            [entityName]="config.entityName"
+                            (pageChange)="onSubGroupPageChanged(group.__key, subGroup.__key, $event)"
+                            (itemsPerPageChanged)="onSubGroupItemsPerPageChanged(group.__key, subGroup.__key, $event)">
+                          </mobentis-pagination>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Si NO tiene childGroupBy configurado, mostrar tabla normal del grupo -->
+              <div *ngIf="!groupBy?.childGroupBy">
+                <!-- Tabla para cada grupo -->
+                <mobentis-table [data]="groupedData[group.__key] || []"
+                  [columns]="groupedColumns[group.__key] || tableColumns" [_id]="'group' + group.__domId"
+                  [showFooter]="config.showFooter || false" [totalFunctions]="config.totalFunctions"
+                  [headerBackgroundColor]="config.headerBackgroundColor || '#3f51b5'"
+                  [headerTextColor]="config.headerTextColor || 'white'" [selectedIds]="selectedIds"
+                  [getId]="getId.bind(this)" [sortColumn]="sortColumn" [sortDirection]="sortDirection"
+                  (selectionChange)="onGroupSelectionChange(group.__key, $event)" (sortChange)="onSortChange($event)"
+                  (action)="onTableAction($event)">
+                </mobentis-table>
+
+                <!-- Paginación por grupo DENTRO del acordeón -->
+                <div class="p-3 border-top bg-light">
+                  <mobentis-pagination [totalItems]="groupedTotalItems[group.__key] || 0"
+                    [itemsPerPage]="groupedItemsPerPage[group.__key] || itemsPerPage"
+                    [currentPage]="groupedCurrentPage[group.__key] || 1" [entityName]="config.entityName"
+                    (pageChange)="onGroupPageChanged(group.__key, $event)"
+                    (itemsPerPageChanged)="onGroupItemsPerPageChanged(group.__key, $event)">
+                  </mobentis-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

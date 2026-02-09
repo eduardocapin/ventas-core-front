@@ -43,6 +43,12 @@ const routes: Routes = [
 
       },
       {
+        path: 'importador-documentos',
+        loadChildren: () => import('./documents-import/documents-import.module').then(m => m.DocumentsImportModule),
+        canActivate: [authGuard],
+        canMatch: [authGuard],
+      },
+      {
         path: 'users',
         loadChildren: () => import('./core/users/users.module').then(m => m.UsersModule),
         canActivate: [authGuard, RoleGuard],

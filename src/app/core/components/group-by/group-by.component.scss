@@ -1,0 +1,45 @@
+@import "src/styles.scss";
+
+:host {
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    cursor: pointer;
+}
+
+.btn-outline-primary {
+    border-radius: 0.25rem;
+}
+
+.dropdown-menu {
+    font-size: 0.9rem;
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+.search-style {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+    padding-bottom: 0.5rem;
+}
+
+.w-max {
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: calc(95vh - 350px);
+}
+
+.dropdown-item.active {
+    background-color: #3c27c5;
+    color: white;
+    
+    &:hover {
+        background-color: #2d1fa0;
+        color: white;
+    }
+}

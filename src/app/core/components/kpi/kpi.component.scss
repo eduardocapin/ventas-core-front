@@ -1,0 +1,130 @@
+:host {
+    display: contents;
+}
+
+.numeroKPI {
+    font-weight: 900;
+    font-size: larger;
+}
+
+.kpis {
+    border-radius: 1em;
+}
+
+/* ancho de las graficas de mtivos de rechazos */
+.min-w-reasonReject {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.min-w-convertidor{
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+/* configuracion del scroll de los graficos de motivos de rechazos */
+.min-w-reasonReject::-webkit-scrollbar {
+    height: 4px;
+    /* Ajusta el grosor del scroll horizontal */
+}
+
+.min-w-convertidor::-webkit-scrollbar {
+    height: 4px;
+    /* Ajusta el grosor del scroll horizontal */
+}
+
+.min-w-reasonReject::-webkit-scrollbar-thumb {
+    background-color: #888;
+    /* Color del scroll */
+    border-radius: 10px;
+}
+.min-w-convertidor::-webkit-scrollbar-thumb {
+    background-color: #888;
+    /* Color del scroll */
+    border-radius: 10px;
+}
+
+.min-w-reasonReject::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+    /* Color del scroll al pasar el mouse */
+}
+
+.min-w-convertidor::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+    /* Color del scroll al pasar el mouse */
+}
+
+.min-w-reasonReject::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    /* Color de la pista del scroll */
+}
+
+.min-w-convertidor::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    /* Color de la pista del scroll */
+}
+
+/* configuracion del scroll de los graficos de motivos de rechazos */
+
+#kpis_centrales {
+    height: 89px;
+    width: 250px;
+}
+
+
+span.font-dashboard {
+    font-size: 12px;
+    color: #6D6D6D;
+}
+
+.rechazos {
+    color: #ff33d6;
+}
+
+.pendientes {
+    color: #ff9500;
+}
+
+.oportunidades {
+    color: #3f51b5;
+}
+
+.smaller {
+    font-size: smaller;
+}
+
+.vertical-text {
+    writing-mode: vertical-rl;
+    font-weight: bold;
+    transform: rotate(180deg);
+    font-size: small;
+}
+
+.horizontal-text {
+    font-weight: bold;
+    font-size: small;
+}
+
+/* barra para separar los titulos en kpi */
+.h-90 {
+    height: 90%;
+    border: 0.1px solid #ebebeb;
+}
+
+.bg-color-kpi-element {
+    background-color: #f5f5f5;
+    border-radius: 14px;
+}
+
+.min-w-reasonReject,
+.min-w-convertidor {
+    cursor: grab;
+    user-select: none; // Evita que el texto sea seleccionado al arrastrar
+}
+
+.min-w-reasonReject:active,
+.min-w-convertidor:active {
+    cursor: grabbing;
+}

@@ -1,0 +1,205 @@
+@import "src/styles.scss";
+
+.importador-documentos {
+  .documents-grid {
+    max-height: 320px;
+    overflow-y: auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  }
+
+  .table {
+    font-size: 13px;
+
+    thead {
+      position: sticky;
+      top: 0;
+      background: $light-gray;
+      z-index: 2;
+      box-shadow: 0 1px 0 #dee2e6;
+
+      th {
+        font-weight: 600;
+        color: $title-dark-gray;
+        padding: 10px 12px;
+        white-space: nowrap;
+      }
+    }
+
+    tbody tr {
+      cursor: pointer;
+
+      &:hover {
+        background-color: lighten($light-gray, 2%);
+      }
+
+      &.table-active {
+        background-color: rgba($color-primary, 0.08);
+      }
+    }
+
+    .col-sel, .col-int {
+      width: 48px;
+      min-width: 48px;
+      text-align: center;
+
+      input[type="checkbox"] {
+        cursor: pointer;
+      }
+    }
+
+    .col-est {
+      width: 40px;
+      min-width: 40px;
+
+      i {
+        font-size: 1.1rem;
+      }
+    }
+
+    .col-tipo { width: 100px; min-width: 100px; }
+    .col-numero { width: 80px; min-width: 80px; }
+    .col-cliente { min-width: 150px; }
+    .col-agente { width: 120px; min-width: 120px; }
+    .col-fecha { width: 100px; min-width: 100px; }
+    .col-error { max-width: 200px; font-size: 11px; }
+  }
+
+  /* Semáforo visual - Estados de integración */
+  .estado-blanco {
+    color: #6c757d;
+  }
+
+  .estado-verde {
+    color: #198754;
+  }
+
+  .estado-rojo {
+    color: #dc3545;
+  }
+
+  .estado-amarillo {
+    color: #ffc107;
+  }
+
+  .estado-azul {
+    color: #0d6efd;
+  }
+
+  .estado-cian {
+    color: #0dcaf0;
+  }
+
+  /* Barra de Leyenda */
+  .leyenda-integracion {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 10px 16px;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    margin-top: -1px;
+    font-size: 12px;
+    color: $title-dark-gray;
+
+    .leyenda-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      i {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  /* Panel de Detalle */
+  .panel-detalle {
+    margin-top: 16px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid #dee2e6;
+
+    .panel-detalle-header {
+      padding: 12px 16px;
+      background: $light-gray;
+      font-size: 14px;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .panel-detalle-body {
+      padding: 16px;
+    }
+
+    .tabla-lineas {
+      overflow-x: auto;
+      font-size: 13px;
+
+      .table {
+        margin-bottom: 0;
+
+        th, td {
+          padding: 8px 12px;
+        }
+      }
+    }
+
+    .observaciones {
+      .form-label {
+        margin-bottom: 4px;
+      }
+
+      textarea {
+        font-size: 13px;
+        resize: vertical;
+      }
+    }
+  }
+
+  .panel-detalle-empty {
+    margin-top: 16px;
+    padding: 48px;
+    text-align: center;
+    background: white;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+
+    i {
+      font-size: 3rem;
+      opacity: 0.5;
+    }
+  }
+
+  .search-input-wrapper {
+    position: relative;
+
+    .form-control {
+      padding-right: 36px;
+    }
+
+    .clear-search-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      color: #6c757d;
+
+      &:hover {
+        color: #495057;
+      }
+    }
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+}

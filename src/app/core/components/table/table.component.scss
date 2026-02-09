@@ -1,0 +1,911 @@
+@import "src/styles.scss";
+
+.table {
+  font-size: 0.875rem;
+
+  // Usar table-bordered de Bootstrap
+  &.table-bordered {
+
+    th,
+    td {
+      border: 0.5px solid #dee2e6;
+      vertical-align: middle;
+      box-sizing: border-box;
+    }
+
+  }
+
+  /* Columnas Sticky - CON BORDES DINÁMICOS USANDO BOX-SHADOW */
+  .sticky-col {
+    position: sticky;
+    background-color: white;
+    z-index: 5;
+    overflow: visible;
+  }
+
+  // Asegurar que las columnas sticky del header tengan z-index más alto
+  thead .sticky-col {
+    z-index: 11;
+    top:  0;
+  }
+
+  // Columna de control de columnas - ÚLTIMA COLUMNA (siempre a la derecha)
+  .sticky-col-right.columns-control-col {
+    right: 0;
+    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
+    background-color: white;
+    text-align: center;
+    padding: 0.5rem 0.25rem;
+    box-shadow:
+      -2px 0 0 0 #dee2e6,
+      inset 1px 0 0 0 #dee2e6;
+    overflow: visible;
+    z-index: 8;
+
+    .column-control-dropdown {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: visible;
+
+      .column-menu-button {
+        padding: 0.25rem;
+        border: none;
+        background: transparent;
+        color: white;
+        cursor: pointer;
+        z-index: 12;
+
+        &::after {
+          display: none;
+        }
+
+        &:hover {
+          opacity: 0.8;
+        }
+
+        i {
+          font-size: 1rem;
+        }
+      }
+
+      .dropdown-menu {
+        z-index: 20 !important;
+        min-width: 280px;
+        max-width: 320px;
+        max-height: 400px;
+        margin-top: 0.5rem;
+        padding: 0.5rem 0;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        background-color: white;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        .dropdown-item-text {
+          padding: 0.75rem 1rem;
+          background-color: #f8f9fa;
+          border-bottom: 1px solid #dee2e6;
+          margin-bottom: 0.25rem;
+
+          .dropdown-item-toggle-all {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0;
+            text-decoration: none;
+            color: #212529;
+            transition: color 0.2s ease;
+            cursor: pointer;
+
+            i {
+              font-size: 1.1rem;
+              flex-shrink: 0;
+              transition: all 0.2s ease;
+            }
+
+            span {
+              font-weight: 600;
+              font-size: 0.9rem;
+              flex: 1;
+            }
+
+            &:hover {
+              color: #3f51b5;
+
+              i {
+                transform: scale(1.1);
+              }
+            }
+          }
+        }
+
+        .dropdown-divider {
+          margin: 0.5rem 0;
+          border-color: #dee2e6;
+        }
+
+        .dropdown-item {
+          padding: 0.625rem 1rem;
+          transition: all 0.2s ease;
+          border: none;
+          background: transparent;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          text-decoration: none;
+          color: #495057;
+          cursor: pointer;
+
+          i {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+          }
+
+          span {
+            flex: 1;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+          }
+
+          &:hover {
+            background-color: #f8f9fa;
+            color: #212529;
+
+            i {
+              transform: scale(1.1);
+            }
+          }
+
+          &:active {
+            background-color: #e9ecef;
+          }
+        }
+      }
+    }
+  }
+
+  // En el header, la columna de control usa el color dinámico
+  // El color se aplica via [style.background-color] en el template
+
+  // Checkbox izquierdo
+  .sticky-col-left.checkbox-col {
+    left: -1px;
+    // Los valores de width y min-width se respetan desde los estilos inline
+    // Solo establecer valores por defecto si no se especifican
+    background-color: white;
+    border-left: 1px solid #dee2e6;
+    border-right: none;
+    box-shadow:
+      inset -1px 0 0 0 #dee2e6;
+    // Asegurar que los estilos inline tengan prioridad
+    width: auto;
+    min-width: auto;
+  }
+
+  // Acciones izquierda
+  .sticky-col-left.actions-col {
+    // Los valores de width y min-width se respetan desde los estilos inline
+    background-color: white;
+    border-left: 1px solid #dee2e6;
+    border-right: none;
+    box-shadow:
+      inset -1px 0 0 0 #dee2e6;
+    // Asegurar que los estilos inline tengan prioridad
+    width: auto;
+    min-width: auto;
+  }
+
+  // Acciones derecha
+  .sticky-col-right.actions-col-right {
+    right: 0;
+    // Los valores de width y min-width se respetan desde los estilos inline
+    background-color: white;
+    box-shadow:
+      -2px 0 0 0 #dee2e6,
+      inset 1px 0 0 0 #dee2e6;
+    // Asegurar que los estilos inline tengan prioridad
+    width: auto;
+    min-width: auto;
+  }
+
+  // Columnas normales fijadas a la izquierda (sin tipo específico)
+  .sticky-col-left:not(.checkbox-col):not(.actions-col) {
+    background-color: white;
+    border-left: 1px solid #dee2e6;
+    border-right: none;
+    box-shadow:
+      inset -1px 0 0 0 #dee2e6;
+  }
+
+  // Columnas normales fijadas a la derecha (sin tipo específico)
+  .sticky-col-right:not(.actions-col-right):not(.columns-control-col) {
+    background-color: white;
+    box-shadow:
+      -2px 0 0 0 #dee2e6,
+      inset 1px 0 0 0 #dee2e6;
+  }
+
+  // HEADER STICKY - Los colores se aplican dinámicamente desde el componente
+  // Los colores de fondo y texto se establecen via [style] en el template
+  thead .sticky-col {
+    // background-color y color se establecen dinámicamente
+
+    // Asegurar que todas las columnas sticky del header tengan los bordes correctos
+    &.checkbox-col,
+    &.actions-col,
+    &.columns-control-col {
+      // background-color se establece dinámicamente
+      border-left: 1px solid rgba(0, 0, 0, 0.2);
+      border-right: none;
+      box-shadow:
+        inset -1px 0 0 0 rgba(0, 0, 0, 0.1);
+    }
+
+    &.actions-col-right {
+      // background-color se establece dinámicamente
+      box-shadow:
+        -2px 0 0 0 rgba(0, 0, 0, 0.1),
+        inset 1px 0 0 0 rgba(0, 0, 0, 0.1);
+    }
+
+    // Columnas normales sticky en el header
+    &:not(.checkbox-col):not(.actions-col):not(.actions-col-right):not(.columns-control-col) {
+      // background-color se establece dinámicamente
+
+      &.sticky-col-left {
+        border-left: 1px solid #2c387e;
+        border-right: none;
+        box-shadow:
+          inset -1px 0 0 0 #2c387e;
+      }
+
+      &.sticky-col-right {
+        box-shadow:
+          -2px 0 0 0 #2c387e,
+          inset 1px 0 0 0 #2c387e;
+      }
+    }
+  }
+
+  // FOOTER STICKY - Bordes específicos
+  tfoot .sticky-col {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    border-top: 2px solid #dee2e6;
+
+    &.columns-control-col {
+      box-shadow:
+        -2px 0 0 0 #dee2e6,
+        inset 1px 0 0 0 #dee2e6;
+    }
+
+    &.checkbox-col,
+    &.actions-col {
+      border-left: 1px solid #dee2e6;
+      border-right: none;
+      box-shadow:
+        inset -1px 0 0 0 #dee2e6;
+    }
+
+    &.actions-col-right {
+      box-shadow:
+        -2px 0 0 0 #dee2e6,
+        inset 1px 0 0 0 #dee2e6;
+    }
+  }
+
+  // Colores pastel para celdas de Objetivo Cumplido / Objetivo (SI=verde, NO=rojo)
+  td.bg-success {
+    background-color: #95e5b1 !important;
+    color: #155724 !important;
+
+    span {
+      color: #155724 !important;
+    }
+  }
+
+  td.bg-danger {
+    background-color: #f9aab1 !important;
+    color: #842029 !important;
+
+    span {
+      color: #842029 !important;
+    }
+  }
+
+  // Asegurar que los bordes se mantengan en todas las situaciones
+  tbody .sticky-col {
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  // Primera fila - borde superior específico
+  tbody tr:first-child .sticky-col {
+    border-top: 1px solid #dee2e6;
+  }
+
+  // Última fila - borde inferior específico
+  tbody tr:last-child .sticky-col {
+    border-bottom: 1px solid #dee2e6;
+  }
+}
+
+/* CONTENEDOR DE TABLA - SCROLL FUNCIONAL */
+.table-responsive {
+  display: block;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  height: 78vh;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  background-color: white;
+
+  .table {
+    margin-bottom: 0;
+    width: max-content;
+    min-width: 100%;
+    max-width: none;
+    border-spacing: 0;
+    table-layout: auto;
+    display: table;
+  }
+
+  // Asegurar que los estilos inline de width y min-width se respeten
+  th,
+  td {
+    box-sizing: border-box;
+    max-width: none;
+  }
+}
+
+// RESPONSIVE - Para móviles y tablets
+@media (max-width: 992px) {
+  .table-responsive {
+    font-size: 0.8rem;
+    border: 1px solid #dee2e6;
+    // Asegurar que el contenedor permita que los dropdowns se muestren
+    position: relative;
+
+
+    // En pantallas pequeñas, desactivar sticky pero mantener el layout
+    .sticky-col {
+      position: relative !important;
+      left: auto !important;
+      right: auto !important;
+      width: auto !important;
+      min-width: auto !important;
+      max-width: none !important;
+      box-shadow: none !important;
+
+    }
+
+    // Desactivar sticky en el header también
+    thead .sticky-col {
+      position: relative !important;
+      // background-color se establece dinámicamente
+    }
+
+    // Asegurar que las celdas no se compriman demasiado
+    .table {
+      border: none;
+      min-width: 100%;
+
+      th,
+      td {
+        border: 1px solid #dee2e6;
+        min-width: 80px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      // Columnas específicas con anchos mínimos
+      .checkbox-col,
+      th.checkbox-col,
+      td.checkbox-col {
+        min-width: 50px;
+        width: 50px;
+      }
+
+      .actions-col,
+      th.actions-col,
+      td.actions-col {
+        min-width: 60px;
+        width: 60px;
+      }
+
+      &.table-bordered {
+
+        th,
+        td {
+          border: 1px solid #dee2e6;
+        }
+      }
+    }
+  }
+}
+
+// ESTILOS ESPECÍFICOS PARA CHECKBOX Y ACCIONES EN STICKY
+.sticky-col-left.checkbox-col .form-check-input,
+.sticky-col-left.actions-col .form-check-input {
+  margin: 0 auto;
+  display: block;
+}
+
+.sticky-col-left.actions-col .d-flex,
+.sticky-col-right.actions-col-right .d-flex {
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+  flex-wrap: nowrap;
+}
+
+// Asegurar que los botones en sticky se vean bien
+.sticky-col .btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border: 1px solid transparent;
+
+  &:hover {
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
+  }
+}
+
+// Mejorar la apariencia de los checkboxes en sticky
+.sticky-col .form-check-input {
+  cursor: pointer;
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(63, 81, 181, 0.25);
+    border-color: #3f51b5;
+  }
+}
+
+// Asegurar que el contenido de las celdas sticky esté centrado
+.sticky-col-left.checkbox-col,
+.sticky-col-left.actions-col,
+.sticky-col-right.actions-col-right {
+  text-align: center;
+
+  >* {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+// Sombra suave para indicar la separación con scroll
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 0 0 4px 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+// Estilos para el contenido del header
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+  min-width: 0;
+  position: relative;
+  z-index: 11;
+  overflow: visible;
+}
+
+.header-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+// Estilos para drag and drop de columnas - INDEPENDIENTE DE STICKY
+.draggable-column {
+  cursor: grab;
+  user-select: none;
+
+  * {
+    cursor: grab;
+  }
+
+  button,
+  i,
+  .header-content,
+  .header-text,
+  .column-context-menu {
+    cursor: grab;
+  }
+
+  // Excluir elementos del menú dropdown del cursor grab
+  .dropdown-menu,
+  .dropdown-item,
+  .dropdown-toggle {
+    cursor: pointer !important;
+
+    * {
+      cursor: pointer !important;
+    }
+  }
+
+  &.dragging {
+    cursor: grabbing;
+
+    * {
+      cursor: grabbing;
+    }
+
+    button,
+    i,
+    .header-content,
+    .header-text,
+    .column-context-menu {
+      cursor: grabbing;
+    }
+  }
+
+  &:active {
+    opacity: 0.7;
+  }
+}
+
+// Asegurar que funcione también cuando está dentro de sticky-col
+.sticky-col.draggable-column {
+  cursor: grab;
+
+  * {
+    cursor: grab;
+  }
+
+  button,
+  i,
+  .header-content,
+  .header-text,
+  .column-context-menu {
+    cursor: grab;
+  }
+
+  &.dragging {
+    cursor: grabbing;
+
+    * {
+      cursor: grabbing;
+    }
+  }
+}
+
+// Estilos para columnas redimensionables
+.resizable-column {
+  position: relative;
+
+  &:not(.draggable-column) {
+    cursor: default;
+  }
+
+  .resize-handle {
+    position: absolute;
+    top: 0;
+    right: -2px;
+    width: 8px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 20;
+    background: transparent;
+    user-select: none;
+
+    &:hover {
+      background-color: rgba(63, 81, 181, 0.2);
+    }
+
+    &.resizing {
+      background-color: rgba(63, 81, 181, 0.4);
+      width: 10px;
+    }
+  }
+
+  &:hover .resize-handle {
+    background-color: rgba(63, 81, 181, 0.15);
+  }
+
+  &.draggable-column {
+    cursor: grab;
+
+    * {
+      cursor: grab;
+    }
+
+    button,
+    i,
+    .header-content,
+    .header-text,
+    .column-context-menu {
+      cursor: grab;
+    }
+
+    &.dragging {
+      cursor: grabbing;
+
+      * {
+        cursor: grabbing;
+      }
+
+      button,
+      i,
+      .header-content,
+      .header-text,
+      .column-context-menu {
+        cursor: grabbing;
+      }
+    }
+
+    .resize-handle {
+      pointer-events: auto;
+      cursor: col-resize;
+    }
+  }
+}
+
+.drag-over {
+  border-top: 2px solid #3f51b5;
+  background-color: rgba(63, 81, 181, 0.2);
+}
+
+// Asegurar que el thead tenga z-index alto para que los dropdowns aparezcan encima
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  overflow: visible;
+}
+
+// Asegurar que el tbody tenga z-index más bajo
+tbody {
+  position: relative;
+  z-index: 1;
+}
+
+// Asegurar que las celdas del header tengan el contenido bien contenido
+th {
+  position: relative;
+  // Asegurar que las columnas NO sticky del header tengan z-index más bajo que las sticky
+  z-index: 1;
+  // Permitir que los dropdowns salgan del th
+  overflow: visible;
+
+  .header-content {
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+  }
+}
+
+// Contenedor de la tabla
+.table-container {
+  position: relative;
+  overflow: visible;
+  width: 100%;
+}
+
+
+// Botones de acción en el header
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  margin-left: auto;
+  position: relative;
+  z-index: 11;
+  overflow: visible;
+}
+
+// Menú contextual dropdown de Bootstrap para cada columna
+.column-context-menu {
+  position: relative;
+  display: inline-block;
+  z-index: 9998 !important;
+  overflow: visible;
+
+  .column-menu-trigger {
+    color: white;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    border: none;
+    background: transparent;
+    position: relative;
+    z-index: 9999 !important;
+
+    &:hover {
+      opacity: 1;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &::after {
+      display: none;
+    }
+
+    i {
+      font-size: 1rem;
+    }
+  }
+
+  // Estilos para el dropdown-menu de Bootstrap - mismo estilo que el menú general
+  .dropdown-menu {
+    z-index: 9999 !important;
+    min-width: 280px;
+    max-width: 320px;
+    max-height: 400px;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    background-color: white;
+    position: absolute;
+    transform: translateZ(0);
+    isolation: isolate;
+    overflow-y: auto;
+    overflow-x: hidden;
+    will-change: transform;
+
+    // Bootstrap maneja el display, solo aplicamos estilos cuando está visible
+    &.show {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    // En pantallas pequeñas, asegurar que el dropdown se muestre correctamente
+    @media (max-width: 992px) {
+      z-index: 99999 !important;
+      // Asegurar que el dropdown se posicione correctamente
+      position: absolute !important;
+
+      // Si el dropdown está cerca del borde derecho, alinearlo a la izquierda
+      &.dropdown-menu-end {
+        right: 0 !important;
+        left: auto !important;
+      }
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.625rem 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      color: #495057;
+      transition: all 0.2s ease;
+      border: none;
+      background: transparent;
+      font-size: 0.9rem;
+
+      &:hover {
+        background-color: #f8f9fa;
+        color: #212529;
+      }
+
+      &:active {
+        background-color: #e9ecef;
+      }
+
+      i {
+        font-size: 0.9rem;
+        width: 18px;
+        text-align: center;
+        flex-shrink: 0;
+        color: #3f51b5;
+        transition: color 0.2s ease;
+      }
+
+      span {
+        flex: 1;
+        transition: color 0.2s ease;
+      }
+
+      &:hover i {
+        color: #2c387e;
+      }
+    }
+  }
+}
+
+// Estilos para submenús dropdown (dropend de Bootstrap)
+.dropend {
+  position: relative;
+
+  >.dropdown-menu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin-top: 0;
+    margin-left: 0.125rem;
+    min-width: 180px;
+    z-index: 10001;
+  }
+
+  .dropdown-toggle {
+    cursor: pointer !important;
+  }
+}
+
+// Asegurar que todos los elementos del menú tengan cursor pointer
+.dropdown-menu {
+  .dropdown-item {
+    cursor: pointer !important;
+
+    * {
+      cursor: pointer !important;
+    }
+  }
+
+  .dropdown-toggle {
+    cursor: pointer !important;
+  }
+}
+
+// Estilos para campos de estado de objetivos (SI/NO con colores de fondo)
+// Los colores se aplican directamente al td mediante bg-success y bg-danger de Bootstrap
+
+// Estilos para columnas de imágenes
+.table-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 0;
+  min-height: 48px;
+}
+
+.table-image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  display: block;
+  border: 2px solid #e0e0e0;
+}
+
+.image-circle {
+  border-radius: 50%;
+}
+
+.image-square {
+  border-radius: 4px;
+}
+
+// Asegurar que la columna de imagen tenga ancho fijo
+td:has(.table-image-container) {
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  padding: 4px !important;
+  text-align: center;
+}

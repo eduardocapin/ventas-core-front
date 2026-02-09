@@ -1,0 +1,351 @@
+<!-- Componente de tabla para popups con soporte de edición inline y nueva fila -->
+<div class="table-popup-container">
+  <div class="table-responsive">
+    <table #tableElement class="table table-striped table-hover table-bordered p-0 mb-0">
+      <thead class="table-dark" [style.background-color]="headerBackgroundColor" [style.color]="headerTextColor">
+        <tr>
+          <th *ngFor="let column of visibleColumns; let colIndex = index; trackBy: trackByColumnField"
+            [class.cursor]="column.sortable" [class.sticky-col]="column.sticky === 'left' || column.sticky === 'right'"
+            [class.sticky-col-left]="column.sticky === 'left'" [class.sticky-col-right]="column.sticky === 'right'"
+            [class.checkbox-col]="column.type === 'checkbox' && column.sticky === 'left'"
+            [class.actions-col]="column.type === 'acciones' && column.sticky === 'left'"
+            [class.actions-col-right]="column.type === 'acciones' && column.sticky === 'right'"
+            [class.draggable-column]="isDraggable(column)"
+            [class.drag-over]="dragOverIndex === colIndex && canReorderColumns(draggedColumn, column)"
+            [class.resizable-column]="isResizable(column)" [draggable]="isDraggable(column)"
+            (dragstart)="onDragStart(column, $event)" (dragover)="onDragOver($event, column, colIndex)"
+            (dragleave)="onDragLeave($event)" (drop)="onDrop($event, column, colIndex)" (dragend)="onDragEnd($event)"
+            [style.width]="column.width" [style.min-width]="column.minWidth" [style.max-width]="column.maxWidth"
+            [style.background-color]="headerBackgroundColor" [style.color]="headerTextColor">
+
+            <!-- Columna normal con ordenamiento -->
+            <ng-container *ngIf="column.type !== 'checkbox'">
+              <div class="header-content">
+                <span *ngIf="column.sortable" (click)="onSort(column)" class="header-text" style="cursor: pointer;"
+                  [attr.data-bs-toggle]="column.tooltip ? 'tooltip' : null"
+                  [attr.data-bs-placement]="column.tooltip ? 'top' : null" [title]="column.tooltip || ''">
+                  <i *ngIf="column.headerIcon" [class]="column.headerIcon + ' me-1'"></i>
+                  {{ column.header }}
+                  <i [class]="getSortIcon(column)"></i>
+                </span>
+
+                <span *ngIf="!column.sortable" class="header-text"
+                  [attr.data-bs-toggle]="column.tooltip ? 'tooltip' : null"
+                  [attr.data-bs-placement]="column.tooltip ? 'top' : null" [title]="column.tooltip || ''">
+                  <i *ngIf="column.headerIcon" [class]="column.headerIcon + ' me-1'"></i>
+                  {{ column.header }}
+                </span>
+
+                <div class="header-actions">
+                  <!-- Dropdown de opciones de columna -->
+                  <div *ngIf="column.sortable || isPinable(column) || column.hideable === true"
+                    class="btn-group column-context-menu" ngbDropdown container="body">
+                    <button type="button" class="btn btn-link btn-sm p-0 dropdown-toggle column-menu-trigger"
+                      [style.color]="headerTextColor" ngbDropdownToggle [title]="'Opciones de columna'">
+                      <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+
+                    <!-- Menú dropdown -->
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                      <!-- Opciones de ordenación -->
+                      <li *ngIf="column.sortable">
+                        <a class="dropdown-item" (click)="onSortOption(column, 'asc', $event)">
+                          <i class="bi bi-arrow-up"></i>
+                          <span class="ms-2">Ordenar ascendente</span>
+                          <i *ngIf="sortColumn === column.field && sortDirection === 'asc'"
+                            class="bi bi-check ms-auto"></i>
+                        </a>
+                      </li>
+                      <li *ngIf="column.sortable">
+                        <a class="dropdown-item" (click)="onSortOption(column, 'desc', $event)">
+                          <i class="bi bi-arrow-down"></i>
+                          <span class="ms-2">Ordenar descendente</span>
+                          <i *ngIf="sortColumn === column.field && sortDirection === 'desc'"
+                            class="bi bi-check ms-auto"></i>
+                        </a>
+                      </li>
+
+                      <!-- Separador -->
+                      <li *ngIf="column.sortable && isPinable(column)">
+                        <hr class="dropdown-divider">
+                      </li>
+
+                      <!-- Opciones de fijar -->
+                      <li *ngIf="isPinable(column) && (!column.sticky || column.sticky === 'none')">
+                        <a class="dropdown-item" (click)="onPinOption(column, 'left', $event)">
+                          <i class="bi bi-pin-angle"></i>
+                          <span class="ms-2">Fijar</span>
+                        </a>
+                      </li>
+
+                      <li *ngIf="isPinable(column) && (column.sticky === 'left' || column.sticky === 'right')">
+                        <a class="dropdown-item" (click)="onPinOption(column, 'none', $event)">
+                          <i class="bi bi-pin-angle-fill"></i>
+                          <span class="ms-2">Desfijar</span>
+                        </a>
+                      </li>
+
+                      <!-- Separador -->
+                      <li *ngIf="isPinable(column) && column.hideable === true">
+                        <hr class="dropdown-divider">
+                      </li>
+
+                      <!-- Opción de ocultar/mostrar -->
+                      <li *ngIf="column.hideable === true">
+                        <a class="dropdown-item" (click)="toggleColumnVisibility(column, $event)">
+                          <i [class]="column.visible !== false ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                          <span class="ms-2">{{ column.visible !== false ? 'Ocultar columna' : 'Mostrar columna'
+                            }}</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Handle para redimensionar columna -->
+            <div *ngIf="isResizable(column)" class="resize-handle"
+              [class.resizing]="isResizing && resizingColumn === column" (mousedown)="onResizeStart(column, $event)"
+              (click)="$event.stopPropagation()" (dragstart)="$event.preventDefault(); $event.stopPropagation()">
+            </div>
+          </th>
+
+          <!-- Columna especial para el botón de columnas -->
+          <th *ngIf="hideableColumns.length > 0" class="sticky-col sticky-col-right columns-control-col"
+            [style.background-color]="headerBackgroundColor" [style.color]="headerTextColor">
+            <div class="btn-group column-control-dropdown" ngbDropdown container="body">
+              <button type="button" class="btn btn-sm btn-link column-menu-button p-0 dropdown-toggle"
+                [style.color]="headerTextColor" ngbDropdownToggle title="Mostrar/Ocultar columnas">
+                <i class="bi bi-list-columns"></i>
+              </button>
+
+              <!-- Menú dropdown -->
+              <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                <!-- Opción de "Seleccionar todas" -->
+                <li>
+                  <div class="dropdown-item-text">
+                    <a class="dropdown-item-toggle-all cursor"
+                      (click)="toggleAllColumns(!areAllColumnsVisible()); $event.stopPropagation()">
+                      <i [class]="areAllColumnsVisible() ? 'bi bi-eye-fill text-primary' : (areAllColumnsHidden() ? 'bi bi-eye-slash-fill text-secondary' : 'bi bi-eye text-primary')"
+                        [title]="areAllColumnsVisible() ? 'Ocultar todas' : 'Mostrar todas'">
+                      </i>
+                      <span class="ms-2">Seleccionar todas</span>
+                    </a>
+                  </div>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <!-- Lista de columnas -->
+                <li *ngFor="let column of hideableColumns; trackBy: trackByColumnField">
+                  <a class="dropdown-item cursor"
+                    (click)="toggleColumnVisibility(column, $event); $event.stopPropagation()">
+                    <i [class]="column.visible !== false ? 'bi bi-eye-fill text-primary' : 'bi bi-eye-slash-fill text-secondary'"
+                      [title]="column.visible !== false ? 'Ocultar columna' : 'Mostrar columna'">
+                    </i>
+                    <span class="ms-2">{{ column.header }}</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Mensaje cuando no hay datos -->
+        <tr *ngIf="data.length === 0 && !showNewRow">
+          <td [attr.colspan]="visibleColumns.length + (hideableColumns.length > 0 ? 1 : 0)" class="text-center py-3">
+            <div class="text-muted">
+              <i class="bi bi-inbox fs-1"></i>
+              <p class="mt-2 mb-0">No hay datos</p>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Filas de datos -->
+        <tr *ngFor="let item of data; trackBy: trackByRow" 
+            [class.editing-row]="isEditing(item)"
+            [class.cursor-pointer]="(enableRowClickForSuppliers || hasSuppliersAction()) && !isEditing(item)"
+            (click)="onRowClick(item, $event)">
+          <td *ngFor="let column of visibleColumns" [ngClass]="{
+              'text-end':
+                column.type === 'currency' ||
+                column.type === 'number' ||
+                column.type === 'objetivo-monetario',
+              'text-center':
+                column.type === 'acciones' || column.type === 'checkbox',
+              'sticky-col': column.sticky === 'left' || column.sticky === 'right',
+              'sticky-col-left': column.sticky === 'left',
+              'sticky-col-right': column.sticky === 'right',
+              'checkbox-col':
+                column.type === 'checkbox' && column.sticky === 'left',
+              'actions-col':
+                column.type === 'acciones' && column.sticky === 'left',
+              'actions-col-right':
+                column.type === 'acciones' && column.sticky === 'right'
+            }" [style.width]="column.width" [style.min-width]="column.minWidth" [style.max-width]="column.maxWidth">
+            <ng-container [ngSwitch]="column.type">
+
+              <!-- Acciones con botones -->
+              <ng-container *ngSwitchCase="'acciones'">
+                <div class="d-flex gap-2 justify-content-center">
+                  <!-- Modo normal: mostrar botones de editar y eliminar -->
+                  <ng-container *ngIf="!isEditing(item)">
+                    <mobentis-btn-icon-file *ngIf="column.actions?.includes('view') || column.actions?.includes('file')"
+                      (click)="onAction('view', item)"></mobentis-btn-icon-file>
+
+                    <i *ngIf="column.actions?.includes('suppliers')" (click)="onAction('suppliers', item)"
+                      class="bi bi-box-seam-fill cursor-pointer" ngbTooltip="Proveedores" container="body"
+                      style="font-size: 1.2rem; color: #6c757d; cursor: pointer;">
+                    </i>
+
+                    <mobentis-btn-icon-edit *ngIf="column.actions?.includes('edit')"
+                      (btnClicked)="onAction('edit', item)"></mobentis-btn-icon-edit>
+
+                    <mobentis-btn-icon-copy *ngIf="column.actions?.includes('duplicate')"
+                      (click)="onAction('duplicate', item)"></mobentis-btn-icon-copy>
+
+                    <mobentis-btn-icon-delete *ngIf="column.actions?.includes('delete')"
+                      (btnClicked)="onAction('delete', item)"></mobentis-btn-icon-delete>
+                  </ng-container>
+
+                  <!-- Modo edición: mostrar botones de guardar y cancelar -->
+                  <ng-container *ngIf="isEditing(item)">
+                    <i (click)="onSaveEditItem(item)" class="bi bi-check-lg btnSave fs-5 px-0 cursor-pointer"
+                      ngbTooltip="Guardar" container="body" style="color: #28a745; cursor: pointer;">
+                    </i>
+                    <i (click)="onCancelEditItem()" class="bi bi-x-lg btnClear fs-5 px-0 cursor-pointer"
+                      ngbTooltip="Cancelar" container="body" style="color: #dc3545; cursor: pointer;">
+                    </i>
+                  </ng-container>
+                </div>
+              </ng-container>
+
+              <!-- Columna de tipo imagen -->
+              <ng-container *ngSwitchCase="'image'">
+                <div class="table-image-container">
+                  <img [src]="getCellValue(item, column.field)" [alt]="column.header"
+                    [class.image-circle]="column.imageShape === 'circle' || !column.imageShape"
+                    [class.image-square]="column.imageShape === 'square'" (error)="onImageError($event)"
+                    class="table-image">
+                </div>
+              </ng-container>
+
+              <!-- Tipo boolean -->
+              <ng-container *ngSwitchCase="'boolean'">
+                {{ item[column.field] ? "SI" : "NO" }}
+              </ng-container>
+
+              <!-- Tipo currency -->
+              <span *ngSwitchCase="'currency'">
+                {{ formatearMoneda(item[column.field]) }}
+              </span>
+
+              <!-- Tipo number -->
+              <span *ngSwitchCase="'number'">
+                {{ formatearNumero(item[column.field], column.decimalPlaces ?? 0) }}
+              </span>
+
+              <!-- Tipo date -->
+              <span *ngSwitchCase="'date'">
+                {{ item[column.field] | date : "dd/MM/yy" }}
+              </span>
+
+              <!-- Tipo text con edición inline -->
+              <ng-container *ngSwitchCase="'text'">
+                <!-- Modo edición: input text -->
+                <input *ngIf="column.editable && isEditing(item) && getInputType(column) === 'text'"
+                  [(ngModel)]="item[column.field]" type="text" class="form-control form-control-sm"
+                  (keyup.enter)="onSaveEditItem(item)" (keyup.escape)="onCancelEditItem()" />
+                <!-- Modo edición: input color -->
+                <div *ngIf="column.editable && isEditing(item) && getInputType(column) === 'color'"
+                  class="d-flex align-items-center">
+                  <input type="color" [(ngModel)]="item[column.field]" class="form-control form-control-color" />
+                </div>
+                <!-- Modo normal -->
+                <span *ngIf="!column.editable || !isEditing(item)" class="d-flex align-items-center gap-1">
+                  <span *ngIf="column.inputType === 'color' && item[column.field]" class="color-indicator-popup"
+                    [style.background-color]="item[column.field]"></span>
+                  {{ item[column.field] || '-' }}
+                </span>
+              </ng-container>
+
+              <!-- Default -->
+              <ng-container *ngSwitchDefault>
+                <!-- Modo edición: input text -->
+                <input *ngIf="column.editable && isEditing(item) && getInputType(column) === 'text'"
+                  [(ngModel)]="item[column.field]" type="text" class="form-control form-control-sm"
+                  (keyup.enter)="onSaveEditItem(item)" (keyup.escape)="onCancelEditItem()" />
+                <!-- Modo edición: input color -->
+                <div *ngIf="column.editable && isEditing(item) && getInputType(column) === 'color'"
+                  class="d-flex align-items-center">
+                  <input type="color" [(ngModel)]="item[column.field]" class="form-control form-control-color" />
+                </div>
+                <!-- Modo normal -->
+                <span *ngIf="!column.editable || !isEditing(item)" class="d-flex align-items-center gap-1">
+                  <span *ngIf="column.inputType === 'color' && item[column.field]" class="color-indicator-popup"
+                    [style.background-color]="item[column.field]"></span>
+                  {{ item[column.field] || '-' }}
+                </span>
+              </ng-container>
+            </ng-container>
+          </td>
+
+          <!-- Celda vacía para la columna de control -->
+          <td *ngIf="hideableColumns.length > 0" class="sticky-col sticky-col-right columns-control-col"></td>
+        </tr>
+
+        <!-- Fila para agregar nuevo elemento -->
+        <tr *ngIf="showNewRow" class="new-item-row">
+          <td *ngFor="let column of visibleColumns" [ngClass]="{
+              'text-center': column.type === 'acciones',
+              'sticky-col': column.sticky === 'left' || column.sticky === 'right',
+              'sticky-col-left': column.sticky === 'left',
+              'sticky-col-right': column.sticky === 'right'
+            }" [style.width]="column.width" [style.min-width]="column.minWidth" [style.max-width]="column.maxWidth">
+
+            <!-- Columna de acciones para nuevo elemento -->
+            <ng-container *ngIf="column.type === 'acciones'">
+              <div class="d-flex gap-1 justify-content-center">
+                <button (click)="onSaveNewItem()" [ngClass]="{
+                    'btn-save-new': true,
+                    'disabled-icon': !hasNewItemData()
+                  }" [disabled]="!hasNewItemData()" ngbTooltip="Guardar" container="body" class="btn btn-link p-0">
+                  <i class="bi bi-check-lg fs-5" style="color: #28a745;"></i>
+                </button>
+
+                <button (click)="onCancelNewItem()" [ngClass]="{
+                    'btn-cancel-new': true,
+                    'disabled-icon': !hasNewItemData()
+                  }" [disabled]="!hasNewItemData()" ngbTooltip="Limpiar" container="body" class="btn btn-link p-0">
+                  <i class="bi bi-x-lg fs-5" style="color: #dc3545;"></i>
+                </button>
+              </div>
+            </ng-container>
+
+            <!-- Campos editables para nuevo elemento -->
+            <ng-container *ngIf="column.type !== 'acciones' && column.editable">
+              <div *ngIf="getInputType(column) === 'color'" class="d-flex align-items-center">
+                <input type="color" [(ngModel)]="newItemData[column.field]" (ngModelChange)="onModelChange()"
+                  class="form-control form-control-color" />
+              </div>
+              <input *ngIf="getInputType(column) !== 'color'" [type]="getInputType(column)"
+                class="form-control form-control-sm" [(ngModel)]="newItemData[column.field]"
+                [placeholder]="getInputType(column) === 'text' ? column.header : null"
+                (keyup.enter)="onSaveNewItem()" />
+            </ng-container>
+
+            <!-- Campos no editables (vacíos) -->
+            <ng-container *ngIf="column.type !== 'acciones' && !column.editable">
+              <span class="text-muted"></span>
+            </ng-container>
+          </td>
+
+          <!-- Celda vacía para la columna de control -->
+          <td *ngIf="hideableColumns.length > 0" class="sticky-col sticky-col-right columns-control-col"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

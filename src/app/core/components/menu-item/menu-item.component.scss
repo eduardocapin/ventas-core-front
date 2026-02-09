@@ -1,11 +1,26 @@
 a {
   color: white !important;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 20px;
+  text-decoration: none;
+  transition: background 0.3s;
+  white-space: nowrap;
+    i {
+      margin-right: 0.5rem;
+      font-size: large;
+      min-width: 20px;
+    }
+    &:hover {
+      background: #495057;
+    }
 }
 
 /* Estilo para los submenús desplegables */
 .dropdown-menu {
+  background-color: rgba(255, 255, 255, 0.1);;
   display: none;
-  /* Ocultar por defecto */
+
 }
 
 .dropdown-menu.show {
@@ -45,6 +60,66 @@ a {
   color: white;
 }
 
+.disabled-link {
+  pointer-events: none;
+  cursor: default;
+}
+
+
+/* estilos del navabr vertical */
+// Estilos para navbar vertical
+.nav-item.dropend {
+  .navLink {
+    display: flex;
+    align-items: center;
+    color: #fb9090;
+    padding: 0.75rem 20px;
+    text-decoration: none;
+    transition: background 0.3s;
+    white-space: nowrap;
+
+    i {
+      margin-right: 0.5rem;
+      font-size: large;
+      min-width: 20px;
+    }
+
+    &:hover {
+      background: #495057;
+    }
+  }
+
+  // Dropdown específico para navbar vertical
+  .dropdown-menu.vertical-dropdown {
+    position: static !important;
+    transform: none !important;
+    border: none;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 100%;
+    display: none;
+    transition: all 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+    
+    &.show {
+      display: block;
+      max-height: 500px;
+    }
+    
+    .dropdown-item {
+      color: white;
+      padding: 0.5rem 1rem 0.5rem 2.5rem;
+      
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+}
+
+// Clase para enlaces deshabilitados
 .disabled-link {
   pointer-events: none;
   cursor: default;

@@ -1,4 +1,21 @@
-.grafica-contenedor{
-    height: 100%; 
-    width: 100%;  
-  }
+:host {
+  /* Colores para la gráfica pastel (circular completa) */
+  --color-primary: #87CEFA;
+  --color-secondary: #4A90E2;
+  --color-tertiary: #6AB4F5;
+  --color-quaternary: #5BA3E8;
+  --color-quinary: #7DC3F7;
+  --color-senary: #93D5FA;
+  
+  /* Configuración de la gráfica */
+  --chart-title-size: 15px;
+  --chart-title-weight: normal;
+  --chart-legend-top: 40px;
+  --chart-radius: 50%;
+  --chart-bottom-offset: -50px;
+}
+
+.grafica-contenedor {
+  height: 100%; 
+  width: 100%;  
+}

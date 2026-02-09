@@ -1,0 +1,63 @@
+.grafica-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.grafica-header {
+  padding: 10px 15px 5px;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.grafica-titulo {
+  text-align: center;
+  font-weight: normal;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.grafica-leyenda {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 12px;
+}
+
+.leyenda-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.leyenda-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.leyenda-color.serie1 {
+  background-color: #87CEFA;
+}
+
+.leyenda-color.serie2 {
+  background-color: #4A90E2;
+}
+
+.grafica-contenedor {
+  flex: 1;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-height: 0;
+}
+
+.grafica-chart {
+  height: 100%;
+  width: 100%;
+  min-width: 100%;
+}

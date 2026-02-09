@@ -1,4 +1,24 @@
-.grafica-contenedor{
-    height: 100%; 
-    width: 100%;  
-  }
+:host {
+  /* Colores para la gráfica semi-circular */
+  --color-no-cumplidos: #B0B0B0;      /* Gris claro */
+  --color-pendientes: #485cc4;        /* Naranja claro */
+  --color-cumplidos: #81b2e9;         /* Azul */
+  --color-extra-1: #87CEFA;           /* Azul cielo */
+  --color-extra-2: #6AB4F5;           /* Azul medio */
+  --color-extra-3: #5BA3E8;           /* Azul suave */
+  
+  /* Configuración de la gráfica */
+  --chart-title-size: 15px;
+  --chart-title-weight: normal;
+  --chart-legend-top: 40px;
+  --chart-radius-inner: 40%;
+  --chart-radius-outer: 70%;
+  --chart-center-x: 50%;
+  --chart-center-y: 70%;
+  --chart-bottom-offset: -50px;
+}
+
+.grafica-contenedor {
+  height: 100%; 
+  width: 100%;  
+}

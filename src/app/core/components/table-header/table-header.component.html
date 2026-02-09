@@ -1,0 +1,19 @@
+<div class="accordion-header" [id]="'heading' + _id">
+  <button
+    class="accordion-button p-2 collapsed header-container border-bottom rounded-top"
+    type="button"
+    data-bs-toggle="collapse"
+    [attr.data-bs-target]="'#collapse' + _id"
+    aria-expanded="false"
+    [attr.aria-controls]="'collapse' + _id"
+  >
+    <div class="d-flex flex-wrap align-items-center">
+      <ng-container *ngFor="let header of headers">
+        <div class="header-item" *ngIf="header.value">
+          <i [class]="header.icon + ' me-1'"></i>
+          {{ header.label }}: <strong>{{ header.value }}</strong>
+        </div>
+      </ng-container>
+    </div>
+  </button>
+</div>

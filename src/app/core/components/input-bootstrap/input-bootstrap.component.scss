@@ -1,0 +1,103 @@
+.custom-material-input {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    
+    .error-text {
+      font-size: smaller;
+    }
+  
+    input{
+      background-color: transparent;
+    }
+     // Estilos generales del wrapper
+     .custom-input-wrapper {
+      border: 1px solid #ced4da;
+      transition: border-color 0.3s ease-in-out;
+      background-color: #ffffff;
+  
+      // === Hover y Focus SÓLO si NO es readonly ===
+  
+      &:not(.readonly).input-success {
+        border-bottom: 2px solid rgba(102, 187, 106, 0.87);
+      }
+  
+      &:not(.readonly).input-error {
+        border-color: #f44336;
+        border-bottom: 2px solid #f44336;
+      }
+  
+      // === Readonly ===
+      &.readonly {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da !important;
+        border-bottom: 1px solid #ced4da !important;
+  
+        &:hover,
+        &.focused {
+          background-color: #f8f9fa !important;
+          border-color: #ced4da !important;
+        }
+  
+        input,
+        textarea {
+          background-color: #f8f9fa;
+          cursor: default;
+        }
+      }
+    }
+  
+    // Estilos específicos para readonly
+    .custom-input-wrapper.readonly {
+      /* background-color: #f8f9fa; */
+      border: 1px solid #ced4da !important;
+      border-bottom: 1px solid #ced4da !important;
+    
+      &:hover,
+      &.focused {
+        /* background-color: #f8f9fa !important; */
+        border-color: #ced4da !important;
+      }
+    
+      input,
+      textarea {
+        /* background-color: #f8f9fa; */
+        cursor: default;
+      }
+    }
+  
+    // Estilos para labels
+    .label-success {
+      transition: all 0.3s ease-in-out;
+      color: rgba(102, 187, 106, 0.87);
+    }
+  
+    .label-error {
+      color: #f44336;
+    }
+  
+    // Estilos específicos para textarea
+    textarea.form-control {
+      resize: vertical;
+      background-color: transparent;
+      max-height: 150px;
+      overflow-y: auto;
+  
+      &:not([readonly]):focus {
+        background-color: rgba(0, 0, 0, 0.1);
+        border-color: transparent;
+        border-bottom-color: rgba(102, 187, 106, 0.87);
+        box-shadow: none;
+      }
+  
+      &:not([readonly]):hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+    }
+  }
+  
+  input::placeholder,
+  textarea::placeholder {
+    font-style: italic;
+    color: #adb5bd; // gris clarito, puedes ajustar si quieres más claro (#ced4da o #dee2e6)
+  }

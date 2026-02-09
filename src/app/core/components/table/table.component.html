@@ -1,0 +1,320 @@
+<!-- SOLO ESTO - SIN el wrapper del accordion-collapse -->
+<div class="table-container">
+  <div class="table-responsive">
+    <table #tableElement class="table table-striped table-hover table-bordered p-0 mb-0">
+      <thead class="table-dark" [style.background-color]="headerBackgroundColor" [style.color]="headerTextColor">
+        <tr>
+          <th *ngFor="let column of visibleColumns; let colIndex = index; trackBy: trackByColumnField"
+            [class.cursor]="column.sortable" [class.sticky-col]="column.sticky === 'left' || column.sticky === 'right'"
+            [class.sticky-col-left]="column.sticky === 'left'" [class.sticky-col-right]="column.sticky === 'right'"
+            [class.checkbox-col]="column.type === 'checkbox' && column.sticky === 'left'"
+            [class.actions-col]="column.type === 'acciones' && column.sticky === 'left'"
+            [class.actions-col-right]="column.type === 'acciones' && column.sticky === 'right'"
+            [class.draggable-column]="isDraggable(column)"
+            [class.drag-over]="dragOverIndex === colIndex && canReorderColumns(draggedColumn, column)"
+            [class.resizable-column]="isResizable(column)" [draggable]="isDraggable(column)"
+            (dragstart)="onDragStart(column, $event)" (dragover)="onDragOver($event, column, colIndex)"
+            (dragleave)="onDragLeave($event)" (drop)="onDrop($event, column, colIndex)" (dragend)="onDragEnd($event)"
+            [style.width]="column.width" [style.min-width]="column.minWidth" [style.max-width]="column.maxWidth"
+            [style.background-color]="headerBackgroundColor" [style.color]="headerTextColor">
+            <!-- Checkbox para selección múltiple -->
+            <ng-container *ngIf="column.type === 'checkbox'">
+              <div class="">
+                <input class="" type="checkbox" [checked]="isAllSelected()" [indeterminate]="isSomeSelected()"
+                  (change)="toggleAllSelection($event)" />
+              </div>
+            </ng-container>
+
+            <!-- Columna normal con ordenamiento -->
+            <ng-container *ngIf="column.type !== 'checkbox'">
+              <div class="header-content">
+                <span *ngIf="column.sortable" (click)="onSort(column)" class="header-text"
+                  [ngClass]="{'justify-content-end text-end': column.align === 'right' || column.type === 'currency' || column.type === 'number' || column.type === 'objetivo-monetario' || column.type === 'date'}"
+                  style="cursor: pointer;" [attr.data-bs-toggle]="column.tooltip ? 'tooltip' : null"
+                  [attr.data-bs-placement]="column.tooltip ? 'top' : null" [title]="column.tooltip || ''">
+                  <i *ngIf="column.headerIcon" [class]="column.headerIcon + ' me-1'"></i>
+                  {{ column.header }}
+                  <i [class]="getSortIcon(column)"></i>
+                </span>
+
+                <span *ngIf="!column.sortable" class="header-text"
+                  [ngClass]="{'justify-content-end text-end': column.align === 'right' || column.type === 'currency' || column.type === 'number' || column.type === 'objetivo-monetario' || column.type === 'date'}"
+                  [attr.data-bs-toggle]="column.tooltip ? 'tooltip' : null"
+                  [attr.data-bs-placement]="column.tooltip ? 'top' : null" [title]="column.tooltip || ''">
+                  <i *ngIf="column.headerIcon" [class]="column.headerIcon + ' me-1'"></i>
+                  {{ column.header }}
+                </span>
+
+                <div class="header-actions">
+                  <!-- Dropdown de opciones de columna (solo si tiene opciones disponibles) -->
+                  <div *ngIf="column.sortable || isPinable(column) || column.hideable === true"
+                    class="btn-group column-context-menu" ngbDropdown container="body">
+                    <button type="button" class="btn btn-link btn-sm p-0 dropdown-toggle column-menu-trigger"
+                      [style.color]="headerTextColor" ngbDropdownToggle [title]="'Opciones de columna'">
+                      <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+
+                    <!-- Menú dropdown -->
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                      <!-- Opciones de ordenación (solo si es sortable) -->
+                      <!-- Siempre mostrar "Ordenar ascendente" y "Ordenar descendente" -->
+                      <li *ngIf="column.sortable">
+                        <a class="dropdown-item" (click)="onSortOption(column, 'asc', $event)">
+                          <i class="bi bi-arrow-up"></i>
+                          <span class="ms-2">Ordenar ascendente</span>
+                          <i *ngIf="sortColumn === column.field && sortDirection === 'asc'"
+                            class="bi bi-check ms-auto"></i>
+                        </a>
+                      </li>
+                      <li *ngIf="column.sortable">
+                        <a class="dropdown-item" (click)="onSortOption(column, 'desc', $event)">
+                          <i class="bi bi-arrow-down"></i>
+                          <span class="ms-2">Ordenar descendente</span>
+                          <i *ngIf="sortColumn === column.field && sortDirection === 'desc'"
+                            class="bi bi-check ms-auto"></i>
+                        </a>
+                      </li>
+
+                      <!-- Separador si hay ordenación y fijación -->
+                      <li *ngIf="column.sortable && isPinable(column)">
+                        <hr class="dropdown-divider">
+                      </li>
+
+                      <!-- Opciones de fijar (solo si es pineable) -->
+                      <!-- Si NO está fijado: mostrar "Fijar" (siempre a la izquierda) -->
+                      <li *ngIf="isPinable(column) && (!column.sticky || column.sticky === 'none')">
+                        <a class="dropdown-item" (click)="onPinOption(column, 'left', $event)">
+                          <i class="bi bi-pin-angle"></i>
+                          <span class="ms-2">Fijar</span>
+                        </a>
+                      </li>
+
+                      <!-- Si está fijado: mostrar "Desfijar" -->
+                      <li *ngIf="isPinable(column) && (column.sticky === 'left' || column.sticky === 'right')">
+                        <a class="dropdown-item" (click)="onPinOption(column, 'none', $event)">
+                          <i class="bi bi-pin-angle-fill"></i>
+                          <span class="ms-2">Desfijar</span>
+                        </a>
+                      </li>
+
+                      <!-- Separador si hay fijación y ocultar -->
+                      <li *ngIf="isPinable(column) && column.hideable === true">
+                        <hr class="dropdown-divider">
+                      </li>
+
+                      <!-- Opción de ocultar/mostrar (solo si hideable === true) -->
+                      <li *ngIf="column.hideable === true">
+                        <a class="dropdown-item" (click)="toggleColumnVisibility(column, $event)">
+                          <i [class]="column.visible !== false ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                          <span class="ms-2">{{ column.visible !== false ? 'Ocultar columna' : 'Mostrar columna'
+                            }}</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Handle para redimensionar columna -->
+            <div *ngIf="isResizable(column)" class="resize-handle"
+              [class.resizing]="isResizing && resizingColumn === column" (mousedown)="onResizeStart(column, $event)"
+              (click)="$event.stopPropagation()" (dragstart)="$event.preventDefault(); $event.stopPropagation()">
+            </div>
+          </th>
+
+          <!-- Columna especial para el botón de columnas (siempre última, sticky a la derecha) -->
+          <th class="sticky-col sticky-col-right columns-control-col" [style.background-color]="headerBackgroundColor"
+            [style.color]="headerTextColor">
+            <div class="btn-group column-control-dropdown" ngbDropdown container="body">
+              <button type="button" class="btn btn-sm btn-link column-menu-button p-0 dropdown-toggle"
+                [style.color]="headerTextColor" ngbDropdownToggle title="Mostrar/Ocultar columnas">
+                <i class="bi bi-list-columns"></i>
+              </button>
+
+              <!-- Menú dropdown -->
+              <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                <!-- Opción de "Seleccionar todas" -->
+                <li>
+                  <div class="dropdown-item-text">
+                    <a class="dropdown-item-toggle-all cursor"
+                      (click)="toggleAllColumns(!areAllColumnsVisible()); $event.stopPropagation()">
+                      <i [class]="areAllColumnsVisible() ? 'bi bi-eye-fill text-primary' : (areAllColumnsHidden() ? 'bi bi-eye-slash-fill text-secondary' : 'bi bi-eye text-primary')"
+                        [title]="areAllColumnsVisible() ? 'Ocultar todas' : 'Mostrar todas'">
+                      </i>
+                      <span class="ms-2">Seleccionar todas</span>
+                    </a>
+                  </div>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <!-- Lista de columnas -->
+                <li *ngFor="let column of hideableColumns; trackBy: trackByColumnField">
+                  <a class="dropdown-item cursor"
+                    (click)="toggleColumnVisibility(column, $event); $event.stopPropagation()">
+                    <i [class]="column.visible !== false ? 'bi bi-eye-fill text-primary' : 'bi bi-eye-slash-fill text-secondary'"
+                      [title]="column.visible !== false ? 'Ocultar columna' : 'Mostrar columna'">
+                    </i>
+                    <span class="ms-2">{{ column.header }}</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Mensaje cuando no hay datos -->
+        <tr *ngIf="data.length === 0">
+          <td [attr.colspan]="visibleColumns.length + 1" class="text-center py-3">
+            <div class="text-muted">
+              <i class="bi bi-inbox fs-1"></i>
+              <p class="mt-2 mb-0">No hay datos</p>
+            </div>
+          </td>
+        </tr>
+        <tr *ngFor="let item of data; trackBy: trackByRow">
+          <td *ngFor="let column of visibleColumns" [ngClass]="{
+            'text-end':
+              column.align === 'right' ||
+              column.type === 'currency' ||
+              column.type === 'number' ||
+              column.type === 'objetivo-monetario' ||
+              column.type === 'date',
+            'text-center':
+              column.align === 'center' ||
+              column.type === 'acciones' || 
+              column.type === 'checkbox',
+            'text-start': column.align === 'left',
+            'bg-success text-white':
+              (column.type === 'boolean' && item[column.field] === true) ||
+              (column.type === 'objetivo-monetario' &&
+                item['objetivoConseguido'] === true) ||
+              ((column.field === 'objetivoConseguido' || column.field === 'objetivos') &&
+                item['objetivoConseguido'] === 'SI'),
+            'bg-danger text-white':
+              (column.type === 'boolean' && item[column.field] === false) ||
+              (column.type === 'objetivo-monetario' &&
+                item['objetivoConseguido'] === false) ||
+              ((column.field === 'objetivoConseguido' || column.field === 'objetivos') &&
+                item['objetivoConseguido'] === 'NO'),
+            'sticky-col': column.sticky === 'left' || column.sticky === 'right',
+            'sticky-col-left': column.sticky === 'left',
+            'sticky-col-right': column.sticky === 'right',
+            'checkbox-col':
+              column.type === 'checkbox' && column.sticky === 'left',
+            'actions-col':
+              column.type === 'acciones' && column.sticky === 'left',
+            'actions-col-right':
+              column.type === 'acciones' && column.sticky === 'right'
+          }" [style.width]="column.width" [style.min-width]="column.minWidth" [style.max-width]="column.maxWidth">
+            <ng-container [ngSwitch]="column.type">
+              <!-- Checkbox para selección individual -->
+              <ng-container *ngSwitchCase="'checkbox'">
+                <div class="">
+                  <input class="" type="checkbox" [checked]="isItemSelected(item)"
+                    (change)="toggleItemSelection(item, $event)" />
+                </div>
+              </ng-container>
+
+              <!-- Acciones con botones -->
+              <ng-container *ngSwitchCase="'acciones'">
+                <div class="d-flex gap-2 justify-content-center">
+                  <mobentis-btn-icon-file *ngIf="
+                    column.actions?.includes('view') ||
+                    column.actions?.includes('file')
+                  " (click)="onAction('view', item)"></mobentis-btn-icon-file>
+
+                  <mobentis-btn-icon-edit *ngIf="column.actions?.includes('edit')"
+                    (click)="onAction('edit', item)"></mobentis-btn-icon-edit>
+
+                  <mobentis-btn-icon-copy *ngIf="column.actions?.includes('duplicate')"
+                    (click)="onAction('duplicate', item)"></mobentis-btn-icon-copy>
+
+                  <mobentis-btn-icon-delete *ngIf="column.actions?.includes('delete')"
+                    (click)="onAction('delete', item)"></mobentis-btn-icon-delete>
+                </div>
+              </ng-container>
+
+              <!-- Columna de tipo imagen -->
+              <ng-container *ngSwitchCase="'image'">
+                <div class="table-image-container">
+                  <img [src]="getCellValue(item, column.field)" [alt]="column.header"
+                    [class.image-circle]="column.imageShape === 'circle' || !column.imageShape"
+                    [class.image-square]="column.imageShape === 'square'" (error)="onImageError($event)"
+                    class="table-image">
+                </div>
+              </ng-container>
+
+              <!-- Resto de tipos existentes -->
+              <ng-container *ngSwitchCase="'boolean'">
+                {{ item[column.field] ? "SI" : "NO" }}
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'objetivo-estado'">
+                <span class="fw-bold">
+                  {{ item[column.field] }}
+                </span>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'objetivo-monetario'">
+                {{ formatearMoneda(item[column.field], column) }}
+              </ng-container>
+
+              <span *ngSwitchCase="'currency'">
+                {{ formatearMoneda(item[column.field], column) }}
+              </span>
+              <span *ngSwitchCase="'number'">
+                {{ formatearNumero(item[column.field], column.decimalPlaces ?? 0, column.useGrouping ?? true) }}
+              </span>
+              <span *ngSwitchCase="'date'">
+                {{ item[column.field] | date : "dd/MM/yy" }}
+              </span>
+
+              <span *ngSwitchDefault>
+                {{ item[column.field] }}
+              </span>
+            </ng-container>
+          </td>
+
+          <!-- Celda vacía para la columna de control de columnas -->
+          <td class="sticky-col sticky-col-right columns-control-col"></td>
+        </tr>
+      </tbody>
+      <tfoot class="table-active fw-bold" *ngIf="showFooter && totalFunctions && hasTotalizableColumns()">
+        <tr>
+          <td *ngFor="let column of visibleColumns" [ngClass]="{
+            'text-end':
+              column.align === 'right' ||
+              column.type === 'currency' ||
+              column.type === 'number' ||
+              column.type === 'objetivo-monetario' ||
+              column.type === 'date',
+            'text-center':
+              column.align === 'center' ||
+              column.type === 'acciones' || 
+              column.type === 'checkbox',
+            'text-start': column.align === 'left',
+            'sticky-col': column.sticky === 'left' || column.sticky === 'right',
+            'sticky-col-left': column.sticky === 'left',
+            'sticky-col-right': column.sticky === 'right',
+            'checkbox-col':
+              column.type === 'checkbox' && column.sticky === 'left',
+            'actions-col':
+              column.type === 'acciones' && column.sticky === 'left',
+            'actions-col-right':
+              column.type === 'acciones' && column.sticky === 'right'
+          }" [style.width]="column.width" [style.min-width]="column.minWidth" [style.max-width]="column.maxWidth">
+            <span *ngIf="shouldShowTotal(column)">
+              {{ calculateColumnTotal(column) }}
+            </span>
+          </td>
+
+          <!-- Celda vacía para la columna de control de columnas -->
+          <td class="sticky-col sticky-col-right columns-control-col"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

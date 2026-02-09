@@ -1,0 +1,43 @@
+<div class="d-flex gap-2 align-items-center flex-wrap">
+
+  <!-- Chip de agrupación activa -->
+  <button *ngIf="selectedOption"
+          class="d-flex m-0 btn btn-outline-primary btn-sm align-items-center"
+          (click)="removeOption()">
+    <p class="m-0">Agrupado por: {{ selectedOption.name }}</p>
+    <i class="ps-2 bi bi-x-circle-fill"></i>
+  </button>
+
+  <!-- Dropdown Agrupar + -->
+  <div class="btn-group" #dropdownWrapper>
+    <a type="button"
+       class="dropdown-toggle fw-semibold text-decoration-none color-secondary text-center"
+       data-bs-toggle="dropdown"
+       aria-expanded="false"
+       data-bs-auto-close="outside"
+       (click)="onDropdownOpen()">
+      + {{ title }}
+    </a>
+
+    <div class="dropdown-menu p-1">
+      <div class="d-flex align-items-center gap-1 search-style">
+        <div class="input-group input-group-sm">
+          <input type="text" class="form-control border border-end-0" 
+                 placeholder="Buscar..." [(ngModel)]="searchTerm"
+                 (input)="oninputChange()">
+          <button class="btn border border-start-0" type="button">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </div>
+
+      <ul class="p-0 mb-0 w-max h-max" (scroll)="onScroll($event)">
+        <li *ngFor="let option of displayedOptions" class="cursor">
+          <a class="dropdown-item" 
+             [class.active]="selectedOption && getOptionKey(selectedOption) === getOptionKey(option)"
+             (click)="toggleSelection(option)">{{ option.name || 'Vacío' }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

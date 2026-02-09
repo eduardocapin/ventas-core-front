@@ -1,25 +1,57 @@
-<li class="nav-item" (mouseover)="item.isSubmenuOpen = true" (mouseout)="item.isSubmenuOpen = false">
+<li
+  class="nav-item"
+  [ngClass]="{
+    dropdown: item.submenuItems?.length > 0 && !isVertical,
+    dropend: item.submenuItems?.length > 0 && isVertical
+  }"
+  (mouseover)="onMouseOver()"
+  (mouseout)="onMouseOut()"
+>
   <a
-    class="nav-link"
+    [ngClass]="{
+      'nav-link': !isVertical,
+      navLink: isVertical,
+      'dropdown-toggle': item.submenuItems?.length > 0 && !isVertical,
+      'disabled-link': !item.route
+    }"
     [routerLink]="item.route ? item.route : null"
-    
     [attr.aria-expanded]="item.isSubmenuOpen ? 'true' : null"
-    [attr.data-bs-toggle]="item.hasSubmenu ? 'dropdown' : null"
-    [ngClass]="{'disabled-link': !item.route}"
+    [attr.data-bs-toggle]="
+      item.submenuItems?.length > 0 && !isVertical ? 'dropdown' : null
+    "
   >
-    {{ item.label }}
+    <!-- Icono (solo para navbar vertical) -->
+    <i *ngIf="isVertical && item.icon" [class]="item.icon"></i>
+
+    <!-- Label -->
+    <span *ngIf="!isVertical || isExpanded">{{ item.label }}</span>
   </a>
 
   <!-- Dropdown para submenús -->
   <ul
-    *ngIf="item.hasSubmenu"
+    *ngIf="item.submenuItems?.length > 0 && (!isVertical || isExpanded)"
     class="dropdown-menu"
-    [ngClass]="{'show': item.isSubmenuOpen}"
+    [ngClass]="{
+      show: item.isSubmenuOpen,
+      'vertical-dropdown': isVertical
+    }"
   >
-    <mobentis-menu-item
-      *ngFor="let subItem of item.submenuItems"
-      [item]="subItem"
-      [menuOpen]="menuOpen"
-    ></mobentis-menu-item>
+    <li *ngFor="let subItem of item.submenuItems">
+      <ng-container *ngIf="isVertical; else horizontalSubitem">
+        <!-- Subitem para navbar vertical -->
+        <a class="dropdown-item" [routerLink]="subItem.route">
+          {{ subItem.label }}
+        </a>
+      </ng-container>
+
+      <!-- Subitem para navbar horizontal (recursivo) -->
+      <ng-template #horizontalSubitem>
+        <mobentis-menu-item
+          [item]="subItem"
+          [isVertical]="isVertical"
+          [isExpanded]="isExpanded"
+        ></mobentis-menu-item>
+      </ng-template>
+    </li>
   </ul>
 </li>

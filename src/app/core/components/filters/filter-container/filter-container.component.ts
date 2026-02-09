@@ -4,6 +4,8 @@ import {
   EventEmitter,
   Input,
   OnInit,
+  OnChanges,
+  SimpleChanges,
   Output,
   QueryList,
   ViewChildren,
@@ -21,7 +23,7 @@ declare const bootstrap: any;
   templateUrl: './filter-container.component.html',
   styleUrls: ['./filter-container.component.scss'],
 })
-export class FilterContainerComponent implements OnInit {
+export class FilterContainerComponent implements OnInit, OnChanges {
   @Input() componentId: string = '';
   @Output() filtersChanged = new EventEmitter<{ [key: string]: any }>();
 
@@ -50,12 +52,44 @@ export class FilterContainerComponent implements OnInit {
     this.filterService.getFiltersForComponent(this.componentId).subscribe(
       (response) => {
         this.filters = response;
+        // Después de cargar filtros, si hay selectedFilters, convertirlos
+        if (Object.keys(this.selectedFilters).length > 0) {
+          this.convertirSelectedFiltersAFiltrosAplicados();
+        }
       },
       (error) => {
         console.error('Error al cargar los filtros:', error);
       }
     );
     this.cargarFiltrosGuardados();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // Detectar cambios en selectedFilters desde el componente padre
+    if (changes['selectedFilters'] && !changes['selectedFilters'].firstChange) {
+      const currentFilters = changes['selectedFilters'].currentValue;
+      if (currentFilters && Object.keys(currentFilters).length > 0) {
+        // Convertir selectedFilters (objeto) a filtrosAplicados (array)
+        this.convertirSelectedFiltersAFiltrosAplicados();
+      }
+    }
+  }
+
+  convertirSelectedFiltersAFiltrosAplicados() {
+    this.filtrosAplicados = [];
+    Object.keys(this.selectedFilters).forEach(filterId => {
+      const valor = this.selectedFilters[filterId];
+      const filterInfo = this.filters.find(f => f.id === filterId);
+      if (filterInfo && valor) {
+        this.filtrosAplicados.push({
+          id: filterId,
+          nombre: filterInfo.title,
+          valor: valor,
+          tipo: filterInfo.type,
+        });
+      }
+    });
+    this.cdr.detectChanges();
   }
 
   ngAfterViewInit() {
@@ -96,17 +130,27 @@ export class FilterContainerComponent implements OnInit {
   }
 
   aplicarFiltrosSeleccionados() {
-    this.filtrosAplicados = JSON.parse(JSON.stringify(this.selectedFilters));
-    this.selectedFilters = this.filtrosAplicados.reduce(
-      (acc: { [key: string]: any }, filtro) => {
-        acc[filtro.id] = filtro.valor;
-        return acc;
-      },
-      {}
-    );
-    this.cdr.detectChanges();
-    console.log(this.filtrosAplicados);
-    console.log(this.selectedFilters);
+    // Si selectedFilters es un objeto (no array), no hacer nada aquí
+    // porque ya se convirtió en convertirSelectedFiltersAFiltrosAplicados
+    if (!Array.isArray(this.selectedFilters) && typeof this.selectedFilters === 'object') {
+      // selectedFilters ya está en formato objeto, no necesita conversión
+      return;
+    }
+    
+    // Si es un array, convertir a objeto
+    if (Array.isArray(this.selectedFilters)) {
+      this.filtrosAplicados = JSON.parse(JSON.stringify(this.selectedFilters));
+      this.selectedFilters = this.filtrosAplicados.reduce(
+        (acc: { [key: string]: any }, filtro) => {
+          acc[filtro.id] = filtro.valor;
+          return acc;
+        },
+        {}
+      );
+      this.cdr.detectChanges();
+      console.log(this.filtrosAplicados);
+      console.log(this.selectedFilters);
+    }
     //this.actualizarComponentesHijos()
     //this.filtersChanged.emit(this.filtrosAplicados);
   }

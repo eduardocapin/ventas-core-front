@@ -1,0 +1,48 @@
+@import "src/styles.scss";
+
+.header-container {
+  transition: all 0.3s ease;
+  
+  // Estado normal (cerrado)
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  
+  // Estado abierto
+  &:not(.collapsed) {
+    background-color: #e3f2fd !important; // Azul claro
+    border-color: #bbdefb !important;
+    
+    // Opcional: cambiar color del texto cuando está abierto
+    color: #1565c0;
+    
+    // Cambiar color de los íconos
+    i {
+      color: #1976d2;
+    }
+    
+    strong {
+      color: #0d47a1;
+    }
+  }
+  
+  &:hover {
+    background-color: #e9ecef;
+  }
+  
+  &:not(.collapsed):hover {
+    background-color: #bbdefb !important; // Azul un poco más oscuro al hover
+  }
+}
+
+// Asegurar que el botón mantenga los estilos
+.accordion-button {
+  &:focus {
+    box-shadow: 0 0 0 0.25rem rgba(33, 150, 243, 0.25);
+    border-color: #2196f3;
+  }
+  
+  &:not(.collapsed)::after {
+    // Opcional: cambiar el color del ícono del acordeón
+    filter: invert(35%) sepia(50%) saturate(2000%) hue-rotate(190deg);
+  }
+}

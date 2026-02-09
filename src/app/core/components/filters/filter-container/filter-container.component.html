@@ -23,12 +23,12 @@
             </button>
             <!-- Botón "Limpiar" solo si hay filtros aplicados -->
             <button *ngIf="filtrosAplicados.length > 0" class="btn btn-outline-primary btn-sm" (click)="filtroReset()"
-                [ngbTooltip]="'filters.clear' | translate">
+                ngbTooltip="Limpiar filtros">
                 <i class="bi bi-x-circle-fill"></i>
             </button>
             <!-- Botón "Guardar" -->
             <button *ngIf="filtrosAplicados.length > 0" class="btn btn-outline-success btn-sm"
-                (click)="mostrarInputParaGuardar()" [ngbTooltip]="'filters.save' | translate">
+                (click)="mostrarInputParaGuardar()" ngbTooltip="Guardar filtro como plantilla">
                 <i class="bi bi-bookmark-plus-fill"></i>
             </button>
 
@@ -37,17 +37,17 @@
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered custom-modal">
                     <div class="modal-content">
-                        <mobentis-popup-header [title]="'filters.saveModal.title' | translate" [icon]="'bookmark-plus-fill'"
-                            [isBootstrapIcon]="true" (close)="onClose()"></mobentis-popup-header>
+                        <mobentis-popup-header [title]=" 'Guardar filtro como plantilla'" [icon]="'bookmark-plus-fill'"
+                            [isBootstrapIcon]="true" (close)=" onClose()"></mobentis-popup-header>
                         <div class="modal-body">
                             <div>
                                 <div class="bordes-redondeados background-light-gray p-2">
                                     <input [(ngModel)]="nombreFiltroGuardado" class="form-control" type="text"
-                                        [placeholder]="'filters.saveModal.placeholder' | translate" />
+                                        placeholder="Nombre del filtro" />
                                 </div>
                                 <div class="text-end">
                                     <button class="btn btn-primary btn-sm mt-2" (click)="guardarFiltros()"
-                                        data-bs-dismiss="modal">{{ 'filters.saveModal.saveButton' | translate }}</button>
+                                        data-bs-dismiss="modal">Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -57,13 +57,13 @@
             <div class="btn-group" #dropdownWrapper>
                 <a type="button" class="dropdown-toggle fw-semibold text-decoration-none color-secondary text-center"
                     data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" id="dropdownMenuButton">+
-                    {{ 'filters.button' | translate }}</a>
+                    Filtros</a>
                 <ul class="dropdown-menu">
                     <!-- Selección de filtros guardados -->
                     <div *ngIf="filtrosGuardados.length > 0">
                         <li class="dropend">
                             <a class="dropdown-item dropdown-toggle cursor" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ 'filters.saved' | translate }}
+                                Filtros guardados
                             </a>
                             <ul class="dropdown-menu">
                                 <li *ngFor="let filtroGuardado of filtrosGuardados" class="cursor">

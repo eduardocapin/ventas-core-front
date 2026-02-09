@@ -1,0 +1,18 @@
+<div class="grafica-wrapper">
+  <div class="grafica-header">
+    <div class="grafica-titulo">{{ titulo }}</div>
+    <div class="grafica-leyenda">
+      <span class="leyenda-item">
+        <span class="leyenda-color serie1"></span>
+        {{ nombreSerie1 }}
+      </span>
+      <span class="leyenda-item">
+        <span class="leyenda-color serie2"></span>
+        {{ nombreSerie2 }}
+      </span>
+    </div>
+  </div>
+  <div class="grafica-contenedor">
+    <div [id]="elementoId" class="grafica-chart"></div>
+  </div>
+</div>

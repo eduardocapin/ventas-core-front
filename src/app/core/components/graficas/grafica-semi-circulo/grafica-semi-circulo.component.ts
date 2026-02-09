@@ -66,8 +66,19 @@ export class GraficaSemiCirculoComponent implements AfterViewInit, OnChanges, On
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['valores']) {
+    // Si cambia el elementoId, destruir y recrear la gráfica
+    if (changes['elementoId'] && !changes['elementoId'].firstChange) {
+      this.destruirGrafica();
+      setTimeout(() => this.pintarGrafica(), 0);
+    } else if (changes['valores']) {
       this.actualizarGrafica();
+    }
+  }
+
+  destruirGrafica() {
+    if (this.chart) {
+      this.chart.dispose();
+      this.chart = undefined;
     }
   }
 
@@ -75,6 +86,7 @@ export class GraficaSemiCirculoComponent implements AfterViewInit, OnChanges, On
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
+    this.destruirGrafica();
   }
 
   resizeChart() {
@@ -87,36 +99,46 @@ export class GraficaSemiCirculoComponent implements AfterViewInit, OnChanges, On
     const chartDom = document.getElementById(this.elementoId)!;
     this.chart = echarts.init(chartDom);
 
+    // Obtener colores desde las variables CSS
+    const computedStyle = getComputedStyle(this.el.nativeElement);
+    const colores = [
+      computedStyle.getPropertyValue('--color-no-cumplidos').trim(),
+      computedStyle.getPropertyValue('--color-pendientes').trim(),
+      computedStyle.getPropertyValue('--color-cumplidos').trim(),
+      computedStyle.getPropertyValue('--color-extra-1').trim(),
+      computedStyle.getPropertyValue('--color-extra-2').trim(),
+      computedStyle.getPropertyValue('--color-extra-3').trim()
+    ];
+
     const option: EChartsOption = {
-      color: [
-        '#FADADD',
-        '#F7A1C4',
-        '#FBD3E0',
-        '#EBA0B3',
-        '#F3A6C9',
-        '#F9CFE0'
-      ],
+      color: colores,
       title: {
         top: 10,
         text: this.titulo,
         left: 'center',
         textStyle: {
-          fontWeight: 'normal',
-          fontSize: 15,
+          fontWeight: computedStyle.getPropertyValue('--chart-title-weight').trim() as any,
+          fontSize: parseInt(computedStyle.getPropertyValue('--chart-title-size')),
         },
       },
       tooltip: {
         trigger: 'item',
       },
       legend: {
-        top: 40,
+        top: parseInt(computedStyle.getPropertyValue('--chart-legend-top')),
       },
       series: [
         {
-          bottom: -50,
+          bottom: parseInt(computedStyle.getPropertyValue('--chart-bottom-offset')),
           type: 'pie',
-          radius: ['40%', '70%'],
-          center: ['50%', '70%'],
+          radius: [
+            computedStyle.getPropertyValue('--chart-radius-inner').trim(),
+            computedStyle.getPropertyValue('--chart-radius-outer').trim()
+          ],
+          center: [
+            computedStyle.getPropertyValue('--chart-center-x').trim(),
+            computedStyle.getPropertyValue('--chart-center-y').trim()
+          ],
           startAngle: 180,
           endAngle: 360,
           data: this.valores,
