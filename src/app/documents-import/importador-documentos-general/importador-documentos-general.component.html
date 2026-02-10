@@ -1,33 +1,34 @@
 <div class="background-light-gray screen importador-documentos">
   <div class="p-3">
-    <h1 class="page-title">
-      <i class="bi bi-file-earmark-arrow-up me-2"></i>
-      {{ 'importadorDocumentos.title' | translate }}
-    </h1>
+    <mobentis-page-title [title]="'importadorDocumentos.title' | translate" icon="file-earmark-arrow-up" [isBootstrapIcon]="true"></mobentis-page-title>
   </div>
 
   <div class="p-3 d-flex flex-column gap-0">
-    <!-- Barra de acciones -->
+    <!-- KPIs por estado de pedidos (Core: mobentis-etiqueta-valor-vertical para KPIs dinámicos, ver Core_Components_Catalog) -->
+    <div class="mb-3">
+      <p class="small fw-semibold text-muted mb-2">{{ 'importadorDocumentos.kpisEstados' | translate }}</p>
+      <div *ngIf="loadingKpis" class="d-flex align-items-center gap-2">
+        <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+        <span class="small">{{ 'importadorDocumentos.loading' | translate }}</span>
+      </div>
+      <div *ngIf="!loadingKpis && kpisEstadosOrdenados.length" class="d-flex flex-wrap gap-3 align-items-start">
+        <mobentis-etiqueta-valor-vertical
+          *ngFor="let kpi of kpisEstadosOrdenados"
+          [etiqueta]="kpi.label"
+          [valor]="kpi.value"
+          [colorEtiqueta]="'#3f51b5'">
+        </mobentis-etiqueta-valor-vertical>
+      </div>
+      <p *ngIf="!loadingKpis && !kpisEstadosOrdenados.length" class="small text-muted mb-0">{{ 'importadorDocumentos.noKpis' | translate }}</p>
+    </div>
+
+    <!-- Barra de acciones (Core: mobentis-search-input) -->
     <div class="d-flex align-items-center justify-content-between gap-3 mb-2">
       <div class="d-flex align-items-center gap-2">
-        <div class="search-input-wrapper flex-grow-1" style="min-width: 200px; max-width: 320px;">
-          <input
-            type="text"
-            class="form-control"
-            [placeholder]="'importadorDocumentos.search' | translate"
-            [(ngModel)]="searchTerm"
-            (keyup.enter)="onSearch(searchTerm)"
-          />
-          <button
-            *ngIf="searchTerm"
-            class="clear-search-btn"
-            type="button"
-            (click)="clearSearch()"
-            title="Limpiar"
-          >
-            <i class="bi bi-x-lg"></i>
-          </button>
-        </div>
+        <mobentis-search-input
+          [searchTerm]="searchTerm"
+          (searchChange)="onSearch($event)">
+        </mobentis-search-input>
         <button class="btn btn-outline-secondary btn-sm" (click)="onFiltros()">
           <i class="bi bi-funnel me-1"></i>
           {{ 'importadorDocumentos.filters' | translate }}
@@ -36,88 +37,60 @@
       <div class="d-flex align-items-center gap-2">
         <button
           class="btn btn-primary btn-sm"
-          [disabled]="documentosInt.size === 0"
-          (click)="onIntegrar()"
-        >
+          [disabled]="pedidosInt.size === 0"
+          (click)="onIntegrar()">
           <i class="bi bi-upload me-1"></i>
           {{ 'importadorDocumentos.integrate' | translate }}
         </button>
         <button
           class="btn btn-outline-primary btn-sm"
-          [disabled]="!documentoSeleccionado"
-          (click)="onAbrir()"
-        >
+          [disabled]="!pedidoSeleccionado"
+          (click)="onAbrir()">
           <i class="bi bi-box-arrow-up-right me-1"></i>
           {{ 'importadorDocumentos.open' | translate }}
         </button>
       </div>
     </div>
 
-    <!-- 1. Panel Principal: Listado de Documentos -->
-    <div class="table-responsive documents-grid">
-      <table class="table table-hover table-sm w-100 mb-0">
-        <thead>
-          <tr>
-            <th scope="col" class="col-sel text-center">
-              <span class="d-inline-block me-1">{{ 'importadorDocumentos.col.sel' | translate }}</span>
-              <button class="btn btn-link btn-sm p-0" (click)="selTodos()" title="Seleccionar todos">+</button>
-              <button class="btn btn-link btn-sm p-0" (click)="deselTodos()" title="Deseleccionar">−</button>
-            </th>
-            <th scope="col" class="col-int text-center">{{ 'importadorDocumentos.col.int' | translate }}</th>
-            <th scope="col" class="col-est text-center">{{ 'importadorDocumentos.col.est' | translate }}</th>
-            <th scope="col" class="col-tipo">{{ 'importadorDocumentos.col.tipo' | translate }}</th>
-            <th scope="col" class="col-numero">{{ 'importadorDocumentos.col.numero' | translate }}</th>
-            <th scope="col" class="col-cliente">{{ 'importadorDocumentos.col.cliente' | translate }}</th>
-            <th scope="col" class="col-agente">{{ 'importadorDocumentos.col.agente' | translate }}</th>
-            <th scope="col" class="col-fecha">{{ 'importadorDocumentos.col.fecha' | translate }}</th>
-            <th scope="col" class="col-error" *ngIf="documentos.length && tieneAlgunErrorIntegracion()">
-              {{ 'importadorDocumentos.col.erroresIntegracion' | translate }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let doc of documentos"
-              [class.table-active]="documentoSeleccionado?.id === doc.id"
-              (click)="onSelectDocumento(doc)"
-              class="cursor-pointer">
-            <td class="text-center" (click)="$event.stopPropagation()">
-              <input type="checkbox" [checked]="isSel(doc.id)" (change)="toggleSel(doc.id)" />
-            </td>
-            <td class="text-center" (click)="$event.stopPropagation()">
-              <input
-                type="checkbox"
-                [checked]="isInt(doc.id)"
-                (change)="toggleInt(doc.id)"
-                [disabled]="doc.estado === 'integrado' || doc.estado === 'integrandose'"
-              />
-            </td>
-            <td class="text-center">
-              <i [class]="'bi ' + getEstadoIcon(doc.estado)"
-                 [ngClass]="getEstadoClass(doc.estado)"
-                 [title]="getEstadoLabel(doc.estado)"></i>
-            </td>
-            <td>{{ doc.tipo }}</td>
-            <td>{{ doc.numero }}</td>
-            <td>{{ doc.cliente }}</td>
-            <td>{{ doc.agente }}</td>
-            <td>{{ doc.fecha }}</td>
-            <td class="text-danger small" *ngIf="documentos.length && tieneAlgunErrorIntegracion()">
-              {{ doc.errorIntegracion || '−' }}
-            </td>
-          </tr>
-          <tr *ngIf="documentos.length === 0 && !loading">
-            <td colspan="10" class="text-center py-4">
-              {{ 'importadorDocumentos.noDocuments' | translate }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div *ngIf="loading" class="text-center py-4">
-        <div class="spinner-border text-primary" role="status"></div>
-      </div>
+    <!-- Error al cargar pedidos -->
+    <div *ngIf="loadError" class="alert alert-danger mb-3" role="alert">
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      {{ loadError }}
+      <button type="button" class="btn btn-sm btn-outline-danger ms-2" (click)="loadPedidos()">
+        <i class="bi bi-arrow-clockwise me-1"></i>{{ 'importadorDocumentos.retry' | translate }}
+      </button>
     </div>
 
-    <!-- 2. Barra de Leyenda de Integración -->
+    <!-- Tabla de pedidos (Core: mobentis-table). Doble clic en una fila carga el detalle en el panel inferior. -->
+    <div class="documents-grid" [class.d-none]="loading" (dblclick)="onTableRowDblClick($event)">
+      <mobentis-table
+        [data]="pedidosParaTabla"
+        [columns]="tableColumns"
+        [selectedIds]="selectedIds"
+        [getId]="getId.bind(this)"
+        [sortColumn]="sortColumn"
+        [sortDirection]="sortDirection"
+        (selectionChange)="onSelectionChange($event)"
+        (sortChange)="onSortChange($event)"
+        (action)="onTableAction($event)">
+      </mobentis-table>
+    </div>
+    <div *ngIf="loading" class="text-center py-4">
+      <div class="spinner-border text-primary" role="status"></div>
+    </div>
+
+    <!-- Paginación (Core: mobentis-pagination) -->
+    <mobentis-pagination
+      *ngIf="totalItems > 0"
+      [totalItems]="totalItems"
+      [itemsPerPage]="itemsPerPage"
+      [currentPage]="currentPage"
+      [entityName]="'importadorDocumentos.pedidos' | translate"
+      (pageChange)="onPageChange($event)"
+      (itemsPerPageChanged)="onItemsPerPageChange($event)">
+    </mobentis-pagination>
+
+    <!-- Leyenda de integración -->
     <div class="leyenda-integracion">
       <span class="leyenda-item">
         <i class="bi bi-circle estado-blanco"></i>
@@ -145,63 +118,37 @@
       </span>
     </div>
 
-    <!-- 3. Panel de Detalle (Líneas de Documento) -->
-    <div class="panel-detalle" *ngIf="documentoSeleccionado">
-      <div class="panel-detalle-header">
-        <strong>{{ documentoSeleccionado.tipo }} {{ documentoSeleccionado.numero }}</strong>
-        — {{ documentoSeleccionado.cliente }}
-      </div>
+    <!-- Panel de detalle (Core: mobentis-popup-header + mobentis-table para líneas) -->
+    <div class="panel-detalle" *ngIf="pedidoSeleccionado">
+      <mobentis-popup-header
+        [title]="getDetalleHeaderTitle()"
+        icon="file-text"
+        [isBootstrapIcon]="true"
+        (close)="cerrarDetalle()">
+      </mobentis-popup-header>
       <div class="panel-detalle-body">
-        <div class="tabla-lineas">
-          <table class="table table-sm table-striped mb-0">
-            <thead>
-              <tr>
-                <th>{{ 'importadorDocumentos.detail.referencia' | translate }}</th>
-                <th>{{ 'importadorDocumentos.detail.descripcion' | translate }}</th>
-                <th class="text-end">{{ 'importadorDocumentos.detail.unidades' | translate }}</th>
-                <th class="text-end">{{ 'importadorDocumentos.detail.precioUnitario' | translate }}</th>
-                <th class="text-end">{{ 'importadorDocumentos.detail.descuento' | translate }} %</th>
-                <th class="text-end">{{ 'importadorDocumentos.detail.total' | translate }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let linea of documentoSeleccionado.lineas">
-                <td>{{ linea.referencia }}</td>
-                <td>{{ linea.descripcion }}</td>
-                <td class="text-end">{{ linea.unidades }}</td>
-                <td class="text-end">{{ linea.precioUnitario | number:'1.2-2' }} €</td>
-                <td class="text-end">{{ linea.descuento }} %</td>
-                <td class="text-end">{{ linea.total | number:'1.2-2' }} €</td>
-              </tr>
-            </tbody>
-          </table>
+        <div *ngIf="loadingDetalle" class="text-center py-3">
+          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
         </div>
-        <div class="observaciones mt-3">
-          <div class="row g-2">
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold">{{ 'importadorDocumentos.detail.notas' | translate }}</label>
-              <textarea
-                class="form-control form-control-sm"
-                rows="2"
-                [(ngModel)]="documentoSeleccionado.notas"
-                placeholder="{{ 'importadorDocumentos.detail.notasPlaceholder' | translate }}"
-              ></textarea>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold">{{ 'importadorDocumentos.detail.notasLogisticas' | translate }}</label>
-              <textarea
-                class="form-control form-control-sm"
-                rows="2"
-                [(ngModel)]="documentoSeleccionado.notasLogisticas"
-                placeholder="{{ 'importadorDocumentos.detail.notasLogisticasPlaceholder' | translate }}"
-              ></textarea>
-            </div>
-          </div>
+        <div class="tabla-lineas" *ngIf="!loadingDetalle && lineasParaTabla.length">
+          <mobentis-table
+            [data]="lineasParaTabla"
+            [columns]="detalleTableColumns"
+            [sortColumn]="''"
+            [sortDirection]="'asc'">
+          </mobentis-table>
+        </div>
+        <p *ngIf="!loadingDetalle && detalleSeleccionado && !lineasParaTabla.length" class="small text-muted mb-0">
+          {{ 'importadorDocumentos.detail.noLineas' | translate }}
+        </p>
+        <div class="observaciones mt-3" *ngIf="!loadingDetalle && detalleSeleccionado">
+          <label class="form-label small fw-semibold">{{ 'importadorDocumentos.detail.notas' | translate }}</label>
+          <p class="small mb-0">{{ detalleSeleccionado.observaciones || '−' }}</p>
         </div>
       </div>
     </div>
 
-    <div *ngIf="!documentoSeleccionado" class="panel-detalle-empty">
+    <div *ngIf="!pedidoSeleccionado" class="panel-detalle-empty">
       <i class="bi bi-hand-index text-muted"></i>
       <p class="text-muted mb-0 mt-2">{{ 'importadorDocumentos.selectDocument' | translate }}</p>
     </div>

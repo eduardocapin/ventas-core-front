@@ -150,8 +150,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
       }
 
       // Valores por defecto para resizable
-      if (column.resizable === undefined) {
-        column.resizable = false;
+      if (column['resizable'] === undefined) {
+        column['resizable'] = false;
       }
 
       // Asegurar que width, minWidth, maxWidth estén en formato 'px' si son números
@@ -720,7 +720,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
 
   // Métodos para resize
   isResizable(column: ITableColumn): boolean {
-    return column.resizable === true && column.visible !== false;
+    return column['resizable'] === true && column.visible !== false;
   }
 
   onResizeStart(column: ITableColumn, event: MouseEvent): void {
@@ -1128,7 +1128,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
     return result;
   }
 
-  formatearNumero(valor: number | null | undefined, decimalPlaces: number = 0, useGrouping: boolean = true): string {
+  formatearNumero(valor: number | string | null | undefined, decimalPlaces: number = 0, useGrouping: boolean = true): string {
     // Convertir el valor a número
     let numValue: number;
 
@@ -1190,7 +1190,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
   }
 
   shouldShowTotal(column: ITableColumn): boolean {
-    return column.totalizable === true &&
+    return column['totalizable'] === true &&
       this.showFooter &&
       this.totalFunctions !== undefined &&
       this.totalFunctions[column.field] !== undefined;
@@ -1201,7 +1201,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
       return false;
     }
     return this.visibleColumns.some(col =>
-      col.totalizable === true &&
+      col['totalizable'] === true &&
       this.totalFunctions &&
       this.totalFunctions[col.field] !== undefined
     );
@@ -1217,7 +1217,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
     if (column.type === 'currency') {
       return this.formatearMoneda(total, column);
     } else if (column.type === 'number') {
-      return this.formatearNumero(total, column.decimalPlaces ?? 0, column.useGrouping ?? true);
+      return this.formatearNumero(total, column['decimalPlaces'] ?? 0, column['useGrouping'] ?? true);
     }
 
     return total.toString();

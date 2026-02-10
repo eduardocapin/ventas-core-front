@@ -1,0 +1,113 @@
+@import "src/styles.scss";
+
+.visor-documento-venta-dialog {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+
+  .visor-dialog-body {
+    padding: 16px;
+    overflow-y: auto;
+    background: $light-gray;
+  }
+
+  .visor-section {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    border: 1px solid #dee2e6;
+    padding: 16px;
+    margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .visor-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: $title-dark-gray;
+    margin: 0 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .visor-field-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px 20px;
+  }
+
+  .visor-field {
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: $title-dark-gray;
+      margin-bottom: 2px;
+    }
+
+    span {
+      font-size: 13px;
+      color: #212529;
+    }
+
+    &.visor-field-full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .visor-tabla-lineas {
+    overflow-x: auto;
+    font-size: 13px;
+
+    .table {
+      margin-bottom: 0;
+
+      thead {
+        background: $light-gray;
+        th {
+          font-weight: 600;
+          color: $title-dark-gray;
+          padding: 10px 12px;
+        }
+      }
+
+      th, td {
+        padding: 8px 12px;
+      }
+    }
+  }
+
+  .visor-totales-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px 24px;
+    align-items: baseline;
+  }
+
+  .visor-total-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+
+    .visor-total-label {
+      font-size: 13px;
+      color: $title-dark-gray;
+    }
+
+    .visor-total-value {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    &.visor-total-final .visor-total-value {
+      font-size: 15px;
+    }
+  }
+}

@@ -222,17 +222,17 @@
               <ng-container *ngSwitchCase="'acciones'">
                 <div class="d-flex gap-2 justify-content-center">
                   <mobentis-btn-icon-file *ngIf="
-                    column.actions?.includes('view') ||
-                    column.actions?.includes('file')
+                    column['actions']?.includes('view') ||
+                    column['actions']?.includes('file')
                   " (click)="onAction('view', item)"></mobentis-btn-icon-file>
 
-                  <mobentis-btn-icon-edit *ngIf="column.actions?.includes('edit')"
+                  <mobentis-btn-icon-edit *ngIf="column['actions']?.includes('edit')"
                     (click)="onAction('edit', item)"></mobentis-btn-icon-edit>
 
-                  <mobentis-btn-icon-copy *ngIf="column.actions?.includes('duplicate')"
+                  <mobentis-btn-icon-copy *ngIf="column['actions']?.includes('duplicate')"
                     (click)="onAction('duplicate', item)"></mobentis-btn-icon-copy>
 
-                  <mobentis-btn-icon-delete *ngIf="column.actions?.includes('delete')"
+                  <mobentis-btn-icon-delete *ngIf="column['actions']?.includes('delete')"
                     (click)="onAction('delete', item)"></mobentis-btn-icon-delete>
                 </div>
               </ng-container>
@@ -241,8 +241,8 @@
               <ng-container *ngSwitchCase="'image'">
                 <div class="table-image-container">
                   <img [src]="getCellValue(item, column.field)" [alt]="column.header"
-                    [class.image-circle]="column.imageShape === 'circle' || !column.imageShape"
-                    [class.image-square]="column.imageShape === 'square'" (error)="onImageError($event)"
+                    [class.image-circle]="column['imageShape'] === 'circle' || !column['imageShape']"
+                    [class.image-square]="column['imageShape'] === 'square'" (error)="onImageError($event)"
                     class="table-image">
                 </div>
               </ng-container>
@@ -266,7 +266,7 @@
                 {{ formatearMoneda(item[column.field], column) }}
               </span>
               <span *ngSwitchCase="'number'">
-                {{ formatearNumero(item[column.field], column.decimalPlaces ?? 0, column.useGrouping ?? true) }}
+                {{ formatearNumero(item[column.field], column['decimalPlaces'] ?? 0, column['useGrouping'] ?? true) }}
               </span>
               <span *ngSwitchCase="'date'">
                 {{ item[column.field] | date : "dd/MM/yy" }}

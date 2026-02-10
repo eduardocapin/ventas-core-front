@@ -1,0 +1,207 @@
+<div class="visor-documento-venta-dialog">
+  <mobentis-popup-header
+    [title]="getDialogTitle()"
+    icon="file-text"
+    [isBootstrapIcon]="true"
+    (close)="cerrar()">
+  </mobentis-popup-header>
+
+  <div class="visor-dialog-body">
+    <div *ngIf="loading" class="text-center py-4">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="small text-muted mt-2 mb-0">{{ 'importadorDocumentos.loading' | translate }}</p>
+    </div>
+
+    <div *ngIf="loadError" class="alert alert-danger mb-0" role="alert">
+      <i class="bi bi-exclamation-triangle me-2"></i>{{ loadError }}
+    </div>
+
+    <ng-container *ngIf="!loading && !loadError && detalle">
+      <!-- Datos cliente (desde Clientes: Cod_Cliente_Fabricante = IdClienteFabricante) -->
+      <section class="visor-section">
+        <h3 class="visor-section-title">{{ 'importadorDocumentos.visor.datosCliente' | translate }}</h3>
+        <div class="visor-field-grid">
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.codigo' | translate }}</label>
+            <span>{{ v(detalle.clienteDatos?.codigo ?? pedido.codigoCliente) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.nComercial' | translate }}</label>
+            <span>{{ v(detalle.clienteDatos?.nombreComercial ?? pedido.nombreCliente ?? pedido.cliente) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.nFiscal' | translate }}</label>
+            <span>{{ v(detalle.clienteDatos?.nombreFiscal) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.cif' | translate }}</label>
+            <span>{{ v(detalle.clienteDatos?.cif) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.direccion' | translate }}</label>
+            <span>{{ v(detalle.clienteDatos?.direccion) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.poblacion' | translate }}</label>
+            <span>{{ v(detalle.clienteDatos?.poblacion) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.provincia' | translate }}</label>
+            <span>{{ v(detalle.clienteDatos?.provincia) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.tfno' | translate }}</label>
+            <span>{{ v(detalle.clienteDatos?.telefono) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.fax' | translate }}</label>
+            <span>{{ v(detalle.clienteDatos?.fax) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.email' | translate }}</label>
+            <span>{{ v(detalle.clienteDatos?.email) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.banco' | translate }}</label>
+            <span>{{ v(detalle.clienteDatos?.banco) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.numCuenta' | translate }}</label>
+            <span>{{ v(detalle.clienteDatos?.cuenta) }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Datos dirección (desde Pedidos: Cliente_Direc, Cliente_Pobla, Cliente_Provin, Cliente_DP, Cliente_Telefono, etc.) -->
+      <section class="visor-section">
+        <h3 class="visor-section-title">{{ 'importadorDocumentos.visor.datosDireccion' | translate }}</h3>
+        <div class="visor-field-grid">
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.nombre' | translate }}</label>
+            <span>{{ v(detalle.datosDireccion?.nombre) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.direccion' | translate }}</label>
+            <span>{{ v(detalle.datosDireccion?.direccion) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.contacto' | translate }}</label>
+            <span>{{ v(detalle.datosDireccion?.contacto) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.poblacion' | translate }}</label>
+            <span>{{ v(detalle.datosDireccion?.poblacion) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.provincia' | translate }}</label>
+            <span>{{ v(detalle.datosDireccion?.provincia) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.cp' | translate }}</label>
+            <span>{{ v(detalle.datosDireccion?.cp) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.tfno' | translate }}</label>
+            <span>{{ v(detalle.datosDireccion?.tfno) }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Datos documento -->
+      <section class="visor-section">
+        <h3 class="visor-section-title">{{ 'importadorDocumentos.visor.datosDocumento' | translate }}</h3>
+        <div class="visor-field-grid">
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.fDocum' | translate }}</label>
+            <span>{{ formatFecha(pedido.fechaDocumento || pedido.fecha) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.formaPago' | translate }}</label>
+            <span>{{ v() }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.tipoVen' | translate }}</label>
+            <span>{{ v(pedido.tipoPedido || pedido.tipoDocumento) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.subtipoVen' | translate }}</label>
+            <span>{{ v() }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.fEntrega' | translate }}</label>
+            <span>{{ formatFecha(pedido.fechaEntrega) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.refDocum' | translate }}</label>
+            <span>{{ v() }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.numDocum' | translate }}</label>
+            <span>{{ v(pedido.codigoDocumento || pedido.numero) }}</span>
+          </div>
+          <div class="visor-field visor-field-full">
+            <label>{{ 'importadorDocumentos.visor.notas' | translate }}</label>
+            <span>{{ v(detalle.observaciones || pedido.nota) }}</span>
+          </div>
+          <div class="visor-field visor-field-full">
+            <label>{{ 'importadorDocumentos.visor.notasLogisticas' | translate }}</label>
+            <span>{{ v() }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Líneas -->
+      <section class="visor-section">
+        <h3 class="visor-section-title">{{ 'importadorDocumentos.visor.lineas' | translate }}</h3>
+        <div class="visor-tabla-lineas" *ngIf="lineasParaTabla.length">
+          <mobentis-table
+            [data]="lineasParaTabla"
+            [columns]="lineasTableColumns"
+            [sortColumn]="''"
+            [sortDirection]="'asc'">
+          </mobentis-table>
+        </div>
+        <p *ngIf="!lineasParaTabla.length" class="small text-muted mb-0">{{ 'importadorDocumentos.detail.noLineas' | translate }}</p>
+      </section>
+
+      <!-- Totales -->
+      <section class="visor-section visor-totales">
+        <h3 class="visor-section-title">{{ 'importadorDocumentos.visor.totales' | translate }}</h3>
+        <div class="visor-totales-grid">
+          <div class="visor-total-item">
+            <span class="visor-total-label">{{ 'importadorDocumentos.visor.importe' | translate }}</span>
+            <span class="visor-total-value">{{ formatNum(totales?.subtotal) }}</span>
+          </div>
+          <div class="visor-total-item">
+            <span class="visor-total-label">{{ 'importadorDocumentos.visor.descuento' | translate }}</span>
+            <span class="visor-total-value">{{ formatNum(totales?.dtos) }}</span>
+          </div>
+          <div class="visor-total-item">
+            <span class="visor-total-label">{{ 'importadorDocumentos.visor.descuento2' | translate }}</span>
+            <span class="visor-total-value">0%</span>
+          </div>
+          <div class="visor-total-item">
+            <span class="visor-total-label">{{ 'importadorDocumentos.visor.dtoProntoPago' | translate }}</span>
+            <span class="visor-total-value">0%</span>
+          </div>
+          <div class="visor-total-item">
+            <span class="visor-total-label">{{ 'importadorDocumentos.visor.baseImponible' | translate }}</span>
+            <span class="visor-total-value">{{ formatNum(totales?.baseImp) }}</span>
+          </div>
+          <div class="visor-total-item">
+            <span class="visor-total-label">{{ 'importadorDocumentos.visor.iva' | translate }}</span>
+            <span class="visor-total-value">{{ formatNum(totales?.ivaCuota) }}</span>
+          </div>
+          <div class="visor-total-item">
+            <span class="visor-total-label">{{ 'importadorDocumentos.visor.reEquiv' | translate }}</span>
+            <span class="visor-total-value">{{ formatNum(totales?.reCuota) }}</span>
+          </div>
+          <div class="visor-total-item visor-total-final">
+            <span class="visor-total-label">{{ 'importadorDocumentos.visor.total' | translate }}</span>
+            <span class="visor-total-value">{{ formatNum(totales?.total) }}</span>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+  </div>
+</div>

@@ -25,7 +25,9 @@ import { BtnExportComponent } from '../components/buttons/btn-export/btn-export.
 import { BtnIconEditComponent } from '../components/buttons/btn-icons/btn-icon-edit/btn-icon-edit.component';
 import { BtnIconDeleteComponent } from '../components/buttons/btn-icons/btn-icon-delete/btn-icon-delete.component';
 import { BtnIconFileComponent } from '../components/buttons/btn-icons/btn-icon-file/btn-icon-file.component';
+import { BtnIconCopyComponent } from '../components/buttons/btn-icons/btn-icon-copy/btn-icon-copy.component';
 import { BtnIconExpandComponent } from '../components/buttons/btn-icons/btn-icon-expand/btn-icon-expand.component';
+import { TableComponent } from '../components/table/table.component';
 import { EtiquetaValorVerticalComponent } from '../components/etiqueta-valor-vertical/etiqueta-valor-vertical.component';
 import { SearchInputComponent } from '../components/search-input/search-input.component';
 import { MessageUpdateComponent } from '../components/message-update/message-update.component';
@@ -69,7 +71,9 @@ import { ConfigurationListItemContainerComponent } from '../components/configura
     BtnIconEditComponent,
     BtnIconDeleteComponent,
     BtnIconFileComponent,
+    BtnIconCopyComponent,
     BtnIconExpandComponent,
+    TableComponent,
     BtnExportComponent,
     EtiquetaValorVerticalComponent,
     SearchInputComponent,
@@ -121,7 +125,9 @@ import { ConfigurationListItemContainerComponent } from '../components/configura
     BtnIconEditComponent,
     BtnIconDeleteComponent,
     BtnIconFileComponent,
+    BtnIconCopyComponent,
     BtnIconExpandComponent,
+    TableComponent,
     BtnExportComponent,
     SearchInputComponent,
     MessageUpdateComponent,
