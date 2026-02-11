@@ -32,14 +32,13 @@
     <div class="dropdown-items-container">
       <div 
         class="dropdown-item-custom" 
-        *ngFor="let empresa of empresas"
-        (click)="toggleEmpresa(empresa, $event)">
+        *ngFor="let empresa of empresas">
         <input 
           type="checkbox" 
           class="form-check-input me-2"
           [checked]="empresa.selected"
-          (click)="toggleEmpresa(empresa, $event); $event.stopPropagation()">
-        <label class="mb-0">{{ empresa.name }}</label>
+          (click)="toggleEmpresa(empresa, $event)">
+        <label class="mb-0" (click)="toggleEmpresa(empresa, $event)">{{ empresa.name }}</label>
       </div>
     </div>
 

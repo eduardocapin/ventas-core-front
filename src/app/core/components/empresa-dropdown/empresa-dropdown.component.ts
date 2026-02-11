@@ -18,6 +18,7 @@ export interface Empresa {
 })
 export class EmpresaDropdownComponent implements OnInit {
   @Input() empresasList?: Empresa[]; // Empresas filtradas desde el componente padre
+  @Input() forceShow: boolean = false; // Si es true, mostrar siempre sin verificar configuración
   empresas: Empresa[] = [];
   @Output() empresasChange = new EventEmitter<Empresa[]>();
 
@@ -35,6 +36,13 @@ export class EmpresaDropdownComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
+    if (this.forceShow) {
+      // Si forceShow está activado, cargar empresas directamente sin verificar configuración
+      this.loadUserEmpresasAndDetermineVisibility();
+      return;
+    }
+    
+    // Lógica existente con configuración
     // Primero verificar la configuración global del dropdown
     this.configurationService.getConfigurationByName('converterEMPRESA_DROPDOWN_ACTIVO').subscribe({
       next: (config) => {
@@ -78,7 +86,10 @@ export class EmpresaDropdownComponent implements OnInit {
             name: userEmpresas[0].nombre,
             selected: true
           }];
-          this.empresasChange.emit(this.empresas);
+          // Emitir el evento de forma asíncrona
+          setTimeout(() => {
+            this.empresasChange.emit(this.empresas);
+          }, 0);
           return;
         }
         
@@ -113,7 +124,10 @@ export class EmpresaDropdownComponent implements OnInit {
       this.empresas.forEach(e => e.selected = true);
     }
     
-    this.empresasChange.emit(this.empresas);
+    // Emitir el evento de forma asíncrona para asegurar que el componente padre esté listo
+    setTimeout(() => {
+      this.empresasChange.emit(this.empresas);
+    }, 0);
     this.saveSelectionToStorage();
   }
 
@@ -177,14 +191,21 @@ export class EmpresaDropdownComponent implements OnInit {
 
   toggleEmpresa(empresa: Empresa, event: Event): void {
     event.stopPropagation();
-    const seleccionadasCount = this.getSelectedCount();
+    event.preventDefault();
+    
+    // Contar empresas seleccionadas ANTES de cambiar el estado
+    const seleccionadasCountAntes = this.getSelectedCount();
+    const nuevaSeleccion = !empresa.selected;
 
-    if (empresa.selected && seleccionadasCount === 1) {
+    // Solo mostrar advertencia si realmente está intentando deseleccionar la última empresa seleccionada
+    if (empresa.selected && seleccionadasCountAntes === 1) {
       this.notificationService.showWarning(this.translationService.t('empresaDropdown.warning.minOneRequired'));
       return;
     }
     
-    empresa.selected = !empresa.selected;
+    // Actualizar el estado
+    empresa.selected = nuevaSeleccion;
+    
     this.empresasChange.emit(this.empresas);
     this.saveSelectionToStorage();
   }

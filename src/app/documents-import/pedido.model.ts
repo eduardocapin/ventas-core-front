@@ -103,8 +103,8 @@ export interface IPedido {
   errorIntegracion?: string;
   /** Pedidos.IdPedidoTipoERP (PedidosTotal.IdPedidoERP) */
   idPedidoTipoERP?: string;
-  /** PedidosTotal.IdPedidoPDA (IdDocumentoPDA) */
-  idDocumentoPDA?: number;
+  /** Pedidos.IdDocumentoPDA (código alfanumérico del documento, ej. P11-00078) */
+  idDocumentoPDA?: string;
   agenteDatos?: IPedidoAgenteDatos;
   totales?: {
     idPedidosTotalOPT?: number;
@@ -140,6 +140,8 @@ export interface IPedido {
 
 export interface IPedidoDetalle extends IPedido {
   observaciones?: string;
+  observacionesComerciales?: string;
+  observacionesReparto?: string;
   /** Datos del cliente comprador (desde Clientes). */
   clienteDatos?: IPedidoClienteDatos;
   /** Datos de dirección (columnas del pedido). */

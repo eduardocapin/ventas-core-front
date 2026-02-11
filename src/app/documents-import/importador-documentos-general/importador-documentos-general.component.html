@@ -1,6 +1,14 @@
 <div class="background-light-gray screen importador-documentos">
   <div class="p-3">
     <mobentis-page-title [title]="'importadorDocumentos.title' | translate" icon="file-earmark-arrow-up" [isBootstrapIcon]="true"></mobentis-page-title>
+    
+    <!-- Selector de empresas -->
+    <div class="mt-3">
+      <mobentis-empresa-dropdown 
+        [forceShow]="true"
+        (empresasChange)="onEmpresasChange($event)">
+      </mobentis-empresa-dropdown>
+    </div>
   </div>
 
   <div class="p-3 d-flex flex-column gap-0">
@@ -142,8 +150,14 @@
           {{ 'importadorDocumentos.detail.noLineas' | translate }}
         </p>
         <div class="observaciones mt-3" *ngIf="!loadingDetalle && detalleSeleccionado">
-          <label class="form-label small fw-semibold">{{ 'importadorDocumentos.detail.notas' | translate }}</label>
-          <p class="small mb-0">{{ detalleSeleccionado.observaciones || '−' }}</p>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">{{ 'importadorDocumentos.detail.notas' | translate }}</label>
+            <p class="small mb-0">{{ detalleSeleccionado.observacionesComerciales || '−' }}</p>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">{{ 'importadorDocumentos.detail.notasLogisticas' | translate }}</label>
+            <p class="small mb-0">{{ detalleSeleccionado.observacionesReparto || '−' }}</p>
+          </div>
         </div>
       </div>
     </div>

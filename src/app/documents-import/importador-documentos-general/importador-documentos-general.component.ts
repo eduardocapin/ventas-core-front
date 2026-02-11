@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslationService } from 'src/app/core/services/i18n/translation.service';
 import { PedidosImportadorService } from '../pedidos-importador.service';
@@ -6,6 +6,7 @@ import { IPedido, IPedidoDetalle, PedidosKpisByEstado } from '../pedido.model';
 import { ITableColumn } from 'src/app/models/tableColumn.model';
 import { ITableSortEvent } from 'src/app/models/tableEvents.model';
 import { VisorDocumentoVentaDialogComponent } from '../visor-documento-venta-dialog/visor-documento-venta-dialog.component';
+import { Empresa, EmpresaDropdownComponent } from 'src/app/core/components/empresa-dropdown/empresa-dropdown.component';
 
 const ESTADO_LABELS: Record<string, string> = {
   sin_integrar: 'Sin integrar',
@@ -67,7 +68,9 @@ const ESTADO_CODIGO_TO_KEY: Record<string, string> = {
   templateUrl: './importador-documentos-general.component.html',
   styleUrls: ['./importador-documentos-general.component.scss'],
 })
-export class ImportadorDocumentosGeneralComponent implements OnInit {
+export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewInit {
+  @ViewChild(EmpresaDropdownComponent) empresaDropdown!: EmpresaDropdownComponent;
+  
   pedidos: IPedido[] = [];
   pedidoSeleccionado: IPedido | null = null;
   detalleSeleccionado: IPedidoDetalle | null = null;
@@ -84,6 +87,9 @@ export class ImportadorDocumentosGeneralComponent implements OnInit {
   kpisByEstado: PedidosKpisByEstado = {};
   loadingKpis = false;
   loadError: string | null = null;
+  selectedEmpresasIds: number[] = [];
+  empresasInicializadas = false;
+  esperandoEmpresas = true; // Flag para esperar a que el dropdown cargue las empresas
 
   /** Columnas para mobentis-table (patrón Core). */
   tableColumns: ITableColumn[] = [];
@@ -99,8 +105,18 @@ export class ImportadorDocumentosGeneralComponent implements OnInit {
   ngOnInit(): void {
     this.buildTableColumns();
     this.buildDetalleTableColumns();
-    this.loadPedidos();
     this.loadKpis();
+  }
+
+  ngAfterViewInit(): void {
+    // El dropdown emitirá el evento empresasChange cuando cargue las empresas
+    // Si después de 1 segundo no se ha recibido el evento, cargar sin filtro como fallback
+    setTimeout(() => {
+      if (this.esperandoEmpresas && !this.empresasInicializadas) {
+        this.esperandoEmpresas = false;
+        this.loadPedidos();
+      }
+    }, 1000);
   }
 
   private buildDetalleTableColumns(): void {
@@ -121,6 +137,7 @@ export class ImportadorDocumentosGeneralComponent implements OnInit {
       { field: 'motivoDevolucion', header: this.translation.t('importadorDocumentos.detail.motivoDevolucion'), type: 'text', sortable: false },
       { field: 'comboAdjunto', header: this.translation.t('importadorDocumentos.detail.comboAdjunto'), type: 'text', sortable: false },
       { field: 'notaLinea', header: this.translation.t('importadorDocumentos.detail.notaLinea'), type: 'text', sortable: false },
+      { field: 'observacion', header: this.translation.t('importadorDocumentos.detail.observacion'), type: 'text', sortable: false },
       { field: 'errorIntegracion', header: this.translation.t('importadorDocumentos.detail.errorIntegracion'), type: 'text', sortable: false },
     ];
   }
@@ -160,9 +177,8 @@ export class ImportadorDocumentosGeneralComponent implements OnInit {
       {
         field: 'idDocumentoPDA',
         header: this.translation.t('importadorDocumentos.col.codigoPda'),
-        type: 'number',
+        type: 'text',
         sortable: false,
-        align: 'right',
       },
       {
         field: 'tipoDocumento',
@@ -248,6 +264,12 @@ export class ImportadorDocumentosGeneralComponent implements OnInit {
         align: 'right',
       },
       {
+        field: 'nota',
+        header: this.translation.t('importadorDocumentos.col.nota'),
+        type: 'text',
+        sortable: false,
+      },
+      {
         field: 'tieneFirma',
         header: this.translation.t('importadorDocumentos.col.tieneFirma'),
         type: 'text',
@@ -287,6 +309,7 @@ export class ImportadorDocumentosGeneralComponent implements OnInit {
       codigoAgente: p.codigoAgente ?? this.getAgenteCodigo(p),
       clienteNFiscal: p.clienteNFiscal ?? p.nombreCliente ?? p.cliente,
       estadoIconChar: this.getEstadoIconChar(p.estadoImportacion ?? p.estadoIntegracion),
+      nota: p.observaciones ?? p.nota ?? '',
       tieneFirma: p.tieneFirma == null ? '' : (p.tieneFirma ? 'Sí' : 'No'),
     }));
   }
@@ -308,6 +331,7 @@ export class ImportadorDocumentosGeneralComponent implements OnInit {
       unidadesVendidas: l.unidadesVendidas ?? l.unidades,
       importe: l.importe ?? l.precio,
       estadoIconChar: this.getEstadoIconChar(l.comboIntegracion ?? l.estadoIntegracion),
+      observacion: l.notaLinea ?? '',
       errorIntegracion: l.errorIntegracion ?? l.mensajeErrorIntegracion ?? '',
     }));
   }
@@ -355,12 +379,51 @@ export class ImportadorDocumentosGeneralComponent implements OnInit {
     }
   }
 
+  onEmpresasChange(empresas: Empresa[]): void {
+    if (!empresas || empresas.length === 0) {
+      this.esperandoEmpresas = false;
+      return;
+    }
+    
+    // Extraer solo los IDs de las empresas seleccionadas
+    const newSelectedIds = empresas
+      .filter(e => e.selected)
+      .map(e => e.id);
+    
+    // Solo recargar si cambió la selección o es la primera vez
+    const hasChanged = !this.empresasInicializadas || 
+      JSON.stringify(this.selectedEmpresasIds.sort()) !== JSON.stringify(newSelectedIds.sort());
+    
+    this.selectedEmpresasIds = newSelectedIds;
+    this.empresasInicializadas = true;
+    this.esperandoEmpresas = false;
+    
+    // Recargar datos con el nuevo filtro
+    if (hasChanged) {
+      this.currentPage = 1;
+      this.loadPedidos();
+      this.loadKpis();
+    }
+  }
+
   loadPedidos(): void {
+    // No cargar si aún estamos esperando a que el dropdown cargue las empresas
+    if (this.esperandoEmpresas && !this.empresasInicializadas) {
+      return;
+    }
+    
     this.loading = true;
     this.loadError = null;
+    
+    // Preparar filtros incluyendo empresas seleccionadas
+    const filters: { [key: string]: any } = {};
+    if (this.selectedEmpresasIds.length > 0) {
+      filters['empresasIds'] = this.selectedEmpresasIds;
+    }
+    
     this.pedidosService
       .getData(
-        {},
+        filters,
         this.searchTerm,
         this.currentPage,
         this.itemsPerPage,

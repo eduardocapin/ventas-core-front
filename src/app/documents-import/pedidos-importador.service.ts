@@ -44,7 +44,7 @@ export class PedidosImportadorService {
     sortColumn: string,
     sortDirection: string
   ): Observable<PedidosListResponse> {
-    const body = {
+    const body: any = {
       selectedFilters: selectedFilters ? Object.keys(selectedFilters).map((k) => ({ id: k, valor: selectedFilters[k] })) : [],
       searchTerm: searchTerm ?? '',
       currentPage,
@@ -52,6 +52,12 @@ export class PedidosImportadorService {
       sortColumn: sortColumn ?? 'id',
       sortDirection: sortDirection ?? 'asc',
     };
+    
+    // Añadir filtro de empresas si está presente
+    if (selectedFilters?.['empresasIds'] && Array.isArray(selectedFilters['empresasIds']) && selectedFilters['empresasIds'].length > 0) {
+      body.empresasIds = selectedFilters['empresasIds'];
+    }
+    
     return this.http.post<PedidosListResponse>(
       `${this.apiUrl}/list`,
       body,
