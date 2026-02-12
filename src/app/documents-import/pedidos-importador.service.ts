@@ -58,6 +58,11 @@ export class PedidosImportadorService {
       body.empresasIds = selectedFilters['empresasIds'];
     }
     
+    // Añadir filtro de estado si está presente
+    if (selectedFilters?.['estadoImportacion'] && Array.isArray(selectedFilters['estadoImportacion']) && selectedFilters['estadoImportacion'].length > 0) {
+      body.estadoImportacion = selectedFilters['estadoImportacion'];
+    }
+    
     return this.http.post<PedidosListResponse>(
       `${this.apiUrl}/list`,
       body,
@@ -75,11 +80,26 @@ export class PedidosImportadorService {
   }
 
   /**
-   * KPIs por estado de integración (GET pedidos/kpis).
+   * KPIs por estado de integración (POST pedidos/kpis).
+   * Acepta filtros opcionales, incluyendo empresasIds.
    */
-  getKpisByEstado(): Observable<PedidosKpisByEstado> {
-    return this.http.get<PedidosKpisByEstado>(`${this.apiUrl}/kpis`, {
-      headers: this.getHeaders(),
-    });
+  getKpisByEstado(empresasIds?: number[]): Observable<PedidosKpisByEstado> {
+    const body: any = {};
+    
+    // Añadir filtro de empresas si está presente
+    if (empresasIds && Array.isArray(empresasIds) && empresasIds.length > 0) {
+      body.empresasIds = empresasIds;
+    }
+    
+    // Si hay filtros, usar POST, si no, usar GET para mantener compatibilidad
+    if (Object.keys(body).length > 0) {
+      return this.http.post<PedidosKpisByEstado>(`${this.apiUrl}/kpis`, body, {
+        headers: this.getHeaders(),
+      });
+    } else {
+      return this.http.get<PedidosKpisByEstado>(`${this.apiUrl}/kpis`, {
+        headers: this.getHeaders(),
+      });
+    }
   }
 }

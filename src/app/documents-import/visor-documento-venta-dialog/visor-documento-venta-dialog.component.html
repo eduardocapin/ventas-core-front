@@ -124,6 +124,10 @@
             <span>{{ v(pedido.tipoPedido || pedido.tipoDocumento) }}</span>
           </div>
           <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.empresa' | translate }}</label>
+            <span>{{ v(pedido.nombreEmpresa || detalle?.nombreEmpresa) }}</span>
+          </div>
+          <div class="visor-field">
             <label>{{ 'importadorDocumentos.visor.subtipoVen' | translate }}</label>
             <span>{{ v() }}</span>
           </div>

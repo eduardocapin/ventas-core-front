@@ -1,35 +1,191 @@
 <div class="background-light-gray screen importador-documentos">
+  <!-- Barra superior sticky con controles -->
+  <div class="sticky-top-bar">
+    <div class="p-3">
+      <div class="d-flex justify-content-between align-items-center gap-3">
+        <!-- Selector de empresa con etiqueta -->
+        <div class="d-flex align-items-center gap-2 flex-grow-1">
+          <label class="mb-0 text-muted small fw-semibold sticky-control-label">
+            {{ 'importadorDocumentos.empresa' | translate }}:
+          </label>
+          <mobentis-empresa-dropdown 
+            [forceShow]="true"
+            (empresasChange)="onEmpresasChange($event)">
+          </mobentis-empresa-dropdown>
+        </div>
+        
+        <!-- Botón para colapsar/expandir KPIs -->
+        <button 
+          class="btn btn-sm btn-outline-secondary sticky-control-btn"
+          (click)="toggleKpisColapsados()"
+          [title]="(kpisColapsados ? 'importadorDocumentos.kpi.expand' : 'importadorDocumentos.kpi.collapse') | translate">
+          <i class="bi bi-bar-chart-fill me-1"></i>
+          <i class="bi" [class.bi-chevron-down]="!kpisColapsados" [class.bi-chevron-up]="kpisColapsados"></i>
+          <span class="ms-1 d-none d-sm-inline">{{ (kpisColapsados ? 'importadorDocumentos.kpi.expand' : 'importadorDocumentos.kpi.collapse') | translate }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="p-3">
     <mobentis-page-title [title]="'importadorDocumentos.title' | translate" icon="file-earmark-arrow-up" [isBootstrapIcon]="true"></mobentis-page-title>
     
-    <!-- Selector de empresas -->
-    <div class="mt-3">
-      <mobentis-empresa-dropdown 
-        [forceShow]="true"
-        (empresasChange)="onEmpresasChange($event)">
-      </mobentis-empresa-dropdown>
+    <!-- KPIs del Header -->
+    <div class="header-kpis mt-4 mb-4">
+      <!-- Título de KPIs -->
+      <div class="kpis-header-controls d-flex justify-content-between align-items-center" 
+           [class.kpis-header-collapsed]="kpisColapsados">
+        <h6 class="mb-0 text-muted small fw-semibold">
+          <i class="bi bi-bar-chart-fill me-1"></i>
+          {{ 'importadorDocumentos.kpi.title' | translate }}
+        </h6>
+      </div>
+      
+      <div *ngIf="loadingKpis" class="kpis-loading">
+        <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+        <span class="ms-2 small text-muted">{{ 'importadorDocumentos.loading' | translate }}</span>
+      </div>
+      <div *ngIf="!loadingKpis" class="kpis-content" [class.kpis-collapsed]="kpisColapsados">
+        <div class="kpis-grid">
+        <div class="kpi-card kpi-card-total" 
+             [class.kpi-card-active]="isEstadoFiltrado(null)"
+             (click)="onKpiClick(null)"
+             [title]="'importadorDocumentos.kpi.clickToFilter' | translate">
+          <div class="kpi-card-inner">
+            <div class="kpi-header">
+              <div class="kpi-icon-wrapper">
+                <div class="kpi-icon kpi-total">
+                  <i class="bi bi-file-earmark-text"></i>
+                </div>
+              </div>
+              <div class="kpi-label">{{ 'importadorDocumentos.kpi.totalDocumentos' | translate }}</div>
+            </div>
+            <div class="kpi-value-wrapper">
+              <div class="kpi-value" [class.kpi-value-zero]="getKpiTotalDocumentos() === 0">{{ getKpiTotalDocumentos() | number }}</div>
+            </div>
+          </div>
+          <div class="kpi-accent kpi-accent-total" [class.kpi-accent-active]="isEstadoFiltrado(null)"></div>
+        </div>
+        
+        <div class="kpi-card kpi-card-pending" 
+             [class.kpi-card-active]="isEstadoFiltrado('sin_integrar')"
+             (click)="onKpiClick('sin_integrar')"
+             [title]="'importadorDocumentos.kpi.clickToFilter' | translate">
+          <div class="kpi-card-inner">
+            <div class="kpi-header">
+              <div class="kpi-icon-wrapper">
+                <div class="kpi-icon kpi-pending">
+                  <i class="bi bi-circle"></i>
+                </div>
+              </div>
+              <div class="kpi-label">{{ 'importadorDocumentos.kpi.pendientes' | translate }}</div>
+            </div>
+            <div class="kpi-value-wrapper">
+              <div class="kpi-value" [class.kpi-value-zero]="getKpiPendientes() === 0">{{ getKpiPendientes() | number }}</div>
+            </div>
+          </div>
+          <div class="kpi-accent kpi-accent-pending" [class.kpi-accent-active]="isEstadoFiltrado('sin_integrar')"></div>
+        </div>
+        
+        <div class="kpi-card kpi-card-success" 
+             [class.kpi-card-active]="isEstadoFiltrado('integrado')"
+             (click)="onKpiClick('integrado')"
+             [title]="'importadorDocumentos.kpi.clickToFilter' | translate">
+          <div class="kpi-card-inner">
+            <div class="kpi-header">
+              <div class="kpi-icon-wrapper">
+                <div class="kpi-icon kpi-success">
+                  <i class="bi bi-check-circle-fill"></i>
+                </div>
+              </div>
+              <div class="kpi-label">{{ 'importadorDocumentos.kpi.integrados' | translate }}</div>
+            </div>
+            <div class="kpi-value-wrapper">
+              <div class="kpi-value" [class.kpi-value-zero]="getKpiIntegrados() === 0">{{ getKpiIntegrados() | number }}</div>
+            </div>
+          </div>
+          <div class="kpi-accent kpi-accent-success" [class.kpi-accent-active]="isEstadoFiltrado('integrado')"></div>
+        </div>
+        
+        <div class="kpi-card kpi-card-warning" 
+             [class.kpi-card-active]="isEstadoFiltrado('integrado_con_incidencia')"
+             (click)="onKpiClick('integrado_con_incidencia')"
+             [title]="'importadorDocumentos.kpi.clickToFilter' | translate">
+          <div class="kpi-card-inner">
+            <div class="kpi-header">
+              <div class="kpi-icon-wrapper">
+                <div class="kpi-icon kpi-warning">
+                  <i class="bi bi-exclamation-triangle-fill"></i>
+                </div>
+              </div>
+              <div class="kpi-label">{{ 'importadorDocumentos.kpi.integradosConIncidencia' | translate }}</div>
+            </div>
+            <div class="kpi-value-wrapper">
+              <div class="kpi-value" [class.kpi-value-zero]="getKpiIntegradosConIncidencia() === 0">{{ getKpiIntegradosConIncidencia() | number }}</div>
+            </div>
+          </div>
+          <div class="kpi-accent kpi-accent-warning" [class.kpi-accent-active]="isEstadoFiltrado('integrado_con_incidencia')"></div>
+        </div>
+        
+        <div class="kpi-card kpi-card-error" 
+             [class.kpi-card-active]="isEstadoFiltrado('no_integrado_por_incidencia')"
+             (click)="onKpiClick('no_integrado_por_incidencia')"
+             [title]="'importadorDocumentos.kpi.clickToFilter' | translate">
+          <div class="kpi-card-inner">
+            <div class="kpi-header">
+              <div class="kpi-icon-wrapper">
+                <div class="kpi-icon kpi-error">
+                  <i class="bi bi-x-circle-fill"></i>
+                </div>
+              </div>
+              <div class="kpi-label">{{ 'importadorDocumentos.kpi.noIntegradosPorIncidencia' | translate }}</div>
+            </div>
+            <div class="kpi-value-wrapper">
+              <div class="kpi-value" [class.kpi-value-zero]="getKpiNoIntegradosPorIncidencia() === 0">{{ getKpiNoIntegradosPorIncidencia() | number }}</div>
+            </div>
+          </div>
+          <div class="kpi-accent kpi-accent-error" [class.kpi-accent-active]="isEstadoFiltrado('no_integrado_por_incidencia')"></div>
+        </div>
+        
+        <div class="kpi-card kpi-card-processing" 
+             [class.kpi-card-active]="isEstadoFiltrado('integrandose')"
+             (click)="onKpiClick('integrandose')"
+             [title]="'importadorDocumentos.kpi.clickToFilter' | translate">
+          <div class="kpi-card-inner">
+            <div class="kpi-header">
+              <div class="kpi-icon-wrapper">
+                <div class="kpi-icon kpi-processing">
+                  <i class="bi bi-arrow-repeat"></i>
+                </div>
+              </div>
+              <div class="kpi-label">{{ 'importadorDocumentos.kpi.enProceso' | translate }}</div>
+            </div>
+            <div class="kpi-value-wrapper">
+              <div class="kpi-value" [class.kpi-value-zero]="getKpiEnProceso() === 0">{{ getKpiEnProceso() | number }}</div>
+            </div>
+          </div>
+          <div class="kpi-accent kpi-accent-processing" [class.kpi-accent-active]="isEstadoFiltrado('integrandose')"></div>
+        </div>
+        </div>
+        
+        <!-- Indicador de filtro activo -->
+        <div *ngIf="estadoFiltroActivo !== null" class="kpi-filter-indicator mt-2">
+        <div class="d-flex align-items-center gap-2">
+          <span class="small text-muted">
+            <i class="bi bi-funnel-fill me-1"></i>
+            {{ 'importadorDocumentos.kpi.filterActive' | translate }}: 
+            <strong>{{ getEstadoLabel(estadoFiltroActivo) }}</strong>
+          </span>
+          <button class="btn btn-sm btn-outline-secondary" (click)="limpiarFiltroEstado()">
+            <i class="bi bi-x-circle me-1"></i>
+            {{ 'importadorDocumentos.kpi.clearFilter' | translate }}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="p-3 d-flex flex-column gap-0">
-    <!-- KPIs por estado de pedidos (Core: mobentis-etiqueta-valor-vertical para KPIs dinámicos, ver Core_Components_Catalog) -->
-    <div class="mb-3">
-      <p class="small fw-semibold text-muted mb-2">{{ 'importadorDocumentos.kpisEstados' | translate }}</p>
-      <div *ngIf="loadingKpis" class="d-flex align-items-center gap-2">
-        <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-        <span class="small">{{ 'importadorDocumentos.loading' | translate }}</span>
-      </div>
-      <div *ngIf="!loadingKpis && kpisEstadosOrdenados.length" class="d-flex flex-wrap gap-3 align-items-start">
-        <mobentis-etiqueta-valor-vertical
-          *ngFor="let kpi of kpisEstadosOrdenados"
-          [etiqueta]="kpi.label"
-          [valor]="kpi.value"
-          [colorEtiqueta]="'#3f51b5'">
-        </mobentis-etiqueta-valor-vertical>
-      </div>
-      <p *ngIf="!loadingKpis && !kpisEstadosOrdenados.length" class="small text-muted mb-0">{{ 'importadorDocumentos.noKpis' | translate }}</p>
-    </div>
-
     <!-- Barra de acciones (Core: mobentis-search-input) -->
     <div class="d-flex align-items-center justify-content-between gap-3 mb-2">
       <div class="d-flex align-items-center gap-2">
@@ -101,23 +257,23 @@
     <!-- Leyenda de integración -->
     <div class="leyenda-integracion">
       <span class="leyenda-item">
-        <i class="bi bi-circle estado-blanco"></i>
+        <i class="bi bi-circle estado-pending"></i>
         {{ 'importadorDocumentos.legend.pending' | translate }}
       </span>
       <span class="leyenda-item">
-        <i class="bi bi-check-circle-fill estado-verde"></i>
+        <i class="bi bi-check-circle-fill estado-success"></i>
         {{ 'importadorDocumentos.legend.success' | translate }}
       </span>
       <span class="leyenda-item">
-        <i class="bi bi-x-circle-fill estado-rojo"></i>
+        <i class="bi bi-x-circle-fill estado-error"></i>
         {{ 'importadorDocumentos.legend.error' | translate }}
       </span>
       <span class="leyenda-item">
-        <i class="bi bi-exclamation-triangle-fill estado-amarillo"></i>
+        <i class="bi bi-exclamation-triangle-fill estado-warning"></i>
         {{ 'importadorDocumentos.legend.warning' | translate }}
       </span>
       <span class="leyenda-item">
-        <i class="bi bi-arrow-repeat estado-azul"></i>
+        <i class="bi bi-arrow-repeat estado-processing"></i>
         {{ 'importadorDocumentos.legend.inProgress' | translate }}
       </span>
       <span class="leyenda-item">

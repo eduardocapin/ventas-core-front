@@ -63,6 +63,19 @@ const ESTADO_CODIGO_TO_KEY: Record<string, string> = {
   '': 'sin_estado',
 };
 
+/**
+ * Mapeo inverso: clave normalizada → códigos del backend.
+ * Puede haber múltiples códigos para la misma clave (ej: I2 e IN → integrandose)
+ */
+const ESTADO_KEY_TO_CODIGOS: Record<string, string[]> = {
+  sin_integrar: ['I1', 'i1'],
+  integrandose: ['I2', 'i2', 'IN', 'in'],
+  integrado: ['I3', 'i3'],
+  no_integrado_por_incidencia: ['I4', 'i4'],
+  integrado_con_incidencia: ['I6', 'i6'],
+  sin_estado: [''],
+};
+
 @Component({
   selector: 'mobentis-importador-documentos-general',
   templateUrl: './importador-documentos-general.component.html',
@@ -73,6 +86,7 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
   
   pedidos: IPedido[] = [];
   pedidoSeleccionado: IPedido | null = null;
+  private lastSelectedPedidoId: number | null = null;
   detalleSeleccionado: IPedidoDetalle | null = null;
   pedidosSel: Set<number> = new Set();
   pedidosInt: Set<number> = new Set();
@@ -90,6 +104,8 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
   selectedEmpresasIds: number[] = [];
   empresasInicializadas = false;
   esperandoEmpresas = true; // Flag para esperar a que el dropdown cargue las empresas
+  estadoFiltroActivo: string | null = null; // Estado de filtro activo (clave normalizada)
+  kpisColapsados = false; // Controla si los KPIs están colapsados
 
   /** Columnas para mobentis-table (patrón Core). */
   tableColumns: ITableColumn[] = [];
@@ -117,6 +133,56 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
         this.loadPedidos();
       }
     }, 1000);
+  }
+
+  /**
+   * Marca visualmente la fila del pedido seleccionado en la tabla.
+   * Usa atributos data-* para identificar las filas sin modificar el componente Core.
+   */
+  private markSelectedRow(): void {
+    const currentSelectedId = this.pedidoSeleccionado?.id ?? null;
+    
+    // Solo actualizar si cambió la selección
+    if (currentSelectedId === this.lastSelectedPedidoId) {
+      return;
+    }
+    
+    this.lastSelectedPedidoId = currentSelectedId;
+    
+    // Usar setTimeout para asegurar que el DOM esté actualizado
+    setTimeout(() => {
+      const tableContainer = document.querySelector('.documents-grid');
+      if (!tableContainer) return;
+      
+      // Remover la clase de todas las filas
+      const allRows = tableContainer.querySelectorAll('tbody tr');
+      allRows.forEach(row => {
+        row.classList.remove('pedido-seleccionado');
+        // Remover atributo data-pedido-id si existe
+        row.removeAttribute('data-pedido-id');
+      });
+      
+      // Si hay un pedido seleccionado, encontrar y marcar su fila
+      if (currentSelectedId !== null && this.pedidos.length > 0) {
+        // Buscar el pedido en el array
+        const pedidoIndex = this.pedidos.findIndex(p => p.id === currentSelectedId);
+        if (pedidoIndex >= 0) {
+          // Encontrar la fila correspondiente (índice en tbody)
+          const rows = Array.from(tableContainer.querySelectorAll('tbody tr'));
+          // Filtrar filas que no sean de "no hay datos"
+          const dataRows = rows.filter(row => {
+            const colspan = row.querySelector('td[colspan]');
+            return !colspan; // Las filas con colspan son mensajes de "no hay datos"
+          });
+          
+          if (pedidoIndex < dataRows.length) {
+            const selectedRow = dataRows[pedidoIndex];
+            selectedRow.classList.add('pedido-seleccionado');
+            selectedRow.setAttribute('data-pedido-id', String(currentSelectedId));
+          }
+        }
+      }
+    }, 0);
   }
 
   private buildDetalleTableColumns(): void {
@@ -147,14 +213,17 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
     if (!this.pedidoSeleccionado) return '';
     const p = this.pedidoSeleccionado;
     const tipo = p.tipoPedido ?? p.tipoDocumento ?? '';
-    const cod = p.codigoDocumento ?? p.numero ?? '';
-    const nombre = p.nombreCliente ?? p.cliente ?? '';
-    return `${tipo} ${cod} — ${nombre}`.trim();
+    const cod = p.idDocumentoPDA ?? p.numero ?? '';
+    const nombre = p.nombreCliente  ??  p.codigoCliente ?? '';
+    return `${tipo} — ${cod} — ${nombre}`.trim();
   }
 
   cerrarDetalle(): void {
     this.pedidoSeleccionado = null;
     this.detalleSeleccionado = null;
+    this.lastSelectedPedidoId = null;
+    // Remover la marca de la fila seleccionada
+    setTimeout(() => this.markSelectedRow(), 0);
   }
 
   private buildTableColumns(): void {
@@ -185,6 +254,12 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
         header: this.translation.t('importadorDocumentos.col.tipoPedido'),
         type: 'text',
         sortable: true,
+      },
+      {
+        field: 'nombreEmpresa',
+        header: this.translation.t('importadorDocumentos.col.empresa'),
+        type: 'text',
+        sortable: false,
       },
       {
         field: 'fechaDocumento',
@@ -307,7 +382,7 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
       tipoDocumento: p.tipoDocumento ?? p.tipoPedido,
       fechaDocumento: p.fechaDocumento ?? p.fecha,
       codigoAgente: p.codigoAgente ?? this.getAgenteCodigo(p),
-      clienteNFiscal: p.clienteNFiscal ?? p.nombreCliente ?? p.cliente,
+      clienteNFiscal: p.nombreCliente ?? p.clienteNFiscal ?? p.cliente,
       estadoIconChar: this.getEstadoIconChar(p.estadoImportacion ?? p.estadoIntegracion),
       nota: p.observaciones ?? p.nota ?? '',
       tieneFirma: p.tieneFirma == null ? '' : (p.tieneFirma ? 'Sí' : 'No'),
@@ -376,6 +451,8 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
     const pedido = this.pedidos[rowIndex];
     if (pedido?.id != null) {
       this.onSelectPedido(pedido);
+      // Marcar la fila seleccionada después de seleccionar
+      setTimeout(() => this.markSelectedRow(), 0);
     }
   }
 
@@ -415,10 +492,15 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
     this.loading = true;
     this.loadError = null;
     
-    // Preparar filtros incluyendo empresas seleccionadas
+    // Preparar filtros incluyendo empresas seleccionadas y estado
     const filters: { [key: string]: any } = {};
     if (this.selectedEmpresasIds.length > 0) {
       filters['empresasIds'] = this.selectedEmpresasIds;
+    }
+    
+    // Agregar filtro de estado si hay uno activo
+    if (this.estadoFiltroActivo) {
+      filters['estadoImportacion'] = this.getCodigosEstadoParaFiltro(this.estadoFiltroActivo);
     }
     
     this.pedidosService
@@ -435,6 +517,8 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
           this.pedidos = res?.items ?? [];
           this.totalItems = res?.totalItems ?? 0;
           this.loading = false;
+          // Marcar la fila seleccionada después de cargar los pedidos
+          setTimeout(() => this.markSelectedRow(), 100);
         },
         error: (err) => {
           this.pedidos = [];
@@ -445,11 +529,25 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
       });
   }
 
+  /**
+   * Obtiene los códigos del backend para un estado normalizado.
+   * Retorna un array con los códigos posibles (ej: ['I2', 'IN'] para 'integrandose').
+   */
+  private getCodigosEstadoParaFiltro(claveNormalizada: string): string[] {
+    return ESTADO_KEY_TO_CODIGOS[claveNormalizada] ?? [];
+  }
+
   loadKpis(): void {
     this.loadingKpis = true;
-    this.pedidosService.getKpisByEstado().subscribe({
+    // Pasar los IDs de empresas seleccionadas como filtro
+    const empresasIds = this.selectedEmpresasIds && this.selectedEmpresasIds.length > 0 
+      ? this.selectedEmpresasIds 
+      : undefined;
+    
+    this.pedidosService.getKpisByEstado(empresasIds).subscribe({
       next: (kpis) => {
-        this.kpisByEstado = kpis;
+        // Normalizar las claves de los KPIs del backend (I1, I2, etc.) a claves normalizadas
+        this.kpisByEstado = this.normalizarKpisByEstado(kpis);
         this.loadingKpis = false;
       },
       error: () => {
@@ -458,14 +556,44 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
     });
   }
 
+  /**
+   * Normaliza las claves de los KPIs del backend (códigos como I1, I2, I3, etc.)
+   * a las claves normalizadas usadas en el frontend (sin_integrar, integrado, etc.)
+   */
+  private normalizarKpisByEstado(kpis: PedidosKpisByEstado): PedidosKpisByEstado {
+    const kpisNormalizados: PedidosKpisByEstado = {};
+    
+    for (const [key, value] of Object.entries(kpis)) {
+      if (value === null || value === undefined || isNaN(Number(value))) {
+        continue; // Saltar valores inválidos
+      }
+      
+      // Normalizar la clave usando el mismo mapeo que para los estados individuales
+      const claveNormalizada = this.normalizarEstadoClave(key);
+      
+      // Si ya existe esa clave normalizada, sumar los valores
+      if (kpisNormalizados[claveNormalizada] !== undefined) {
+        kpisNormalizados[claveNormalizada] += Number(value);
+      } else {
+        kpisNormalizados[claveNormalizada] = Number(value);
+      }
+    }
+    
+    return kpisNormalizados;
+  }
+
   onSelectPedido(p: IPedido): void {
     this.pedidoSeleccionado = p;
     this.detalleSeleccionado = null;
     this.loadingDetalle = true;
+    // Marcar la fila seleccionada inmediatamente
+    this.markSelectedRow();
     this.pedidosService.getDetalle(p.id).subscribe({
       next: (detalle) => {
         this.detalleSeleccionado = detalle;
         this.loadingDetalle = false;
+        // Volver a marcar después de cargar el detalle
+        this.markSelectedRow();
       },
       error: () => {
         this.loadingDetalle = false;
@@ -511,12 +639,30 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
 
   /** Normaliza el valor de estado (API/BD) a la clave usada por iconos y etiquetas. */
   private normalizarEstadoClave(estado: string | undefined | null): string {
-    const raw = (estado ?? '').toString().trim();
+    if (!estado) return 'sin_estado';
+    
+    const raw = estado.toString().trim();
     if (!raw) return 'sin_estado';
-    const v = raw.toLowerCase();
+    
+    // Si ya es una clave normalizada (existe en ESTADO_ICONS), devolverla directamente
     if (ESTADO_ICONS[raw]) return raw;
+    
+    // Intentar con minúsculas
+    const v = raw.toLowerCase();
     if (ESTADO_ICONS[v]) return v;
-    return ESTADO_CODIGO_TO_KEY[raw] ?? ESTADO_CODIGO_TO_KEY[v] ?? ESTADO_CODIGO_TO_KEY[raw.toUpperCase()] ?? 'sin_estado';
+    
+    // Buscar en el mapeo de códigos (intentar minúsculas, original, y mayúsculas)
+    const mapeoMinusculas = ESTADO_CODIGO_TO_KEY[v];
+    if (mapeoMinusculas) return mapeoMinusculas;
+    
+    const mapeoOriginal = ESTADO_CODIGO_TO_KEY[raw];
+    if (mapeoOriginal) return mapeoOriginal;
+    
+    const mapeoMayusculas = ESTADO_CODIGO_TO_KEY[raw.toUpperCase()];
+    if (mapeoMayusculas) return mapeoMayusculas;
+    
+    // Si no se encuentra en el mapeo, devolver como sin_estado
+    return 'sin_estado';
   }
 
   getEstadoIcon(estado: string | undefined): string {
@@ -623,5 +769,84 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
     if (!fecha) return '−';
     const d = typeof fecha === 'string' ? new Date(fecha) : fecha;
     return isNaN(d.getTime()) ? String(fecha) : d.toISOString().split('T')[0];
+  }
+
+  /** KPI: Total de documentos (suma de todos los estados) */
+  getKpiTotalDocumentos(): number {
+    if (!this.kpisByEstado || Object.keys(this.kpisByEstado).length === 0) {
+      return 0;
+    }
+    return Object.values(this.kpisByEstado).reduce((sum, count) => sum + (Number(count) || 0), 0);
+  }
+
+  /** KPI: Documentos pendientes de integrar */
+  getKpiPendientes(): number {
+    if (!this.kpisByEstado) return 0;
+    return Number(this.kpisByEstado['sin_integrar'] ?? 0);
+  }
+
+  /** KPI: Documentos integrados correctamente */
+  getKpiIntegrados(): number {
+    if (!this.kpisByEstado) return 0;
+    return Number(this.kpisByEstado['integrado'] ?? 0);
+  }
+
+  /** KPI: Documentos integrados con incidencia */
+  getKpiIntegradosConIncidencia(): number {
+    if (!this.kpisByEstado) return 0;
+    return Number(this.kpisByEstado['integrado_con_incidencia'] ?? 0);
+  }
+
+  /** KPI: Documentos no integrados por incidencia */
+  getKpiNoIntegradosPorIncidencia(): number {
+    if (!this.kpisByEstado) return 0;
+    return Number(this.kpisByEstado['no_integrado_por_incidencia'] ?? 0);
+  }
+
+  /** KPI: Documentos en proceso de integración */
+  getKpiEnProceso(): number {
+    if (!this.kpisByEstado) return 0;
+    return Number(this.kpisByEstado['integrandose'] ?? 0);
+  }
+
+  /**
+   * Maneja el click en un KPI para filtrar por estado.
+   * Si se hace click en el mismo KPI, se quita el filtro.
+   */
+  onKpiClick(estadoClave: string | null): void {
+    if (this.estadoFiltroActivo === estadoClave) {
+      // Si se hace click en el mismo KPI, quitar el filtro
+      this.estadoFiltroActivo = null;
+    } else {
+      // Aplicar nuevo filtro
+      this.estadoFiltroActivo = estadoClave;
+    }
+    
+    // Resetear a la primera página y recargar
+    this.currentPage = 1;
+    this.loadPedidos();
+  }
+
+  /**
+   * Verifica si un estado está actualmente filtrado.
+   */
+  isEstadoFiltrado(estadoClave: string | null): boolean {
+    return this.estadoFiltroActivo === estadoClave;
+  }
+
+  /**
+   * Limpia el filtro de estado activo.
+   */
+  limpiarFiltroEstado(): void {
+    this.estadoFiltroActivo = null;
+    this.currentPage = 1;
+    this.loadPedidos();
+  }
+
+  /**
+   * Alterna el estado de colapso de los KPIs.
+   */
+  toggleKpisColapsados(): void {
+    this.kpisColapsados = !this.kpisColapsados;
   }
 }

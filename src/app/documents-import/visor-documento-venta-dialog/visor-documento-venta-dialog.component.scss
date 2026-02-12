@@ -62,8 +62,72 @@
   }
 
   .visor-tabla-lineas {
-    overflow-x: auto;
     font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    
+    // Configurar el contenedor de la tabla para que maneje el scroll correctamente
+    ::ng-deep .table-container {
+      display: block;
+      height: auto;
+    }
+    
+    // Configurar .table-responsive para scroll vertical y horizontal siempre visible
+    // Eliminar altura fija del componente Core (78vh) para que se ajuste al contenido
+    ::ng-deep .table-responsive {
+      height: auto !important;
+      min-height: auto !important;
+      max-height: none !important; // Sin altura máxima para que no quede espacio en blanco
+      overflow-y: auto !important; // Scroll vertical cuando sea necesario
+      overflow-x: scroll !important; // Scroll horizontal siempre visible
+      display: block !important;
+      position: relative !important;
+    }
+    
+    // El header NO debe ser sticky, debe desplazarse normalmente
+    ::ng-deep thead {
+      position: relative !important; // NO sticky, se desplaza con el contenido
+      top: auto !important;
+      z-index: 1 !important;
+    }
+    
+    // Asegurar que la tabla se ajuste al contenido sin espacio en blanco
+    ::ng-deep .table {
+      margin-bottom: 0 !important;
+      display: table !important;
+      height: auto !important;
+    }
+    
+    // Asegurar que tbody no tenga altura fija
+    ::ng-deep tbody {
+      height: auto !important;
+    }
+    
+    // Estilos para scrollbar horizontal siempre visible
+    ::ng-deep .table-responsive {
+      scrollbar-width: thin; // Para Firefox
+      scrollbar-color: #c1c1c1 #f1f1f1; // thumb track
+    }
+    
+    // Estilos webkit para scrollbars (horizontal y vertical)
+    ::ng-deep .table-responsive::-webkit-scrollbar {
+      height: 12px; // Altura para scrollbar horizontal
+      width: 8px; // Ancho para scrollbar vertical
+    }
+    
+    ::ng-deep .table-responsive::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+    
+    ::ng-deep .table-responsive::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+      
+      &:hover {
+        background: #a8a8a8;
+      }
+    }
 
     .table {
       margin-bottom: 0;

@@ -105,6 +105,8 @@ export interface IPedido {
   idPedidoTipoERP?: string;
   /** Pedidos.IdDocumentoPDA (código alfanumérico del documento, ej. P11-00078) */
   idDocumentoPDA?: string;
+  /** Nombre de la empresa a la que pertenece el pedido */
+  nombreEmpresa?: string;
   agenteDatos?: IPedidoAgenteDatos;
   totales?: {
     idPedidosTotalOPT?: number;
@@ -142,6 +144,8 @@ export interface IPedidoDetalle extends IPedido {
   observaciones?: string;
   observacionesComerciales?: string;
   observacionesReparto?: string;
+  /** Nombre de la empresa a la que pertenece el pedido */
+  nombreEmpresa?: string;
   /** Datos del cliente comprador (desde Clientes). */
   clienteDatos?: IPedidoClienteDatos;
   /** Datos de dirección (columnas del pedido). */

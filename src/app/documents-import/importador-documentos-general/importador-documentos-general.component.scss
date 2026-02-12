@@ -1,11 +1,462 @@
 @import "src/styles.scss";
 
 .importador-documentos {
+  /* Barra superior sticky con controles */
+  .sticky-top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    margin-bottom: 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    .sticky-control-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      font-size: 13px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      border: 1px solid #dee2e6;
+
+      &:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-color: #adb5bd;
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      i {
+        transition: transform 0.3s ease;
+      }
+    }
+
+    .sticky-control-label {
+      white-space: nowrap;
+      font-size: 13px;
+      margin-bottom: 0;
+      color: #495057;
+      font-weight: 600;
+    }
+  }
+
+  /* KPIs del Header - Diseño Mejorado */
+  .header-kpis {
+    margin-bottom: 16px;
+
+    .kpis-header-controls {
+      padding: 8px 12px;
+      background: white;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid #dee2e6;
+      border-bottom: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+      transition: border-radius 0.3s ease, margin-bottom 0.3s ease;
+      margin-bottom: 0;
+
+      &.kpis-header-collapsed {
+        border-radius: 8px;
+        border-bottom: 1px solid #dee2e6;
+        margin-bottom: 0;
+      }
+
+      .btn {
+        padding: 4px 12px;
+        font-size: 12px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+
+        i {
+          transition: transform 0.3s ease;
+        }
+
+        &:hover {
+          background-color: #f8f9fa;
+          transform: translateY(-1px);
+        }
+      }
+    }
+
+    .kpis-content {
+      background: white;
+      border-radius: 0 0 12px 12px;
+      border: 1px solid #dee2e6;
+      border-top: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                  opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  margin 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 1000px;
+      opacity: 1;
+
+      &.kpis-collapsed {
+        max-height: 0;
+        opacity: 0;
+        padding: 0;
+        margin: 0;
+        border: none;
+        box-shadow: none;
+        overflow: hidden;
+
+        .kpi-filter-indicator {
+          display: none;
+        }
+      }
+    }
+
+    .kpis-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .kpis-grid {
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+
+      .kpi-card {
+        position: relative;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+
+        &.kpi-card-active {
+          border: 2px solid #3f51b5;
+          box-shadow: 0 4px 16px rgba(63, 81, 181, 0.3);
+          transform: translateY(-2px);
+
+          .kpi-accent {
+            width: 100% !important;
+          }
+        }
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+          
+          .kpi-icon {
+            transform: scale(1.05) rotate(3deg);
+          }
+
+          .kpi-accent {
+            width: 100%;
+          }
+        }
+
+        .kpi-card-inner {
+          padding: 12px;
+          position: relative;
+          z-index: 2;
+        }
+
+        .kpi-header {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          margin-bottom: 10px;
+        }
+
+        .kpi-icon-wrapper {
+          flex-shrink: 0;
+        }
+
+        .kpi-icon {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 8px;
+          font-size: 1.25rem;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+          position: relative;
+          overflow: hidden;
+
+          // Efecto de brillo sutil
+          &::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+            opacity: 0;
+          }
+
+          &:hover::before {
+            opacity: 1;
+            animation: shine 0.6s ease-in-out;
+          }
+
+          &.kpi-total {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+          }
+
+          &.kpi-pending {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+          }
+
+          &.kpi-success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+          }
+
+          &.kpi-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+            color: white;
+          }
+
+          &.kpi-error {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
+          }
+
+          &.kpi-processing {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+            color: white;
+            
+            i {
+              animation: rotate 2s linear infinite;
+            }
+          }
+        }
+
+        .kpi-label {
+          font-size: 11px;
+          color: #6c757d;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.3px;
+          line-height: 1.3;
+          flex: 1;
+          text-align: right;
+          margin-top: 2px;
+        }
+
+        .kpi-value-wrapper {
+          margin-top: 4px;
+        }
+
+        .kpi-value {
+          font-size: 24px;
+          font-weight: 800;
+          color: #212529;
+          line-height: 1.1;
+          letter-spacing: -0.5px;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+          transition: color 0.3s ease;
+
+          &.kpi-value-zero {
+            color: #adb5bd;
+            opacity: 0.7;
+          }
+        }
+
+        // Barra de acento inferior animada
+        .kpi-accent {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          height: 4px;
+          width: 0;
+          transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          border-radius: 0 0 12px 12px;
+          box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+
+          &.kpi-accent-active {
+            width: 100% !important;
+          }
+
+          &.kpi-accent-total {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+          }
+
+          &.kpi-accent-pending {
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+          }
+
+          &.kpi-accent-success {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+          }
+
+          &.kpi-accent-warning {
+            background: linear-gradient(90deg, #ffc107 0%, #ff9800 100%);
+          }
+
+          &.kpi-accent-error {
+            background: linear-gradient(90deg, #f44336 0%, #d32f2f 100%);
+          }
+
+          &.kpi-accent-processing {
+            background: linear-gradient(90deg, #30cfd0 0%, #330867 100%);
+          }
+        }
+
+        // Estados específicos de las tarjetas
+        &.kpi-card-total {
+          &:hover {
+            .kpi-accent-total {
+              width: 100%;
+            }
+          }
+        }
+
+        &.kpi-card-pending {
+          &:hover {
+            .kpi-accent-pending {
+              width: 100%;
+            }
+          }
+        }
+
+        &.kpi-card-success {
+          &:hover {
+            .kpi-accent-success {
+              width: 100%;
+            }
+          }
+        }
+
+        &.kpi-card-warning {
+          &:hover {
+            .kpi-accent-warning {
+              width: 100%;
+            }
+          }
+        }
+
+        &.kpi-card-error {
+          &:hover {
+            .kpi-accent-error {
+              width: 100%;
+            }
+          }
+        }
+
+        &.kpi-card-processing {
+          &:hover {
+            .kpi-accent-processing {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+
+    // Animaciones
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes shine {
+      0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+      }
+      100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+      }
+    }
+
+    // Responsive: en pantallas pequeñas, las tarjetas ocupan todo el ancho
+    @media (max-width: 768px) {
+      .kpis-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 10px;
+
+        .kpi-card {
+          .kpi-value {
+            font-size: 22px;
+          }
+
+          .kpi-icon {
+            width: 36px;
+            height: 36px;
+            font-size: 1.1rem;
+          }
+        }
+      }
+    }
+
+    // Responsive: en pantallas medianas, 2 columnas
+    @media (min-width: 769px) and (max-width: 1200px) {
+      .kpis-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+    }
+
+    // Indicador de filtro activo
+    .kpi-filter-indicator {
+      padding: 12px 16px;
+      background: #e3f2fd;
+      border: 1px solid #90caf9;
+      border-radius: 0 0 8px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0 !important;
+
+      .btn {
+        padding: 4px 12px;
+        font-size: 12px;
+      }
+    }
+  }
+
   .documents-grid {
     // No tener overflow aquí, dejar que .table-responsive maneje el scroll
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    
+    // Estilo para la fila del pedido seleccionado
+    ::ng-deep tbody tr.pedido-seleccionado {
+      background-color: #e3f2fd !important; // Azul claro para resaltar
+      border-left: 4px solid #2196f3 !important; // Borde azul a la izquierda
+      
+      &:hover {
+        background-color: #bbdefb !important; // Azul más oscuro al hacer hover
+      }
+      
+      td {
+        background-color: transparent !important; // Asegurar que las celdas hereden el fondo
+      }
+    }
     
     // Sobrescribir la altura fija de .table-responsive del componente Core
     // El scroll debe estar en .table-responsive para que thead sticky funcione
@@ -164,29 +615,50 @@
     .col-error { max-width: 200px; font-size: 11px; }
   }
 
-  /* Semáforo visual - Estados de integración */
-  .estado-blanco {
-    color: #6c757d;
+  /* Semáforo visual - Estados de integración (coinciden con los KPIs) */
+  .estado-pending {
+    color: #f5576c; // Rosa - coincide con kpi-pending
   }
 
-  .estado-verde {
-    color: #198754;
+  .estado-success {
+    color: #4facfe; // Azul - coincide con kpi-success
   }
 
-  .estado-rojo {
-    color: #dc3545;
+  .estado-error {
+    color: #f44336; // Rojo - coincide con kpi-error
   }
 
-  .estado-amarillo {
-    color: #ffc107;
+  .estado-warning {
+    color: #ff9800; // Naranja - coincide con kpi-warning
   }
 
-  .estado-azul {
-    color: #0d6efd;
+  .estado-processing {
+    color: #30cfd0; // Teal - coincide con kpi-processing
   }
 
   .estado-cian {
     color: #0dcaf0;
+  }
+
+  // Mantener clases antiguas para compatibilidad (deprecated)
+  .estado-blanco {
+    color: #f5576c; // Ahora usa el mismo color que pending
+  }
+
+  .estado-verde {
+    color: #4facfe; // Ahora usa el mismo color que success
+  }
+
+  .estado-rojo {
+    color: #f44336; // Ahora usa el mismo color que error
+  }
+
+  .estado-amarillo {
+    color: #ff9800; // Ahora usa el mismo color que warning
+  }
+
+  .estado-azul {
+    color: #30cfd0; // Ahora usa el mismo color que processing
   }
 
   /* Barra de Leyenda */
