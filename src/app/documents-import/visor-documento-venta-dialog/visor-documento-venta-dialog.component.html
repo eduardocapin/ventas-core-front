@@ -17,6 +17,25 @@
     </div>
 
     <ng-container *ngIf="!loading && !loadError && detalle">
+      <!-- Estado de integración (si hay errores o estado especial) -->
+      <section class="visor-section visor-estado-integracion" *ngIf="detalle.estadoIntegracion || detalle.mensajeErrorIntegracion || pedido.errorIntegracion">
+        <h3 class="visor-section-title">
+          <i class="bi bi-info-circle me-2"></i>{{ 'importadorDocumentos.visor.estadoIntegracion' | translate }}
+        </h3>
+        <div class="visor-field-grid">
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.estado' | translate }}</label>
+            <span class="visor-estado-badge" [class]="getEstadoClass(detalle.estadoIntegracion || pedido.estadoIntegracion)">
+              {{ getEstadoDescripcion(detalle.estadoIntegracion || pedido.estadoIntegracion) }}
+            </span>
+          </div>
+          <div class="visor-field visor-field-full" *ngIf="detalle.mensajeErrorIntegracion || pedido.errorIntegracion">
+            <label>{{ 'importadorDocumentos.visor.mensajeError' | translate }}</label>
+            <span class="visor-error-message">{{ v(detalle.mensajeErrorIntegracion || pedido.errorIntegracion) }}</span>
+          </div>
+        </div>
+      </section>
+
       <!-- Datos cliente (desde Clientes: Cod_Cliente_Fabricante = IdClienteFabricante) -->
       <section class="visor-section">
         <h3 class="visor-section-title">{{ 'importadorDocumentos.visor.datosCliente' | translate }}</h3>
@@ -72,6 +91,25 @@
         </div>
       </section>
 
+      <!-- Datos agente (desde Clientes: Cod_Agente_Fabricante = Id) -->
+      <section class="visor-section" *ngIf="detalle.agenteDatos || pedido.agenteDatos || pedido.nombreAgente || pedido.codigoAgente">
+        <h3 class="visor-section-title">{{ 'importadorDocumentos.visor.datosAgente' | translate }}</h3>
+        <div class="visor-field-grid">
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.codigoAgente' | translate }}</label>
+            <span>{{ v(detalle.agenteDatos?.codigoAgenteFabricante ?? pedido.codigoAgente) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.nombreAgente' | translate }}</label>
+            <span>{{ v(detalle.agenteDatos?.nombre ?? pedido.nombreAgente ?? pedido.agente) }}</span>
+          </div>
+          <div class="visor-field">
+            <label>{{ 'importadorDocumentos.visor.codigoAgenteERP' | translate }}</label>
+            <span>{{ v(detalle.agenteDatos?.codigoAgenteERP) }}</span>
+          </div>
+        </div>
+      </section>
+
       <!-- Datos dirección (desde Pedidos: Cliente_Direc, Cliente_Pobla, Cliente_Provin, Cliente_DP, Cliente_Telefono, etc.) -->
       <section class="visor-section">
         <h3 class="visor-section-title">{{ 'importadorDocumentos.visor.datosDireccion' | translate }}</h3>
@@ -117,7 +155,7 @@
           </div>
           <div class="visor-field">
             <label>{{ 'importadorDocumentos.visor.formaPago' | translate }}</label>
-            <span>{{ v() }}</span>
+            <span>{{ v(detalle.formaPago) }}</span>
           </div>
           <div class="visor-field">
             <label>{{ 'importadorDocumentos.visor.tipoVen' | translate }}</label>
@@ -128,28 +166,28 @@
             <span>{{ v(pedido.nombreEmpresa || detalle?.nombreEmpresa) }}</span>
           </div>
           <div class="visor-field">
-            <label>{{ 'importadorDocumentos.visor.subtipoVen' | translate }}</label>
-            <span>{{ v() }}</span>
-          </div>
-          <div class="visor-field">
             <label>{{ 'importadorDocumentos.visor.fEntrega' | translate }}</label>
             <span>{{ formatFecha(pedido.fechaEntrega) }}</span>
           </div>
           <div class="visor-field">
-            <label>{{ 'importadorDocumentos.visor.refDocum' | translate }}</label>
-            <span>{{ v() }}</span>
+            <label>{{ 'importadorDocumentos.visor.numDocum' | translate }}</label>
+            <span>{{ v(pedido.codigoDocumento || pedido.numero || detalle.numero) }}</span>
           </div>
           <div class="visor-field">
-            <label>{{ 'importadorDocumentos.visor.numDocum' | translate }}</label>
-            <span>{{ v(pedido.codigoDocumento || pedido.numero) }}</span>
+            <label>{{ 'importadorDocumentos.visor.delegacion' | translate }}</label>
+            <span>{{ v(detalle.delegacion || pedido.delegacion) }}</span>
           </div>
           <div class="visor-field visor-field-full">
             <label>{{ 'importadorDocumentos.visor.notas' | translate }}</label>
             <span>{{ v(detalle.observaciones || pedido.nota) }}</span>
           </div>
           <div class="visor-field visor-field-full">
+            <label>{{ 'importadorDocumentos.visor.notasComerciales' | translate }}</label>
+            <span>{{ v(detalle.observacionesComerciales) }}</span>
+          </div>
+          <div class="visor-field visor-field-full">
             <label>{{ 'importadorDocumentos.visor.notasLogisticas' | translate }}</label>
-            <span>{{ v() }}</span>
+            <span>{{ v(detalle.observacionesReparto) }}</span>
           </div>
         </div>
       </section>
@@ -194,11 +232,17 @@
           </div>
           <div class="visor-total-item">
             <span class="visor-total-label">{{ 'importadorDocumentos.visor.iva' | translate }}</span>
-            <span class="visor-total-value">{{ formatNum(totales?.ivaCuota) }}</span>
+            <span class="visor-total-value">
+              {{ formatNum(totales?.ivaCuota) }}
+              <span class="visor-total-porcentaje" *ngIf="totales?.ivaPor">({{ formatPorcentaje(totales?.ivaPor) }})</span>
+            </span>
           </div>
           <div class="visor-total-item">
             <span class="visor-total-label">{{ 'importadorDocumentos.visor.reEquiv' | translate }}</span>
-            <span class="visor-total-value">{{ formatNum(totales?.reCuota) }}</span>
+            <span class="visor-total-value">
+              {{ formatNum(totales?.reCuota) }}
+              <span class="visor-total-porcentaje" *ngIf="totales?.rePor">({{ formatPorcentaje(totales?.rePor) }})</span>
+            </span>
           </div>
           <div class="visor-total-item visor-total-final">
             <span class="visor-total-label">{{ 'importadorDocumentos.visor.total' | translate }}</span>

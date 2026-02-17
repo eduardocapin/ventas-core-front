@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center justify-content-start ">
-    <img *ngIf="!isBootstrapIcon && icon" [src]="icon" alt="{{title}}" class="icon-title p-0 " src="assets/images/iconos/dashboard-icon-dark.svg" />
+    <img *ngIf="!isBootstrapIcon && icon" [src]="icon" [alt]="title" class="icon-title p-0" />
     <i *ngIf="isBootstrapIcon" class="bi bi-{{ icon }} me-2 title-icon dark-gray"></i>
     <h1 class="mb-0 ps-2 dark-gray page-heading">{{title}}</h1>
   </div>

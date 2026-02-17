@@ -438,6 +438,15 @@ export const translationsEN = {
   'importadorDocumentos.visor.iva': 'VAT',
   'importadorDocumentos.visor.reEquiv': 'Equiv. surcharge',
   'importadorDocumentos.visor.total': 'Total',
+  'importadorDocumentos.visor.datosAgente': 'Agent data',
+  'importadorDocumentos.visor.codigoAgente': 'Agent code',
+  'importadorDocumentos.visor.nombreAgente': 'Agent name',
+  'importadorDocumentos.visor.codigoAgenteERP': 'Agent ERP code',
+  'importadorDocumentos.visor.estadoIntegracion': 'Integration status',
+  'importadorDocumentos.visor.estado': 'Status',
+  'importadorDocumentos.visor.mensajeError': 'Error message',
+  'importadorDocumentos.visor.notasComerciales': 'Commercial notes',
+  'importadorDocumentos.visor.delegacion': 'Delegation',
 
   // Client - Contacts and Addresses
   'clientContacts.title': 'Contacts',

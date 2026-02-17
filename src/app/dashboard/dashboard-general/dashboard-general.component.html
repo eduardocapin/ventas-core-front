@@ -1,15 +1,191 @@
-<div class="background-light-gray">
-  <div class="d-flex flex-column gap-2 justify-content-between align-items-center p-2 titulo bg-white">
-    <!-- titulo y icono -->
-    <mobentis-page-title [icon]="'assets/images/iconos/dashboard-icon-dark.svg'" [title]="'dashboard.title' | translate"></mobentis-page-title>
-    
-    <!-- Selector de empresas -->
-    <div class="mt-3">
-      <mobentis-empresa-dropdown 
-        [forceShow]="true"
-        (empresasChange)="onEmpresasChange($event)">
-      </mobentis-empresa-dropdown>
+<div class="background-light-gray screen dashboard-screen">
+  <!-- Barra superior sticky: selector empresa (izquierda) y ocultación KPIs (derecha) -->
+  <div class="sticky-top-bar">
+    <div class="p-3">
+      <div class="d-flex justify-content-between align-items-center gap-3">
+        <div class="d-flex align-items-center gap-2 flex-grow-1 flex-wrap">
+          <label class="mb-0 text-muted small fw-semibold sticky-control-label">
+            {{ 'importadorDocumentos.empresa' | translate }}:
+          </label>
+          <mobentis-empresa-dropdown
+            [forceShow]="true"
+            (empresasChange)="onEmpresasChange($event)">
+          </mobentis-empresa-dropdown>
+          <span class="text-muted small mx-2">|</span>
+          <label class="mb-0 text-muted small fw-semibold sticky-control-label">Periodo:</label>
+          <mat-form-field appearance="outline" class="dashboard-date-field" subscriptSizing="dynamic">
+            <mat-label>Desde</mat-label>
+            <input matInput [matDatepicker]="pickerDesde" [(ngModel)]="fechaDesde" (dateChange)="onRangoFechasChange()">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerDesde"></mat-datepicker-toggle>
+            <mat-datepicker #pickerDesde></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="dashboard-date-field" subscriptSizing="dynamic">
+            <mat-label>Hasta</mat-label>
+            <input matInput [matDatepicker]="pickerHasta" [(ngModel)]="fechaHasta" (dateChange)="onRangoFechasChange()">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerHasta"></mat-datepicker-toggle>
+            <mat-datepicker #pickerHasta></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <button
+          class="btn btn-sm btn-outline-secondary sticky-control-btn"
+          (click)="toggleKpisColapsados()"
+          [title]="(kpisColapsados ? 'importadorDocumentos.kpi.expand' : 'importadorDocumentos.kpi.collapse') | translate">
+          <i class="bi bi-bar-chart-fill me-1"></i>
+          <i class="bi" [class.bi-chevron-down]="!kpisColapsados" [class.bi-chevron-up]="kpisColapsados"></i>
+          <span class="ms-1 d-none d-sm-inline">{{ (kpisColapsados ? 'importadorDocumentos.kpi.expand' : 'importadorDocumentos.kpi.collapse') | translate }}</span>
+        </button>
+      </div>
     </div>
   </div>
-  
+
+  <div class="p-3">
+    <div class="dashboard-page-header">
+      <mobentis-page-title icon="bar-chart-line" [isBootstrapIcon]="true" [title]="'dashboard.title' | translate"></mobentis-page-title>
+    </div>
+
+    <!-- KPIs (estilo importador: título Indicadores y bloque colapsable) -->
+    <div class="header-kpis mt-4 mb-4">
+      <div class="kpis-header-controls d-flex justify-content-between align-items-center"
+           [class.kpis-header-collapsed]="kpisColapsados">
+        <h6 class="mb-0 text-muted small fw-semibold">
+          <i class="bi bi-bar-chart-fill me-1"></i>
+          {{ 'importadorDocumentos.kpi.title' | translate }}
+        </h6>
+      </div>
+      <div class="kpis-content" [class.kpis-collapsed]="kpisColapsados">
+        <div class="dashboard-kpis">
+        <div class="dashboard-kpis-grid">
+        <div class="dashboard-kpi-card dashboard-kpi-clientes"
+             (click)="scrollToGrafica(sectionIdClientes)"
+             [title]="'Ir a Top 10 Clientes'">
+          <div class="dashboard-kpi-card-inner">
+            <div class="dashboard-kpi-header">
+              <div class="dashboard-kpi-icon-wrapper">
+                <div class="dashboard-kpi-icon kpi-clientes"><i class="bi bi-people-fill"></i></div>
+              </div>
+              <div class="dashboard-kpi-label-wrap">
+                <div class="dashboard-kpi-label">Top 10 Clientes</div>
+                <div class="dashboard-kpi-sublabel">Suma total del valor de la gráfica</div>
+              </div>
+            </div>
+            <div class="dashboard-kpi-value-wrapper">
+              <span class="dashboard-kpi-value-label">Total:</span>
+              <span class="dashboard-kpi-value" [class.kpi-value-zero]="totalValorClientesNum === 0">{{ formatTotal(totalValorClientesNum) }}</span>
+            </div>
+          </div>
+          <div class="dashboard-kpi-accent kpi-accent-clientes"></div>
+        </div>
+        <div class="dashboard-kpi-card dashboard-kpi-productos"
+             (click)="scrollToGrafica(sectionIdProductos)"
+             [title]="'Ir a Top 10 Productos'">
+          <div class="dashboard-kpi-card-inner">
+            <div class="dashboard-kpi-header">
+              <div class="dashboard-kpi-icon-wrapper">
+                <div class="dashboard-kpi-icon kpi-productos"><i class="bi bi-box-seam-fill"></i></div>
+              </div>
+              <div class="dashboard-kpi-label-wrap">
+                <div class="dashboard-kpi-label">Top 10 Productos</div>
+                <div class="dashboard-kpi-sublabel">Suma total del valor de la gráfica</div>
+              </div>
+            </div>
+            <div class="dashboard-kpi-value-wrapper">
+              <span class="dashboard-kpi-value-label">Total:</span>
+              <span class="dashboard-kpi-value" [class.kpi-value-zero]="totalValorProductosNum === 0">{{ formatTotal(totalValorProductosNum) }}</span>
+            </div>
+          </div>
+          <div class="dashboard-kpi-accent kpi-accent-productos"></div>
+        </div>
+        <div class="dashboard-kpi-card dashboard-kpi-pedidos"
+             (click)="scrollToGrafica(sectionIdPedidos)"
+             [title]="'Ir a Top 10 Pedidos'">
+          <div class="dashboard-kpi-card-inner">
+            <div class="dashboard-kpi-header">
+              <div class="dashboard-kpi-icon-wrapper">
+                <div class="dashboard-kpi-icon kpi-pedidos"><i class="bi bi-cart-check-fill"></i></div>
+              </div>
+              <div class="dashboard-kpi-label-wrap">
+                <div class="dashboard-kpi-label">Top 10 Pedidos</div>
+                <div class="dashboard-kpi-sublabel">Suma total del valor de la gráfica</div>
+              </div>
+            </div>
+            <div class="dashboard-kpi-value-wrapper">
+              <span class="dashboard-kpi-value-label">Total:</span>
+              <span class="dashboard-kpi-value" [class.kpi-value-zero]="totalValorPedidosNum === 0">{{ formatTotal(totalValorPedidosNum) }}</span>
+            </div>
+          </div>
+          <div class="dashboard-kpi-accent kpi-accent-pedidos"></div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Gráficas en vertical (barras verticales, una por fila para más claridad) -->
+  <div class="container-fluid mt-2 mb-4 p-3">
+    <div class="row g-4">
+      <!-- Top 10 Clientes -->
+      <div class="col-12" [id]="sectionIdClientes">
+        <div class="card dashboard-grafica-card">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title mb-3">Top 10 Clientes por Valor</h5>
+            <div class="dashboard-grafica-wrap">
+              <mobentis-grafica-barra-vertical
+                *ngIf="clientesCategorias.length > 0 && clientesValores.length > 0"
+                [titulo]="'Top 10 Clientes por Valor'"
+                [categorias]="clientesCategorias"
+                [valores]="clientesValores"
+                [elementoId]="graficaClientesId">
+              </mobentis-grafica-barra-vertical>
+              <div *ngIf="clientesCategorias.length === 0" class="d-flex align-items-center justify-content-center dashboard-grafica-empty">
+                <p class="text-muted mb-0">No hay datos disponibles</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top 10 Productos -->
+      <div class="col-12" [id]="sectionIdProductos">
+        <div class="card dashboard-grafica-card">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title mb-3">Top 10 Productos por Valor</h5>
+            <div class="dashboard-grafica-wrap">
+              <mobentis-grafica-barra-vertical
+                *ngIf="productosCategorias.length > 0 && productosValores.length > 0"
+                [titulo]="'Top 10 Productos por Valor'"
+                [categorias]="productosCategorias"
+                [valores]="productosValores"
+                [elementoId]="graficaProductosId">
+              </mobentis-grafica-barra-vertical>
+              <div *ngIf="productosCategorias.length === 0" class="d-flex align-items-center justify-content-center dashboard-grafica-empty">
+                <p class="text-muted mb-0">No hay datos disponibles</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top 10 Pedidos -->
+      <div class="col-12" [id]="sectionIdPedidos">
+        <div class="card dashboard-grafica-card">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title mb-3">Top 10 Pedidos por Valor</h5>
+            <div class="dashboard-grafica-wrap">
+              <mobentis-grafica-barra-vertical
+                *ngIf="pedidosCategorias.length > 0 && pedidosValores.length > 0"
+                [titulo]="'Top 10 Pedidos por Valor'"
+                [categorias]="pedidosCategorias"
+                [valores]="pedidosValores"
+                [elementoId]="graficaPedidosId">
+              </mobentis-grafica-barra-vertical>
+              <div *ngIf="pedidosCategorias.length === 0" class="d-flex align-items-center justify-content-center dashboard-grafica-empty">
+                <p class="text-muted mb-0">No hay datos disponibles</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

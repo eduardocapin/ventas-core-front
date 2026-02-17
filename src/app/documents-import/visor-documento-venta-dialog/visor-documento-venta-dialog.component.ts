@@ -5,6 +5,30 @@ import { IPedido, IPedidoDetalle, IPedidoLinea } from '../pedido.model';
 import { ITableColumn } from 'src/app/models/tableColumn.model';
 import { TranslationService } from 'src/app/core/services/i18n/translation.service';
 
+const ESTADO_LABELS: Record<string, string> = {
+  sin_integrar: 'Sin integrar',
+  integrandose: 'Integrándose',
+  integrado: 'Integrado',
+  integrado_con_incidencia: 'Int. con incidencia',
+  no_integrado_por_incidencia: 'No int. por incidencia',
+  pendiente_servir: 'Pendiente de servir',
+  sin_estado: 'Sin estado',
+};
+
+/**
+ * Códigos de la BD (EstadoImportacion) → clave para icono/etiqueta.
+ * I1 Sin integrar | I2 Integrándose | I3 Integrado | I4 No int. por incidencia | I6 Int. con incidencia | IN Integrándose
+ */
+const ESTADO_CODIGO_TO_KEY: Record<string, string> = {
+  i1: 'sin_integrar',
+  i2: 'integrandose',
+  i3: 'integrado',
+  i4: 'no_integrado_por_incidencia',
+  i6: 'integrado_con_incidencia',
+  in: 'integrandose',
+  '': 'sin_estado',
+};
+
 export interface VisorDocumentoVentaData {
   pedido: IPedido;
 }
@@ -83,7 +107,45 @@ export class VisorDocumentoVentaDialogComponent implements OnInit {
   formatFecha(fecha: string | Date | undefined): string {
     if (!fecha) return '−';
     const d = typeof fecha === 'string' ? new Date(fecha) : fecha;
-    return isNaN(d.getTime()) ? '−' : d.toISOString().split('T')[0];
+    if (isNaN(d.getTime())) return '−';
+    // Formato dd/mm/yyyy
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+
+  formatPorcentaje(porcentaje: number | undefined | null): string {
+    if (porcentaje === undefined || porcentaje === null) return '';
+    return `${Number(porcentaje).toFixed(2)}%`;
+  }
+
+  getEstadoClass(estado: string | undefined | null): string {
+    if (!estado) return '';
+    const estadoLower = estado.toLowerCase();
+    if (estadoLower.includes('integrado') && !estadoLower.includes('incidencia')) {
+      return 'estado-verde';
+    }
+    if (estadoLower.includes('incidencia') || estadoLower.includes('error')) {
+      return 'estado-rojo';
+    }
+    if (estadoLower.includes('integrando')) {
+      return 'estado-azul';
+    }
+    if (estadoLower.includes('pendiente')) {
+      return 'estado-amarillo';
+    }
+    return '';
+  }
+
+  /**
+   * Convierte el código de estado (ej: "I3") a su descripción legible (ej: "Integrado").
+   */
+  getEstadoDescripcion(estado: string | undefined | null): string {
+    if (!estado) return 'Sin estado';
+    const estadoLower = estado.toLowerCase().trim();
+    const key = ESTADO_CODIGO_TO_KEY[estadoLower] || 'sin_estado';
+    return ESTADO_LABELS[key] || estado;
   }
 
   formatNum(n: number | undefined | null): string {

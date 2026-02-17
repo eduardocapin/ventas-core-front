@@ -168,10 +168,63 @@
     .visor-total-value {
       font-size: 13px;
       font-weight: 600;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .visor-total-porcentaje {
+      font-size: 11px;
+      font-weight: 400;
+      color: #6c757d;
     }
 
     &.visor-total-final .visor-total-value {
       font-size: 15px;
+      color: $color-primary;
     }
+  }
+
+  .visor-estado-integracion {
+    border-left: 4px solid #dee2e6;
+
+    &.visor-section {
+      background: #f8f9fa;
+    }
+  }
+
+  .visor-estado-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    &.estado-verde {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    &.estado-rojo {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    &.estado-azul {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+
+    &.estado-amarillo {
+      background: #fff3cd;
+      color: #856404;
+    }
+  }
+
+  .visor-error-message {
+    color: #721c24;
+    font-size: 12px;
+    line-height: 1.4;
   }
 }

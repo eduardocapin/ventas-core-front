@@ -20,6 +20,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { SharedModule } from '../core/shared/shared.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { SharedModule } from '../core/shared/shared.module';
     MatTooltipModule,
     SharedModule,
     MatDialogModule,
+    HttpClientModule,
   ],
   providers: [
 

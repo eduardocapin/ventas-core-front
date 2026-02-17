@@ -74,8 +74,11 @@ export class GraficaBarraVerticalComponent implements OnChanges, AfterViewInit, 
 
       const option: EChartsOption = {
         grid: {
-          bottom: 40,
+          bottom: 100,
           left: 50,
+          right: 30,
+          top: 50,
+          containLabel: false,
         },
         title: {
           text: this.titulo,
@@ -87,7 +90,8 @@ export class GraficaBarraVerticalComponent implements OnChanges, AfterViewInit, 
           },
         },
         tooltip: {
-          trigger: 'item',
+          trigger: 'axis',
+          axisPointer: { type: 'shadow' },
           valueFormatter: (value: any) => {
             if (typeof value === 'number') {
               return value.toLocaleString('es-ES');
@@ -98,6 +102,20 @@ export class GraficaBarraVerticalComponent implements OnChanges, AfterViewInit, 
         xAxis: {
           type: 'category',
           data: this.categorias,
+          axisLabel: {
+            show: true,
+            interval: 0,
+            rotate: 45,
+            fontSize: 11,
+            formatter: (value: string) => {
+              if (!value) return '';
+              return value.length > 25 ? value.substring(0, 25) + '...' : value;
+            },
+          },
+          axisTick: {
+            show: true,
+            alignWithLabel: true,
+          },
         },
         yAxis: {
           type: 'value',
@@ -135,7 +153,19 @@ export class GraficaBarraVerticalComponent implements OnChanges, AfterViewInit, 
   actualizarGrafica() {
     if (this.chart) {
       this.chart.setOption({
-        xAxis: { data: this.categorias },
+        xAxis: {
+          data: this.categorias,
+          axisLabel: {
+            show: true,
+            interval: 0,
+            rotate: 45,
+            fontSize: 11,
+            formatter: (value: string) => {
+              if (!value) return '';
+              return value.length > 25 ? value.substring(0, 25) + '...' : value;
+            },
+          },
+        },
         series: [{ data: this.valores }],
       });
     }

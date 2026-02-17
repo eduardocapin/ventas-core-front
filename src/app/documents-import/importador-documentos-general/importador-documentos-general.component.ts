@@ -107,6 +107,10 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
   estadoFiltroActivo: string | null = null; // Estado de filtro activo (clave normalizada)
   kpisColapsados = false; // Controla si los KPIs están colapsados
 
+  /** Rango de fechas para filtrar los pedidos. Por defecto: último año hasta hoy. */
+  fechaDesde: Date;
+  fechaHasta: Date;
+
   /** Columnas para mobentis-table (patrón Core). */
   tableColumns: ITableColumn[] = [];
   /** Columnas para la tabla de líneas del detalle (Core: mobentis-table). */
@@ -116,7 +120,12 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
     private pedidosService: PedidosImportadorService,
     private translation: TranslationService,
     private dialog: MatDialog,
-  ) {}
+  ) {
+    // Inicializar fechas por defecto: fecha actual para ambas
+    const hoy = new Date();
+    this.fechaDesde = hoy;
+    this.fechaHasta = hoy;
+  }
 
   ngOnInit(): void {
     this.buildTableColumns();
@@ -483,6 +492,34 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
     }
   }
 
+  /** Fecha "desde" en ISO (inicio del día en local). */
+  get fechaDesdeISO(): string {
+    return this.dateToISOStartOfDay(this.fechaDesde);
+  }
+
+  /** Fecha "hasta" en ISO (fin del día en local). */
+  get fechaHastaISO(): string {
+    return this.dateToISOEndOfDay(this.fechaHasta);
+  }
+
+  private dateToISOStartOfDay(d: Date): string {
+    const x = new Date(d);
+    x.setHours(0, 0, 0, 0);
+    return x.toISOString();
+  }
+
+  private dateToISOEndOfDay(d: Date): string {
+    const x = new Date(d);
+    x.setHours(23, 59, 59, 999);
+    return x.toISOString();
+  }
+
+  onRangoFechasChange(): void {
+    this.currentPage = 1;
+    this.loadPedidos();
+    this.loadKpis();
+  }
+
   loadPedidos(): void {
     // No cargar si aún estamos esperando a que el dropdown cargue las empresas
     if (this.esperandoEmpresas && !this.empresasInicializadas) {
@@ -492,7 +529,7 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
     this.loading = true;
     this.loadError = null;
     
-    // Preparar filtros incluyendo empresas seleccionadas y estado
+    // Preparar filtros incluyendo empresas seleccionadas, estado y fechas
     const filters: { [key: string]: any } = {};
     if (this.selectedEmpresasIds.length > 0) {
       filters['empresasIds'] = this.selectedEmpresasIds;
@@ -501,6 +538,14 @@ export class ImportadorDocumentosGeneralComponent implements OnInit, AfterViewIn
     // Agregar filtro de estado si hay uno activo
     if (this.estadoFiltroActivo) {
       filters['estadoImportacion'] = this.getCodigosEstadoParaFiltro(this.estadoFiltroActivo);
+    }
+    
+    // Agregar filtros de fecha
+    if (this.fechaDesde) {
+      filters['fechaDesde'] = this.fechaDesdeISO;
+    }
+    if (this.fechaHasta) {
+      filters['fechaHasta'] = this.fechaHastaISO;
     }
     
     this.pedidosService

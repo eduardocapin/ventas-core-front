@@ -3,8 +3,8 @@
   <div class="sticky-top-bar">
     <div class="p-3">
       <div class="d-flex justify-content-between align-items-center gap-3">
-        <!-- Selector de empresa con etiqueta -->
-        <div class="d-flex align-items-center gap-2 flex-grow-1">
+        <!-- Selector de empresa y filtro de fecha -->
+        <div class="d-flex align-items-center gap-2 flex-grow-1 flex-wrap">
           <label class="mb-0 text-muted small fw-semibold sticky-control-label">
             {{ 'importadorDocumentos.empresa' | translate }}:
           </label>
@@ -12,6 +12,20 @@
             [forceShow]="true"
             (empresasChange)="onEmpresasChange($event)">
           </mobentis-empresa-dropdown>
+          <span class="text-muted small mx-2">|</span>
+          <label class="mb-0 text-muted small fw-semibold sticky-control-label">Periodo:</label>
+          <mat-form-field appearance="outline" class="dashboard-date-field" subscriptSizing="dynamic">
+            <mat-label>Desde</mat-label>
+            <input matInput [matDatepicker]="pickerDesde" [(ngModel)]="fechaDesde" (dateChange)="onRangoFechasChange()">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerDesde"></mat-datepicker-toggle>
+            <mat-datepicker #pickerDesde></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="dashboard-date-field" subscriptSizing="dynamic">
+            <mat-label>Hasta</mat-label>
+            <input matInput [matDatepicker]="pickerHasta" [(ngModel)]="fechaHasta" (dateChange)="onRangoFechasChange()">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerHasta"></mat-datepicker-toggle>
+            <mat-datepicker #pickerHasta></mat-datepicker>
+          </mat-form-field>
         </div>
         
         <!-- Botón para colapsar/expandir KPIs -->

@@ -146,6 +146,8 @@ export interface IPedidoDetalle extends IPedido {
   observacionesReparto?: string;
   /** Nombre de la empresa a la que pertenece el pedido */
   nombreEmpresa?: string;
+  /** Nombre del medio de pago (desde MediosPago.NombreMedio) */
+  formaPago?: string;
   /** Datos del cliente comprador (desde Clientes). */
   clienteDatos?: IPedidoClienteDatos;
   /** Datos de dirección (columnas del pedido). */

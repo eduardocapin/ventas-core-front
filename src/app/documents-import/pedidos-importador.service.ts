@@ -63,6 +63,14 @@ export class PedidosImportadorService {
       body.estadoImportacion = selectedFilters['estadoImportacion'];
     }
     
+    // Añadir filtros de fecha si están presentes
+    if (selectedFilters?.['fechaDesde']) {
+      body.fechaDesde = selectedFilters['fechaDesde'];
+    }
+    if (selectedFilters?.['fechaHasta']) {
+      body.fechaHasta = selectedFilters['fechaHasta'];
+    }
+    
     return this.http.post<PedidosListResponse>(
       `${this.apiUrl}/list`,
       body,

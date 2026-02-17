@@ -438,6 +438,15 @@ export const translationsES = {
   'importadorDocumentos.visor.iva': 'IVA',
   'importadorDocumentos.visor.reEquiv': 'R. equiv.',
   'importadorDocumentos.visor.total': 'Total',
+  'importadorDocumentos.visor.datosAgente': 'Datos agente',
+  'importadorDocumentos.visor.codigoAgente': 'Código agente',
+  'importadorDocumentos.visor.nombreAgente': 'Nombre agente',
+  'importadorDocumentos.visor.codigoAgenteERP': 'Código agente ERP',
+  'importadorDocumentos.visor.estadoIntegracion': 'Estado de integración',
+  'importadorDocumentos.visor.estado': 'Estado',
+  'importadorDocumentos.visor.mensajeError': 'Mensaje de error',
+  'importadorDocumentos.visor.notasComerciales': 'Notas comerciales',
+  'importadorDocumentos.visor.delegacion': 'Delegación',
 
   // Cliente - Contactos y Direcciones
   'clientContacts.title': 'Contactos',
